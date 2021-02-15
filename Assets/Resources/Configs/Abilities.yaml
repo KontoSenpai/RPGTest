@@ -1,0 +1,144 @@
+# Abilities.yaml
+Abilities:
+    - Id                    : A0001
+      Name                  : Attack
+      Description           : Default Attack
+      Effects               :
+        - EffectType        : Damage
+          Attributes        :
+            HP              :
+              Potency       : 1
+          Scalings          :
+            Strength        : 1
+          PowerRange        :
+            Min             : 0.75
+            Max             : 1.25
+      DefaultTarget         : SingleEnemy 
+      TargetTypes           :
+        - SingleEnemy
+        - SingleAlly
+
+#Weapon Abilities
+    - Id                    : A0002
+      Name                  : Sword thurst
+      Description           : Attack an enemy with the tip of a blade
+      AbilityType           : Weapon
+      EquipmentRestrictrion : 
+        - Short_Sword
+      Effects               :
+        - EffectType        : Damage
+          Attributes        :
+            HP              : 
+              Potency       : 7
+          Scalings          :
+            Strength        : 1.1
+      TargetTypes           :
+        - SingleEnemy
+      CastCost              :
+        Stamina             : -5
+
+    - Id                    : A0003
+      Name                  : Sword sweep
+      Description           : Perform a powerful spin with a blade to strike all the enemies
+      AbilityType           : Weapon
+      EquipmentRestrictrion : 
+        - Long_Sword
+      Effects               :
+        - EffectType        : Damage
+          Attributes        :
+            HP              : 
+              Potency       : 5
+          Scalings          :
+            Strength        : 0.8
+        - EffectType        : Damage
+          Attributes        :
+            HP              : 
+              Potency       : 5
+          Scalings          :
+            Strength        : 0.8
+          TargetType        :
+            Enemies
+      TargetTypes           :
+        - Enemies
+      CastCost              :
+        Stamina             : -30
+
+    - Id                    : A0004
+      Name                  : Spear point
+      Description           : Perform a powerfull sping with a blade to strike all the enemies
+      AbilityType           : Weapon
+      EquipmentRestrictrion : 
+        - Spear
+      Effects               :
+        - EffectType        : Damage
+          Attributes        :
+            HP              : 
+              Potency       : 5
+          Scalings          :
+            Strength        : 0.8
+      TargetTypes           :
+        - SingleEnemy
+      CastCost              :
+        Stamina             : -13
+
+    - Id                    : A0005
+      Name                  : Flame Ball
+      Description           : Perform a powerfull sping with a blade to strike all the enemies
+      AbilityType           : AttackMagic
+      Effects               :
+        - EffectType        : Damage
+          Attributes        :
+            HP              : 
+              Potency       : 5
+          Scalings          :
+            Mental          : 0.8
+      TargetTypes           :
+        - SingleEnemy
+      Backswing             : 2000
+      CastCost              :
+        MP                  : -8
+
+    - Id                    : A0006
+      Name                  : Flame Thrower
+      Description           : Perform a powerfull sping with a blade to strike all the enemies
+      AbilityType           : AttackMagic
+      Effects               :
+        - EffectType        : Damage
+          Attributes        :
+            HP              : 
+              Potency       : 5
+          Scalings          :
+            Mental          : 0.8
+          HitFrames         :
+            - 0.4
+            - 0.4
+            - 0.4
+          HitPower          :
+            - 0.25
+            - 0.25
+            - 0.5
+      TargetTypes           :
+        - SingleEnemy
+      CastTime              : 2.0
+      Backswing             : 1.0
+      CastCost              :
+        MP                  : -8
+
+#Magic Abilities
+
+#Monster Abilities
+    - Id                    : AM001
+      Name                  : Bite
+      AbilityType           : Monster
+      Effects               :
+        - EffectType        : Damage
+          Attributes        :
+            HP              :
+              Potency       : 2
+          Scalings          :
+            Strength        : 1
+          PowerRange        :
+            Min             : 1.0
+            Max             : 1.2
+      TargetTypes           :
+        - SingleEnemy

@@ -1,0 +1,143 @@
+# items.yaml
+Consumables:
+#Consumables
+    - Id                    : C0001
+      ITEM_TYPE             : Consumable
+      CONSUMABLE_TYPE       : Healing_Item
+      Name                  : Potion
+      Description           : Basic concoction soothing pain of whom consume it
+      Value                 : 30
+      Effects               :
+        - EffectType        : Cure
+          Attributes        :
+            HP              : 
+              Potency       : 30
+      DefaultTarget         : Self
+      TargetTypes           :
+        - SingleAlly
+    
+    - Id                    : C0002
+      ITEM_TYPE             : Consumable
+      CONSUMABLE_TYPE       : Healing_Item
+      Name                  : Mysta
+      Description           : A brevage rich in myst, resplenishing mystical energy
+      Value                 : 100
+      Effects               :
+        - EffectType        : Cure
+          Attributes        :
+            MP              :
+              Potency       : 50
+      DefaultTarget         : Self
+      TargetTypes           : 
+        - SingleAlly
+
+    - Id                    : C0003
+      ITEM_TYPE             : Consumable
+      CONSUMABLE_TYPE       : Healing_Item
+      Name                  : Antidote
+      Description           : A powerful concotion that is able to cure any poisoning
+      Value                 : 40
+      Effects               :
+        - EffectType        : Cure
+          Statuses          :
+            Poison          :
+              Potency       : 100
+      DefaultTarget         : Self
+      TargetTypes           : 
+        - SingleAlly
+    
+    - Id                    : C0004
+      ITEM_TYPE             : Consumable
+      CONSUMABLE_TYPE       : Healing_Item
+      Name                  : Klatyx
+      Description           : A blend of herbs fixing tense muscles when applied
+      Value                 : 40
+      Effects               :
+        - EffectType        : Cure
+          Statuses          :
+            Paralysis       :
+              Potency       : 100
+      DefaultTarget         : Self
+      TargetTypes           : 
+        - SingleAlly
+    
+    - Id                    : C0005
+      ITEM_TYPE             : Consumable
+      CONSUMABLE_TYPE       : Healing_Item
+      Name                  : Collyre
+      Description           : A concoction used to cure eye sore
+      Value                 : 40
+      Effects               :
+        - EffectType        : Cure
+          Statuses          :
+            Blind           :
+              Potency       : 100
+      DefaultTarget         : Self
+      TargetTypes           :
+        - SingleAlly
+         
+Equipments:
+    - Id                    : E0001
+      ITEM_TYPE             : Equipment
+      EQUIPMENT_TYPE        : Short_Sword
+      Name                  : Iron sword
+      Description           : Regular sword used by mercenaries
+      Value                 : 100      
+      Attributes            : 
+        Strength            : 10
+
+    - Id                    : E0002
+      ITEM_TYPE             : Equipment
+      EQUIPMENT_TYPE        : Spear
+      Name                  : Iron Spear
+      Description           : Regular spear used by mercenaries
+      Value                 : 100    
+      Attributes            :
+        Strength            : 10    
+      
+    - Id                    : E0003
+      ITEM_TYPE             : Equipment
+      EQUIPMENT_TYPE        : Axe
+      Name                  : Iron Axe
+      Description           : Regular axe used by mercenaries
+      Value                 : 150    
+      Attributes            :
+        Strength            : 15
+        Accuracy            : -2
+      
+    - Id                    : E0004
+      ITEM_TYPE             : Equipment
+      EQUIPMENT_TYPE        : Long_Sword
+      Name                  : Iron Longsowrd
+      Description           : Regular spears used by mercenaries
+      Value                 : 100    
+      Attributes            :
+        Strength            : 15            
+        Speed               : -2
+
+    - Id                    : E0005
+      ITEM_TYPE             : Equipment
+      EQUIPMENT_TYPE        : Staff
+      Name                  : Oak Staff
+      Description           : Regular staff used by mystics to help channel their abilities
+      Value                 : 100
+      Attributes            : 
+        Strength            : 5
+        Mental              : 5 
+
+    - Id                    : E0025
+      ITEM_TYPE             : Equipment
+      EQUIPMENT_TYPE        : Short_Sword
+      Name                  : Flaming blade
+      Description           : Sword crafted from a special alloy
+      Value                 : 3600  
+      Attributes            : 
+        Strength            : 35
+      Elements              :
+        Fire                : 100
+  
+KeyItems:
+    - Id                    : K0001
+      ITEM_TYPE             : Key
+      Name                  : Red Keber
+      Description           : A crystal rich in fire myst

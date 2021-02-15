@@ -1,0 +1,148 @@
+# NPCs.yaml
+PlayableCharacters:
+    - Id                : PC0001
+      Name              : Jon
+      Surname           : Doe
+      Level             : 1
+      DefaultAttack     : A0001
+      Abilities         :
+        - A0002
+        - A0003
+        - A0004
+
+      BaseAttributes    :
+        MaxHP           : 30
+        MaxMP           : 0
+        MaxStamina      : 10
+        Strength        : 8
+        Dexterity       : 9
+        Agility         : 8
+        Constitution    : 7
+        Mental          : 3
+        Resilience      : 4
+      AttributesGrowth  :
+        HP              : 12
+        MP              : 0
+        Stamina         : 5
+        Strength        : 3
+        Dexterity       : 3
+        Agility         : 2
+        Constitution    : 2
+        Mental          : 1
+        Resilience      : 1
+    
+    - Id                : PC0002
+      Name              : Kehra
+      Surname           : Stronil
+      Level             : 1
+      DefaultAttack     : A0001
+      Abilities         :
+        - A0004
+        - A0005
+      BaseAttributes    :
+        MaxHP           : 24
+        MaxMP           : 12
+        MaxStamina      : 8
+        Strength        : 6
+        Dexterity       : 7
+        Agility         : 7
+        Constitution    : 9
+        Mental          : 12
+        Resilience      : 9
+      AttributesGrowth  :
+        HP              : 8
+        MP              : 11
+        Stamina         : 4
+        Strength        : 1
+        Dexterity       : 2
+        Agility         : 1
+        Constitution    : 2
+        Mental          : 3
+        Resilience      : 3
+
+    - Id                : PC0003
+      Name              : Aba
+      Surname           : Stronil
+      Level             : 1
+      DefaultAttack     : A0001
+      Abilities         :
+        - A0004
+        - A0005
+      BaseAttributes    :
+        MaxHP           : 24
+        MaxMP           : 12
+        MaxStamina      : 8
+        Strength        : 6
+        Dexterity       : 7
+        Agility         : 7
+        Constitution    : 9
+        Mental          : 12
+        Resilience      : 9
+      AttributesGrowth  :
+        HP              : 8
+        MP              : 11
+        Stamina         : 4
+        Strength        : 1
+        Dexterity       : 2
+        Agility         : 1
+        Constitution    : 2
+        Mental          : 3
+        Resilience      : 3
+
+    - Id                : PC0004
+      Name              : Tonral
+      Surname           : Stronil
+      Level             : 1
+      DefaultAttack     : A0001
+      Abilities         :
+        - A0004
+        - A0005
+      BaseAttributes    :
+        MaxHP           : 24
+        MaxMP           : 12
+        MaxStamina      : 8
+        Strength        : 6
+        Dexterity       : 7
+        Agility         : 7
+        Constitution    : 9
+        Mental          : 12
+        Resilience      : 9
+      AttributesGrowth  :
+        HP              : 8
+        MP              : 11
+        Stamina         : 4
+        Strength        : 1
+        Dexterity       : 2
+        Agility         : 1
+        Constitution    : 2
+        Mental          : 3
+        Resilience      : 3
+
+    - Id                : PC0005
+      Name              : Petoncle
+      Surname           : Stronil
+      Level             : 1
+      DefaultAttack     : A0001
+      Abilities         :
+        - A0004
+        - A0005
+      BaseAttributes    :
+        MaxHP           : 24
+        MaxMP           : 12
+        MaxStamina      : 8
+        Strength        : 6
+        Dexterity       : 7
+        Agility         : 7
+        Constitution    : 9
+        Mental          : 12
+        Resilience      : 9
+      AttributesGrowth  :
+        HP              : 8
+        MP              : 11
+        Stamina         : 4
+        Strength        : 1
+        Dexterity       : 2
+        Agility         : 1
+        Constitution    : 2
+        Mental          : 3
+        Resilience      : 3

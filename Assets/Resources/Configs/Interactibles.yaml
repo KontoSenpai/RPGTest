@@ -1,0 +1,12 @@
+# Interactibles.yaml
+Chests:
+#Chests
+    - Id           : IC0001
+      Inventory    : { 
+        C0001 : 4,
+        C0002 : 2,
+      }
+    
+    - Id           : IC0002
+      Inventory    : {
+      }

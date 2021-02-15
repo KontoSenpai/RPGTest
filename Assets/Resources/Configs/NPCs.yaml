@@ -1,0 +1,20 @@
+# NPCs.yaml
+Merchants:
+    - Id          : NM0001
+      Name        : Karton Yogrut
+      Greetings   : Come to my shop fellow kid!
+      Inventory   : 
+        - C0001
+        - C0002
+        - C0003
+        - E0001
+        - E0002
+        - E0003
+        - E0004
+        - E0005
+    
+Talkers:
+    - Id          : NT0002
+      Name        : Uni Jamboust
+      Greetings   : I'm just an unijambist sir.
+    

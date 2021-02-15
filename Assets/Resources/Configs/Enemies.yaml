@@ -1,0 +1,73 @@
+﻿# Enemies.yaml
+# Contains all enemies of the game
+
+EnemySpawners:
+    - Id                     : EG0001
+      Groups                 :
+        - Probability        : 0.75
+          EnemyReferences    :
+           - EnemyID         : EN0001
+             FrontRow        : true
+        - Probability        : 0.25
+          EnemyReferences     :
+           - EnemyID         : EN0001
+             FrontRow        : true
+           - EnemyID         : EN0002
+             FrontRow        : true
+           - EnemyID         : EN0002
+             FrontRow        : true
+           - EnemyID         : EN0002
+             FrontRow        : false
+    - Id                     : EG0002
+
+Enemies:
+    - Id                    : EN0001
+      Name                  : White Dog
+      Level                 : 3
+      DefaultAttack         : A0001
+      BaseAttributes        :
+        MaxHP               : 16
+        MaxMP               : 0
+        MaxStamina          : 10
+        Strength            : 4
+        Dexterity           : 7
+        Agility             : 6
+        Constitution        : 5
+        Mental              : 0
+        Resilience          : 2
+      CombatThresholds      :
+        - Threshold         : 100
+          Abilities         :
+            - Id            : A0001
+              Probability   : 0.8
+            - Id            : AM001
+              Probability   : 0.2
+      GoldBounty            : 12
+      ExperienceBounty      : 200
+      LootTable             :
+        LootDrops           :
+          - Id              : C0001
+            Quantity        : 1
+            Probability     : 1.0
+
+    - Id                    : EN0002
+      Name                  : Black Dog
+      Level                 : 3
+      DefaultAttack         : A0001
+      BaseAttributes        :
+        MaxHP               : 24
+        MaxMP               : 0
+        MaxStamina          : 10
+        Strength            : 7
+        Dexterity           : 8
+        Agility             : 8
+        Constitution        : 7
+        Mental              : 2
+        Resilience          : 4
+      GoldBounty            : 10
+      ExperienceBounty      : 10
+      LootTable             :
+        LootDrops           :
+          - Id              : C0001
+            Quantity        : 1
+            Probability     : 0.7
