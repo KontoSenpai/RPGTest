@@ -229,6 +229,29 @@ namespace RPGTest.Interactibles
             return new Vector3();
         }
 
+        public bool TryGetPositionForConnection(GameObject connection, Vector3 otherTransform, Vector3 otherForward, out Vector3 result)
+        {
+            result = new Vector3();
+            switch(SurfaceType)
+            {
+                case SurfaceType.Plane:
+                    if (connection == TopConnection)
+                        return TryGetPositionForTopPlaneConnection(otherTransform, otherForward, out result);
+                    if (connection == BottomConnection)
+                        return TryGetPositionForBottomPlaneConnection(otherTransform, otherForward, out result);
+                    if (connection == RightConnection)
+                        return TryGetPositionForRightPlaneConnection(otherTransform, otherForward, out result);
+                    if (connection == LeftConnection)
+                        return TryGetPositionForLeftPlaneConnection(otherTransform, otherForward, out result);
+                    break;
+                case SurfaceType.Cylinder:
+                    break;
+                default:
+                    Debug.LogError("Not supported");
+                    break; 
+            }
+            return false;
+        }
 
         private Vector3 CheckDistanceFromTop(Vector3 source, Vector3 IntersectionPoint)
         {

@@ -27,25 +27,28 @@ namespace RPGTest.Interactibles
             return new Vector3();
         }
 
-        /// <summary>
-        /// Get the position the other object (mainly playable character) should be assuming when moving from one climbable surface to their 'top' counterpart 
-        /// </summary>
-        /// <param name="otherTransform">Position of the other object (mainly playable character)</param>
         /// <returns>The adjusted position</returns>
-        public bool TryGetPositionForTopPlaneConnection(Vector3 otherPosition, Vector3 otherForward, out Vector3 result)
+        private bool TryGetPositionForTopPlaneConnection(Vector3 otherPosition, Vector3 otherForward, out Vector3 result)
         {
             return TryGetPositionForPlaneConnection(otherPosition, otherForward, TopConnection, out result);
         }
 
-        /// <summary>
-        /// Get the position the other object (mainly playable character) should be assuming when moving from one climbable surface to their 'bottom' counterpart 
-        /// </summary>
-        /// <param name="otherTransform">Position of the other object (mainly playable character)</param>
-        /// <returns>The adjusted position</returns>
-        public bool TryGetPositionForBottomPlaneConnection(Vector3 otherPosition, Vector3 otherForward, out Vector3 result)
+        private bool TryGetPositionForBottomPlaneConnection(Vector3 otherPosition, Vector3 otherForward, out Vector3 result)
         {
             return TryGetPositionForPlaneConnection(otherPosition, otherForward, BottomConnection, out result);
         }
+
+        private bool TryGetPositionForRightPlaneConnection(Vector3 otherPosition, Vector3 otherForward, out Vector3 result)
+        {
+            return TryGetPositionForPlaneConnection(otherPosition, otherForward, RightConnection, out result);
+        }
+
+
+        private bool TryGetPositionForLeftPlaneConnection(Vector3 otherPosition, Vector3 otherForward, out Vector3 result)
+        {
+            return TryGetPositionForPlaneConnection(otherPosition, otherForward, LeftConnection, out result);
+        }
+
 
         private bool TryGetPositionForPlaneConnection(Vector3 otherPosition, Vector3 otherForward, GameObject connection, out Vector3 result)
         {

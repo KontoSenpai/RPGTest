@@ -3,6 +3,7 @@ using UnityEngine;
 using RPGTest.UI;
 using RPGTest.Helpers;
 using System.Collections.Generic;
+using System;
 
 namespace RPGTest.Controllers
 {
@@ -138,7 +139,7 @@ namespace RPGTest.Controllers
             }
             
             //Check if we're still on a climbing surface
-            if (CheckSurfaceCollision(transform.position, out RaycastHit hit))
+            if (CheckSurfaceCollision(transform.position, out RaycastHit hit) && ValidateClimbingAngle(hit.collider))
             {
                 m_currentClimbingCollider = hit.collider;
                 ClimbableSurface climbableSurface = hit.collider.gameObject.GetComponent<ClimbableSurface>();
@@ -155,52 +156,23 @@ namespace RPGTest.Controllers
                     return;
 
                 Collider newCollider = null;
-                int nbAttemps = 0;
                 if (m_playerDirection.y < 0 && climbableSurface.BottomConnection != null)
                 {
-                    ClimbableSurface connection = climbableSurface.BottomConnection.GetComponent<ClimbableSurface>();
-                    transform.forward = connection.GetFacingDirection(transform);
-
-                    Vector3 tmpPosition = transform.position;
-                    tmpPosition -= transform.forward;
-
-                    do
-                    {
-                        tmpPosition -= transform.up * 0.05f;
-                        if (climbableSurface.TryGetPositionForBottomPlaneConnection(tmpPosition, transform.forward, out Vector3 newPosition))
-                        {
-                            transform.position = newPosition;
-                            if (CheckSurfaceCollision(transform.position, out hit) && hit.collider == connection.MainCollider)
-                            {
-                                transform.position += connection.transform.up * 0.2f;
-                                newCollider = connection.MainCollider;
-                                break;
-                            }
-                        }
-                    } while (nbAttemps++ < 20);
+                    newCollider = GetConnectionPosition(climbableSurface, climbableSurface.BottomConnection.GetComponent<ClimbableSurface>(), new Func<Vector3>(() => -transform.up));
+                    //transform.position -= (Height * transform.up);
                 }
                 else if (m_playerDirection.y > 0 && climbableSurface.TopConnection != null)
                 {
-                    ClimbableSurface connection = climbableSurface.TopConnection.GetComponent<ClimbableSurface>();
-                    transform.forward = connection.GetFacingDirection(transform);
-
-                    Vector3 tmpPosition = transform.position;
-                    tmpPosition -= transform.forward;
-
-                    do
-                    {
-                        tmpPosition += transform.up * 0.05f;
-                        
-                        if (climbableSurface.TryGetPositionForTopPlaneConnection(tmpPosition, transform.forward, out Vector3 newPosition))
-                        {
-                            transform.position = newPosition + connection.transform.up * 0.2f;
-                            if (m_allClimbingColliders.Contains(connection.MainCollider))
-                            {
-                                newCollider = connection.MainCollider;
-                                break;
-                            }
-                        }
-                    } while(nbAttemps++ < 15);
+                    newCollider = GetConnectionPosition(climbableSurface, climbableSurface.TopConnection.GetComponent<ClimbableSurface>(), new Func<Vector3>(() => transform.up));
+                    transform.position -= (Height * transform.up);
+                }
+                if(newCollider == null &&  m_playerDirection.x > 0 && climbableSurface.RightConnection != null)
+                {
+                    newCollider = GetConnectionPosition(climbableSurface, climbableSurface.RightConnection.GetComponent<ClimbableSurface>(), new Func<Vector3>(() => transform.right));
+                }
+                else if(newCollider == null && m_playerDirection.x < 0 && climbableSurface.LeftConnection != null)
+                {
+                    newCollider = GetConnectionPosition(climbableSurface, climbableSurface.LeftConnection.GetComponent<ClimbableSurface>(), new Func<Vector3>(() => -transform.right));
                 }
 
                 if(newCollider != null)
@@ -235,6 +207,29 @@ namespace RPGTest.Controllers
             transform.position = climbableSurface.GetPositionViaJump(transform.position);
         }
 
+
+        private Collider GetConnectionPosition(ClimbableSurface currentClimbableSurface, ClimbableSurface connectionSurface, Func<Vector3> displacementVector)
+        {
+            transform.forward = connectionSurface.GetFacingDirection(transform);
+            Vector3 tmpPosition = transform.position;
+            tmpPosition -= transform.forward;
+
+            int nbAttemps = 0;
+            do
+            {
+                tmpPosition += displacementVector() * 0.05f;
+                if (currentClimbableSurface.TryGetPositionForConnection(connectionSurface.gameObject, tmpPosition, transform.forward, out Vector3 newPosition))
+                {
+                    if (CheckSurfaceCollision(newPosition, out RaycastHit hit) && hit.collider == connectionSurface.MainCollider)
+                    {
+                        transform.position = newPosition + connectionSurface.transform.up * 0.2f;
+                        return connectionSurface.MainCollider;
+                    }
+                }
+            } while (nbAttemps++ < 20);
+            return null;
+        }
+
         /// <summary>
         /// Check weither or not the player is still facing a climbable surface on each movement iteration
         /// </summary>
@@ -248,7 +243,6 @@ namespace RPGTest.Controllers
             if (Physics.Raycast(initialPosition, transform.forward, out hit, Height * 3, layerMask))
             {
                 ClimbableSurface climbableSurface = hit.collider.gameObject.GetComponent<ClimbableSurface>();
-                //climbableSurface.SetDebug(initialPosition, hit.point);
                 if (hit.collider == climbableSurface.TopCollider)
                 {
                     return false;
