@@ -159,7 +159,6 @@ namespace RPGTest.Controllers
                 if (m_playerDirection.y < 0 && climbableSurface.BottomConnection != null)
                 {
                     newCollider = GetConnectionPosition(climbableSurface, climbableSurface.BottomConnection.GetComponent<ClimbableSurface>(), new Func<Vector3>(() => -transform.up));
-                    //transform.position -= (Height * transform.up);
                 }
                 else if (m_playerDirection.y > 0 && climbableSurface.TopConnection != null)
                 {

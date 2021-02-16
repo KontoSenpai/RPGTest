@@ -204,9 +204,9 @@ namespace RPGTest.Managers
 
                 yield return new WaitForSeconds(0.1f);
                 StartCoroutine(UIManager.GetUIComponent<UI_MainLayer>().FadeLoading(false));
-                MainCamera.transform.forward = rotation;
-                MainCamera.enabled = true;
                 PlayerController.GetComponent<PlayerController>().enabled = true;
+                MainCamera.GetComponent<NoClippingCameraController>().ResetCameraPosition();
+                MainCamera.enabled = true;
             }
         }
 
