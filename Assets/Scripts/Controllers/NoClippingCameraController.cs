@@ -68,7 +68,7 @@ namespace RPGTest.Controllers
             // First, align X properly. (counterclockwise)
             while (!transform.forward.x.IsInRange(target.forward.x - 0.001f, target.forward.x + 0.001f))
             {
-                m_lookDirection.x = 0.001f;
+                m_lookDirection.x = 0.0006f;
                 MoveCamera();
             }
 

@@ -5,7 +5,6 @@ using RPGTest.Managers;
 using UnityEngine;
 using RPGTest.UI;
 using RPGTest.Inputs;
-using System.Linq;
 using System.Collections;
 using RPGTest.Helpers;
 
@@ -15,7 +14,8 @@ namespace RPGTest.Controllers
     public partial class PlayerController : MonoBehaviour
     {
         [Separator("Debug")]
-        public bool IsDebug = false;
+        [SerializeField]
+        private bool IsDebug = false;
         [Separator("Movement")]
         public float Speed = 5f;
         public float JumpHeight = 2f;
@@ -37,7 +37,7 @@ namespace RPGTest.Controllers
 
         private Vector3 _velocity;
 
-        private RaycastHit m_hitInfo;
+        private RaycastHit m_groundCheckHit;
         private float m_groundAngle = 90;
 
         private bool m_wasGrounded;
@@ -205,7 +205,7 @@ namespace RPGTest.Controllers
                 _velocity.z -= tmpForward.z * 3;
                 StartCoroutine(ResetHorizontalVelocity());
             }
-            else if (m_jumpCoolDownOver && m_isGrounded && Mathf.Abs(m_groundAngle) < MaxAngle)
+            else if (m_jumpCoolDownOver && m_isGrounded && (m_groundCheckHit.collider == null || Mathf.Abs(m_groundAngle) < MaxAngle))
             {
                 m_wasGrounded = m_isGrounded;
                 m_jumpTimeStamp = Time.time;
@@ -260,9 +260,9 @@ namespace RPGTest.Controllers
             var offset = transform.position + (transform.forward / 2);
             offset.y += Height * 2;
 
-            if (Physics.Raycast(offset, Vector3.down, out m_hitInfo, 2, GroundLayer))
+            if (Physics.Raycast(offset, Vector3.down, out m_groundCheckHit, 2, GroundLayer))
             {
-                m_groundAngle = Vector3.Angle(m_hitInfo.normal, transform.forward) - 90;
+                m_groundAngle = Vector3.Angle(m_groundCheckHit.normal, transform.forward) - 90;
             }
             else
             {
