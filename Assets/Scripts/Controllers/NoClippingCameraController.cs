@@ -2,6 +2,7 @@
 using RPGTest.Inputs;
 using RPGTest.Managers;
 using RPGTest.Helpers;
+using UnityEngine.InputSystem;
 
 namespace RPGTest.Controllers
 {
@@ -30,7 +31,7 @@ namespace RPGTest.Controllers
         private float desiredDistance = 4;
         private float correctedDistance;
 
-        public Controls playerInput;
+        public Controls m_playerInput;
         private Vector2 m_lookDirection;
 
         private float m_currentX;
@@ -38,11 +39,11 @@ namespace RPGTest.Controllers
 
         public void Awake()
         {
-            playerInput = new Controls();
+            m_playerInput = new Controls();
         }
 
-        public void OnEnable() => playerInput.Enable();
-        public void OnDisable() => playerInput.Disable();
+        public void OnEnable() => m_playerInput.Enable();
+        public void OnDisable() => m_playerInput.Disable();
 
         // Use this for initialization
         void Start()
@@ -52,9 +53,9 @@ namespace RPGTest.Controllers
 
 
         #region InputSystem events
-        public void Look()
+        public void Look(InputAction.CallbackContext callbackContext)
         {
-            m_lookDirection = playerInput.Player.Look.ReadValue<Vector2>();
+            m_lookDirection = callbackContext.ReadValue<Vector2>();
         }
         #endregion
 

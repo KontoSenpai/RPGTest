@@ -3,6 +3,7 @@ using RPGTest.Inputs;
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace RPGTest.UI
@@ -15,22 +16,21 @@ namespace RPGTest.UI
         [SerializeField] private Button MapButton;
         [SerializeField] private GameObject MapWidget;
 
+        private Controls m_playerInput;
+
         [SerializeField] private UI_PauseButtonAnimatorController CategoryButtonController;
 
-        public Button[] MenuButtons;
-        public GameObject[] MenuWidgets;
+        [SerializeField] private Button[] MenuButtons;
+        [SerializeField] private GameObject[] MenuWidgets;
 
         public bool IsSubMenuSelected = false;
 
         //UI control
         private int m_currentNavigationIndex = 0;
 
-        private Controls m_playerInput;
         public void Awake()
         {
             m_playerInput = new Controls();
-            m_playerInput.UI.CycleMenus.performed += CycleMenus_performed;
-            m_playerInput.UI.Cancel.performed += Cancel_performed;
         }
 
         public void OnEnable() => m_playerInput.Enable();
@@ -41,9 +41,9 @@ namespace RPGTest.UI
         }
 
         #region InputSystemEvents
-        private void CycleMenus_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        public void CycleMenus(InputValue value)
         {
-            var cycle = obj.ReadValue<float>();
+            var cycle = value.Get<float>();
             int newIndex = m_currentNavigationIndex;
             if(cycle > 0 && m_currentNavigationIndex < MenuButtons.Count() - 1)
             {
@@ -62,7 +62,7 @@ namespace RPGTest.UI
             }
         }
 
-        private void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        public void Close()
         {
             if(!IsSubMenuSelected)
             {
@@ -93,11 +93,6 @@ namespace RPGTest.UI
             button.interactable = false;
             button.Select();
             SelectSubMenu(widget);
-        }
-
-        public void Close()
-        {
-
         }
 
         #region ButtonEvents      
