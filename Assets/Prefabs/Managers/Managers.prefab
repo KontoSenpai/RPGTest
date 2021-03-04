@@ -109,6 +109,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainMenu: 1
+  PlayerController: {fileID: 0}
+  MainCamera: {fileID: 0}
   UIManager: {fileID: 1824516350989430720}
   PartyManager: {fileID: 1824516350989430723}
   InventoryManager: {fileID: 1824516350989430725}
@@ -162,7 +164,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb8a4fda74e31340a2cb921b5e9645f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIScripts: []
+  UIScripts:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1824516351474950525
 GameObject:
   m_ObjectHideFlags: 0

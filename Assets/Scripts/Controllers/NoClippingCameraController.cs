@@ -55,7 +55,8 @@ namespace RPGTest.Controllers
         #region InputSystem events
         public void Look(InputAction.CallbackContext callbackContext)
         {
-            m_lookDirection = callbackContext.ReadValue<Vector2>();
+            if(m_playerInput.asset.enabled)
+                m_lookDirection = callbackContext.ReadValue<Vector2>();
         }
         #endregion
 
@@ -66,15 +67,26 @@ namespace RPGTest.Controllers
 
         public void ResetCameraPosition()
         {
+            m_playerInput.Disable();
+            /*
             // First, align X properly. (counterclockwise)
-            while (!transform.forward.x.IsInRange(target.forward.x - 0.001f, target.forward.x + 0.001f))
+            while (!transform.forward.x.IsInRange(target.forward.x - 0.01f, target.forward.x + 0.01f))
             {
+                var angle = Vector3.Angle(transform.forward, target.forward);
+                if(angle > 10)
+                {
+                    m_lookDirection.x = 0.06f;
+                }
+                else
+                {
+                    m_lookDirection.x = 0.0006f;
+                }
                 m_lookDirection.x = 0.0006f;
                 MoveCamera();
             }
 
             //Then adjust for z
-            while (!transform.forward.z.IsInRange(target.forward.z - 0.001f, target.forward.z + 0.001f))
+            while (!transform.forward.z.IsInRange(target.forward.z - 0.01f, target.forward.z + 0.01f))
             {               
                 if(transform.forward.x >= 0)
                 {
@@ -86,6 +98,8 @@ namespace RPGTest.Controllers
                 }
                 MoveCamera();
             }
+            */
+            m_playerInput.Enable();
             m_lookDirection.x = 0;
         }
 

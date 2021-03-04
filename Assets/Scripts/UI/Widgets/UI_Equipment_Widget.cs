@@ -1,44 +1,26 @@
 ﻿using RPGTest.Enums;
-using RPGTest.Models.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro;
+using RPGTest.Models;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RPGTest.UI.Widgets
 {
     public class UI_Equipment_Widget : MonoBehaviour
     {
-        public Image HeadImage;
-        public TextMeshProUGUI HeadValue;
+        [SerializeField] private UI_EquipmentCategory FirstPreset;
+        [SerializeField] private UI_EquipmentCategory SecondPreset;
 
-        public Image BodyImage;
-        public TextMeshProUGUI BodyValue;
+        [SerializeField] private UI_EquipmentCategory Armor;
 
-        public Image Accessory1Image;
-        public TextMeshProUGUI Accessory1Value;
+        [SerializeField] private UI_EquipmentCategory Accessories;
 
-        public Image Accessory2Image;
-        public TextMeshProUGUI Accessory2Value;
-
-        public void DisableWidget()
+        public void Refresh(EquipmentSlots equipmentSlots)
         {
-            foreach(var button in this.gameObject.GetComponents<Button>().Union(this.gameObject.GetComponentsInChildren<Button>()))
-            {
-                button.interactable = false;
-            }
-        }
+            FirstPreset.Refresh(equipmentSlots.Equipment[Slot.LeftHand1], equipmentSlots.Equipment[Slot.RightHand1]);
+            SecondPreset.Refresh(equipmentSlots.Equipment[Slot.LeftHand2], equipmentSlots.Equipment[Slot.RightHand2]);
 
-        public void UpdateEquipment(Dictionary<Slot, Equipment> equipment)
-        {
-            HeadValue.text = equipment[Slot.Head]?.Name ?? "Empty";
-            BodyValue.text = equipment[Slot.Body]?.Name ?? "Empty";
-            Accessory1Value.text = equipment[Slot.Body]?.Name ?? "Empty";
-            Accessory2Value.text = equipment[Slot.Body]?.Name ?? "Empty";
+            Armor.Refresh(equipmentSlots.Equipment[Slot.Head], equipmentSlots.Equipment[Slot.Body]);
+            
+            Accessories.Refresh(equipmentSlots.Equipment[Slot.Accessory1], equipmentSlots.Equipment[Slot.Accessory2]);
         }
     }
 }

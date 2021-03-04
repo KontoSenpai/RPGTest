@@ -120,11 +120,11 @@
                 },
                 {
                     "name": "",
-                    "id": "faa0e63c-1bff-4273-ba7f-74d4e15e355c",
-                    "path": "<Gamepad>/leftStick",
+                    "id": "a6aa767c-df45-48be-aca8-f401ab999812",
+                    "path": "<DualShockGamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "PS",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -142,11 +142,11 @@
                 },
                 {
                     "name": "",
-                    "id": "3191fc98-0199-4a80-b55e-5a9429689f60",
-                    "path": "<Gamepad>/rightStick",
+                    "id": "8118fa15-3398-49ec-b537-6c82810fea32",
+                    "path": "<DualShockGamepad>/rightStick",
                     "interactions": "",
-                    "processors": "ScaleVector2(x=0.8,y=0.6),StickDeadzone",
-                    "groups": ";Gamepad",
+                    "processors": "",
+                    "groups": "PS",
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -164,11 +164,11 @@
                 },
                 {
                     "name": "",
-                    "id": "e3cfc54d-1b82-4d8a-9440-b6cf9e0ef761",
-                    "path": "<Gamepad>/buttonWest",
+                    "id": "9eabe453-5789-4fda-9a0b-ef3e7aa98d39",
+                    "path": "<DualShockGamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Gamepad",
+                    "groups": "PS",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -190,7 +190,7 @@
                     "path": "<DualShockGamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "PS",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -219,11 +219,11 @@
                 },
                 {
                     "name": "",
-                    "id": "79cef13a-85eb-4f69-aea6-8c9e501ce662",
-                    "path": "<Gamepad>/buttonNorth",
+                    "id": "a3bfda14-da1c-41e3-bf0d-6f4eb1616396",
+                    "path": "<DualShockGamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "PS",
                     "action": "OpenMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -263,11 +263,11 @@
                 },
                 {
                     "name": "",
-                    "id": "9c97bd6e-f527-4269-903b-64c313979a73",
-                    "path": "<Gamepad>/buttonEast",
+                    "id": "8ce1136c-ce79-4f51-a295-99e50634fa27",
+                    "path": "<DualShockGamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Gamepad",
+                    "groups": "PS",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -352,17 +352,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "41d59e2d-fdc7-49dd-9c7a-13f95d7946a0",
-                    "path": "<Gamepad>/dpad",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Navigate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "Keyboard",
                     "id": "c21d0c47-c140-4268-8427-d2ec504bfcf9",
@@ -463,68 +452,24 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Gamepad",
-                    "id": "f855e01e-36fe-40e5-a238-97a2c7a75bf5",
-                    "path": "2DVector(mode=2)",
+                    "name": "",
+                    "id": "0884a79e-6ca9-4230-b1a6-a586c4fb56de",
+                    "path": "<DualShockGamepad>/dpad",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PS",
                     "action": "Navigate",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Up",
-                    "id": "a2baf0c7-5e93-49f3-8760-ccbb83453d81",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Navigate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Down",
-                    "id": "eeb8ed05-bfac-4064-8693-06a34028beca",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Navigate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Left",
-                    "id": "cb7fd4e8-c81f-41fd-b176-a4d24942edeb",
-                    "path": "<Gamepad>/leftStick/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Navigate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Right",
-                    "id": "4d51d9de-a096-452b-b05e-22cc2fe7456c",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Navigate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
-                    "id": "51fbb9ef-419f-4a0d-8411-81dad5510e00",
-                    "path": "<Gamepad>/buttonSouth",
+                    "id": "c086cebc-103e-481a-86ac-9806a19749ca",
+                    "path": "<DualShockGamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Submit",
+                    "groups": "PS",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -541,12 +486,12 @@
                 },
                 {
                     "name": "",
-                    "id": "3ea39fdb-02b5-4f13-8fd5-6b1421939ae1",
-                    "path": "<Gamepad>/buttonEast",
+                    "id": "afa09e30-459b-4ca8-8c9d-72da587884a9",
+                    "path": "<DualShockGamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Cancel",
+                    "groups": "PS",
+                    "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -557,6 +502,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c132f1e4-d404-4ce6-b69e-9b4df7a412dd",
+                    "path": "<DualShockGamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PS",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -730,6 +686,17 @@
             "devices": [
                 {
                     "devicePath": "<Gamepad>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "PS",
+            "bindingGroup": "PS",
+            "devices": [
+                {
+                    "devicePath": "<DualShockGamepad>",
                     "isOptional": false,
                     "isOR": false
                 }

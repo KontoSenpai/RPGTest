@@ -1,5 +1,6 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Models.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,68 +10,80 @@ namespace RPGTest.Managers
     public class PartyManager : MonoBehaviour
     {
         public List<GameObject> BattleModels;
-        private int m_activePartyThresold = 3;
-        List<PlayableCharacter> m_partyMembers = new List<PlayableCharacter>();
+        private static readonly int m_activePartyThreshold = 3;
+        private static readonly int m_partyMembersArraySize = 11;
+        private PlayableCharacter[] m_partyMembers = new PlayableCharacter[m_partyMembersArraySize];
 
+
+        public int GetActivePartyThreshold()
+        {
+            return m_activePartyThreshold;
+        }
         /// <summary>
         /// Gets the active party members
         /// </summary>
         /// <returns>First 3 memebrs of the member list</returns>
         public List<PlayableCharacter> GetActivePartyMembers()
         {
-            if(m_partyMembers.Count > 0)
+            List<PlayableCharacter> characters = new List<PlayableCharacter>();
+            for(int index = 0; index < m_activePartyThreshold; index++)
             {
-                return m_partyMembers.Where(x => m_partyMembers.IndexOf(x) < m_activePartyThresold).ToList();
+                characters.Add(m_partyMembers[index]);
             }
-            else
-            {
-                return null;
-            }
+            return characters;
+        }
+
+        public List<PlayableCharacter> GetExistingActivePartyMembers()
+        {
+            return GetActivePartyMembers().Where(m => m != null).ToList();
+        }
+
+        public List<PlayableCharacter> GetInactivePartyMembers()
+        {
+            return m_partyMembers.Skip(m_activePartyThreshold).ToList();
+        }
+        public List<PlayableCharacter> GetExistingInactivePartyMembers()
+        {
+            return GetInactivePartyMembers().Where(m => m != null).ToList();
         }
 
         /// <summary>
         /// Gets the active party members
         /// </summary>
-        /// <returns>First 3 memebrs of the member list</returns>
+        /// <returns>All party members. Active and Inactive</returns>
         public List<PlayableCharacter> GetAllPartyMembers()
         {
-            if (m_partyMembers.Count > 0)
-            {
-                return m_partyMembers;
-            }
-            else
-            {
-                return null;
-            }
+            return m_partyMembers.ToList();
+        }
+
+        public List<PlayableCharacter> GetAllExistingPartyMembers()
+        {
+            return GetAllPartyMembers().Where(m => m != null).ToList();
         }
 
         public PlayableCharacter TryGetPartyMember(string id)
         {
-            if (m_partyMembers != null && m_partyMembers.Count > 0)
-            {
-                return m_partyMembers.SingleOrDefault(x => x.Id == id);
-            }
-            else
-            {
-                return null;
-            }
+            return m_partyMembers.SingleOrDefault(m => m != null && m.Id == id);
         }
 
         public bool TryAddPartyMember(string id)
         {
             var member = PlayableCharactersCollector.TryGetPlayableCharacter(id);
-            if(member == null || m_partyMembers.Any(x => x.Id == member.Id))
+            if(member != null && TryGetPartyMember(member.Id) == null)
             {
-                return false;
+                for(int index = 0; index < m_partyMembers.Count(); index++)
+                {
+                    if(m_partyMembers[index] == null)
+                    {
+                        m_partyMembers[index] = member;
+                        return true;
+                    }
+                }
             }
-            else
-            {
-                m_partyMembers.Add(member);
-                return true;
-            }
+            return false;
         }
 
-        public void SwapMemberPosition(int id1, int id2)
+        public void PerformSwap(int id1, int id2)
         {
             var member1 = m_partyMembers[id1];
             var member2 = m_partyMembers[id2];

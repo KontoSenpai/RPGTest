@@ -57,7 +57,7 @@ namespace RPGTest.UI.Battle
             
             ExperienceGainedValue.text = string.Format(m_ExperienceGainedString, experience);
 
-            foreach(var member in m_partyManager.GetActivePartyMembers())
+            foreach(var member in m_partyManager.GetExistingActivePartyMembers())
             {
                 GameObject uiItem = InstantiateItemInViewport(PartyItemInstantiate, member.Id, PartyList);
                 UI_Member_Widget widgetScript = uiItem.GetComponent<UI_Member_Widget>();
@@ -91,7 +91,7 @@ namespace RPGTest.UI.Battle
             {
                 if(m_ActiveGain)
                 {
-                    foreach(PlayableCharacter member in m_partyManager.GetActivePartyMembers().Where(p => p.IsAlive))
+                    foreach(PlayableCharacter member in m_partyManager.GetExistingActivePartyMembers().Where(p => p.IsAlive))
                     {
                         member.AddExperience(m_expTick);
                     }
@@ -101,7 +101,7 @@ namespace RPGTest.UI.Battle
                 else
                 {
                     experience -= allocated;
-                    foreach (PlayableCharacter member in m_partyManager.GetActivePartyMembers().Where(p => p.IsAlive))
+                    foreach (PlayableCharacter member in m_partyManager.GetExistingActivePartyMembers().Where(p => p.IsAlive))
                     {
                         member.AddExperience(experience);
                     }

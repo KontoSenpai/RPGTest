@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 7138620432658189793}
   - component: {fileID: 5436520111869524526}
   - component: {fileID: 724505416004907443}
+  - component: {fileID: 871636204600198446}
   m_Layer: 0
   m_Name: UI_Shop
   m_TagString: Untagged
@@ -232,6 +233,28 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &871636204600198446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4171017908249466866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e5c47227e77834bb5eec8f4e04532a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Scrollbar: {fileID: 0}
+  PurchaseWindow: {fileID: 0}
+  ShopList: {fileID: 0}
+  ItemMenuInstantiate: {fileID: 0}
+  CurrentMoney: {fileID: 0}
+  CategoryButtons: []
+  UnselectedCategoryColor: {r: 0, g: 0, b: 0, a: 0}
+  SelectedCategoryColor: {r: 0, g: 0, b: 0, a: 0}
+  UnselectedItemColor: {r: 0, g: 0, b: 0, a: 0}
+  SelectedItemColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &972228815189057125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -321,6 +344,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6664932965804001298, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6987935619422364270, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: ColorGradients.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8506721111632218821, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
