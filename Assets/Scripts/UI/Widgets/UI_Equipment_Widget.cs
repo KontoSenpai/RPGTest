@@ -15,12 +15,24 @@ namespace RPGTest.UI.Widgets
 
         public void Refresh(EquipmentSlots equipmentSlots)
         {
-            FirstPreset.Refresh(equipmentSlots.Equipment[Slot.LeftHand1], equipmentSlots.Equipment[Slot.RightHand1]);
-            SecondPreset.Refresh(equipmentSlots.Equipment[Slot.LeftHand2], equipmentSlots.Equipment[Slot.RightHand2]);
+            if(equipmentSlots == null)
+            {
+                FirstPreset.Clear();
+                SecondPreset.Clear();
 
-            Armor.Refresh(equipmentSlots.Equipment[Slot.Head], equipmentSlots.Equipment[Slot.Body]);
-            
-            Accessories.Refresh(equipmentSlots.Equipment[Slot.Accessory1], equipmentSlots.Equipment[Slot.Accessory2]);
+                Armor.Clear();
+
+                Accessories.Clear();
+            }
+            else
+            {
+                FirstPreset.Refresh(equipmentSlots.Equipment[Slot.LeftHand1], equipmentSlots.Equipment[Slot.RightHand1]);
+                SecondPreset.Refresh(equipmentSlots.Equipment[Slot.LeftHand2], equipmentSlots.Equipment[Slot.RightHand2]);
+
+                Armor.Refresh(equipmentSlots.Equipment[Slot.Head], equipmentSlots.Equipment[Slot.Body]);
+
+                Accessories.Refresh(equipmentSlots.Equipment[Slot.Accessory1], equipmentSlots.Equipment[Slot.Accessory2]);
+            }
         }
     }
 }

@@ -336,18 +336,18 @@ namespace RPGTest.Inputs
                 {
                     ""name"": ""ScrollWheel"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""fc827537-6576-40c7-bfcd-d6b64be80248"",
+                    ""id"": ""0bba1d7d-166f-40df-bd94-c133532ca8ee"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""MiddleClick"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""ad22053e-a58a-4494-8433-7deb65f75c26"",
-                    ""expectedControlType"": """",
+                    ""id"": ""30895060-564e-4be5-a485-80629fe76046"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""RightClick"",
@@ -361,6 +361,14 @@ namespace RPGTest.Inputs
                     ""name"": ""CycleMenus"",
                     ""type"": ""Button"",
                     ""id"": ""4420ee44-5b1c-43ca-bf72-7743c499fd0a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""SubAction1"",
+                    ""type"": ""Button"",
+                    ""id"": ""3fa05128-5176-4ff6-885e-69d34ee84a69"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -538,7 +546,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse;Keyboard"",
                     ""action"": ""Point"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -556,45 +564,12 @@ namespace RPGTest.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c22d1aa2-0705-406f-b05e-5d45df876ac7"",
-                    ""path"": ""<Touchscreen>/touch*/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""Point"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""57a7b1c7-eab3-4efc-bbd2-9a98d7006c65"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9ac9b3dd-dfaf-4250-bf07-4c3e82fe7f33"",
-                    ""path"": ""<Mouse>/scroll"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ScrollWheel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9370b47e-8572-436e-ab36-616e5080ad9a"",
-                    ""path"": ""<Mouse>/middleButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""MiddleClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -608,6 +583,39 @@ namespace RPGTest.Inputs
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""bf019c1f-af68-47b6-b4f1-022b054295c8"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CycleMenus"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""f97d19bc-51c1-4ba9-820a-c926698e31eb"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""CycleMenus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""a0caa3db-a222-489e-92d8-77b544b50cd8"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""CycleMenus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""Gamepad"",
@@ -643,37 +651,48 @@ namespace RPGTest.Inputs
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""bf019c1f-af68-47b6-b4f1-022b054295c8"",
-                    ""path"": ""1DAxis"",
+                    ""name"": """",
+                    ""id"": ""d24622ed-6c53-445c-9047-3f8e934c2bc8"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CycleMenus"",
-                    ""isComposite"": true,
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SubAction1"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""f97d19bc-51c1-4ba9-820a-c926698e31eb"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""name"": """",
+                    ""id"": ""b7b0c5c7-7811-476b-996f-8f4aaebd388e"",
+                    ""path"": ""<DualShockGamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""CycleMenus"",
+                    ""groups"": ""PS"",
+                    ""action"": ""SubAction1"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""a0caa3db-a222-489e-92d8-77b544b50cd8"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""name"": """",
+                    ""id"": ""4dbe247f-e7ef-4bb6-8fc8-e3b358589c83"",
+                    ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""CycleMenus"",
+                    ""action"": ""ScrollWheel"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3090be3b-ce5b-445e-b7c7-2e87f31a51c4"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MiddleClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -739,6 +758,7 @@ namespace RPGTest.Inputs
             m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_CycleMenus = m_UI.FindAction("CycleMenus", throwIfNotFound: true);
+            m_UI_SubAction1 = m_UI.FindAction("SubAction1", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -878,6 +898,7 @@ namespace RPGTest.Inputs
         private readonly InputAction m_UI_MiddleClick;
         private readonly InputAction m_UI_RightClick;
         private readonly InputAction m_UI_CycleMenus;
+        private readonly InputAction m_UI_SubAction1;
         public struct UIActions
         {
             private @Controls m_Wrapper;
@@ -891,6 +912,7 @@ namespace RPGTest.Inputs
             public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
             public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
             public InputAction @CycleMenus => m_Wrapper.m_UI_CycleMenus;
+            public InputAction @SubAction1 => m_Wrapper.m_UI_SubAction1;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -927,6 +949,9 @@ namespace RPGTest.Inputs
                     @CycleMenus.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
+                    @SubAction1.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
+                    @SubAction1.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
+                    @SubAction1.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
@@ -958,6 +983,9 @@ namespace RPGTest.Inputs
                     @CycleMenus.started += instance.OnCycleMenus;
                     @CycleMenus.performed += instance.OnCycleMenus;
                     @CycleMenus.canceled += instance.OnCycleMenus;
+                    @SubAction1.started += instance.OnSubAction1;
+                    @SubAction1.performed += instance.OnSubAction1;
+                    @SubAction1.canceled += instance.OnSubAction1;
                 }
             }
         }
@@ -1010,6 +1038,7 @@ namespace RPGTest.Inputs
             void OnMiddleClick(InputAction.CallbackContext context);
             void OnRightClick(InputAction.CallbackContext context);
             void OnCycleMenus(InputAction.CallbackContext context);
+            void OnSubAction1(InputAction.CallbackContext context);
         }
     }
 }

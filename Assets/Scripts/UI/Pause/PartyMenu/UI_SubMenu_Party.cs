@@ -32,11 +32,30 @@ namespace RPGTest.UI.PartyMenu
         private bool m_swapInProgress = false;
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
+        private bool m_navigateStarted = false;
+        
+        public float WaitTimeBetweenPerforms = 0.4f;
+        private float m_performTimeStamp;
 
         public override void Awake()
         {
             base.Awake();
-            m_playerInput.UI.Navigate.performed += Navigate_performed;
+            m_playerInput.UI.Navigate.started += ctx => { m_navigateStarted = true; };
+            m_playerInput.UI.Navigate.performed += ctx => 
+            {
+                m_performTimeStamp = Time.time + 0.3f;
+                Navigate(ctx.ReadValue<Vector2>());
+            };
+            m_playerInput.UI.Navigate.canceled += ctx => { m_navigateStarted = false; };
+            m_playerInput.UI.SubAction1.performed += SubAction1_performed;
+        }
+
+        private void SubAction1_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            if(StatsWidget != null)
+            {
+                StatsWidget.SwapDisplay();
+            }
         }
 
         public void Start()
@@ -46,6 +65,15 @@ namespace RPGTest.UI.PartyMenu
                 var widgetScript = widget.GetComponent<UI_Member_Widget>();
                 widgetScript.MemberSelected += SwapMembers;
                 widgetScript.SetSecondarySelect(() => widgetScript.ToggleCover());
+            }
+        }
+
+        public void Update()
+        {
+            if (m_navigateStarted && (Time.time - m_performTimeStamp) >= WaitTimeBetweenPerforms)
+            {
+                m_performTimeStamp = Time.time;
+                Navigate(m_playerInput.UI.Navigate.ReadValue<Vector2>());
             }
         }
 
@@ -62,7 +90,7 @@ namespace RPGTest.UI.PartyMenu
 
         public override void OnDisable() => m_playerInput.Disable();
 
-
+        #region Input Events
         protected override void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             if(m_swapInProgress)
@@ -75,66 +103,32 @@ namespace RPGTest.UI.PartyMenu
             }
         }
 
-        private void Navigate_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        public void Navigate(Vector2 movement)
         {
-            if(IsSubMenuSelected)
+            if (IsSubMenuSelected)
             {
-                var movement = obj.ReadValue<Vector2>();
-                //Moving up
                 if (movement.y > 0.4f)
                 {
-                    // In the active members list
-                    if(m_currentNavigationIndex < m_activePartyMemberCount && m_currentNavigationIndex > 0)
-                    {
-                        m_currentNavigationIndex -= 1;
-                    }
-                    // In the first row of the inactive member list
-                    else if(m_currentNavigationIndex >= m_activePartyMemberCount && (m_currentNavigationIndex - m_activePartyMemberCount) < m_inactiveMembersPerRow)
-                    {
-                        m_currentNavigationIndex = GetLastActivePartyMemberIndex(true);
-                    }
-                    // In subsequent rows
-                    else if(m_currentNavigationIndex >= m_activePartyMemberCount && (m_currentNavigationIndex - m_activePartyMemberCount) >= m_inactiveMembersPerRow)
-                    {
-                        m_currentNavigationIndex -= m_inactiveMembersPerRow;
-                    }
+                    NavigateUp();
                 }
-                //Moving down
                 else if (movement.y < -0.4f)
                 {
-                    if( m_currentNavigationIndex < m_activePartyMemberCount -1 && PartyMemberWidgets[m_currentNavigationIndex + 1].GetComponent<UI_Member_Widget>().GetCharacter() != null)
-                    {
-                        m_currentNavigationIndex += 1;
-                    }
-                    else if(m_currentNavigationIndex == m_activePartyMemberCount - 1 && GetInactivePartyMembersCount() > 0)
-                    {
-                        m_currentNavigationIndex += 1;
-                    }
-                    else if(m_currentNavigationIndex >= m_activePartyMemberCount && GetInactivePartyMembersCount() > m_inactiveMembersPerRow)
-                    {
-                        int inactiveIndex = m_currentNavigationIndex - m_activePartyMemberCount - 1;
-                        if(inactiveIndex < m_inactiveMembersPerRow)
-                        {
-                            if(PartyMemberWidgets[m_currentNavigationIndex + m_inactiveMembersPerRow].GetComponent<UI_Member_Widget>().GetCharacter() != null)
-                            {
-                                m_currentNavigationIndex += m_inactiveMembersPerRow;
-                            }
-                            else
-                            {
-                                int newIndex = Array.IndexOf(PartyMemberWidgets, PartyMemberWidgets.Last(w => w.GetComponent<UI_Member_Widget>().GetCharacter() != null));
-                                if(newIndex > m_currentNavigationIndex)
-                                {
-                                    m_currentNavigationIndex += (newIndex - m_currentNavigationIndex);
-                                }
-                            }
-                        }
-                    }
+                    NavigateDown();
+                }
+                else if (movement.x < -0.4f)
+                {
+                    NavigateLeft();
+                }
+                else if(movement.x > 0.04f)
+                {
+                    NavigateRight();
                 }
                 
                 PartyMemberWidgets[m_currentNavigationIndex].GetComponent<Button>().Select();
                 RefreshDetailsPanel();
             }
         }
+        #endregion
 
         public override void OpenMenu()
         {
@@ -241,21 +235,55 @@ for(int index = 0; index < existingInactiveMembers.Count; index++)
         }
 
         #region Private Methods
-        private int GetLastActivePartyMemberIndex(bool exists)
+        private void NavigateDown()
         {
-            if(exists)
+            if (m_currentNavigationIndex < m_activePartyMemberCount)
             {
-                var filteredMembers = PartyMemberWidgets.Where(w => Array.IndexOf(PartyMemberWidgets, w) < m_activePartyMemberCount).Select(w => w);
-                return Array.IndexOf(PartyMemberWidgets, filteredMembers.Last(w => w.GetComponent<UI_Member_Widget>().GetCharacter() != null));
+                m_currentNavigationIndex += 1;
             }
+            else if (m_currentNavigationIndex >= m_activePartyMemberCount)
             {
-                return m_activePartyMemberCount - 1;
+                if(m_currentNavigationIndex - m_activePartyMemberCount < m_inactiveMembersPerRow)
+                {
+                    m_currentNavigationIndex += m_inactiveMembersPerRow;
+                }
             }
         }
 
-        private int GetInactivePartyMembersCount()
+        private void NavigateUp()
         {
-            return PartyMemberWidgets.Skip(m_activePartyMemberCount).Select(w => w.GetComponent<UI_Member_Widget>().GetCharacter() != null).Count();
+            // In the active members list
+            if (m_currentNavigationIndex < m_activePartyMemberCount && m_currentNavigationIndex > 0)
+            {
+                m_currentNavigationIndex -= 1;
+            }
+            else if(m_currentNavigationIndex >= m_activePartyMemberCount && m_currentNavigationIndex - m_activePartyMemberCount < m_inactiveMembersPerRow)
+            {
+                m_currentNavigationIndex = m_activePartyMemberCount - 1;
+            }
+            else if(m_currentNavigationIndex >= m_activePartyMemberCount + m_inactiveMembersPerRow)
+            {
+                m_currentNavigationIndex -= m_inactiveMembersPerRow;
+            }
+        }
+
+        private void NavigateLeft()
+        {
+
+            int remainder = (m_currentNavigationIndex - m_activePartyMemberCount) % m_inactiveMembersPerRow;
+
+            if (m_currentNavigationIndex > m_activePartyMemberCount && remainder != 0)
+            {
+                m_currentNavigationIndex -= 1;
+            }
+        }
+
+        private void NavigateRight()
+        {
+            if (m_currentNavigationIndex >= m_activePartyMemberCount && m_currentNavigationIndex < PartyMemberWidgets.Count() - 1 && m_currentNavigationIndex - m_activePartyMemberCount != m_inactiveMembersPerRow - 1)
+            {
+                m_currentNavigationIndex += 1;
+            }
         }
 
         private void InitializeWidgets(GameObject[] widgets, List<PlayableCharacter> characters)
@@ -297,7 +325,6 @@ for(int index = 0; index < existingInactiveMembers.Count; index++)
             }
         }
 
-
         private void Refresh()
         {
             Initialize(false);
@@ -306,7 +333,7 @@ for(int index = 0; index < existingInactiveMembers.Count; index++)
         private void RefreshDetailsPanel()
         {
             PlayableCharacter character = PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_Member_Widget>().GetCharacter();
-            if (StatsWidget != null && character != null)
+            if (StatsWidget != null)
             {
                 StatsWidget.Refresh(character);
             }

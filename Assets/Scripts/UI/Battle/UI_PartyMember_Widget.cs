@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using RPGTest.Models.Entity;
 using RPGTest.UI.Widgets;
 using TMPro;
+using RPGTest.Enums;
 
 namespace RPGTest.UI.Battle
 {
@@ -44,10 +45,11 @@ namespace RPGTest.UI.Battle
             Name.text = m_playableCharacter.Name;
             LevelValue.text = m_playableCharacter.Level.ToString();
 
-            HPBarWidget.Initialize("HP", (int)m_playableCharacter.GetAttribute("CurrentHP"), m_playableCharacter.BaseAttributes.MaxHP);
-            ManaBarWidget.Initialize("Mana", (int)m_playableCharacter.GetAttribute("CurrentMP"), m_playableCharacter.BaseAttributes.MaxMP);
-            StaminaBarWidget.Initialize("Stamina", (int)m_playableCharacter.GetAttribute("CurrentStamina"), m_playableCharacter.BaseAttributes.MaxStamina);
-            ATBBarWidget.Initialize("ATB", (int)0, 1000);
+            // TODO : Values for current preset
+            HPBarWidget.Initialize("HP", (int)m_playableCharacter.GetAttribute(Attribute.HP), (int)m_playableCharacter.GetAttribute(Attribute.MaxHP));
+            ManaBarWidget.Initialize("Mana", (int)m_playableCharacter.GetAttribute(Attribute.MP), (int)m_playableCharacter.GetAttribute(Attribute.MaxMP));
+            StaminaBarWidget.Initialize("Stamina", (int)m_playableCharacter.GetAttribute(Attribute.Stamina), (int)m_playableCharacter.GetAttribute(Attribute.MaxStamina));
+            ATBBarWidget.Initialize("ATB", 0, 1000);
 
             m_playableCharacter.PlayerInputRequested += Player_OnPlayerInputRequested;
             m_playableCharacter.PlayerWidgetUpdated += Player_OnPlayerWidgetUpdated;
@@ -73,18 +75,18 @@ namespace RPGTest.UI.Battle
         }
 
         #region events
-        private void Player_OnPlayerWidgetUpdated(Enums.Attribute attribute)
+        private void Player_OnPlayerWidgetUpdated(Attribute attribute)
         {
             switch(attribute)
             {
-                case Enums.Attribute.HP:
-                    HPBarWidget.UpdateValues((int)m_playableCharacter.GetAttribute("CurrentHP"), m_playableCharacter.BaseAttributes.MaxHP);
+                case Attribute.MaxHP:
+                    HPBarWidget.UpdateValues((int)m_playableCharacter.GetAttribute(Attribute.HP), (int)m_playableCharacter.GetAttribute(Attribute.MaxHP));
                     break;
-                case Enums.Attribute.MP:
-                    ManaBarWidget.UpdateValues((int)m_playableCharacter.GetAttribute("CurrentMP"), m_playableCharacter.BaseAttributes.MaxMP);
+                case Attribute.MaxMP:
+                    ManaBarWidget.UpdateValues((int)m_playableCharacter.GetAttribute(Attribute.MP), (int)m_playableCharacter.GetAttribute(Attribute.MaxMP));
                     break;
-                case Enums.Attribute.Stamina:
-                    StaminaBarWidget.UpdateValues((int)m_playableCharacter.GetAttribute("CurrentStamina"), m_playableCharacter.BaseAttributes.MaxStamina);
+                case Attribute.MaxStamina:
+                    StaminaBarWidget.UpdateValues((int)m_playableCharacter.GetAttribute(Attribute.Stamina), (int)m_playableCharacter.GetAttribute(Attribute.MaxStamina));
                     break;
             }
         }

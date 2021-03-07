@@ -156,6 +156,10 @@ PrefabInstance:
       propertyPath: m_VerticalAlignment
       value: 512
       objectReference: {fileID: 0}
+    - target: {fileID: 3153016979778107895, guid: 9e8b0366e2407c64eb854ec0073658c8, type: 3}
+      propertyPath: m_PreferredWidth
+      value: 1180
+      objectReference: {fileID: 0}
     - target: {fileID: 3835301569341580800, guid: 9e8b0366e2407c64eb854ec0073658c8, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

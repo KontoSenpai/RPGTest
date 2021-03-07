@@ -16,7 +16,7 @@ namespace RPGTest.Models
 
         public Dictionary<Attribute, EffectPotency> Attributes { get; set; } = new Dictionary<Attribute, EffectPotency>();
 
-        public Dictionary<string, float> Scalings { get; set; } = new Dictionary<string, float>();
+        public Dictionary<Attribute, float> Scalings { get; set; } = new Dictionary<Attribute, float>();
 
         public Dictionary<StatusEffect, EffectPotency> Statuses { get; set; }
 
@@ -32,7 +32,7 @@ namespace RPGTest.Models
 
         public bool Dispellable { get; set; }
 
-        public bool EvaluateEffect(Dictionary<string, float> entityAttributes)
+        public bool EvaluateEffect(Dictionary<Attribute, float> entityAttributes)
         {
             bool valid = false;
             switch(EffectType)
@@ -42,11 +42,11 @@ namespace RPGTest.Models
                     {
                         switch (attribute.Key)
                         {
-                            case Attribute.HP:
-                                valid = entityAttributes["HPPercentage"] < 1.0f;
+                            case Attribute.MaxHP:
+                                valid = entityAttributes[Attribute.HPPercentage] < 1.0f;
                                 break;
-                            case Attribute.MP:
-                                valid = entityAttributes["MPPercentage"] < 1.0f;
+                            case Attribute.MaxMP:
+                                valid = entityAttributes[Attribute.HPPercentage] < 1.0f;
                                 break;
                         }
                     }

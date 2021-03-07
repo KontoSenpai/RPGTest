@@ -14,11 +14,11 @@ namespace RPGTest.Managers
         private static readonly int m_partyMembersArraySize = 11;
         private PlayableCharacter[] m_partyMembers = new PlayableCharacter[m_partyMembersArraySize];
 
-
         public int GetActivePartyThreshold()
         {
             return m_activePartyThreshold;
         }
+
         /// <summary>
         /// Gets the active party members
         /// </summary>

@@ -9,7 +9,7 @@ Abilities:
             HP              :
               Potency       : 1
           Scalings          :
-            Strength        : 1
+            Attack          : 1
           PowerRange        :
             Min             : 0.75
             Max             : 1.25
@@ -31,7 +31,7 @@ Abilities:
             HP              : 
               Potency       : 7
           Scalings          :
-            Strength        : 1.1
+            Attack          : 1.1
       TargetTypes           :
         - SingleEnemy
       CastCost              :
@@ -49,13 +49,13 @@ Abilities:
             HP              : 
               Potency       : 5
           Scalings          :
-            Strength        : 0.8
+            Attack          : 0.8
         - EffectType        : Damage
           Attributes        :
             HP              : 
               Potency       : 5
           Scalings          :
-            Strength        : 0.8
+            Attack          : 0.8
           TargetType        :
             Enemies
       TargetTypes           :
@@ -75,12 +75,13 @@ Abilities:
             HP              : 
               Potency       : 5
           Scalings          :
-            Strength        : 0.8
+            Attack          : 0.8
       TargetTypes           :
         - SingleEnemy
       CastCost              :
         Stamina             : -13
 
+#Magic Abilities
     - Id                    : A0005
       Name                  : Flame Ball
       Description           : Perform a powerfull sping with a blade to strike all the enemies
@@ -91,7 +92,7 @@ Abilities:
             HP              : 
               Potency       : 5
           Scalings          :
-            Mental          : 0.8
+            Magic           : 0.8
       TargetTypes           :
         - SingleEnemy
       Backswing             : 2000
@@ -108,7 +109,7 @@ Abilities:
             HP              : 
               Potency       : 5
           Scalings          :
-            Mental          : 0.8
+            Magic           : 0.8
           HitFrames         :
             - 0.4
             - 0.4
@@ -124,8 +125,6 @@ Abilities:
       CastCost              :
         MP                  : -8
 
-#Magic Abilities
-
 #Monster Abilities
     - Id                    : AM001
       Name                  : Bite
@@ -136,7 +135,7 @@ Abilities:
             HP              :
               Potency       : 2
           Scalings          :
-            Strength        : 1
+            Attack          : 1
           PowerRange        :
             Min             : 1.0
             Max             : 1.2

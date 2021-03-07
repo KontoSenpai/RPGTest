@@ -22,18 +22,16 @@ EnemySpawners:
 
 Enemies:
     - Id                    : EN0001
-      Name                  : White Dog
+      Name                  : White Wolf
       Level                 : 3
       DefaultAttack         : A0001
       BaseAttributes        :
         MaxHP               : 16
         MaxMP               : 0
         MaxStamina          : 10
-        Strength            : 4
-        Dexterity           : 7
-        Agility             : 6
-        Constitution        : 5
-        Mental              : 0
+        Attack              : 4
+        Defense             : 5
+        Magic               : 0
         Resilience          : 2
       CombatThresholds      :
         - Threshold         : 100
@@ -51,19 +49,17 @@ Enemies:
             Probability     : 1.0
 
     - Id                    : EN0002
-      Name                  : Black Dog
+      Name                  : Black Wolf
       Level                 : 3
       DefaultAttack         : A0001
       BaseAttributes        :
         MaxHP               : 24
         MaxMP               : 0
         MaxStamina          : 10
-        Strength            : 7
-        Dexterity           : 8
-        Agility             : 8
-        Constitution        : 7
-        Mental              : 2
-        Resilience          : 4
+        Attack              : 7
+        Defense             : 7
+        Magic               : 2
+        Resistance          : 4
       GoldBounty            : 10
       ExperienceBounty      : 10
       LootTable             :

@@ -31,14 +31,15 @@ namespace RPGTest.UI.Widgets
         public void Refresh(Equipment LeftEquipment, Equipment RightEquipment)
         {
             Clean();
-            if(LeftEquipment != null)
+            SetWidgetsVisibility(true);
+            if (LeftEquipment != null)
             {
                 LeftItemName.text = LeftEquipment.Name;
                 foreach (KeyValuePair<Attribute, int> attribute in LeftEquipment.Attributes)
                 {
                     GameObject instantiatedObject = Instantiate(InstantiableStatPanel);
-                    instantiatedObject.GetComponent<UI_StatWidget>().SetStatText(attribute.Key.GetDescription(), attribute.Value);
-                    instantiatedObject.transform.parent = LeftStatsPanel.transform;
+                    instantiatedObject.GetComponent<UI_StatWidget>().Refresh(attribute.Key.GetDescription(), attribute.Value, true);
+                    instantiatedObject.transform.SetParent(LeftStatsPanel.transform);
                     InstantiatedStatPanels.Add(instantiatedObject);
                 }
             }
@@ -53,8 +54,8 @@ namespace RPGTest.UI.Widgets
                 foreach (KeyValuePair<Attribute, int> attribute in RightEquipment.Attributes)
                 {
                     GameObject instantiatedObject = Instantiate(InstantiableStatPanel);
-                    instantiatedObject.GetComponent<UI_StatWidget>().SetStatText(attribute.Key.GetDescription(), attribute.Value);
-                    instantiatedObject.transform.parent = RightStatsPanel.transform;
+                    instantiatedObject.GetComponent<UI_StatWidget>().Refresh(attribute.Key.GetDescription(), attribute.Value, true);
+                    instantiatedObject.transform.SetParent(RightStatsPanel.transform);
                     InstantiatedStatPanels.Add(instantiatedObject);
                 }
             }
@@ -62,6 +63,19 @@ namespace RPGTest.UI.Widgets
             {
                 RightItemName.text = "Empty";
             }
+        }
+
+        public void Clear()
+        {
+            SetWidgetsVisibility(false);
+        }
+
+        private void SetWidgetsVisibility(bool visibility)
+        {
+            LeftImage.gameObject.SetActive(visibility);
+            LeftItemName.gameObject.SetActive(visibility);
+            RightImage.gameObject.SetActive(visibility);
+            RightItemName.gameObject.SetActive(visibility);
         }
     }
 }

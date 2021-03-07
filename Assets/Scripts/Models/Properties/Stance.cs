@@ -69,7 +69,6 @@ namespace RPGTest.Models
                 {
                     Attributes = new Dictionary<Attribute, float>()
                     {
-                        { Attribute.Agility, 1.3f },
                         { Attribute.Speed , 1.1f },
                         { Attribute.Block, 0.75f }
                     }
@@ -86,7 +85,7 @@ namespace RPGTest.Models
                 {
                     Attributes = new Dictionary<Attribute, float>()
                     {
-                        { Attribute.Strength, 1.2f },
+                        { Attribute.Attack, 1.2f },
                         { Attribute.Speed , 0.7f },
                         { Attribute.Block , 1.25f }
                     }

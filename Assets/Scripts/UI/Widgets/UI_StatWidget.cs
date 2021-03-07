@@ -1,20 +1,31 @@
-﻿using System;
-using System.Text;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace RPGTest.UI.Widgets
 {
     public class UI_StatWidget : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI Stat;
+        [SerializeField] private TextMeshProUGUI StatName;
+        [SerializeField] private TextMeshProUGUI StatValue;
 
-        public void SetStatText(string attribute, int value)
+        public void Refresh(string attribute, int value, bool displaySymbol = false)
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(attribute);
-            builder.Append(value > 0 ? $"+{value}" : $"{value}");
-            Stat.text = builder.ToString();
+
+            if (displaySymbol)
+            {
+                StatName.text = $"{attribute} :";
+                StatValue.text = value > 0 ? $"+{value}" : $"{value}";
+            }
+            else
+            {
+                StatName.text = attribute;
+                StatValue.text = value.ToString();
+            }
+        }
+
+        public void Clean()
+        {
+            StatValue.text = string.Empty;
         }
     }
 }

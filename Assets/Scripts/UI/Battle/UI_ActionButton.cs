@@ -50,14 +50,14 @@ namespace RPGTest.UI.Battle
                         {
                             switch(cost.Key)
                             {
-                                case Enums.Attribute.CurrentHP:
-                                case Enums.Attribute.CurrentMP:
-                                case Enums.Attribute.CurrentStamina:
-                                    castCost.AppendLine($"{Math.Abs(cost.Value)}% {(cost.Key.ToString().Replace("Current", string.Empty))}");
-                                    break;
                                 case Enums.Attribute.HP:
                                 case Enums.Attribute.MP:
                                 case Enums.Attribute.Stamina:
+                                    castCost.AppendLine($"{Math.Abs(cost.Value)}% {(cost.Key.ToString().Replace("Current", string.Empty))}");
+                                    break;
+                                case Enums.Attribute.MaxHP:
+                                case Enums.Attribute.MaxMP:
+                                case Enums.Attribute.MaxStamina:
                                     castCost.AppendLine($"{cost.Value} {cost.Key.ToString()}");
                                     break;
                             }

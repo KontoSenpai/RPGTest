@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Attribute = RPGTest.Enums.Attribute;
 
 namespace RPGTest.Models.Entity
 {
@@ -28,7 +29,7 @@ namespace RPGTest.Models.Entity
 
         public int NextLevelExperience => GetExperienceToNextLevel(Level);
 
-        public AttributesGrowth AttributesGrowth { get; set; }
+        public Attributes AttributesGrowth { get; set; }
 
         public EquipmentSlots EquipmentSlots { get; set; } = new EquipmentSlots();
 
@@ -139,20 +140,20 @@ namespace RPGTest.Models.Entity
                 var cost = Math.Abs(castCost.Value);
                 switch (castCost.Key)
                 {
-                    case Enums.Attribute.HP:
-                        if (GetAttribute("CurrentHP") < cost)
+                    case Enums.Attribute.MaxHP:
+                        if (GetAttribute(Attribute.HP) < cost)
                         {
                             return false;
                         }
                         break;
-                    case Enums.Attribute.MP:
-                        if (GetAttribute("CurrentMP") < cost)
+                    case Enums.Attribute.MaxMP:
+                        if (GetAttribute(Attribute.MP) < cost)
                         {
                             return false;
                         }
                         break;
-                    case Enums.Attribute.Stamina:
-                        if (GetAttribute("CurrentStamina") < cost)
+                    case Enums.Attribute.MaxStamina:
+                        if (GetAttribute(Attribute.MaxStamina) < cost)
                         {
                             return false;
                         }
@@ -219,21 +220,20 @@ namespace RPGTest.Models.Entity
 
             Debug.Log($"{Name } Levelled up to level {Level}");
 
-            CurrentHP += AttributesGrowth.HP;
-            BaseAttributes.MaxHP += AttributesGrowth.HP;
+            CurrentHP += AttributesGrowth.MaxHP;
+            BaseAttributes.MaxHP += AttributesGrowth.MaxHP;
 
-            CurrentMP += AttributesGrowth.MP;
-            BaseAttributes.MaxMP += AttributesGrowth.MP;
+            CurrentMP += AttributesGrowth.MaxMP;
+            BaseAttributes.MaxMP += AttributesGrowth.MaxMP;
 
-            BaseAttributes.MaxStamina += AttributesGrowth.Stamina;
+            BaseAttributes.MaxStamina += AttributesGrowth.MaxStamina;
 
-            BaseAttributes.Strength += AttributesGrowth.Strength;
-            BaseAttributes.Agility += AttributesGrowth.Agility;
+            BaseAttributes.Attack += AttributesGrowth.Attack;;
+            BaseAttributes.Magic += AttributesGrowth.Magic;
 
-            BaseAttributes.Constitution += AttributesGrowth.Constitution;
+            BaseAttributes.Defense+= AttributesGrowth.Defense;
 
-            BaseAttributes.Mental += AttributesGrowth.Mental;
-            BaseAttributes.Resilience += AttributesGrowth.Resilience;
+            BaseAttributes.Resistance += AttributesGrowth.Defense;
         }
 
         public bool TryEquip(Slot slot, Equipment equipPiece, out List<Item> removedEquipments)
@@ -250,28 +250,28 @@ namespace RPGTest.Models.Entity
             return removedEquipments.Any();
         }
 
-        public override float GetAttribute(string attributeName)
+        public override float GetAttribute(Attribute attribute)
         {
-            GetAttributes().TryGetValue(attributeName, out float value);
+            GetAttributes().TryGetValue(attribute, out float value);
             return value;
         }
         #endregion
 
-        public override Dictionary<string, float> GetAttributes()
+        public override Dictionary<Attribute, float> GetAttributes()
         {
             var attributes = base.GetAttributes();
 
             var preset1 = EquipmentSlots.GetEquipmentPreset(PresetSlot.First);
-            attributes.Add("TotalStrengthPreset1", BaseAttributes.Strength + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Enums.Attribute.Strength).Value));
-            attributes.Add("TotalConstitutionPreset1", BaseAttributes.Constitution + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Enums.Attribute.Constitution).Value));
-            attributes.Add("TotalMentalPreset1", BaseAttributes.Mental + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Enums.Attribute.Mental).Value));
-            attributes.Add("TotalResiliencePreset1", BaseAttributes.Resilience + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Enums.Attribute.Resilience).Value));
+            attributes.Add(Attribute.TotalAttackP1, BaseAttributes.Attack + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Attack).Value));
+            attributes.Add(Attribute.TotalDefenseP1, BaseAttributes.Defense + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Defense).Value));
+            attributes.Add(Attribute.TotalMagicP1, BaseAttributes.Magic + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Magic).Value));
+            attributes.Add(Attribute.TotalResistanceP1, BaseAttributes.Resistance + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Resistance).Value));
 
             var preset2 = EquipmentSlots.GetEquipmentPreset(PresetSlot.Second);
-            attributes.Add("TotalStrengthPreset2", BaseAttributes.Strength + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Enums.Attribute.Strength).Value));
-            attributes.Add("TotalConstitutionPreset2", BaseAttributes.Constitution + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Enums.Attribute.Constitution).Value));
-            attributes.Add("TotalMentalPreset2", BaseAttributes.Mental + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Enums.Attribute.Mental).Value));
-            attributes.Add("TotalResiliencePreset2", BaseAttributes.Resilience + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Enums.Attribute.Resilience).Value));
+            attributes.Add(Attribute.TotalAttackP2, BaseAttributes.Attack + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Attack).Value));
+            attributes.Add(Attribute.TotalDefenseP2, BaseAttributes.Defense + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Defense).Value));
+            attributes.Add(Attribute.TotalMagicP2, BaseAttributes.Magic + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Magic).Value));
+            attributes.Add(Attribute.TotalResistanceP2, BaseAttributes.Resistance + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Resistance).Value));
 
             return attributes;
         }
