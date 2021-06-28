@@ -24,16 +24,19 @@ namespace RPGTest.UI.PartyMenu
         
         //Items control
         private int m_currentNavigationIndex = 0;
-        private int m_indexToSwap = 0;
         private int m_inactiveMembersPerRow = 4;
-
         private int m_activePartyMemberCount => m_partyManager.GetActivePartyThreshold();
+        private int m_maxRegularNavigationIndex => m_partyManager.GetIndexofLastExistingPartyMember() < PartyMemberWidgets.Count() ? m_partyManager.GetIndexofLastExistingPartyMember() : PartyMemberWidgets.Count() - 1;
 
+        // Swap controls
+        private int m_indexToSwap = 0;
+        private int m_maxSwappingIndex = 0;
         private bool m_swapInProgress = false;
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
+
+        // Hold navigation control
         private bool m_navigateStarted = false;
-        
         public float WaitTimeBetweenPerforms = 0.4f;
         private float m_performTimeStamp;
 
@@ -70,6 +73,7 @@ namespace RPGTest.UI.PartyMenu
 
         public void Update()
         {
+
             if (m_navigateStarted && (Time.time - m_performTimeStamp) >= WaitTimeBetweenPerforms)
             {
                 m_performTimeStamp = Time.time;
@@ -136,6 +140,7 @@ namespace RPGTest.UI.PartyMenu
             m_playerInput.UI.Cancel.performed += Cancel_performed;
 
             PartyMemberWidgets.First(w => w.GetComponent<UI_Member_Widget>().GetCharacter() != null).GetComponent<Button>().Select();
+            m_currentNavigationIndex = 0;
             if(StatsWidget != null)
             {
                 StatsWidget.Open(true);
@@ -157,75 +162,6 @@ namespace RPGTest.UI.PartyMenu
             }
 
             InitializeWidgets(PartyMemberWidgets, m_partyManager.GetAllPartyMembers());
-            /*
-Button up = null;
-Button down = null;
-Button left = null;
-Button right = null;
-
-//Expliciting navigation
-List<GameObject> existingActiveMembers = ActivePartyMembersList.Where(m => m.GetComponent<UI_Member_Widget>().GetCharacter() != null).ToList();
-for(int index = 0; index < existingActiveMembers.Count; index++)
-{
-    up = null;
-    down = null;
-    if (index > 0)
-    {
-        up = existingActiveMembers[index - 1].GetComponent<Button>();
-    }
-    if (index < m_actualActiveMemberCount)
-    {
-        down = existingActiveMembers[index + 1].GetComponent<Button>();
-    }
-    else if (m_actualInactiveMemberCount > 0)
-    {
-        down = InactivePartyMembersList[0].GetComponent<Button>();
-    }
-    existingActiveMembers[index].GetComponent<Button>().ExplicitNavigation(Up : up, Down: down);
-}
-
-List<GameObject> existingInactiveMembers = InactivePartyMembersList.Where(m => m.GetComponent<UI_Member_Widget>().GetCharacter() != null).ToList();
-for(int index = 0; index < existingInactiveMembers.Count; index++)
-{
-    up = null;
-    down = null;
-    left = null;
-    right = null;
-
-    //Ups
-    if(index < InactiveMembersPerRow)
-    {
-        up = existingActiveMembers.Last().GetComponent<Button>();
-    }
-    else
-    {
-        up = existingInactiveMembers[index - InactiveMembersPerRow].GetComponent<Button>(); 
-    }
-    //Downs
-    if(index < InactiveMembersPerRow && existingInactiveMembers.Count > InactiveMembersPerRow)
-    {
-        if(index + InactiveMembersPerRow < existingInactiveMembers.Count)
-        {
-            down = existingInactiveMembers[index + InactiveMembersPerRow].GetComponent<Button>();
-        }
-        else
-        {
-            down = existingInactiveMembers[InactiveMembersPerRow].GetComponent<Button>();
-        }
-    }
-    // Lefts
-    if(index > 0)
-    {
-        left = existingInactiveMembers[index - 1].GetComponent<Button>();
-    }
-    // Rights
-    if(index < existingInactiveMembers.Count -1)
-    {
-        right = existingInactiveMembers[index + 1].GetComponent<Button>();
-    }
-    existingInactiveMembers[index].GetComponent<Button>().ExplicitNavigation(Left: left, Right: right, Up: up, Down: down);
-}
-*/
             Money.text = FindObjectOfType<InventoryManager>().Money.ToString();
             Location.text = SceneManager.GetActiveScene().name;
         }
@@ -237,6 +173,7 @@ for(int index = 0; index < existingInactiveMembers.Count; index++)
         #region Private Methods
         private void NavigateDown()
         {
+            int maxIndex = m_swapInProgress ? m_maxSwappingIndex : m_maxRegularNavigationIndex;
             if (m_currentNavigationIndex < m_activePartyMemberCount)
             {
                 m_currentNavigationIndex += 1;
@@ -245,7 +182,14 @@ for(int index = 0; index < existingInactiveMembers.Count; index++)
             {
                 if(m_currentNavigationIndex - m_activePartyMemberCount < m_inactiveMembersPerRow)
                 {
-                    m_currentNavigationIndex += m_inactiveMembersPerRow;
+                    if( m_currentNavigationIndex + m_inactiveMembersPerRow > maxIndex)
+                    {
+                        m_currentNavigationIndex = maxIndex;
+                    }
+                    else
+                    {
+                        m_currentNavigationIndex += m_inactiveMembersPerRow;
+                    }
                 }
             }
         }
@@ -280,7 +224,10 @@ for(int index = 0; index < existingInactiveMembers.Count; index++)
 
         private void NavigateRight()
         {
-            if (m_currentNavigationIndex >= m_activePartyMemberCount && m_currentNavigationIndex < PartyMemberWidgets.Count() - 1 && m_currentNavigationIndex - m_activePartyMemberCount != m_inactiveMembersPerRow - 1)
+            int maxIndex = m_swapInProgress ? m_maxSwappingIndex : m_maxRegularNavigationIndex;
+            if (m_currentNavigationIndex >= m_activePartyMemberCount
+                && m_currentNavigationIndex < maxIndex
+                && m_currentNavigationIndex - m_activePartyMemberCount != m_inactiveMembersPerRow - 1)
             {
                 m_currentNavigationIndex += 1;
             }
@@ -310,6 +257,15 @@ for(int index = 0; index < existingInactiveMembers.Count; index++)
             if(!m_swapInProgress)
             {
                 m_indexToSwap = m_currentNavigationIndex;
+                if (m_currentNavigationIndex < m_activePartyMemberCount)
+                {
+                    m_maxSwappingIndex =  m_partyManager.GetExistingActivePartyMembers().Count() > 1 ? m_maxRegularNavigationIndex + 1 : m_maxRegularNavigationIndex;
+                }
+                else
+                {
+                    m_maxSwappingIndex = m_maxRegularNavigationIndex;
+                }
+
                 m_swapInProgress = true;
             }
             else
@@ -318,6 +274,9 @@ for(int index = 0; index < existingInactiveMembers.Count; index++)
                 if (indexToSwapWith != m_indexToSwap)
                 {
                     m_partyManager.PerformSwap(m_indexToSwap, indexToSwapWith);
+                    FindAndFixHoles();
+
+
                     Refresh();
                     RefreshDetailsPanel();
                 }
@@ -336,6 +295,28 @@ for(int index = 0; index < existingInactiveMembers.Count; index++)
             if (StatsWidget != null)
             {
                 StatsWidget.Refresh(character);
+            }
+        }
+
+        // Fix any potential holes between 2 members after a swap
+        private void FindAndFixHoles()
+        {
+            bool foundEmptyIndex = false;
+            for (int i = m_activePartyMemberCount; i < m_partyManager.GetAllPartyMembers().Count; i++)
+            {
+                if (foundEmptyIndex)
+                {
+                    m_partyManager.PerformSwap(i, i -1);
+                }
+
+                PlayableCharacter member = m_partyManager.GetPartyMemberAtIndex(i);
+                if (member == null)
+                {
+                    foundEmptyIndex = true;
+                    continue;
+                }
+
+                foundEmptyIndex = false;
             }
         }
         #endregion

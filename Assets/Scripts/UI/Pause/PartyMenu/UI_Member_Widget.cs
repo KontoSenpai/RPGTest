@@ -39,17 +39,19 @@ namespace RPGTest.UI
         public void Initialize(PlayableCharacter character)
         {
             m_character = character;
-            if(m_character == null)
+            
+            if (Cover.activeSelf)
+            {
+                ToggleCover();
+            }
+
+            if (m_character == null)
             {
                 ContentPanel.SetActive(false);
                 return;
             }
 
             Refresh();
-            if(Cover.activeSelf)
-            {
-                ToggleCover();
-            }
         }
 
         public PlayableCharacter GetCharacter()

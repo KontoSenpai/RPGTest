@@ -56,9 +56,24 @@ namespace RPGTest.Managers
             return m_partyMembers.ToList();
         }
 
+        public PlayableCharacter GetPartyMemberAtIndex(int index)
+        {
+            if (index < m_partyMembers.Length)
+            {
+                return m_partyMembers[index];
+            }
+            return null;
+        }
+
         public List<PlayableCharacter> GetAllExistingPartyMembers()
         {
             return GetAllPartyMembers().Where(m => m != null).ToList();
+        }
+
+        public int GetIndexofLastExistingPartyMember()
+        {
+            int toto = GetAllPartyMembers().FindLastIndex(c => c != null);
+            return GetAllPartyMembers().FindLastIndex(c => c != null);
         }
 
         public PlayableCharacter TryGetPartyMember(string id)
