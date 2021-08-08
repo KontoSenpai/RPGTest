@@ -17,7 +17,6 @@ namespace RPGTest.UI
         public virtual void Awake()
         {
             m_playerInput = new Controls();
-            m_playerInput.UI.Cancel.performed += Cancel_performed;
         }
 
         public virtual void OnEnable() => m_playerInput.Enable();

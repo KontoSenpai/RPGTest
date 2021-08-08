@@ -340,6 +340,9 @@ namespace RPGTest.Models.Entity
             ActionState = ActionState.Completed;  
         }
 
+        public void e(List<PlayableCharacter> allies, List<Enemy> enemies) { 
+        }
+
         public void InterruptCast()
         {
             ActionState = ActionState.Interupted;

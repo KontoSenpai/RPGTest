@@ -1,5 +1,6 @@
 ﻿using RPGTest.Models.Entity;
 using RPGTest.UI.Widgets;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RPGTest.UI.PartyMenu
@@ -8,16 +9,41 @@ namespace RPGTest.UI.PartyMenu
     {
         [SerializeField] private UI_Equipment_Widget EquipmentWidget;
         [SerializeField] private UI_CharacterStats_Widget StatsWidget;
-        
+
+        private List<GameObject> m_widgets;
+        private int index = 0;
+
         public void Open(bool visible)
         {
-            EquipmentWidget.gameObject.SetActive(visible);
+            index = 0;
+            m_widgets = new List<GameObject> {
+                EquipmentWidget.gameObject,
+                StatsWidget.gameObject
+            };
+
+            m_widgets[0].SetActive(visible);
         }
 
-        public void SwapDisplay()
+        public void ChangeDisplay(bool cycleRight)
         {
-            EquipmentWidget.gameObject.SetActive(!EquipmentWidget.gameObject.activeSelf);
-            StatsWidget.gameObject.SetActive(!StatsWidget.gameObject.activeSelf);
+            m_widgets[index].SetActive(false);
+            if (cycleRight && index < m_widgets.Count - 1)
+            {
+                index++;
+            }
+            else if (cycleRight && index >= m_widgets.Count -1) // Cycle over
+            {
+                index = 0;
+            }
+            else if(!cycleRight && index > 0)
+            {
+                index--;
+            }
+            else if(!cycleRight && index <= 0)
+            {
+                index = m_widgets.Count - 1;
+            }
+            m_widgets[index].SetActive(true);
         }
 
         public void Refresh(PlayableCharacter character)

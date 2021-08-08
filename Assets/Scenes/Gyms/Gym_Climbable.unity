@@ -4826,10 +4826,6 @@ PrefabInstance:
       propertyPath: ColorGradients.Array.data[0].Threshold
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 497854950358456232, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
-      propertyPath: m_ChildControlHeight
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 512672155033818995, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -4898,6 +4894,26 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 305357148}
+    - target: {fileID: 950750425933044555, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 950750425933044555, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 950750425933044555, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 950750425933044555, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 950750425933044555, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1019805734625885714, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_IsActive
       value: 1

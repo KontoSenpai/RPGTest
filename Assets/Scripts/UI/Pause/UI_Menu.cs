@@ -27,11 +27,12 @@ namespace RPGTest.UI
 
         //UI control
         private int m_currentNavigationIndex = 0;
+        private int m_pendingNavigationIndex = 0;
 
         public void Awake()
         {
             m_playerInput = new Controls();
-            m_playerInput.UI.CycleMenus.performed += CycleMenus;
+            m_playerInput.UI.CycleMenus.performed += CycleMenus_performed;
         }
 
         public void OnEnable() => m_playerInput.Enable();
@@ -42,9 +43,9 @@ namespace RPGTest.UI
         }
 
         #region InputSystemEvents
-        public void CycleMenus(InputAction.CallbackContext context)
+        private void CycleMenus_performed(InputAction.CallbackContext ctx)
         {
-            var cycle = context.ReadValue<float>();
+            var cycle = ctx.ReadValue<float>();
             int newIndex = m_currentNavigationIndex;
             if(cycle > 0 && m_currentNavigationIndex < MenuButtons.Count() - 1)
             {
@@ -52,7 +53,6 @@ namespace RPGTest.UI
             }
             else if(cycle < 0 && m_currentNavigationIndex > 0)
             {
-
                 newIndex--;
             }
 
@@ -62,8 +62,38 @@ namespace RPGTest.UI
                 SelectSubMenu(MenuWidgets[m_currentNavigationIndex]);
             }
         }
+        private void Navigate_performed(InputAction.CallbackContext ctx)
+        {
+            if(IsSubMenuSelected)
+            {
+                return;
+            }
 
-        public void Close()
+            var movement = ctx.ReadValue<Vector2>();
+            int newIndex = m_pendingNavigationIndex;
+            if (movement.x > 0 && m_pendingNavigationIndex < MenuButtons.Count() - 1)
+            {
+                newIndex++;
+            }
+            else if (movement.x < 0 && m_pendingNavigationIndex > 0)
+            {
+                newIndex--;
+            }
+
+            MenuButtons[newIndex].Select();
+
+            if (newIndex != m_pendingNavigationIndex)
+            {
+                m_pendingNavigationIndex = newIndex;
+            }
+        }
+
+        public void Submit_Performed(InputAction.CallbackContext ctx)
+        {
+            SelectSubMenu(MenuWidgets[m_pendingNavigationIndex]);
+        }
+
+        public void Cancel_Performed(InputAction.CallbackContext ctx)
         {
             if(!IsSubMenuSelected)
             {
@@ -115,15 +145,25 @@ namespace RPGTest.UI
 
         private void OpenSubMenu()
         {
+            m_playerInput.UI.Navigate.performed -= Navigate_performed;
+            m_playerInput.UI.Submit.performed -= Submit_Performed;
+            m_playerInput.UI.Cancel.performed -= Cancel_Performed;
+
             MenuButtons[m_currentNavigationIndex].interactable = false;
             IsSubMenuSelected = true;
         }
 
         private void ExitSubMenu()
         {
+            m_playerInput.UI.Navigate.performed += Navigate_performed;
+            m_playerInput.UI.Submit.performed += Submit_Performed;
+            m_playerInput.UI.Cancel.performed += Cancel_Performed;
+            
             MenuButtons[m_currentNavigationIndex].interactable = true;
             MenuButtons[m_currentNavigationIndex].Select();
             IsSubMenuSelected = false;
+
+            m_pendingNavigationIndex = m_currentNavigationIndex;
         }
     }
 }

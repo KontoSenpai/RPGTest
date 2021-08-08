@@ -49,16 +49,11 @@ namespace RPGTest.UI.PartyMenu
                 m_performTimeStamp = Time.time + 0.3f;
                 Navigate(ctx.ReadValue<Vector2>());
             };
-            m_playerInput.UI.Navigate.canceled += ctx => { m_navigateStarted = false; };
-            m_playerInput.UI.SubAction1.performed += SubAction1_performed;
-        }
-
-        private void SubAction1_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-        {
-            if(StatsWidget != null)
+            m_playerInput.UI.SecondaryNavigate.performed += ctx =>
             {
-                StatsWidget.SwapDisplay();
-            }
+                SecondaryNavigate_Performed(ctx.ReadValue<Vector2>());
+            };
+            m_playerInput.UI.Navigate.canceled += ctx => { m_navigateStarted = false; };
         }
 
         public void Start()
@@ -84,7 +79,6 @@ namespace RPGTest.UI.PartyMenu
         public override void OnEnable()
         {
             base.OnEnable();
-            m_playerInput.UI.Cancel.performed += Cancel_performed;
             m_playerInput.Player.Debug.performed += Debug_performed;
         }
 
@@ -99,7 +93,8 @@ namespace RPGTest.UI.PartyMenu
         {
             if(m_swapInProgress)
             {
-                //m_allMembers[m_indexToSwap].GetComponent<UI_Member_Widget>().Select();
+                PartyMemberWidgets[m_indexToSwap].GetComponent<UI_Member_Widget>().ToggleCover();
+                m_swapInProgress = false;
             }
             else
             {
@@ -130,6 +125,14 @@ namespace RPGTest.UI.PartyMenu
                 
                 PartyMemberWidgets[m_currentNavigationIndex].GetComponent<Button>().Select();
                 RefreshDetailsPanel();
+            }
+        }
+
+        private void SecondaryNavigate_Performed(Vector2 movement)
+        {
+            if (StatsWidget != null && (movement.x < -0.4f || movement.x > 0.04f))
+            {
+                StatsWidget.ChangeDisplay(movement.x > 0.04f);
             }
         }
         #endregion
@@ -303,7 +306,7 @@ namespace RPGTest.UI.PartyMenu
         {
             bool foundEmptyIndex = false;
             for (int i = m_activePartyMemberCount; i < m_partyManager.GetAllPartyMembers().Count; i++)
-            {
+            { 
                 if (foundEmptyIndex)
                 {
                     m_partyManager.PerformSwap(i, i -1);

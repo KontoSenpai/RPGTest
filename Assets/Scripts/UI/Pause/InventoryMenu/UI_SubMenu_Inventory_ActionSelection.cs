@@ -135,7 +135,7 @@ namespace RPGTest.UI.InventoryMenu
                 m_InstantiatedItems.Clear();
             }
 
-            foreach (var member in m_partyManager.GetAllPartyMembers())
+            foreach (var member in m_partyManager.GetAllExistingPartyMembers())
             {
                 member.PlayerWidgetUpdated -= Member_PlayerWidgetUpdated;
             }
@@ -154,7 +154,7 @@ namespace RPGTest.UI.InventoryMenu
             if (m_actionType == MenuItemActionType.Use)
             {
                 m_action = ActionType.ItemMenu;
-                foreach (var member in m_partyManager.GetAllPartyMembers())
+                foreach (var member in m_partyManager.GetAllExistingPartyMembers())
                 {
                     var uiMember = CreateInstantiateItem(UseItemInstantiate);
 
@@ -164,17 +164,12 @@ namespace RPGTest.UI.InventoryMenu
                     uiMemberScript.MemberSelected += onMemberSelected;
 
                     m_InstantiatedItems.Add(uiMember);
-                    
-                    if (((Consumable)m_item).Effects.All(x => !x.EvaluateEffect(member.GetAttributes())))
-                    {
-                        uiMember.GetComponent<Button>().interactable = false;
-                    }
                 }
             }
             else
             {
                 m_action = ActionType.Equip;
-                foreach (var member in m_partyManager.GetAllPartyMembers())
+                foreach (var member in m_partyManager.GetAllExistingPartyMembers())
                 {
                     var uiMember = CreateInstantiateItem(EquipItemInstantiate);
 
@@ -270,8 +265,10 @@ namespace RPGTest.UI.InventoryMenu
         private void Member_PlayerWidgetUpdated(Enums.Attribute attribute)
         {
             Refresh();
+            ItemActionSelected(m_actionType, new List<Item> { m_item });
             if (m_inventoryManager.GetHeldItemQuantity(m_item.Id) == 0)
             {
+                ItemActionSelected(MenuItemActionType.Cancel, null);
                 Close();
             }
         }
@@ -311,7 +308,6 @@ namespace RPGTest.UI.InventoryMenu
             else
             {
                 ItemActionSelected(MenuItemActionType.Cancel, null);
-                Close();
             }
         }
 
@@ -328,9 +324,13 @@ namespace RPGTest.UI.InventoryMenu
             switch (m_actionType)
             {
                 case MenuItemActionType.Use:
+                    /*
+                    if (((Consumable)m_item).Effects.All(x => !x.EvaluateEffect(character.GetAttributes())))
+                    {
+                        return;
+                    }*/
                     var action = new EntityAction(character, m_action, m_item.Id, new List<Entity>() { character }, m_inventoryManager);
                     StartCoroutine(action.Execute(null,null));
-                    ItemActionSelected(m_actionType, new List<Item> { m_item });
                     break;
                 case MenuItemActionType.Equip:
                     if (((Equipment)m_item).IsWeapon)
