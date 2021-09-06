@@ -1,6 +1,7 @@
 ﻿using MyBox;
 using RPGTest.Inputs;
 using RPGTest.Enums;
+using RPGTest.Helpers;
 using RPGTest.Managers;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
@@ -9,7 +10,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using RPGTest.Helpers;
 
 namespace RPGTest.UI.InventoryMenu
 {
@@ -19,12 +19,13 @@ namespace RPGTest.UI.InventoryMenu
         public Button ActionButton;
         public Button ThrowButton;
         public TextMeshProUGUI ActionString;
+
+        [Separator("Sub Panels")]
         public GameObject UsePanel;
         public GameObject ThrowPanel;
-        public GameObject UsePanelListContent;
-        [Separator("Prefabs to instantiate")]
-        public GameObject UseItemInstantiate;
-        public GameObject EquipItemInstantiate;
+
+        [Separator("UI To Hide")]
+        public Image FormImage;
 
         [HideInInspector]
         public ItemUsedHandler ItemActionSelected { get; set; }
@@ -41,10 +42,6 @@ namespace RPGTest.UI.InventoryMenu
         
         private Controls m_playerInput;
 
-        private bool m_inSubMenu = false;
-        private int m_memberIndex;
-        private bool m_actionInProgress = false;
-
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
         private InventoryManager m_inventoryManager => FindObjectOfType<GameManager>().InventoryManager;
 
@@ -56,8 +53,6 @@ namespace RPGTest.UI.InventoryMenu
         }
 
 
-        private List<GameObject> m_InstantiatedItems;
-
         public void OnEnable() => m_playerInput.Enable();
         public void OnDisable() => m_playerInput.Disable();
 
@@ -67,57 +62,60 @@ namespace RPGTest.UI.InventoryMenu
         /// <param name="item">Selected Item</param>
         public void InitializeUse(Item item)
         {
-            m_inSubMenu = false;
             m_item = item;
 
-            m_actionType = MenuItemActionType.Use;
             ActionString.text = "Use";
-
-            InitializeGui();
+            InitializeGui(MenuItemActionType.Use);
         }
 
         public void InitializeEquip(Item item)
         {
-            m_inSubMenu = false;
             m_item = item;
 
-            m_actionType = MenuItemActionType.Equip;
             ActionString.text = "Equip";
-
-            InitializeGui();
+            InitializeGui(MenuItemActionType.Equip);
         }
 
         public void InitializeUnequip(Item item, Slot slot, PlayableCharacter owner)
         {
-            m_inSubMenu = false;
             m_item = item;
             m_slot = slot;
             m_owner = owner;
 
-            m_actionType = MenuItemActionType.Unequip;
             ActionString.text = "Unequip";
-
-            InitializeGui();
+            InitializeGui(MenuItemActionType.Unequip);
         }
 
-        private void InitializeGui()
+        private void InitializeGui(MenuItemActionType type)
         {
-            InitializeUsePanel();
             ActionButton.Select();
+            m_actionType = type;
 
-            if (m_InstantiatedItems.All(x => !x.GetComponent<Button>().interactable))
+            if (m_actionType == MenuItemActionType.Equip || m_actionType == MenuItemActionType.Use)
             {
-                ActionButton.interactable = false;
-                var nav = ThrowButton.navigation;
-                nav.selectOnUp = null;
-                ThrowButton.navigation = nav;
-                ThrowButton.Select();
+                var component = UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>();
+                component.InitializePanel(type, m_item);
+                component.ActionFinished += Action_Finished;
+
+                if (!component.AnyApplicableMember)
+                {
+                    ActionButton.interactable = false;
+                    var nav = ThrowButton.navigation;
+                    nav.selectOnUp = null;
+                    ThrowButton.navigation = nav;
+                    ThrowButton.Select();
+                }
+
+            }
+            else if (type == MenuItemActionType.Unequip)
+            {
+                m_action = ActionType.Equip;
             }
 
             UsePanel.SetActive(false);
             ThrowPanel.SetActive(false);
 
-            ThrowPanel.GetComponent<UI_ItemInteraction>().ItemInteractionRequested += OnItemInteractionRequested;
+            ThrowPanel.GetComponent<UI_Item_Interaction>().ItemInteractionRequested += OnItemInteractionRequested;
         }
 
         /// <summary>
@@ -125,22 +123,8 @@ namespace RPGTest.UI.InventoryMenu
         /// </summary>
         public void Close()
         {
-            if (m_InstantiatedItems != null)
-            {
-                foreach (var item in m_InstantiatedItems)
-                {
-                    item.GetComponent<UI_Member_Widget>().MemberSelected -= onMemberSelected;
-                    Destroy(item);
-                }
-                m_InstantiatedItems.Clear();
-            }
-
-            foreach (var member in m_partyManager.GetAllExistingPartyMembers())
-            {
-                member.PlayerWidgetUpdated -= Member_PlayerWidgetUpdated;
-            }
-
-            ThrowPanel.GetComponent<UI_ItemInteraction>().ItemInteractionRequested -= OnItemInteractionRequested;
+            UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>().Clean();
+            ThrowPanel.GetComponent<UI_Item_Interaction>().ItemInteractionRequested -= OnItemInteractionRequested;
             gameObject.SetActive(false);
         }
 
@@ -148,74 +132,19 @@ namespace RPGTest.UI.InventoryMenu
 
 
         #region private Methods
-        private void InitializeUsePanel()
+        private void HideUI(bool value)
         {
-            m_InstantiatedItems = new List<GameObject>();
-            if (m_actionType == MenuItemActionType.Use)
+            this.ActionButton.gameObject.SetActive(value);
+            this.ThrowButton.gameObject.SetActive(value);
+            this.FormImage.enabled = value;
+
+            if(value)
             {
-                m_action = ActionType.ItemMenu;
-                foreach (var member in m_partyManager.GetAllExistingPartyMembers())
-                {
-                    var uiMember = CreateInstantiateItem(UseItemInstantiate);
-
-                    var uiMemberScript = uiMember.GetComponent<UI_Member_Widget>();
-                    uiMemberScript.Initialize(member);
-                    member.PlayerWidgetUpdated += Member_PlayerWidgetUpdated;
-                    uiMemberScript.MemberSelected += onMemberSelected;
-
-                    m_InstantiatedItems.Add(uiMember);
-                }
+                m_playerInput.UI.Cancel.performed += OnCancelPerformed;
             }
             else
             {
-                m_action = ActionType.Equip;
-                foreach (var member in m_partyManager.GetAllExistingPartyMembers())
-                {
-                    var uiMember = CreateInstantiateItem(EquipItemInstantiate);
-
-                    var uiMemberScript = uiMember.GetComponent<UI_Member_Widget>();
-                    uiMemberScript.Initialize(member);
-                    member.PlayerWidgetUpdated += Member_PlayerWidgetUpdated;
-                    uiMemberScript.MemberSelected += onMemberSelected;
-                    uiMemberScript.EquipmentSlotSelected += onEquipmentSlotSelected;
-
-                    m_InstantiatedItems.Add(uiMember);
-                }
-            }
-
-            //Expliciting navigation
-            foreach (var member in m_InstantiatedItems)
-            {
-                var index = m_InstantiatedItems.IndexOf(member);
-
-                member.GetComponent<Button>().ExplicitNavigation(
-                    Up: index > 0 ? m_InstantiatedItems[index - 1].GetComponent<Button>() : null,
-                    Down: index < m_InstantiatedItems.Count - 1 ? m_InstantiatedItems[index + 1].GetComponent<Button>() : null);
-            }
-        }
-
-        private GameObject CreateInstantiateItem(GameObject prefab)
-        {
-            var uiMember = Instantiate(prefab);
-            UseItemInstantiate.GetComponent<RectTransform>();
-            uiMember.transform.SetParent(UsePanelListContent.transform);
-            uiMember.transform.localScale = new Vector3(1, 1, 1);
-            return uiMember;
-        }
-
-        private void EvaluateItemValidity()
-        {
-
-        }
-
-        /// <summary>
-        /// Will refresh all instantiated components
-        /// </summary>
-        private void Refresh()
-        {
-            foreach(var item in m_InstantiatedItems)
-            {
-                item.GetComponent<UI_Member_Widget>().Refresh();
+                m_playerInput.UI.Cancel.performed -= OnCancelPerformed;
             }
         }
         #endregion
@@ -232,27 +161,11 @@ namespace RPGTest.UI.InventoryMenu
             {
                 case MenuItemActionType.Use:
                 case MenuItemActionType.Equip:
-                    Refresh();
                     UsePanel.SetActive(true);
-
-                    var instantiatedItem = m_InstantiatedItems.FirstOrDefault(x => x.GetComponent<Button>().interactable);
-                    if (instantiatedItem != null)
-                    {
-                        instantiatedItem.GetComponent<Button>().Select();
-                    }
-                    else
-                    {
-                        m_InstantiatedItems.FirstOrDefault().GetComponent<Button>().Select();
-                    }
-
-                    var rectTransform = m_InstantiatedItems.FirstOrDefault().GetComponent<RectTransform>();
-                    var height = rectTransform.sizeDelta.y * m_InstantiatedItems.Count;
-
-                    UsePanel.GetComponent<RectTransform>().sizeDelta = new Vector2(rectTransform.sizeDelta.x, height);
-
-                    var rect = UsePanel.GetComponent<RectTransform>();
-                    rect.position = new Vector3(Screen.width / 2, Screen.height / 2, 10);
-                    m_inSubMenu = true;
+                    var component = UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>();
+                    component.Focus();
+                    component.ItemInteractionCancelled += UseInteraction_Cancelled;
+                    HideUI(false);
                     break;
                 case MenuItemActionType.Unequip:
                     m_owner.TryUnequip(m_slot, out List<Item> removedItems);
@@ -262,9 +175,19 @@ namespace RPGTest.UI.InventoryMenu
 
         }
 
-        private void Member_PlayerWidgetUpdated(Enums.Attribute attribute)
+        public void onClickThrow()
         {
-            Refresh();
+            this.HideUI(false);
+
+            ThrowPanel.SetActive(true);
+            ThrowPanel.GetComponent<UI_Item_Interaction>().Initialize(InteractionType.Throw, m_item);
+            ThrowPanel.GetComponent<UI_Item_Interaction>().ItemInteractionCancelled += ThrowInteraction_Cancelled;
+            m_playerInput.UI.Cancel.performed -= OnCancelPerformed;
+        }
+
+
+        public void Action_Finished(MenuItemActionType actionType, List<Item> items)
+        {
             ItemActionSelected(m_actionType, new List<Item> { m_item });
             if (m_inventoryManager.GetHeldItemQuantity(m_item.Id) == 0)
             {
@@ -273,42 +196,28 @@ namespace RPGTest.UI.InventoryMenu
             }
         }
 
-        public void onClickThrow()
+        public void UseInteraction_Cancelled()
         {
-            ThrowPanel.SetActive(true);
-            ThrowPanel.GetComponent<UI_ItemInteraction>().Initialize(InteractionType.Throw, m_item);
-            m_inSubMenu = true;
+            this.HideUI(true);
+
+            var component = UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>();
+            component.ItemInteractionCancelled += UseInteraction_Cancelled;
+            UsePanel.SetActive(false);
+            ActionButton.Select();
+        }
+
+        public void ThrowInteraction_Cancelled()
+        {
+            this.HideUI(true);
+
+            ThrowPanel.GetComponent<UI_Item_Interaction>().ItemInteractionCancelled -= ThrowInteraction_Cancelled;
+            ThrowPanel.SetActive(false);
+            ThrowButton.Select();
         }
 
         public void onClickCancel()
         {
-            if(m_inSubMenu)
-            {
-                if(m_actionInProgress)
-                {
-                    m_InstantiatedItems[m_memberIndex].GetComponent<Button>().Select();
-                    m_actionInProgress = false;
-                }
-                else
-                {
-                    if (UsePanel.activeInHierarchy)
-                    {
-                        ActionButton.GetComponent<Button>().Select();
-                        UsePanel.SetActive(false);
-                    }
-                    else if (ThrowPanel.activeInHierarchy)
-                    {
-                        ThrowButton.GetComponent<Button>().Select();
-                        ThrowPanel.SetActive(false);
-                    }
-
-                    m_inSubMenu = false;
-                }
-            }
-            else
-            {
-                ItemActionSelected(MenuItemActionType.Cancel, null);
-            }
+            ItemActionSelected(MenuItemActionType.Cancel, null);
         }
 
         public void OnItemInteractionRequested(Item item, int quantity)
@@ -316,48 +225,6 @@ namespace RPGTest.UI.InventoryMenu
             m_inventoryManager.RemoveItem(item.Id, quantity);
             ItemActionSelected(MenuItemActionType.Throw, new List<Item>{ m_item });
             Close();
-        }
-
-        public void onMemberSelected(GameObject member)
-        {
-            var character = member.GetComponent<UI_Member_Widget>().GetCharacter();
-            switch (m_actionType)
-            {
-                case MenuItemActionType.Use:
-                    /*
-                    if (((Consumable)m_item).Effects.All(x => !x.EvaluateEffect(character.GetAttributes())))
-                    {
-                        return;
-                    }*/
-                    var action = new EntityAction(character, m_action, m_item.Id, new List<Entity>() { character }, m_inventoryManager);
-                    StartCoroutine(action.Execute(null,null));
-                    break;
-                case MenuItemActionType.Equip:
-                    if (((Equipment)m_item).IsWeapon)
-                    {
-                        if (m_actionInProgress == false)
-                        {
-                            m_memberIndex = m_InstantiatedItems.IndexOf(member);
-                            m_actionInProgress = true;
-                        }
-                    }
-                    else
-                    {
-                        character.TryEquip(m_slot, (Equipment)m_item, out List<Item> removedItems);
-                        removedItems.Add(m_item);
-                        ItemActionSelected(m_actionType, removedItems);
-                    }
-                    break;
-            }
-        }
-
-        public void onEquipmentSlotSelected(GameObject member, Slot slot)
-        {
-            var character = member.GetComponent<UI_Member_Widget>().GetCharacter();
-
-            character.TryEquip(slot, (Equipment)m_item, out List<Item> removedItems);
-            removedItems.Add(m_item);
-            ItemActionSelected(MenuItemActionType.Equip, removedItems);
         }
         #endregion
     }

@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using RPGTest.Helpers;
 using RPGTest.Managers;
 using RPGTest.Models.Items;
 using RPGTest.Inputs;
@@ -16,7 +17,7 @@ namespace RPGTest.UI
     }
 
 
-    public class UI_ItemInteraction : MonoBehaviour
+    public class UI_Item_Interaction : MonoBehaviour
     {
         public Button OkButton;
         public TextMeshProUGUI Label_ButtonText;
@@ -31,6 +32,8 @@ namespace RPGTest.UI
         private int m_interactQuantity { get; set; }
         private int m_maxQuantity { get; set; }
 
+        [HideInInspector]
+        public CancelActionHandler ItemInteractionCancelled { get; set; }
         public ItemInteractionHandler ItemInteractionRequested { get; set; }
         [HideInInspector]
         public delegate void ItemInteractionHandler(Item item, int quantity);
@@ -47,7 +50,7 @@ namespace RPGTest.UI
 
         private void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            this.gameObject.SetActive(false);
+            this.ItemInteractionCancelled();
         }
 
         private void Navigate_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)

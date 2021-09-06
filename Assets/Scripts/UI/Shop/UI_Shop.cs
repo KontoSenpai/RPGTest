@@ -50,7 +50,7 @@ namespace RPGTest.UI
         // Start is called before the first frame update
         void Start()
         {
-            PurchaseWindow.GetComponent<UI_ItemInteraction>().ItemInteractionRequested += OnPurchaseRequested;
+            PurchaseWindow.GetComponent<UI_Item_Interaction>().ItemInteractionRequested += OnPurchaseRequested;
             foreach(var CategoryButton in CategoryButtons)
             {
                 CategoryButton.GetComponent<UI_Category_Button>().CategoryFilterRequested += OnCategoryFilterRequested;
@@ -181,7 +181,7 @@ namespace RPGTest.UI
         public void OpenPurchaseWindow(Item selectedItem)
         {
             PurchaseWindow.SetActive(true);
-            PurchaseWindow.GetComponent<UI_ItemInteraction>().Initialize(InteractionType.Purchase, selectedItem);
+            PurchaseWindow.GetComponent<UI_Item_Interaction>().Initialize(InteractionType.Purchase, selectedItem);
         }
 
         public bool TryExecuteTransaction(Item item, int quantity)
