@@ -13,8 +13,10 @@ namespace RPGTest.UI.InventoryMenu
 {
     public class UI_SubMenu_Inventory_UseControl : MonoBehaviour
     {
+        public GameObject PanelList;
         public GameObject PanelListContent;
         public GameObject ItemInstantiate;
+        public GameObject PanelEquipment;
 
         [HideInInspector]
         public CancelActionHandler ItemInteractionCancelled { get; set; }
@@ -59,36 +61,26 @@ namespace RPGTest.UI.InventoryMenu
             m_panelActionType = type;
             m_InstantiatedItems = new List<GameObject>();
             m_item = selectedItem;
+
             if (m_panelActionType == MenuItemActionType.Use)
-            {
                 m_actionType = ActionType.ItemMenu;
-                foreach (var member in m_partyManager.GetAllExistingPartyMembers())
-                {
-                    var uiMember = CreateInstantiateItem(ItemInstantiate);
-
-                    var uiMemberScript = uiMember.GetComponent<UI_Member_Widget>();
-                    uiMemberScript.Initialize(member);
-                    member.PlayerWidgetUpdated += Member_PlayerWidgetUpdated;
-                    uiMemberScript.MemberSelected += Member_Selected;
-
-                    m_InstantiatedItems.Add(uiMember);
-                }
-            }
             else if (m_panelActionType == MenuItemActionType.Equip)
-            {
                 m_actionType = ActionType.Equip;
-                foreach (var member in m_partyManager.GetAllExistingPartyMembers())
+
+            foreach (var member in m_partyManager.GetAllExistingPartyMembers())
+            {
+                var uiMember = CreateInstantiateItem(ItemInstantiate);
+                var uiMemberScript = uiMember.GetComponent<UI_Member_Widget>();
+                uiMemberScript.Initialize(member);
+                member.PlayerWidgetUpdated += Member_PlayerWidgetUpdated;
+
+                uiMemberScript.MemberSelected += Member_Selected;
+                if (m_actionType == ActionType.Equip)
                 {
-                    var uiMember = CreateInstantiateItem(ItemInstantiate);
-
-                    var uiMemberScript = uiMember.GetComponent<UI_Member_Widget>();
-                    uiMemberScript.Initialize(member);
-                    member.PlayerWidgetUpdated += Member_PlayerWidgetUpdated;
-                    uiMemberScript.MemberSelected += Member_Selected;
+                    this.PanelEquipment.gameObject.SetActive(true);
                     uiMemberScript.EquipmentSlotSelected += onEquipmentSlotSelected;
-
-                    m_InstantiatedItems.Add(uiMember);
                 }
+                m_InstantiatedItems.Add(uiMember);
             }
 
             //Expliciting navigation
@@ -100,6 +92,8 @@ namespace RPGTest.UI.InventoryMenu
                     Up: index > 0 ? m_InstantiatedItems[index - 1].GetComponent<Button>() : null,
                     Down: index < m_InstantiatedItems.Count - 1 ? m_InstantiatedItems[index + 1].GetComponent<Button>() : null);
             }
+
+            Resize();
         }
 
         public void Focus()
@@ -107,6 +101,7 @@ namespace RPGTest.UI.InventoryMenu
             Refresh();
 
             var instantiatedItem = m_InstantiatedItems.FirstOrDefault(x => x.GetComponent<Button>().interactable);
+
             if (instantiatedItem != null)
             {
                 instantiatedItem.GetComponent<Button>().Select();
@@ -115,19 +110,12 @@ namespace RPGTest.UI.InventoryMenu
             {
                 m_InstantiatedItems.FirstOrDefault().GetComponent<Button>().Select();
             }
-
-            var rectTransform = m_InstantiatedItems.FirstOrDefault().GetComponent<RectTransform>();
-            var height = rectTransform.sizeDelta.y * m_InstantiatedItems.Count;
-
-            this.GetComponent<RectTransform>().sizeDelta = new Vector2(rectTransform.sizeDelta.x, height);
-
-            var rect = this.GetComponent<RectTransform>();
-            rect.position = new Vector3(Screen.width / 2, Screen.height / 2, 10);
         }
 
 
         public void Clean()
         {
+            this.PanelEquipment.gameObject.SetActive(false);
             if (m_InstantiatedItems != null)
             {
                 foreach (var item in m_InstantiatedItems)
@@ -162,7 +150,7 @@ namespace RPGTest.UI.InventoryMenu
 
                 if(m_panelActionType == MenuItemActionType.Equip)
                 {
-                    //RefreshEquipmentPanel();
+                    RefreshEquipmentPanel();
                 }
             }
         }
@@ -229,6 +217,26 @@ namespace RPGTest.UI.InventoryMenu
         #endregion
 
         #region private methods
+        private void Resize()
+        {
+            var rect = this.GetComponent<RectTransform>();
+
+            float width = 0.0f;
+            Vector2 toto = new Vector2();
+            toto.y = rect.sizeDelta.y;
+
+            var listRect = this.PanelList.GetComponent<RectTransform>();
+            width = listRect.sizeDelta.x;
+
+            if (this.PanelEquipment.gameObject.activeSelf)
+            {
+                var listEquip = this.PanelEquipment.GetComponent<RectTransform>();
+                width += listEquip.sizeDelta.x;
+            }
+            toto.x = width;
+            rect.sizeDelta = toto;
+        }
+
         /// <summary>
         /// Will refresh all instantiated components
         /// </summary>
@@ -238,6 +246,11 @@ namespace RPGTest.UI.InventoryMenu
             {
                 item.GetComponent<UI_Member_Widget>().Refresh();
             }
+        }
+
+        private void RefreshEquipmentPanel()
+        {
+
         }
 
         private GameObject CreateInstantiateItem(GameObject prefab)
