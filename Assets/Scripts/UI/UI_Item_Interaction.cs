@@ -48,6 +48,10 @@ namespace RPGTest.UI
             m_playerInput.UI.Cancel.performed += Cancel_performed;
         }
 
+        public void OnEnable() => m_playerInput.Enable();
+        public void OnDisable() => m_playerInput.Disable();
+
+
         private void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             this.ItemInteractionCancelled();
@@ -64,15 +68,6 @@ namespace RPGTest.UI
             {
                 TryChangePurchaseQuantity(1);
             }
-        }
-
-        public void OnEnable() => m_playerInput.Enable();
-        public void OnDisable() => m_playerInput.Disable();
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
         }
 
         public void Initialize(InteractionType type, Item item)

@@ -16,7 +16,9 @@ namespace RPGTest.UI.InventoryMenu
         public GameObject PanelList;
         public GameObject PanelListContent;
         public GameObject ItemInstantiate;
-        public GameObject PanelEquipment;
+
+        [SerializeField]
+        private GameObject m_PanelEquipment;
 
         [HideInInspector]
         public CancelActionHandler ItemInteractionCancelled { get; set; }
@@ -49,9 +51,11 @@ namespace RPGTest.UI.InventoryMenu
         private Controls m_playerInput;
         public virtual void Awake()
         {
+            Debug.Log("awake");
             m_playerInput = new Controls();
             m_playerInput.UI.Navigate.performed += Navigate_performed;
             m_playerInput.UI.Cancel.performed += Cancel_performed;
+            m_PanelEquipment.GetComponent<UI_SubMenu_Inventory_Equipment>().SlotSelected += onEquipmentSlotSelected;
         }
         public void OnEnable() => m_playerInput.Enable();
         public void OnDisable() => m_playerInput.Disable();
@@ -60,12 +64,17 @@ namespace RPGTest.UI.InventoryMenu
         {
             m_panelActionType = type;
             m_InstantiatedItems = new List<GameObject>();
+            m_memberIndex = 0;
             m_item = selectedItem;
 
             if (m_panelActionType == MenuItemActionType.Use)
                 m_actionType = ActionType.ItemMenu;
             else if (m_panelActionType == MenuItemActionType.Equip)
+            {
                 m_actionType = ActionType.Equip;
+                m_PanelEquipment.gameObject.SetActive(true);
+                m_PanelEquipment.GetComponent<UI_SubMenu_Inventory_Equipment>().Initialize(m_item as Equipment);
+            }             
 
             foreach (var member in m_partyManager.GetAllExistingPartyMembers())
             {
@@ -75,11 +84,6 @@ namespace RPGTest.UI.InventoryMenu
                 member.PlayerWidgetUpdated += Member_PlayerWidgetUpdated;
 
                 uiMemberScript.MemberSelected += Member_Selected;
-                if (m_actionType == ActionType.Equip)
-                {
-                    this.PanelEquipment.gameObject.SetActive(true);
-                    uiMemberScript.EquipmentSlotSelected += onEquipmentSlotSelected;
-                }
                 m_InstantiatedItems.Add(uiMember);
             }
 
@@ -110,12 +114,19 @@ namespace RPGTest.UI.InventoryMenu
             {
                 m_InstantiatedItems.FirstOrDefault().GetComponent<Button>().Select();
             }
+
+            if (m_actionType == ActionType.Equip)
+            {
+                RefreshEquipmentPanel();
+            }
         }
 
 
         public void Clean()
         {
-            this.PanelEquipment.gameObject.SetActive(false);
+            m_PanelEquipment.GetComponent<UI_SubMenu_Inventory_Equipment>().Clean();
+            this.m_PanelEquipment.gameObject.SetActive(false);
+
             if (m_InstantiatedItems != null)
             {
                 foreach (var item in m_InstantiatedItems)
@@ -157,15 +168,11 @@ namespace RPGTest.UI.InventoryMenu
 
         private void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            if (m_actionInProgress)
-            {
-                m_InstantiatedItems[m_memberIndex].GetComponent<Button>().Select();
-                m_actionInProgress = false;
-            }
-            else
-            {
-                this.ItemInteractionCancelled();
-            }
+            CancelAction();
+        }
+        private void Equip_Cancelled()
+        {
+            CancelAction();
         }
 
         private void Member_PlayerWidgetUpdated(Enums.Attribute attribute)
@@ -189,26 +196,20 @@ namespace RPGTest.UI.InventoryMenu
                     StartCoroutine(action.Execute(null, null));
                     break;
                 case MenuItemActionType.Equip:
-                    if (((Equipment)m_item).IsWeapon)
+                    if (m_actionInProgress == false)
                     {
-                        if (m_actionInProgress == false)
-                        {
-                            m_memberIndex = m_InstantiatedItems.IndexOf(member);
-                            m_actionInProgress = true;
-                        }
-                    }
-                    else
-                    {
-                        character.TryEquip(m_selectedSlot, (Equipment)m_item, out List<Item> removedItems);
-                        removedItems.Add(m_item);
-                        ActionFinished(m_panelActionType, removedItems);
+                        m_memberIndex = m_InstantiatedItems.IndexOf(member);
+                        m_PanelEquipment.GetComponent<UI_SubMenu_Inventory_Equipment>().Focus();
+                        m_PanelEquipment.GetComponent<UI_SubMenu_Inventory_Equipment>().ItemInteractionCancelled += Equip_Cancelled;
+                        m_actionInProgress = true;
                     }
                     break;
             }
         }
-        public void onEquipmentSlotSelected(GameObject member, Slot slot)
+        public void onEquipmentSlotSelected(Slot slot)
         {
-            var character = member.GetComponent<UI_Member_Widget>().GetCharacter();
+            m_actionInProgress = false;
+            var character = m_InstantiatedItems[m_memberIndex].GetComponent<UI_Member_Widget>().GetCharacter();
 
             character.TryEquip(slot, (Equipment)m_item, out List<Item> removedItems);
             removedItems.Add(m_item);
@@ -228,9 +229,9 @@ namespace RPGTest.UI.InventoryMenu
             var listRect = this.PanelList.GetComponent<RectTransform>();
             width = listRect.sizeDelta.x;
 
-            if (this.PanelEquipment.gameObject.activeSelf)
+            if (m_PanelEquipment.gameObject.activeSelf)
             {
-                var listEquip = this.PanelEquipment.GetComponent<RectTransform>();
+                var listEquip = this.m_PanelEquipment.GetComponent<RectTransform>();
                 width += listEquip.sizeDelta.x;
             }
             toto.x = width;
@@ -242,6 +243,7 @@ namespace RPGTest.UI.InventoryMenu
         /// </summary>
         private void Refresh()
         {
+            m_memberIndex = 0;
             foreach (var item in m_InstantiatedItems)
             {
                 item.GetComponent<UI_Member_Widget>().Refresh();
@@ -250,7 +252,8 @@ namespace RPGTest.UI.InventoryMenu
 
         private void RefreshEquipmentPanel()
         {
-
+            var character = m_InstantiatedItems[m_memberIndex].GetComponent<UI_Member_Widget>().GetCharacter();
+            m_PanelEquipment.GetComponent<UI_SubMenu_Inventory_Equipment>().UpdateContent(character);
         }
 
         private GameObject CreateInstantiateItem(GameObject prefab)
@@ -260,6 +263,20 @@ namespace RPGTest.UI.InventoryMenu
             uiMember.transform.SetParent(PanelListContent.transform);
             uiMember.transform.localScale = new Vector3(1, 1, 1);
             return uiMember;
+        }
+
+        private void CancelAction()
+        {
+            if (m_actionInProgress)
+            {
+                m_PanelEquipment.GetComponent<UI_SubMenu_Inventory_Equipment>().ItemInteractionCancelled -= Equip_Cancelled;
+                m_InstantiatedItems[m_memberIndex].GetComponent<Button>().Select();
+                m_actionInProgress = false;
+            }
+            else
+            {
+                this.ItemInteractionCancelled();
+            }
         }
         #endregion
     }

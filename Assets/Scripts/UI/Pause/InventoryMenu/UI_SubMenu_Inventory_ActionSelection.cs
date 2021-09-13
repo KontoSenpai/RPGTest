@@ -88,6 +88,7 @@ namespace RPGTest.UI.InventoryMenu
 
         private void InitializeGui(MenuItemActionType type)
         {
+            HideUI(true);
             ActionButton.Select();
             m_actionType = type;
 
@@ -125,6 +126,7 @@ namespace RPGTest.UI.InventoryMenu
         {
             UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>().Clean();
             ThrowPanel.GetComponent<UI_Item_Interaction>().ItemInteractionRequested -= OnItemInteractionRequested;
+            UsePanel.SetActive(false);
             gameObject.SetActive(false);
         }
 
@@ -188,6 +190,13 @@ namespace RPGTest.UI.InventoryMenu
 
         public void Action_Finished(MenuItemActionType actionType, List<Item> items)
         {
+            if(actionType == MenuItemActionType.Equip)
+            {
+                ItemActionSelected(MenuItemActionType.Cancel, null);
+                Close();
+                return;
+            }
+            
             ItemActionSelected(m_actionType, new List<Item> { m_item });
             if (m_inventoryManager.GetHeldItemQuantity(m_item.Id) == 0)
             {
