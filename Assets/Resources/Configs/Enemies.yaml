@@ -24,7 +24,6 @@ Enemies:
     - Id                    : EN0001
       Name                  : White Wolf
       Level                 : 3
-      DefaultAttack         : A0001
       BaseAttributes        :
         MaxHP               : 16
         MaxMP               : 0
@@ -32,7 +31,8 @@ Enemies:
         Attack              : 4
         Defense             : 5
         Magic               : 0
-        Resilience          : 2
+        Resistance          : 2
+        Speed               : 1
       CombatThresholds      :
         - Threshold         : 100
           Abilities         :
@@ -51,7 +51,6 @@ Enemies:
     - Id                    : EN0002
       Name                  : Black Wolf
       Level                 : 3
-      DefaultAttack         : A0001
       BaseAttributes        :
         MaxHP               : 24
         MaxMP               : 0

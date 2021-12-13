@@ -3,6 +3,7 @@ using RPGTest.Models.Entity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ namespace RPGTest.UI.Battle
     {
         public GameObject BattleHeader;
         public GameObject RewardPanel;
-        public Text HeaderString;
+        public TextMeshProUGUI HeaderString;
         public GameObject[] PartyMemberWidgets;
 
         public GameObject[] MultiActionPanels;
