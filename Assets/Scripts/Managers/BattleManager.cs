@@ -322,6 +322,8 @@ namespace RPGTest.Managers
 
         private void InitializeBattleUI()
         {
+            Debug.Log(m_battleOverlay);
+            Debug.Log(m_party);
             m_battleOverlay.Initialize(m_party);
         }
 

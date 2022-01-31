@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &18144979 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3564063074787111523, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+  m_PrefabInstance: {fileID: 1739146011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &462485357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -200,6 +205,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 412f9fd6e0588d94cbadf42babf654f0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17279ac83768be14aaef0387b46369fa, type: 3}
+--- !u!1 &689939437 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1781481139815316590, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+  m_PrefabInstance: {fileID: 1739146011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &811669761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1572,6 +1582,18 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1297123141}
+    - target: {fileID: 5703601151754888875, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: EnemyModels.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5703601151754888875, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: EnemyModels.Array.data[0]
+      value: 
+      objectReference: {fileID: 8489299390461685189, guid: 05fa23a8321e318498b36f756b8ee6bd, type: 3}
+    - target: {fileID: 5703601151754888875, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: EnemyModels.Array.data[1]
+      value: 
+      objectReference: {fileID: 8489299390461685189, guid: a22bda58c0a37264c938dbbbd6b0b6b7, type: 3}
     - target: {fileID: 5707770701562857908, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1756,6 +1778,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -40
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: RewardPanel
+      value: 
+      objectReference: {fileID: 18144979}
+    - target: {fileID: 0}
+      propertyPath: BattleHeader
+      value: 
+      objectReference: {fileID: 689939437}
     - target: {fileID: 6093373843533212048, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1766,7 +1796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6562962472732200220, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 570
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6619491636284344206, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_AnchorMax.y
