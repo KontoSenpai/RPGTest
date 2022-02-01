@@ -10,24 +10,26 @@ namespace RPGTest.UI.Battle
     public class UI_PartyMember_Widget : MonoBehaviour
     {
         #region Properties
-        public GameObject ActionWidget;
- 
-        public TextMeshProUGUI Name;
-        public TextMeshProUGUI LevelValue;
+        [SerializeField] private TextMeshProUGUI Name;
+        [SerializeField] private TextMeshProUGUI LevelValue;
 
-        public UI_Bar_Widget HPBarWidget;
-        public UI_Bar_Widget ManaBarWidget;
-        public UI_Bar_Widget StaminaBarWidget;
-        public UI_Bar_Widget ATBBarWidget;
-        public AudioSource AudioSource;
-        public AudioClip ATBFullSoundClip;
+        [SerializeField] private UI_Bar_Widget HPBarWidget;
+        [SerializeField] private UI_Bar_Widget ManaBarWidget;
+        [SerializeField] private UI_Bar_Widget StaminaBarWidget;
+        [SerializeField] private UI_Bar_Widget ATBBarWidget;
 
         public UI_Stances_Widget StanceWidget;
+
+        [HideInInspector]
+        public ActionWindowRequestedHandler ActionWindowRequested { get; set; }
+        [HideInInspector]
+        public delegate void ActionWindowRequestedHandler(PlayableCharacter character);
         #endregion
 
         #region variables
         private PlayableCharacter m_playableCharacter;
         #endregion
+
         // Start is called before the first frame update
         void Start()
         {
@@ -100,8 +102,9 @@ namespace RPGTest.UI.Battle
         {
             if (waitStatus)
             {
-                AudioSource.PlayOneShot(ATBFullSoundClip);
-                ActionWidget.GetComponent<UI_ActionSelection_Widget>().Initialize(m_playableCharacter);
+                ActionWindowRequested(m_playableCharacter);
+                //AudioSource.PlayOneShot(ATBFullSoundClip);
+                //ActionWidget.GetComponent<UI_ActionSelection_Widget>().Initialize(m_playableCharacter);
             }
         }
         #endregion

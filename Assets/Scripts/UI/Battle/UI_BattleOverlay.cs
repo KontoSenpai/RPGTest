@@ -11,12 +11,15 @@ namespace RPGTest.UI.Battle
 {
     public class UI_BattleOverlay : UI_Base
     {
-        public GameObject BattleHeader;
-        public GameObject RewardPanel;
-        public TextMeshProUGUI HeaderString;
-        public GameObject[] PartyMemberWidgets;
+        [SerializeField] private GameObject ActionWidget;
+        [SerializeField] private GameObject[] MultiActionPanels;
 
-        public GameObject[] MultiActionPanels;
+        [SerializeField] private GameObject BattleHeader;
+        [SerializeField] private GameObject RewardPanel;
+        [SerializeField] private TextMeshProUGUI HeaderString;
+        [SerializeField] private GameObject[] PartyMemberWidgets;
+
+        [SerializeField] private AudioSource AudioSource;
 
         private TargettingSystem m_targettingSystem;
 
@@ -29,14 +32,16 @@ namespace RPGTest.UI.Battle
         {
             m_targettingSystem = ts;
 
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().PlayerTargetingRequested += m_targettingSystem.UI_BattleOverlay_PlayerTargetingRequested;
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastCountChanged += UI_BattleOverlay_MultiCastCountChanged;
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastActionSelected += UI_BattleOverlay_MultiCastActionSelected;
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().ResetMultiCastStateRequested += UI_BattleOverlay_ResetMultiCastStateRequested;
+            m_targettingSystem.PlayerTargettingDone += ActionWidget.GetComponent<UI_ActionSelection_Widget>().ValidateTargetInformation;
+            
             foreach (var widget in PartyMemberWidgets)
             {
                 var widgetScript = widget.GetComponent<UI_PartyMember_Widget>();
-                widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().PlayerTargetingRequested += m_targettingSystem.UI_BattleOverlay_PlayerTargetingRequested;
-                widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastCountChanged += UI_BattleOverlay_MultiCastCountChanged;
-                widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastActionSelected += UI_BattleOverlay_MultiCastActionSelected;
-                widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().ResetMultiCastStateRequested += UI_BattleOverlay_ResetMultiCastStateRequested;
-               m_targettingSystem.PlayerTargettingDone += widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().ValidateTargetInformation;
+
                 widget.SetActive(false);
             }
 
@@ -70,6 +75,12 @@ namespace RPGTest.UI.Battle
             script.SetActionName(actionName);
         }
 
+        private void UI_BattleOverlay_ActionWindowRequested(PlayableCharacter character)
+        {
+            //AudioSource.PlayOneShot(ATBFullSoundClip);
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().Initialize(character);
+        }
+
         public void Initialize(List<PlayableCharacter> party)
         {
             m_party = party;
@@ -85,6 +96,7 @@ namespace RPGTest.UI.Battle
                 widget.SetActive(true);
                 var widgetScript = widget.GetComponent<UI_PartyMember_Widget>();
                 widgetScript.Initialize(m_party[i]);
+                widgetScript.ActionWindowRequested += UI_BattleOverlay_ActionWindowRequested;
             }
 
             StartCoroutine(Fade(true, 1));
