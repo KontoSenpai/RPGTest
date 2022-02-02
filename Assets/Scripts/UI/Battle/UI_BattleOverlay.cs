@@ -20,6 +20,7 @@ namespace RPGTest.UI.Battle
         [SerializeField] private GameObject[] PartyMemberWidgets;
 
         [SerializeField] private AudioSource AudioSource;
+        [SerializeField] private AudioClip ATBFilledSoundNotification;
 
         private TargettingSystem m_targettingSystem;
 
@@ -46,6 +47,12 @@ namespace RPGTest.UI.Battle
             }
 
             RewardPanel.GetComponent<UI_BattleRewards>().UIClosed += (s, e) => RewardPanelClosed();
+        }
+
+        public void ShowActionSelection(PlayableCharacter character)
+        {
+            AudioSource.PlayOneShot(ATBFilledSoundNotification);
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().Initialize(character);
         }
 
         private void UI_BattleOverlay_ResetMultiCastStateRequested()
@@ -75,11 +82,7 @@ namespace RPGTest.UI.Battle
             script.SetActionName(actionName);
         }
 
-        private void UI_BattleOverlay_ActionWindowRequested(PlayableCharacter character)
-        {
-            //AudioSource.PlayOneShot(ATBFullSoundClip);
-            ActionWidget.GetComponent<UI_ActionSelection_Widget>().Initialize(character);
-        }
+
 
         public void Initialize(List<PlayableCharacter> party)
         {
@@ -96,7 +99,6 @@ namespace RPGTest.UI.Battle
                 widget.SetActive(true);
                 var widgetScript = widget.GetComponent<UI_PartyMember_Widget>();
                 widgetScript.Initialize(m_party[i]);
-                widgetScript.ActionWindowRequested += UI_BattleOverlay_ActionWindowRequested;
             }
 
             StartCoroutine(Fade(true, 1));

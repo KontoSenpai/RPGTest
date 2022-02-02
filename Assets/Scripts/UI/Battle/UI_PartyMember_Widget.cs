@@ -19,11 +19,6 @@ namespace RPGTest.UI.Battle
         [SerializeField] private UI_Bar_Widget ATBBarWidget;
 
         public UI_Stances_Widget StanceWidget;
-
-        [HideInInspector]
-        public ActionWindowRequestedHandler ActionWindowRequested { get; set; }
-        [HideInInspector]
-        public delegate void ActionWindowRequestedHandler(PlayableCharacter character);
         #endregion
 
         #region variables
@@ -53,7 +48,6 @@ namespace RPGTest.UI.Battle
             StaminaBarWidget.Initialize("Stamina", (int)m_playableCharacter.GetAttribute(Attribute.Stamina), (int)m_playableCharacter.GetAttribute(Attribute.MaxStamina));
             ATBBarWidget.Initialize("ATB", 0, 1000);
 
-            m_playableCharacter.PlayerInputRequested += Player_OnPlayerInputRequested;
             m_playableCharacter.PlayerWidgetUpdated += Player_OnPlayerWidgetUpdated;
             m_playableCharacter.PlayerATBChanged += Player_OnPlayerATBChanged;
 
@@ -71,7 +65,6 @@ namespace RPGTest.UI.Battle
 
         public void DisableEvents()
         {
-            m_playableCharacter.PlayerInputRequested -= Player_OnPlayerInputRequested;
             m_playableCharacter.PlayerWidgetUpdated -= Player_OnPlayerWidgetUpdated;
             m_playableCharacter.PlayerATBChanged -= Player_OnPlayerATBChanged;
         }
@@ -96,16 +89,6 @@ namespace RPGTest.UI.Battle
         private void Player_OnPlayerATBChanged(float atb)
         {
             ATBBarWidget.UpdateValues((int)atb, 1000);
-        }
-
-        private void Player_OnPlayerInputRequested(bool waitStatus)
-        {
-            if (waitStatus)
-            {
-                ActionWindowRequested(m_playableCharacter);
-                //AudioSource.PlayOneShot(ATBFullSoundClip);
-                //ActionWidget.GetComponent<UI_ActionSelection_Widget>().Initialize(m_playableCharacter);
-            }
         }
         #endregion
     }

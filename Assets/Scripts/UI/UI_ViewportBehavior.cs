@@ -18,10 +18,12 @@ namespace RPGTest.UI
         private int m_maxButtons;
         private int m_currentIndex = 1;
         private int m_currentIndexOnScreen = 1;
+
+        private float m_initialYPos = 0.0f;
         // Start is called before the first frame update
         void Start()
         {
-
+            m_initialYPos = this.transform.position.y;
         }
 
         // Update is called once per frame
@@ -30,26 +32,17 @@ namespace RPGTest.UI
 
         }
 
-        public void Initialize(Vector3 position, int buttonCount, int deltaX)
+        public void Initialize(int buttonCount, int posCoeff)
         {
             m_currentIndex = 1;
             m_currentIndexOnScreen = 1;
             Scroll.value = 1;
             m_maxButtons = buttonCount;
 
-            var viewportTranform = ItemTemplate.GetComponent<RectTransform>();
+            var position = this.transform.localPosition;
+            position.y = (posCoeff * 40);
+            this.transform.localPosition = position;
 
-            var sizeDelta = viewportTranform.sizeDelta;
-            sizeDelta.y = sizeDelta.y * (m_maxButtons > MaxDisplayedCount ? MaxDisplayedCount : m_maxButtons);
-            sizeDelta.x = deltaX;
-            this.GetComponent<RectTransform>().sizeDelta = sizeDelta;
-
-            position.x += (viewportTranform.sizeDelta.x + 20) * 0.835f;
-            this.transform.position = position;
-
-            var scrollSize = Scroll.GetComponent<RectTransform>().sizeDelta;
-            scrollSize.y = sizeDelta.y;
-            Scroll.GetComponent<RectTransform>().sizeDelta = scrollSize;
 
             if(m_maxButtons > MaxDisplayedCount)
             {

@@ -95,16 +95,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13770696e21aa634393b2b3167915e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActionWidget: {fileID: 0}
   Name: {fileID: 1637590638803784240}
   LevelValue: {fileID: 6254993028440887154}
   HPBarWidget: {fileID: 2052587000729204112}
   ManaBarWidget: {fileID: 3874790787913462603}
   StaminaBarWidget: {fileID: 1067410517461542935}
   ATBBarWidget: {fileID: 1180274918640999321}
-  AudioSource: {fileID: 0}
-  ATBFullSoundClip: {fileID: 0}
-  StanceWidget: {fileID: 0}
+  StanceWidget: {fileID: 4881474041171221346}
 --- !u!1 &3755315718332098773
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,3 +1639,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2159539968771144621, guid: 3411c43f75d3e2f4a86817925b6b91e8, type: 3}
   m_PrefabInstance: {fileID: 8386079800511257421}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4881474041171221346 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4025987046278447151, guid: 3411c43f75d3e2f4a86817925b6b91e8, type: 3}
+  m_PrefabInstance: {fileID: 8386079800511257421}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d679fb4800e98547b7a5f0d52a15107, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -41,7 +41,7 @@ namespace RPGTest.Models.Entity
         #endregion
 
         public event WaitingForInputHandler PlayerInputRequested;
-        public delegate void WaitingForInputHandler(bool waitStatus);
+        public delegate void WaitingForInputHandler(PlayableCharacter character, bool waitStatus);
 
         public event ATBProgressHandler PlayerATBChanged;
         public delegate void ATBProgressHandler(float atbCharge);
@@ -56,7 +56,7 @@ namespace RPGTest.Models.Entity
         public IEnumerable<(Ability ability, bool usable)> GetAbilitiesOfType(AbilityType type)
         {
             List<(Ability ability, bool usable)> validAbilities = new List<(Ability ability, bool usable)>();
-            var abilities = Abilities.Select(a => AbilitiesCollector.TryGetAbility(a)).Where(a => a.AbilityType == type);
+            var abilities = Abilities.Select(a => AbilitiesCollector.TryGetAbility(a)).Where(a => type == AbilityType.Default || a.AbilityType == type);
 
             validAbilities = abilities.Select(a => (a, IsAbilityCastable(a))).ToList();
 
@@ -100,13 +100,13 @@ namespace RPGTest.Models.Entity
 
         private IEnumerator ActionChoice()
         {
-            PlayerInputRequested(true);
+            PlayerInputRequested(this, true);
             m_actionSelected = false;
             while (!m_actionSelected)
             {
                 yield return null;
             }
-            PlayerInputRequested(false);
+            PlayerInputRequested(this, false);
         }
 
         public void SetSelectedActions(List<EntityAction> entityActions)

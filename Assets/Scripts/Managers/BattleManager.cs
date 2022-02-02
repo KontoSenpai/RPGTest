@@ -199,19 +199,22 @@ namespace RPGTest.Managers
         }
         
         #region Events
-        private void PartyMember_OnPlayerInputRequested(bool waitStatus)
+        private void PartyMember_OnPlayerInputRequested(PlayableCharacter character, bool waitStatus)
         {
-            foreach (ActionSequence actionSequence in m_actionQueue)
+            if (waitStatus)
             {
-                if(!waitStatus)
-                {
-                    actionSequence.ResumeSequence();
-                }
-                else
+                foreach (ActionSequence actionSequence in m_actionQueue)
                 {
                     actionSequence.InterruptSequence();
                 }
-               
+                m_battleOverlay.ShowActionSelection(character);
+            }
+            else
+            {
+                foreach (ActionSequence actionSequence in m_actionQueue)
+                {
+                    actionSequence.ResumeSequence();
+                }
             }
         }
 
@@ -322,8 +325,6 @@ namespace RPGTest.Managers
 
         private void InitializeBattleUI()
         {
-            Debug.Log(m_battleOverlay);
-            Debug.Log(m_party);
             m_battleOverlay.Initialize(m_party);
         }
 
