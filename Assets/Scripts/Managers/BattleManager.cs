@@ -176,7 +176,7 @@ namespace RPGTest.Managers
         {
             foreach(EntityAction action in actionSequence.Actions)
             {
-                action.ActionStarted += Action_OnActionStarted;
+                action.ActionMessage += Action_OnActionMessage;
                 action.ActionDamageApplied += Action_OnDamageApplied;
             }
 
@@ -218,7 +218,7 @@ namespace RPGTest.Managers
             }
         }
 
-        private void Action_OnActionStarted(string actionString)
+        private void Action_OnActionMessage(string actionString)
         {
             StartCoroutine(m_battleOverlay.DisplayAction(actionString));
         }
@@ -227,7 +227,7 @@ namespace RPGTest.Managers
         {
             foreach(EntityAction action in actionSequence.Actions)
             {
-                action.ActionStarted -= Action_OnActionStarted;
+                action.ActionMessage -= Action_OnActionMessage;
                 action.ActionDamageApplied -= Action_OnDamageApplied;
             }
             actionSequence.ActionSequenceCompleted -= ActionSequence_OnSequenceCompleted;
@@ -272,7 +272,7 @@ namespace RPGTest.Managers
                 sprite.GetComponent<Animator>().SetBool("Healing", true);
             }
             
-            entity.ApplyDamage(attribute, value);
+            entity.ApplyResourceModification(attribute, value);
 
             if(!entity.IsAlive)
             {

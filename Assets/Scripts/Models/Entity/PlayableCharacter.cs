@@ -125,42 +125,10 @@ namespace RPGTest.Models.Entity
             CurrentMP = BaseAttributes.MaxMP;
         }
 
-        public override void ApplyDamage(Enums.Attribute attribute, int value)
+        public override void ApplyResourceModification(Enums.Attribute attribute, int value)
         {
-            base.ApplyDamage(attribute, value);
+            base.ApplyResourceModification(attribute, value);
             PlayerWidgetUpdated(attribute);
-        }
-
-        public bool IsAbilityCastable(Ability ability)
-        {
-            var enoughResources = true;
-
-            foreach (var castCost in ability.CastCost)
-            {
-                var cost = Math.Abs(castCost.Value);
-                switch (castCost.Key)
-                {
-                    case Enums.Attribute.MaxHP:
-                        if (GetAttribute(Attribute.HP) < cost)
-                        {
-                            return false;
-                        }
-                        break;
-                    case Enums.Attribute.MaxMP:
-                        if (GetAttribute(Attribute.MP) < cost)
-                        {
-                            return false;
-                        }
-                        break;
-                    case Enums.Attribute.MaxStamina:
-                        if (GetAttribute(Attribute.MaxStamina) < cost)
-                        {
-                            return false;
-                        }
-                        break;
-                }
-            }
-            return enoughResources;
         }
 
         public override float GetPowerRangeValue()

@@ -32,7 +32,6 @@ namespace RPGTest.UI.Battle
         public void Initialize(TargettingSystem ts)
         {
             m_targettingSystem = ts;
-
             ActionWidget.GetComponent<UI_ActionSelection_Widget>().PlayerTargetingRequested += m_targettingSystem.UI_BattleOverlay_PlayerTargetingRequested;
             ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastCountChanged += UI_BattleOverlay_MultiCastCountChanged;
             ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastActionSelected += UI_BattleOverlay_MultiCastActionSelected;

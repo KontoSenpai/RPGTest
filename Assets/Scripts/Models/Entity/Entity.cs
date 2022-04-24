@@ -89,11 +89,46 @@ namespace RPGTest.Models.Entity
             return PowerRange.GetValue();
         }
 
-        public virtual void ApplyDamage(Attribute attribute, int value)
+        public virtual bool IsAbilityCastable(Ability ability)
+        {
+
+            foreach (var castCost in ability.CastCost)
+            {
+                var cost = System.Math.Abs(castCost.Value);
+                switch (castCost.Key)
+                {
+                    case Attribute.MaxHP:
+                    case Attribute.HP:
+                        if (GetAttribute(Attribute.HP) < cost)
+                        {
+                            return false;
+                        }
+                        break;
+                    case Attribute.MaxMP:
+                    case Attribute.MP:
+                        if (GetAttribute(Attribute.MP) < cost)
+                        {
+                            return false;
+                        }
+                        break;
+                    case Attribute.MaxStamina:
+                    case Attribute.Stamina:
+                        if (GetAttribute(Attribute.Stamina) < cost)
+                        {
+                            return false;
+                        }
+                        break;
+                }
+            }
+            return true;
+        }
+
+        public virtual void ApplyResourceModification(Attribute attribute, int value)
         {
             switch (attribute)
             {
                 case Attribute.MaxHP:
+                case Attribute.HP:
                     CurrentHP += value;
                     if(CurrentHP < 0)
                     {
@@ -105,6 +140,7 @@ namespace RPGTest.Models.Entity
                     }
                     break;
                 case Attribute.MaxMP:
+                case Attribute.MP:
                     CurrentMP += value;
                     if (CurrentMP < 0)
                     {
@@ -116,6 +152,7 @@ namespace RPGTest.Models.Entity
                     }
                     break;
                 case Attribute.MaxStamina:
+                case Attribute.Stamina:
                     CurrentStamina += value;
                     if (CurrentStamina < 0)
                     {

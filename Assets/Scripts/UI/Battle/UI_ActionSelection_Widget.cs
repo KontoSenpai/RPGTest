@@ -76,7 +76,6 @@ namespace RPGTest.UI.Battle
 
         public void Awake()
         {
-            Debug.LogError("wesh");
             m_playerInput = new Controls();
             m_playerInput.UI.Navigate.performed += Navigate_performed;
             //m_playerInput.UI.CycleMenus.performed += PresetSwap_performed;
@@ -179,8 +178,8 @@ namespace RPGTest.UI.Battle
             ChangeMenuItemIndex(0);
             RootButtons[1].GetComponent<Button>().Select();
 
-            //m_isActive = true;
-            //m_waitingForTarget = false;
+            m_isActive = true;
+            m_waitingForTarget = false;
         }
 
         private void CleanWidget()
@@ -251,7 +250,7 @@ namespace RPGTest.UI.Battle
                 m_eatOneInput = false;
                 return;
             }
-            if(!m_waitingForTarget && m_isActive)
+            if (!m_waitingForTarget && m_isActive)
             {
                 m_waitingForTarget = true;
                 m_selectedActionId = actionId;
@@ -262,13 +261,21 @@ namespace RPGTest.UI.Battle
                     case ActionType.Ability:
                         m_selectedActionType = ActionType.Ability;
                         var ability = AbilitiesCollector.TryGetAbility(actionId);
-                        defaultTargetting = ability.DefaultTarget;
+                        if (ability.DefaultTarget != TargetType.None)
+                        {
+                            defaultTargetting = ability.DefaultTarget;
+                        }
+
                         availableTargetting = ability.TargetTypes;
                         break;
                     case ActionType.Item:
                         m_selectedActionType = ActionType.Item;
                         var item = (Consumable)ItemCollector.TryGetItem(actionId);
                         defaultTargetting = item.DefaultTarget;
+                        if (item.DefaultTarget != TargetType.None)
+                        {
+                            defaultTargetting = item.DefaultTarget;
+                        }
                         availableTargetting = item.TargetTypes;
                         break;
                 }

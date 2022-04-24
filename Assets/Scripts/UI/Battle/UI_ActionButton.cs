@@ -3,7 +3,6 @@ using RPGTest.Managers;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TMPro;
@@ -14,11 +13,15 @@ namespace RPGTest.UI.Battle
 {
     public class UI_ActionButton : MonoBehaviour
     {
-        public TextMeshProUGUI ActionName;
-        public TextMeshProUGUI ActionCost;
+        [SerializeField] private TextMeshProUGUI ActionName;
+        [SerializeField] private TextMeshProUGUI ActionCost;
+
+        [SerializeField] private Color UnusableColor;
+        [SerializeField] private Color UnusableSelectedColor;
 
         private ActionType m_type;
         private string m_actionId;
+        private bool m_interactable;
 
         public event ActionSelectedHandler PlayerActionSelected;
         public delegate void ActionSelectedHandler(ActionType type, string actionId);
@@ -37,7 +40,7 @@ namespace RPGTest.UI.Battle
         {
             m_type = type;
             m_actionId = action.id;
-            GetComponent<Button>().interactable = action.interactable;
+            //GetComponent<Button>().interactable = action.interactable;
             switch (m_type)
             {
                 case ActionType.Ability:
@@ -53,7 +56,7 @@ namespace RPGTest.UI.Battle
                                 case Enums.Attribute.HP:
                                 case Enums.Attribute.MP:
                                 case Enums.Attribute.Stamina:
-                                    castCost.AppendLine($"{Math.Abs(cost.Value)}% {(cost.Key.ToString().Replace("Current", string.Empty))}");
+                                    castCost.AppendLine($"{Math.Abs(cost.Value)} {(cost.Key.ToString().Replace("Current", string.Empty))}");
                                     break;
                                 case Enums.Attribute.MaxHP:
                                 case Enums.Attribute.MaxMP:
@@ -63,6 +66,18 @@ namespace RPGTest.UI.Battle
                             }
                         }
                         ActionCost.text = castCost.ToString().Trim();
+                    }
+                    Debug.Log(action.interactable);
+                    m_interactable = action.interactable;
+
+                    if (!m_interactable)
+                    {
+                        var color = this.GetComponent<Button>().colors;
+                        color.normalColor = UnusableColor;
+                        color.selectedColor = UnusableSelectedColor;
+                        color.pressedColor = UnusableSelectedColor;
+
+                        this.GetComponent<Button>().colors = color;
                     }
 
                     ActionCost.enabled = !string.IsNullOrEmpty(ActionCost.text);
@@ -84,7 +99,10 @@ namespace RPGTest.UI.Battle
 
         public void Select()
         {
-            PlayerActionSelected(m_type, m_actionId);
+            if (m_interactable)
+            {
+                PlayerActionSelected(m_type, m_actionId);
+            }
         }
     }
 }

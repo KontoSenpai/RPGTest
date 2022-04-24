@@ -150,6 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActionName: {fileID: 4142681068740075916}
   ActionCost: {fileID: 7185954668550028322}
+  UnusableColor: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 1}
+  UnusableSelectedColor: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
 --- !u!114 &8967885219073513970
 MonoBehaviour:
   m_ObjectHideFlags: 0
