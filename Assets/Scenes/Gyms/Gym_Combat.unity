@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &18144979 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3564063074787111523, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
-  m_PrefabInstance: {fileID: 1739146011}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &462485357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -205,11 +200,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 412f9fd6e0588d94cbadf42babf654f0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17279ac83768be14aaef0387b46369fa, type: 3}
---- !u!1 &689939437 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1781481139815316590, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
-  m_PrefabInstance: {fileID: 1739146011}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &811669761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,6 +1040,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -85
       objectReference: {fileID: 0}
+    - target: {fileID: 3564063074787111523, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3637211848990696527, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.55895996
@@ -1778,14 +1772,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -40
       objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: RewardPanel
-      value: 
-      objectReference: {fileID: 18144979}
-    - target: {fileID: 0}
-      propertyPath: BattleHeader
-      value: 
-      objectReference: {fileID: 689939437}
     - target: {fileID: 6093373843533212048, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_IsActive
       value: 0

@@ -10,7 +10,7 @@ namespace RPGTest.Managers
     public class PartyManager : MonoBehaviour
     {
         public List<GameObject> BattleModels;
-        private static readonly int m_activePartyThreshold = 3;
+        public static readonly int m_activePartyThreshold = 3;
         private static readonly int m_partyMembersArraySize = 11;
         private PlayableCharacter[] m_partyMembers = new PlayableCharacter[m_partyMembersArraySize];
 
