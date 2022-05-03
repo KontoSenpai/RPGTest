@@ -103,16 +103,17 @@ namespace RPGTest.UI.Battle
             StartCoroutine(Fade(true, 1));
         }
 
-        public IEnumerator DisplayAction(string actionString)
+        public IEnumerator DisplayMessage(string actionString, float duration = -1.0f)
         {
             BattleHeader.SetActive(true);
             HeaderString.text = actionString;
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(duration > - 1.0f ? duration : 3.0f);
             BattleHeader.SetActive(false);
         }
 
         public void DisplayRewards(int experience, Dictionary<string, int> items, int gold)
         {
+            Clean();  
             RewardPanel.SetActive(true);
             RewardPanel.GetComponent<UI_BattleRewards>().DisplayRewards(experience, items, gold);
         }
@@ -123,6 +124,7 @@ namespace RPGTest.UI.Battle
             {
                 if(widget.activeInHierarchy)
                     widget.GetComponent<UI_PartyMember_Widget>().DisableEvents();
+                widget.SetActive(false);
             }
         }
 

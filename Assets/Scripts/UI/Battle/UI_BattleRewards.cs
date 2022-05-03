@@ -71,7 +71,7 @@ namespace RPGTest.UI.Battle
             List<PlayableCharacter> inactiveMembers = m_partyManager.GetInactivePartyMembers();
             for (int i = 0; i < inactiveMembers.Count - activeMembers.Count; i++)
             {
-                InactiveMembers[i].SetActive(activeMembers[i] != null);
+                InactiveMembers[i].SetActive(inactiveMembers[i] != null);
                 if (InactiveMembers[i].activeInHierarchy)
                 {
                     UI_Member_Widget widgetScript = InactiveMembers[i].GetComponent<UI_Member_Widget>();
@@ -106,6 +106,10 @@ namespace RPGTest.UI.Battle
                 if(m_ActiveGain)
                 {
                     foreach(PlayableCharacter member in m_partyManager.GetExistingActivePartyMembers().Where(p => p.IsAlive))
+                    {
+                        member.AddExperience(m_expTick);
+                    }
+                    foreach(PlayableCharacter member in m_partyManager.GetExistingInactivePartyMembers().Where(p => p.IsAlive))
                     {
                         member.AddExperience(m_expTick);
                     }

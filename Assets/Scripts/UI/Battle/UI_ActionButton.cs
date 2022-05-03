@@ -67,7 +67,6 @@ namespace RPGTest.UI.Battle
                         }
                         ActionCost.text = castCost.ToString().Trim();
                     }
-                    Debug.Log(action.interactable);
                     m_interactable = action.interactable;
 
                     if (!m_interactable)

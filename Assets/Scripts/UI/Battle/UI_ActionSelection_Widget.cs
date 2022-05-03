@@ -99,7 +99,6 @@ namespace RPGTest.UI.Battle
                         break;
                     case MenuType.Abilities:
                     case MenuType.Items:
-                        Debug.Log("Cancel");
                         DepopulateActionViewport();
                         m_currentMenuType = MenuType.Root;
                         SetCurrentButtonInteractable(RootButtons, true);
@@ -180,6 +179,7 @@ namespace RPGTest.UI.Battle
 
             m_isActive = true;
             m_waitingForTarget = false;
+            m_playerInput.Enable();
         }
 
         private void CleanWidget()

@@ -8,10 +8,14 @@ namespace RPGTest.Managers
 {
     public class UnitSpawner : MonoBehaviour
     {
-        public string SpawnerId;
-        public GameObject enemyObject;
-        public int MaxUnits = 3;
-        public int SpawnRadius = 10;
+        [SerializeField] private string SpawnerId;
+        [SerializeField] private GameObject enemyObject;
+        [SerializeField] private int MaxUnits = 3;
+        [SerializeField] private int SpawnRadius = 10;
+
+        [SerializeField] private Enums.EncounterType EncounterType;
+        [SerializeField] private string SpecialText;
+        [SerializeField] private AudioClip BGM;
 
         private List<GameObject> m_spawnedGroups = new List<GameObject>();
         private EnemySpawner m_enemySpawner;
@@ -48,7 +52,7 @@ namespace RPGTest.Managers
         private GameObject SpawnObject()
         {
             var group = Instantiate(enemyObject);
-            group.GetComponent<InteractibleEnemy>().Initialize(GetGroup());
+            group.GetComponent<InteractibleEnemy>().Initialize(GetGroup(), EncounterType, SpecialText, BGM);
             var groupPosition = new Vector3(this.transform.position.x + Random.Range(-SpawnRadius, SpawnRadius), this.transform.position.y, this.transform.position.z + Random.Range(-SpawnRadius, SpawnRadius));
             if (Physics.Raycast(groupPosition, Vector3.down, out RaycastHit raycastHit, 5.0f))
             {

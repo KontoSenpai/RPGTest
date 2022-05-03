@@ -74,12 +74,18 @@ namespace RPGTest.UI.Battle
         {
             switch(attribute)
             {
+                case Attribute.HPPercentage:
+                case Attribute.HP:
                 case Attribute.MaxHP:
                     HPBarWidget.UpdateValues((int)m_playableCharacter.GetAttribute(Attribute.HP), (int)m_playableCharacter.GetAttribute(Attribute.MaxHP));
                     break;
+                case Attribute.MPPercentage:
+                case Attribute.MP:
                 case Attribute.MaxMP:
                     ManaBarWidget.UpdateValues((int)m_playableCharacter.GetAttribute(Attribute.MP), (int)m_playableCharacter.GetAttribute(Attribute.MaxMP));
                     break;
+                case Attribute.StaminaPercentage:
+                case Attribute.Stamina:
                 case Attribute.MaxStamina:
                     StaminaBarWidget.UpdateValues((int)m_playableCharacter.GetAttribute(Attribute.Stamina), (int)m_playableCharacter.GetAttribute(Attribute.MaxStamina));
                     break;

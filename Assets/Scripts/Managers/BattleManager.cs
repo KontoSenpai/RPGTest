@@ -1,11 +1,14 @@
 ﻿using RPGTest.Battle;
+using RPGTest.Collectors;
 using RPGTest.Controllers;
+using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.UI.Battle;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -23,6 +26,8 @@ namespace RPGTest.Managers
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
         private InventoryManager m_inventoryManager => FindObjectOfType<GameManager>().InventoryManager;
+
+        private Dictionary<Enemy, int> m_enemiesMap;
 
         private List<PlayableCharacter> m_party;
         private List<Enemy> m_enemies;
@@ -43,19 +48,14 @@ namespace RPGTest.Managers
             }
         }
 
-        public void Initialize(List<Enemy> enemies, Vector3 position)
+        public void Initialize(List<EnemyReference> enemies, Vector3 position, Enums.EncounterType encounterType, string specialText, AudioClip BGM)
         {
-            m_party = m_partyManager.GetActivePartyMembers();
-            m_enemies = enemies;
             m_waitingForUserInput = false;
 
-            m_entities = new List<Entity>();
-            m_entities.AddRange(m_enemies);
-            m_entities.AddRange(m_party);
+            m_enemiesMap = EnemiesCollector.EnemyReferencesToEnemies(enemies);
+            m_party = m_partyManager.GetActivePartyMembers();
 
-            Debug.Log($"{string.Join(", ", m_party.Select(x => x.Name))}");
-            Debug.Log($"VERSUS");
-            Debug.Log($"{string.Join(",", m_enemies.Select(x => x.Name))}");
+            InitializeEntities();
 
             Camera camera = FindObjectOfType<Camera>();
             Character.SetActive(false);
@@ -63,9 +63,9 @@ namespace RPGTest.Managers
             camera.transform.localEulerAngles = new Vector3(20, 80, 0);
             camera.gameObject.GetComponent<NoClippingCameraController>().enabled = false;
 
-            foreach (var enemy in enemies)
+            foreach (var enemy in m_enemies)
             {
-                enemy.BattleModel = InstantiateModel(enemy, position, (1 + (enemy.FrontRow ? 0 : 1)), enemies.Count > 1 ? enemies.IndexOf(enemy) - 1 : -2);
+                enemy.BattleModel = InstantiateModel(enemy, position, (1 + (enemy.FrontRow ? 0 : 1)), m_enemies.Count > 1 ? m_enemies.IndexOf(enemy) - 1 : -2);
             }
 
             foreach (var partyMember in m_party)
@@ -76,6 +76,7 @@ namespace RPGTest.Managers
             }
 
             InitializeBattleUI();
+            DisplayEncounterString(encounterType, specialText);
             TargettingSystem.Initialize(m_party, m_enemies);
             
             m_battleCoroutine = StartCoroutine(BattleLogic());
@@ -220,7 +221,7 @@ namespace RPGTest.Managers
 
         private void Action_OnActionMessage(string actionString)
         {
-            StartCoroutine(m_battleOverlay.DisplayAction(actionString));
+            StartCoroutine(m_battleOverlay.DisplayMessage(actionString));
         }
 
         private void ActionSequence_OnSequenceCompleted(ActionSequence actionSequence)
@@ -326,6 +327,62 @@ namespace RPGTest.Managers
         private void InitializeBattleUI()
         {
             m_battleOverlay.Initialize(m_party);
+        }
+
+        private void InitializeEntities()
+        {
+            m_enemies = GetEnemies().ToList();
+
+
+            m_entities = new List<Entity>();
+            m_entities.AddRange(m_enemies);
+            m_entities.AddRange(m_party);
+        }
+        private IEnumerable<Enemy> GetEnemies()
+        {
+            foreach (KeyValuePair<Enemy, int> pair in m_enemiesMap)
+            {
+                for(int i = 0; i < pair.Value; i++)
+                {
+                    char letter = (char)('A' + (char)(i % 27));
+                    yield return new Enemy(pair.Key, pair.Value == 1 ? null : letter.ToString());
+                }
+            }
+        }
+
+        private void DisplayEncounterString(Enums.EncounterType encounterType, string specialText)
+        {
+            StringBuilder builder = new StringBuilder();
+            bool plural = false;
+            foreach (KeyValuePair<Enemy, int> pair in m_enemiesMap)
+            {
+                if(pair.Value == 1)
+                {
+                    if (builder.ToString() != "") { // Already added an entry
+                        plural = true;
+                    }
+                    builder.Append($"A {pair.Key.Name} ");
+                } else
+                {
+                    builder.Append($"{pair.Value} {pair.Key.Name}s ");
+                    plural = true;
+                }
+
+            }
+
+
+            switch (encounterType) {
+                case Enums.EncounterType.Normal:
+                    if(specialText != null)
+                    {
+                        builder.Append($"made {( plural ? "their" : "its")} apparition");
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            StartCoroutine(m_battleOverlay.DisplayMessage(builder.ToString(), 1.5f));
         }
 
         /// <summary>

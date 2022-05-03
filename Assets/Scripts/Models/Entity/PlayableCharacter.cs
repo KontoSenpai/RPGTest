@@ -186,8 +186,6 @@ namespace RPGTest.Models.Entity
             CurrentExperience = CurrentExperience - NextLevelExperience;
             Level++;
 
-            Debug.Log($"{Name } Levelled up to level {Level}");
-
             CurrentHP += AttributesGrowth.MaxHP;
             BaseAttributes.MaxHP += AttributesGrowth.MaxHP;
 
