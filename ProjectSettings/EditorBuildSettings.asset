@@ -12,4 +12,4 @@ EditorBuildSettings:
     path: Assets/Scenes/Gyms/Gym_Climbable.unity
     guid: 86f8ba55462154f48bf7fe441c3bc9ef
   m_configObjects:
-    com.unity.input.settings: {fileID: 11400000, guid: 62be4f1b01f61c943828201478174892, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: 39839a98a2a488b4c85fb862a7c45a38, type: 2}

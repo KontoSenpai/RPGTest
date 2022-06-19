@@ -1,6 +1,7 @@
 ﻿using RPGTest.Models;
 using RPGTest.Models.Banks;
 using RPGTest.Models.Entity;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -31,6 +32,26 @@ namespace RPGTest.Collectors
                 return enemy;
             }
             return null;
+        }
+
+        public static Dictionary<Enemy, int> EnemyReferencesToEnemies(List<EnemyReference> references)
+        {
+            Dictionary<Enemy, int> enemiesCount = new Dictionary<Enemy, int>();
+
+            foreach (var refefence in references)
+            {
+                var model = TryGetEnemy(refefence.EnemyID);
+
+                if (enemiesCount.ContainsKey(model))
+                {
+                    enemiesCount[model] += 1;
+                }
+                else
+                {
+                    enemiesCount.Add(model, 1);
+                }
+            }
+            return enemiesCount;
         }
     }
 }

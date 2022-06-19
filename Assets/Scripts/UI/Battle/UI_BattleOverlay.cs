@@ -3,6 +3,7 @@ using RPGTest.Models.Entity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,12 +11,16 @@ namespace RPGTest.UI.Battle
 {
     public class UI_BattleOverlay : UI_Base
     {
-        public GameObject BattleHeader;
-        public GameObject RewardPanel;
-        public Text HeaderString;
-        public GameObject[] PartyMemberWidgets;
+        [SerializeField] private GameObject ActionWidget;
+        [SerializeField] private GameObject[] MultiActionPanels;
 
-        public GameObject[] MultiActionPanels;
+        [SerializeField] private GameObject BattleHeader;
+        [SerializeField] private GameObject RewardPanel;
+        [SerializeField] private TextMeshProUGUI HeaderString;
+        [SerializeField] private GameObject[] PartyMemberWidgets;
+
+        [SerializeField] private AudioSource AudioSource;
+        [SerializeField] private AudioClip ATBFilledSoundNotification;
 
         private TargettingSystem m_targettingSystem;
 
@@ -27,19 +32,26 @@ namespace RPGTest.UI.Battle
         public void Initialize(TargettingSystem ts)
         {
             m_targettingSystem = ts;
-
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().PlayerTargetingRequested += m_targettingSystem.UI_BattleOverlay_PlayerTargetingRequested;
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastCountChanged += UI_BattleOverlay_MultiCastCountChanged;
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastActionSelected += UI_BattleOverlay_MultiCastActionSelected;
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().ResetMultiCastStateRequested += UI_BattleOverlay_ResetMultiCastStateRequested;
+            m_targettingSystem.PlayerTargettingDone += ActionWidget.GetComponent<UI_ActionSelection_Widget>().ValidateTargetInformation;
+            
             foreach (var widget in PartyMemberWidgets)
             {
                 var widgetScript = widget.GetComponent<UI_PartyMember_Widget>();
-                widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().PlayerTargetingRequested += m_targettingSystem.UI_BattleOverlay_PlayerTargetingRequested;
-                widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastCountChanged += UI_BattleOverlay_MultiCastCountChanged;
-                widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().MultiCastActionSelected += UI_BattleOverlay_MultiCastActionSelected;
-                widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().ResetMultiCastStateRequested += UI_BattleOverlay_ResetMultiCastStateRequested;
-               m_targettingSystem.PlayerTargettingDone += widgetScript.ActionWidget.GetComponent<UI_ActionSelection_Widget>().ValidateTargetInformation;
+
                 widget.SetActive(false);
             }
 
             RewardPanel.GetComponent<UI_BattleRewards>().UIClosed += (s, e) => RewardPanelClosed();
+        }
+
+        public void ShowActionSelection(PlayableCharacter character)
+        {
+            AudioSource.PlayOneShot(ATBFilledSoundNotification);
+            ActionWidget.GetComponent<UI_ActionSelection_Widget>().Initialize(character);
         }
 
         private void UI_BattleOverlay_ResetMultiCastStateRequested()
@@ -69,6 +81,8 @@ namespace RPGTest.UI.Battle
             script.SetActionName(actionName);
         }
 
+
+
         public void Initialize(List<PlayableCharacter> party)
         {
             m_party = party;
@@ -89,16 +103,17 @@ namespace RPGTest.UI.Battle
             StartCoroutine(Fade(true, 1));
         }
 
-        public IEnumerator DisplayAction(string actionString)
+        public IEnumerator DisplayMessage(string actionString, float duration = -1.0f)
         {
             BattleHeader.SetActive(true);
             HeaderString.text = actionString;
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(duration > - 1.0f ? duration : 3.0f);
             BattleHeader.SetActive(false);
         }
 
         public void DisplayRewards(int experience, Dictionary<string, int> items, int gold)
         {
+            Clean();  
             RewardPanel.SetActive(true);
             RewardPanel.GetComponent<UI_BattleRewards>().DisplayRewards(experience, items, gold);
         }
@@ -109,6 +124,7 @@ namespace RPGTest.UI.Battle
             {
                 if(widget.activeInHierarchy)
                     widget.GetComponent<UI_PartyMember_Widget>().DisableEvents();
+                widget.SetActive(false);
             }
         }
 

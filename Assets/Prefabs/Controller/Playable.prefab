@@ -1049,7 +1049,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6110324029549401878}
-  - component: {fileID: 6110324029549401879}
+  - component: {fileID: 5093205289990413426}
   m_Layer: 0
   m_Name: Playable
   m_TagString: Player
@@ -1073,7 +1073,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6110324029549401879
+--- !u!114 &5093205289990413426
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1103,7 +1103,7 @@ MonoBehaviour:
       - m_Target: {fileID: 6110324030640069647}
         m_TargetAssemblyTypeName: RPGTest.Controllers.PlayerController, RPGTest.Core
         m_MethodName: Move
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1117,9 +1117,10 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4056457219850733990}
-        m_TargetAssemblyTypeName: NoClippingCameraController, RPGTest.Core
+        m_TargetAssemblyTypeName: RPGTest.Controllers.NoClippingCameraController,
+          RPGTest.Core
         m_MethodName: Look
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1131,83 +1132,23 @@ MonoBehaviour:
     m_ActionId: 889a4210-4e8e-45a0-a6ec-3d9c240926ed
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6110324030640069647}
-        m_TargetAssemblyTypeName: RPGTest.Controllers.PlayerController, RPGTest.Core
-        m_MethodName: Interact
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 24be5215-6228-4efa-9a18-80f41721b362
     m_ActionName: Player/Interact[/Keyboard/e]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6110324030640069647}
-        m_TargetAssemblyTypeName: RPGTest.Controllers.PlayerController, RPGTest.Core
-        m_MethodName: Cancel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 43bfed54-85a9-4193-8f1e-b1213747ae20
     m_ActionName: Player/Cancel[/Keyboard/q]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6110324030640069647}
-        m_TargetAssemblyTypeName: RPGTest.Controllers.PlayerController, RPGTest.Core
-        m_MethodName: Jump
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: e21fa577-2e5b-41c7-abb7-e4c68204c25a
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6110324030640069647}
-        m_TargetAssemblyTypeName: RPGTest.Controllers.PlayerController, RPGTest.Core
-        m_MethodName: OpenMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 3439e4e1-7d0c-45db-a1b7-f5eac12d0ddf
     m_ActionName: Player/OpenMenu[/Keyboard/tab]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6110324030640069647}
-        m_TargetAssemblyTypeName: RPGTest.Controllers.PlayerController, RPGTest.Core
-        m_MethodName: DebugOperation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 445de831-9e0f-4def-a247-25e23a065188
     m_ActionName: Player/Debug[/Keyboard/g]
   - m_PersistentCalls:
@@ -1232,25 +1173,29 @@ MonoBehaviour:
     m_ActionName: UI/Click[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: fc827537-6576-40c7-bfcd-d6b64be80248
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: ad22053e-a58a-4494-8433-7deb65f75c26
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: f407f56c-be66-4411-a6ba-f2313cafd55b
     m_ActionName: UI/RightClick[/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 4420ee44-5b1c-43ca-bf72-7743c499fd0a
     m_ActionName: UI/CycleMenus[/Keyboard/1,/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0bba1d7d-166f-40df-bd94-c133532ca8ee
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 30895060-564e-4be5-a485-80629fe76046
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3fa05128-5176-4ff6-885e-69d34ee84a69
+    m_ActionName: UI/SubAction1[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 6110324030679321460}
+  m_Camera: {fileID: 0}
 --- !u!1 &6110324030640069642
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,14 +1299,14 @@ MonoBehaviour:
   JumpHeight: 2
   DashDistance: 5
   WalkScale: 0.33
+  Gravity: -9.81
+  Drag: {x: 0, y: 0, z: 0}
   Height: 0.5
   GroundDistance: 0.5
   MaxAngle: 45
-  Gravity: -9.81
   GroundLayer:
     serializedVersion: 2
     m_Bits: 512
-  Drag: {x: 0, y: 0, z: 0}
 --- !u!1 &6110324030679321458
 GameObject:
   m_ObjectHideFlags: 0

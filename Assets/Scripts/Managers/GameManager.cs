@@ -224,11 +224,11 @@ namespace RPGTest.Managers
 
             PartyManager.TryAddPartyMember("PC0001");
             PartyManager.TryAddPartyMember("PC0002");
-            /*
+            
             PartyManager.TryAddPartyMember("PC0003");
             PartyManager.TryAddPartyMember("PC0004");
             PartyManager.TryAddPartyMember("PC0005");
-            */
+            
 
             List<Item> removedEquipments;
             var partyMember = PartyManager.TryGetPartyMember("PC0001");

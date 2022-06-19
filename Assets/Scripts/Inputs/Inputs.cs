@@ -135,11 +135,11 @@ namespace RPGTest.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""faa0e63c-1bff-4273-ba7f-74d4e15e355c"",
-                    ""path"": ""<Gamepad>/leftStick"",
+                    ""id"": ""a6aa767c-df45-48be-aca8-f401ab999812"",
+                    ""path"": ""<DualShockGamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""PS"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -157,11 +157,11 @@ namespace RPGTest.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3191fc98-0199-4a80-b55e-5a9429689f60"",
-                    ""path"": ""<Gamepad>/rightStick"",
+                    ""id"": ""8118fa15-3398-49ec-b537-6c82810fea32"",
+                    ""path"": ""<DualShockGamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=0.8,y=0.6),StickDeadzone"",
-                    ""groups"": "";Gamepad"",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -179,11 +179,11 @@ namespace RPGTest.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e3cfc54d-1b82-4d8a-9440-b6cf9e0ef761"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""id"": ""9eabe453-5789-4fda-9a0b-ef3e7aa98d39"",
+                    ""path"": ""<DualShockGamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""PS"",
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -205,7 +205,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<DualShockGamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""PS"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -234,11 +234,11 @@ namespace RPGTest.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""79cef13a-85eb-4f69-aea6-8c9e501ce662"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""id"": ""a3bfda14-da1c-41e3-bf0d-6f4eb1616396"",
+                    ""path"": ""<DualShockGamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""PS"",
                     ""action"": ""OpenMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -278,11 +278,11 @@ namespace RPGTest.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9c97bd6e-f527-4269-903b-64c313979a73"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""8ce1136c-ce79-4f51-a295-99e50634fa27"",
+                    ""path"": ""<DualShockGamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""PS"",
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -297,6 +297,14 @@ namespace RPGTest.Inputs
                     ""name"": ""Navigate"",
                     ""type"": ""Value"",
                     ""id"": ""ed6440b1-c187-4a66-beee-d2faad4ff1a0"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Secondary Navigate"",
+                    ""type"": ""Value"",
+                    ""id"": ""0f43e7e5-377b-4bc0-982b-3804666550c1"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -336,18 +344,18 @@ namespace RPGTest.Inputs
                 {
                     ""name"": ""ScrollWheel"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""fc827537-6576-40c7-bfcd-d6b64be80248"",
+                    ""id"": ""0bba1d7d-166f-40df-bd94-c133532ca8ee"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""MiddleClick"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""ad22053e-a58a-4494-8433-7deb65f75c26"",
-                    ""expectedControlType"": """",
+                    ""id"": ""30895060-564e-4be5-a485-80629fe76046"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""RightClick"",
@@ -364,20 +372,17 @@ namespace RPGTest.Inputs
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""SubAction1"",
+                    ""type"": ""Button"",
+                    ""id"": ""3fa05128-5176-4ff6-885e-69d34ee84a69"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""41d59e2d-fdc7-49dd-9c7a-13f95d7946a0"",
-                    ""path"": ""<Gamepad>/dpad"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""c21d0c47-c140-4268-8427-d2ec504bfcf9"",
@@ -401,31 +406,9 @@ namespace RPGTest.Inputs
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""4b6caa09-734c-4c1b-bc40-cf055fb4fdf7"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""down"",
                     ""id"": ""86a2bd27-b34c-40b6-a303-aa11aa1c6446"",
                     ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""45ab306d-1a6e-4bd3-bafe-e660be689ba8"",
-                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse;Keyboard"",
@@ -445,17 +428,6 @@ namespace RPGTest.Inputs
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""left"",
-                    ""id"": ""3555c869-756c-43f2-a75e-e2bd144dcecd"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""right"",
                     ""id"": ""d8a72cd1-f4f2-4fb0-830d-515c90d3bb6a"",
                     ""path"": ""<Keyboard>/d"",
@@ -467,79 +439,24 @@ namespace RPGTest.Inputs
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""right"",
-                    ""id"": ""f587790f-b6a6-4c0d-a48d-0ac3a3336d1a"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""name"": """",
+                    ""id"": ""0884a79e-6ca9-4230-b1a6-a586c4fb56de"",
+                    ""path"": ""<DualShockGamepad>/dpad"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""PS"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""f855e01e-36fe-40e5-a238-97a2c7a75bf5"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Up"",
-                    ""id"": ""a2baf0c7-5e93-49f3-8760-ccbb83453d81"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Down"",
-                    ""id"": ""eeb8ed05-bfac-4064-8693-06a34028beca"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Left"",
-                    ""id"": ""cb7fd4e8-c81f-41fd-b176-a4d24942edeb"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Right"",
-                    ""id"": ""4d51d9de-a096-452b-b05e-22cc2fe7456c"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
-                    ""id"": ""51fbb9ef-419f-4a0d-8411-81dad5510e00"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""id"": ""c086cebc-103e-481a-86ac-9806a19749ca"",
+                    ""path"": ""<DualShockGamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Submit"",
+                    ""groups"": ""PS"",
+                    ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -556,12 +473,12 @@ namespace RPGTest.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3ea39fdb-02b5-4f13-8fd5-6b1421939ae1"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""afa09e30-459b-4ca8-8c9d-72da587884a9"",
+                    ""path"": ""<DualShockGamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cancel"",
+                    ""groups"": ""PS"",
+                    ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -578,11 +495,22 @@ namespace RPGTest.Inputs
                 },
                 {
                     ""name"": """",
+                    ""id"": ""c132f1e4-d404-4ce6-b69e-9b4df7a412dd"",
+                    ""path"": ""<DualShockGamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""afc409aa-58da-4eec-ae97-e6d3a9c9347a"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse;Keyboard"",
                     ""action"": ""Point"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -600,45 +528,12 @@ namespace RPGTest.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c22d1aa2-0705-406f-b05e-5d45df876ac7"",
-                    ""path"": ""<Touchscreen>/touch*/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""Point"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""57a7b1c7-eab3-4efc-bbd2-9a98d7006c65"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9ac9b3dd-dfaf-4250-bf07-4c3e82fe7f33"",
-                    ""path"": ""<Mouse>/scroll"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ScrollWheel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9370b47e-8572-436e-ab36-616e5080ad9a"",
-                    ""path"": ""<Mouse>/middleButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""MiddleClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -652,6 +547,39 @@ namespace RPGTest.Inputs
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""bf019c1f-af68-47b6-b4f1-022b054295c8"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CycleMenus"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""f97d19bc-51c1-4ba9-820a-c926698e31eb"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""CycleMenus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""a0caa3db-a222-489e-92d8-77b544b50cd8"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""CycleMenus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""Gamepad"",
@@ -687,37 +615,114 @@ namespace RPGTest.Inputs
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""d24622ed-6c53-445c-9047-3f8e934c2bc8"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SubAction1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7b0c5c7-7811-476b-996f-8f4aaebd388e"",
+                    ""path"": ""<DualShockGamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""SubAction1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4dbe247f-e7ef-4bb6-8fc8-e3b358589c83"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ScrollWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3090be3b-ce5b-445e-b7c7-2e87f31a51c4"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MiddleClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
                     ""name"": ""Keyboard"",
-                    ""id"": ""bf019c1f-af68-47b6-b4f1-022b054295c8"",
-                    ""path"": ""1DAxis"",
+                    ""id"": ""6b2256a7-c2d4-4a44-b601-9d9265437aa2"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CycleMenus"",
+                    ""action"": ""Secondary Navigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""f97d19bc-51c1-4ba9-820a-c926698e31eb"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""name"": ""up"",
+                    ""id"": ""09a962a1-7a08-4f31-af03-fa5cecd0daca"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""CycleMenus"",
+                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""action"": ""Secondary Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""a0caa3db-a222-489e-92d8-77b544b50cd8"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""name"": ""down"",
+                    ""id"": ""0a525932-355b-4784-b403-54ebf9701a13"",
+                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""CycleMenus"",
+                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""action"": ""Secondary Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""6a62db7d-0899-4de5-a643-ad18b7977dc6"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""action"": ""Secondary Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""9c9e5453-2aac-4172-b1f6-1c87b52dafb7"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""action"": ""Secondary Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4a2c5db-46a6-46f9-96c2-728d28a498d0"",
+                    ""path"": ""<DualShockGamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""Secondary Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -749,6 +754,17 @@ namespace RPGTest.Inputs
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PS"",
+            ""bindingGroup"": ""PS"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<DualShockGamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -764,6 +780,7 @@ namespace RPGTest.Inputs
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
+            m_UI_SecondaryNavigate = m_UI.FindAction("Secondary Navigate", throwIfNotFound: true);
             m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
             m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
             m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
@@ -772,6 +789,7 @@ namespace RPGTest.Inputs
             m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_CycleMenus = m_UI.FindAction("CycleMenus", throwIfNotFound: true);
+            m_UI_SubAction1 = m_UI.FindAction("SubAction1", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -903,6 +921,7 @@ namespace RPGTest.Inputs
         private readonly InputActionMap m_UI;
         private IUIActions m_UIActionsCallbackInterface;
         private readonly InputAction m_UI_Navigate;
+        private readonly InputAction m_UI_SecondaryNavigate;
         private readonly InputAction m_UI_Submit;
         private readonly InputAction m_UI_Cancel;
         private readonly InputAction m_UI_Point;
@@ -911,11 +930,13 @@ namespace RPGTest.Inputs
         private readonly InputAction m_UI_MiddleClick;
         private readonly InputAction m_UI_RightClick;
         private readonly InputAction m_UI_CycleMenus;
+        private readonly InputAction m_UI_SubAction1;
         public struct UIActions
         {
             private @Controls m_Wrapper;
             public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
+            public InputAction @SecondaryNavigate => m_Wrapper.m_UI_SecondaryNavigate;
             public InputAction @Submit => m_Wrapper.m_UI_Submit;
             public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
             public InputAction @Point => m_Wrapper.m_UI_Point;
@@ -924,6 +945,7 @@ namespace RPGTest.Inputs
             public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
             public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
             public InputAction @CycleMenus => m_Wrapper.m_UI_CycleMenus;
+            public InputAction @SubAction1 => m_Wrapper.m_UI_SubAction1;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -936,6 +958,9 @@ namespace RPGTest.Inputs
                     @Navigate.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
                     @Navigate.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
                     @Navigate.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
+                    @SecondaryNavigate.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryNavigate;
+                    @SecondaryNavigate.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryNavigate;
+                    @SecondaryNavigate.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryNavigate;
                     @Submit.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSubmit;
                     @Submit.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSubmit;
                     @Submit.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSubmit;
@@ -960,6 +985,9 @@ namespace RPGTest.Inputs
                     @CycleMenus.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
+                    @SubAction1.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
+                    @SubAction1.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
+                    @SubAction1.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
@@ -967,6 +995,9 @@ namespace RPGTest.Inputs
                     @Navigate.started += instance.OnNavigate;
                     @Navigate.performed += instance.OnNavigate;
                     @Navigate.canceled += instance.OnNavigate;
+                    @SecondaryNavigate.started += instance.OnSecondaryNavigate;
+                    @SecondaryNavigate.performed += instance.OnSecondaryNavigate;
+                    @SecondaryNavigate.canceled += instance.OnSecondaryNavigate;
                     @Submit.started += instance.OnSubmit;
                     @Submit.performed += instance.OnSubmit;
                     @Submit.canceled += instance.OnSubmit;
@@ -991,6 +1022,9 @@ namespace RPGTest.Inputs
                     @CycleMenus.started += instance.OnCycleMenus;
                     @CycleMenus.performed += instance.OnCycleMenus;
                     @CycleMenus.canceled += instance.OnCycleMenus;
+                    @SubAction1.started += instance.OnSubAction1;
+                    @SubAction1.performed += instance.OnSubAction1;
+                    @SubAction1.canceled += instance.OnSubAction1;
                 }
             }
         }
@@ -1013,6 +1047,15 @@ namespace RPGTest.Inputs
                 return asset.controlSchemes[m_GamepadSchemeIndex];
             }
         }
+        private int m_PSSchemeIndex = -1;
+        public InputControlScheme PSScheme
+        {
+            get
+            {
+                if (m_PSSchemeIndex == -1) m_PSSchemeIndex = asset.FindControlSchemeIndex("PS");
+                return asset.controlSchemes[m_PSSchemeIndex];
+            }
+        }
         public interface IPlayerActions
         {
             void OnMove(InputAction.CallbackContext context);
@@ -1026,6 +1069,7 @@ namespace RPGTest.Inputs
         public interface IUIActions
         {
             void OnNavigate(InputAction.CallbackContext context);
+            void OnSecondaryNavigate(InputAction.CallbackContext context);
             void OnSubmit(InputAction.CallbackContext context);
             void OnCancel(InputAction.CallbackContext context);
             void OnPoint(InputAction.CallbackContext context);
@@ -1034,6 +1078,7 @@ namespace RPGTest.Inputs
             void OnMiddleClick(InputAction.CallbackContext context);
             void OnRightClick(InputAction.CallbackContext context);
             void OnCycleMenus(InputAction.CallbackContext context);
+            void OnSubAction1(InputAction.CallbackContext context);
         }
     }
 }

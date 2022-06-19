@@ -13,21 +13,20 @@ namespace RPGTest.UI.Battle
 {
     public class UI_BattleRewards : UI_Base
     {
-        public TextMeshProUGUI ExperienceGainedValue;
-        public GameObject PartyList;
-        public GameObject PartyItemInstantiate;
+        [SerializeField] private GameObject[] ActiveMembers;
+        [SerializeField] private GameObject[] InactiveMembers;
+        [SerializeField] private TextMeshProUGUI ExperienceGainedValue;
 
-        public GameObject ItemsList;
-        public GameObject ItemItemInstantiate;
+        [SerializeField] private GameObject ItemsList;
+        [SerializeField] private GameObject ItemItemInstantiate;
 
-        public TextMeshProUGUI GoldGainedValue;
+        [SerializeField] private TextMeshProUGUI GoldGainedValue;
 
         private string m_ExperienceGainedString = "Gained {0} EXP";
         private string m_GoldGainedString = "Gained {0} G";
         private bool m_ActiveGain = true;
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
-        private List<GameObject> m_allGuiMembers = new List<GameObject>();
         private List<GameObject> m_allItems = new List<GameObject>();
 
         protected Controls m_playerInput;
@@ -57,13 +56,28 @@ namespace RPGTest.UI.Battle
             
             ExperienceGainedValue.text = string.Format(m_ExperienceGainedString, experience);
 
-            foreach(var member in m_partyManager.GetActivePartyMembers())
+            List<PlayableCharacter> activeMembers = m_partyManager.GetActivePartyMembers();
+            for(int i = 0; i < activeMembers.Count; i++)
             {
-                GameObject uiItem = InstantiateItemInViewport(PartyItemInstantiate, member.Id, PartyList);
-                UI_Member_Widget widgetScript = uiItem.GetComponent<UI_Member_Widget>();
-                widgetScript.Initialize(member);
-                member.PlayerExperienceChanged += widgetScript.RefreshExperience;
-                m_allGuiMembers.Add(uiItem);
+                ActiveMembers[i].SetActive(activeMembers[i] != null);
+                if(ActiveMembers[i].activeInHierarchy)
+                {
+                    UI_Member_Widget widgetScript = ActiveMembers[i].GetComponent<UI_Member_Widget>();
+                    widgetScript.Initialize(activeMembers[i]);
+                    activeMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
+                }
+            }
+
+            List<PlayableCharacter> inactiveMembers = m_partyManager.GetInactivePartyMembers();
+            for (int i = 0; i < inactiveMembers.Count - activeMembers.Count; i++)
+            {
+                InactiveMembers[i].SetActive(inactiveMembers[i] != null);
+                if (InactiveMembers[i].activeInHierarchy)
+                {
+                    UI_Member_Widget widgetScript = InactiveMembers[i].GetComponent<UI_Member_Widget>();
+                    widgetScript.Initialize(inactiveMembers[i]);
+                    inactiveMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
+                }
             }
 
             foreach(var item in items)
@@ -91,7 +105,11 @@ namespace RPGTest.UI.Battle
             {
                 if(m_ActiveGain)
                 {
-                    foreach(PlayableCharacter member in m_partyManager.GetActivePartyMembers().Where(p => p.IsAlive))
+                    foreach(PlayableCharacter member in m_partyManager.GetExistingActivePartyMembers().Where(p => p.IsAlive))
+                    {
+                        member.AddExperience(m_expTick);
+                    }
+                    foreach(PlayableCharacter member in m_partyManager.GetExistingInactivePartyMembers().Where(p => p.IsAlive))
                     {
                         member.AddExperience(m_expTick);
                     }
@@ -101,7 +119,7 @@ namespace RPGTest.UI.Battle
                 else
                 {
                     experience -= allocated;
-                    foreach (PlayableCharacter member in m_partyManager.GetActivePartyMembers().Where(p => p.IsAlive))
+                    foreach (PlayableCharacter member in m_partyManager.GetExistingActivePartyMembers().Where(p => p.IsAlive))
                     {
                         member.AddExperience(experience);
                     }
@@ -129,16 +147,24 @@ namespace RPGTest.UI.Battle
 
         public void Clear()
         {
-            foreach(PlayableCharacter p in m_partyManager.GetActivePartyMembers())
+            List<PlayableCharacter> activeMembers = m_partyManager.GetActivePartyMembers();
+            for (int i = 0; i < activeMembers.Count; i++)
             {
-                var guiItem = m_allGuiMembers.SingleOrDefault(g => g.name == p.Id);
-                if(guiItem != null)
+                if (ActiveMembers[i].activeInHierarchy)
                 {
-                    p.PlayerExperienceChanged -= guiItem.GetComponent<UI_Member_Widget>().RefreshExperience;
+                    activeMembers[i].PlayerExperienceChanged -= ActiveMembers[i].GetComponent<UI_Member_Widget>().RefreshExperience;
                 }
             }
-            m_allGuiMembers.ForEach(m => Destroy(m));
-            m_allGuiMembers.Clear();
+
+            List<PlayableCharacter> inactiveMembers = m_partyManager.GetInactivePartyMembers();
+            for (int i = 0; i < inactiveMembers.Count - activeMembers.Count; i++)
+            {
+                if (InactiveMembers[i].activeInHierarchy)
+                {
+                    inactiveMembers[i].PlayerExperienceChanged -= InactiveMembers[i].GetComponent<UI_Member_Widget>().RefreshExperience;
+                }
+            }
+
             m_allItems.ForEach(i => Destroy(i));
             m_allItems.Clear();
         }

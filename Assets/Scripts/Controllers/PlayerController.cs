@@ -7,6 +7,7 @@ using RPGTest.UI;
 using RPGTest.Inputs;
 using System.Collections;
 using RPGTest.Helpers;
+using UnityEngine.InputSystem;
 
 namespace RPGTest.Controllers
 {
@@ -14,25 +15,27 @@ namespace RPGTest.Controllers
     public partial class PlayerController : MonoBehaviour
     {
         [Separator("Debug")]
-        [SerializeField]
-        private bool IsDebug = false;
+        [SerializeField] private bool IsDebug = false;
+
         [Separator("Movement")]
         public float Speed = 5f;
         public float JumpHeight = 2f;
         public float DashDistance = 5f;
         public float WalkScale = 0.33f;
+
         [Separator("Physics")]
-        public float Height;
-        public float GroundDistance = 0.5f;
-        public float MaxAngle = 45;
         public float Gravity = -9.81f;
-        public LayerMask GroundLayer;
         public Vector3 Drag;
+        [SerializeField] private float Height;
+        [SerializeField] private float GroundDistance = 0.5f;
+        [SerializeField] private float MaxAngle = 45;
+        [SerializeField] private LayerMask GroundLayer;
+
         [Separator("Controller")]
         private CharacterController m_controller;
         private Animator m_animator;
 
-        public Controls playerInput;
+        private Controls m_playerInput;
         private Vector2 m_playerDirection;
 
         private Vector3 _velocity;
@@ -53,11 +56,19 @@ namespace RPGTest.Controllers
 
         public void Awake()
         {
-            playerInput = new Controls();
+            m_playerInput = new Controls();
+            
+            m_playerInput.Player.Jump.performed += Jump;
+
+            m_playerInput.Player.Interact.performed += Interact;
+            m_playerInput.Player.Cancel.performed += Cancel;
+
+            m_playerInput.Player.OpenMenu.performed += OpenMenu;
+            m_playerInput.Player.Debug.performed += DebugOperation;
         }
 
-        public void OnEnable() => playerInput.Enable();
-        public void OnDisable() => playerInput.Disable();
+        public void OnEnable() => m_playerInput.Enable();
+        public void OnDisable() => m_playerInput.Disable();
 
         #region Trigger Events
         private void OnTriggerEnter(Collider other)
@@ -140,12 +151,12 @@ namespace RPGTest.Controllers
         }
 
         #region InputSystem Events
-        public void Move()
+        public void Move(InputAction.CallbackContext callbackContext)
         {
-            m_playerDirection = playerInput.Player.Move.ReadValue<Vector2>();                
+            m_playerDirection = callbackContext.ReadValue<Vector2>();                
         }
 
-        public void Interact()
+        public void Interact(InputAction.CallbackContext callbackContext)
         {
             if (m_isGrounded && m_interactibleTarget != null)
             {
@@ -158,7 +169,7 @@ namespace RPGTest.Controllers
             }
         }
 
-        public void Cancel()
+        public void Cancel(InputAction.CallbackContext callbackContext)
         {
             if(m_isClimbing)
             {
@@ -170,13 +181,13 @@ namespace RPGTest.Controllers
         /// InputSystem event. Will initialize the PauseMenu on call
         /// </summary>
         /// <param name="obj"></param>
-        public void OpenMenu()
+        public void OpenMenu(InputAction.CallbackContext callbackContext)
         {
             var UIMenu = FindObjectOfType<UIManager>().GetUIComponent<UI_Menu>();
             UIMenu.InitializeDefault();
         }
 
-        public void DebugOperation()
+        public void DebugOperation(InputAction.CallbackContext callbackContext)
         {
             var gameManager = FindObjectOfType<GameManager>();
             if (SaveFileModel.Instance == null)
@@ -190,7 +201,7 @@ namespace RPGTest.Controllers
         /// <summary>
         /// Makes the character jump if standing on ground or climbing
         /// </summary>
-        public void Jump()
+        public void Jump(InputAction.CallbackContext callbackContext)
         {
             m_jumpCoolDownOver = (Time.time - m_jumpTimeStamp) >= m_minJumpInterval;
 

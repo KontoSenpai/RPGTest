@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Attribute = RPGTest.Enums.Attribute;
 
 namespace RPGTest.AI
 {
@@ -112,9 +113,9 @@ namespace RPGTest.AI
 
             foreach (var potentialTarget in potentialTargets)
             {
-                if (!string.IsNullOrEmpty(Decision.TargetAttribute))
+                if (Decision.TargetAttribute != Attribute.None)
                 {
-                    var matchingAttribute = potentialTarget.GetAttribute(Decision.TargetAttribute);
+                    float attributeValue = potentialTarget.GetAttribute(Decision.TargetAttribute);
                     Applicable = true;
                     targets.Add(potentialTarget);
                 }
@@ -136,7 +137,7 @@ namespace RPGTest.AI
 
     public class AbilityDecision
     {
-        public string TargetAttribute { get; private set; }
+        public Attribute TargetAttribute { get; private set; }
 
         public float AttributeValue { get; private set; } = -1.0f;
 

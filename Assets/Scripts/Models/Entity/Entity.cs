@@ -67,7 +67,7 @@ namespace RPGTest.Models.Entity
 
         public virtual bool FillATB()
         {
-            m_currentATB += GetAttribute("Speed");
+            m_currentATB += GetAttribute(Attribute.Speed);
             return m_currentATB > m_maxATB;
         }
 
@@ -89,10 +89,45 @@ namespace RPGTest.Models.Entity
             return PowerRange.GetValue();
         }
 
-        public virtual void ApplyDamage(Attribute attribute, int value)
+        public virtual bool IsAbilityCastable(Ability ability)
+        {
+
+            foreach (var castCost in ability.CastCost)
+            {
+                var cost = System.Math.Abs(castCost.Value);
+                switch (castCost.Key)
+                {
+                    case Attribute.MaxHP:
+                    case Attribute.HP:
+                        if (GetAttribute(Attribute.HP) < cost)
+                        {
+                            return false;
+                        }
+                        break;
+                    case Attribute.MaxMP:
+                    case Attribute.MP:
+                        if (GetAttribute(Attribute.MP) < cost)
+                        {
+                            return false;
+                        }
+                        break;
+                    case Attribute.MaxStamina:
+                    case Attribute.Stamina:
+                        if (GetAttribute(Attribute.Stamina) < cost)
+                        {
+                            return false;
+                        }
+                        break;
+                }
+            }
+            return true;
+        }
+
+        public virtual void ApplyResourceModification(Attribute attribute, int value)
         {
             switch (attribute)
             {
+                case Attribute.MaxHP:
                 case Attribute.HP:
                     CurrentHP += value;
                     if(CurrentHP < 0)
@@ -104,6 +139,7 @@ namespace RPGTest.Models.Entity
                         CurrentHP = BaseAttributes.MaxHP;
                     }
                     break;
+                case Attribute.MaxMP:
                 case Attribute.MP:
                     CurrentMP += value;
                     if (CurrentMP < 0)
@@ -115,6 +151,7 @@ namespace RPGTest.Models.Entity
                         CurrentMP = BaseAttributes.MaxMP;
                     }
                     break;
+                case Attribute.MaxStamina:
                 case Attribute.Stamina:
                     CurrentStamina += value;
                     if (CurrentStamina < 0)
@@ -134,35 +171,35 @@ namespace RPGTest.Models.Entity
             return false;
         }
 
-        public virtual float GetAttribute(string attributeName)
+        public virtual float GetAttribute(Attribute attribute)
         {
-            GetAttributes().TryGetValue(attributeName, out float value);
+            GetAttributes().TryGetValue(attribute, out float value);
             return value;
         }
 
-        public virtual Dictionary<string, float> GetAttributes()
+        public virtual Dictionary<Attribute, float> GetAttributes()
         {
-            Dictionary<string, float> attributes = new Dictionary<string, float>();
+            Dictionary<Attribute, float> attributes = new Dictionary<Attribute, float>();
 
-            attributes.Add("CurrentHP", CurrentHP);
-            attributes.Add("HPPercentage", (float)CurrentHP / (float)BaseAttributes.MaxHP);
+            attributes.Add(Attribute.HP, CurrentHP);
+            attributes.Add(Attribute.HPPercentage, (float)CurrentHP / (float)BaseAttributes.MaxHP);
+            attributes.Add(Attribute.MaxHP, BaseAttributes.MaxHP);
 
-            attributes.Add("CurrentMP", CurrentMP);
-            attributes.Add("MPPercentage", BaseAttributes.MaxMP > 0 ? (float)CurrentMP / BaseAttributes.MaxMP : 1.0f);
+            attributes.Add(Attribute.MP, CurrentMP);
+            attributes.Add(Attribute.MPPercentage, BaseAttributes.MaxMP > 0 ? (float)CurrentMP / BaseAttributes.MaxMP : 1.0f);
+            attributes.Add(Attribute.MaxMP, BaseAttributes.MaxMP);
 
-            attributes.Add("CurrentStamina", CurrentStamina);
-            attributes.Add("StaminaPercentage", (float)CurrentStamina / BaseAttributes.MaxStamina);
+            attributes.Add(Attribute.Stamina, CurrentStamina);
+            attributes.Add(Attribute.StaminaPercentage, (float)CurrentStamina / BaseAttributes.MaxStamina);
+            attributes.Add(Attribute.MaxStamina, BaseAttributes.MaxStamina);
 
-            attributes.Add("Strength", BaseAttributes.Strength);
-            attributes.Add("Constitution", BaseAttributes.Constitution);
+            attributes.Add(Attribute.Attack, BaseAttributes.Attack);
+            attributes.Add(Attribute.Defense, BaseAttributes.Defense);
 
-            attributes.Add("Dexterity", BaseAttributes.Strength);
-            attributes.Add("Agility", BaseAttributes.Agility);
+            attributes.Add(Attribute.Magic, BaseAttributes.Magic);
+            attributes.Add(Attribute.Resistance, BaseAttributes.Resistance);
 
-            attributes.Add("Mental", BaseAttributes.Mental);
-            attributes.Add("Resilience", BaseAttributes.Resilience);
-
-            attributes.Add("Speed", (float) (BaseAttributes.Agility + Level) / 2);
+            attributes.Add(Attribute.Speed, BaseAttributes.Speed);
 
             return attributes;
         }

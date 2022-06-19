@@ -15,29 +15,22 @@ using RPGTest.Helpers;
 
 namespace RPGTest.UI.Battle 
 {
-    public enum MenuType
-    {
-        Root = 0,
-        AbilityRoot = 1,
-        AbilityCategory = 2,
-        Items = 3
-    }
-
     public class UI_ActionSelection_Widget : MonoBehaviour
     {
-        public List<GameObject> RootButtons;
-        public List<GameObject> AbilitiesSubCategories;
+        private enum MenuType
+        {
+            Root = 0,
+            Abilities = 1,
+            Items = 2
+        }
 
-        public GameObject AbilitiesPanel;
+        [SerializeField] private List<GameObject> RootButtons;
 
-        public GameObject InstantiableButton;
-        public GameObject ActionViewport;
-        public GameObject ViewportContent;
-        public Button dummyButton;
-
-        public UI_Stances_Widget StancesWidget;
-
-        public UI_WeaponPreset_Widget WeaponPresetWidget;
+        [SerializeField] private GameObject InstantiableActionButton;
+        [SerializeField] private GameObject ActionsViewport;
+        [SerializeField] private GameObject ActionsViewportContent;
+        [SerializeField] private Button DummyButton;
+        
 
         private Controls m_playerInput;
 
@@ -51,15 +44,14 @@ namespace RPGTest.UI.Battle
         private Dictionary<MenuType, int> m_menuIndexes = new Dictionary<MenuType, int>()
         {
             { MenuType.Root, 1 },
-            { MenuType.AbilityRoot, 0 },
-            { MenuType.AbilityCategory, 0 },
+            { MenuType.Abilities, 1 },
             { MenuType.Items, 0 }
         };
 
         private ActionType m_selectedActionType;
         private string m_selectedActionId;
 
-        private const int ActionButtonWidth = 280;
+        private const int ActionButtonWidth = 300;
 
         public event TargetingRequestHandler PlayerTargetingRequested;
         public delegate void TargetingRequestHandler(PlayableCharacter playableCharacter, TargetType defaultTarget, List<TargetType> targetType);
@@ -105,18 +97,7 @@ namespace RPGTest.UI.Battle
                             MultiCastActionSelected(lastIndex, null);
                         }
                         break;
-                    case MenuType.AbilityRoot:
-                        AbilitiesPanel.SetActive(false);
-                        m_currentMenuType = MenuType.Root;
-                        SetCurrentButtonInteractable(RootButtons, true);
-                        SelectButton(RootButtons);
-                        break;
-                    case MenuType.AbilityCategory:
-                        DepopulateActionViewport();
-                        m_currentMenuType = MenuType.AbilityRoot;
-                        SetCurrentButtonInteractable(AbilitiesSubCategories, true);
-                        SelectButton(AbilitiesSubCategories);
-                        break;
+                    case MenuType.Abilities:
                     case MenuType.Items:
                         DepopulateActionViewport();
                         m_currentMenuType = MenuType.Root;
@@ -132,7 +113,6 @@ namespace RPGTest.UI.Battle
             if(!m_waitingForTarget && m_isActive)
             {
                 m_playableCharacter.EquipmentSlots.ChangePreset();
-                WeaponPresetWidget.TogglePreset();
             }
         }
 
@@ -186,31 +166,20 @@ namespace RPGTest.UI.Battle
             m_playableCharacter = playableCharacter;
             m_playableCharacter.CreateNewActionSequence();
             m_selectedActions = new List<EntityAction>();
-            WeaponPresetWidget.Initialize(m_playableCharacter.EquipmentSlots.CurrentPreset == PresetSlot.First);
-            StancesWidget.ChangeStanceImage((int)m_playableCharacter.Stance.GetCurrentStance());
+            //WeaponPresetWidget.Initialize(m_playableCharacter.EquipmentSlots.CurrentPreset == PresetSlot.First);
+            //StancesWidget.ChangeStanceImage((int)m_playableCharacter.Stance.GetCurrentStance());
             m_currentMenuType = MenuType.Root;
-
-            var rect = this.gameObject.GetComponent<RectTransform>();
-           
-            if (this.gameObject.transform.position.x + (rect.sizeDelta.x /2) > Screen.width)
-            {
-                var newPosition = gameObject.transform.position;
-
-                var overflow = (this.gameObject.transform.position.x + (rect.sizeDelta.x / 2)) - Screen.width;
-                newPosition.x -= (overflow + 50);
-                gameObject.transform.position = newPosition;
-            }
 
             ExplicitRootNavigation();
             
-            AbilitiesPanel.SetActive(false);
-            ActionViewport.SetActive(false);
+            ActionsViewport.SetActive(false);
             ScopeMainRoot();
             ChangeMenuItemIndex(0);
             RootButtons[1].GetComponent<Button>().Select();
 
             m_isActive = true;
             m_waitingForTarget = false;
+            m_playerInput.Enable();
         }
 
         private void CleanWidget()
@@ -223,11 +192,9 @@ namespace RPGTest.UI.Battle
         private void ResetButtonState()
         {
             SetCurrentButtonInteractable(RootButtons, true);
-            SetCurrentButtonInteractable(AbilitiesSubCategories, true);
 
             m_menuIndexes[MenuType.Root] = 1;
-            m_menuIndexes[MenuType.AbilityRoot] = 0;
-            m_menuIndexes[MenuType.AbilityCategory] = 0;
+            m_menuIndexes[MenuType.Abilities] = 0;
             m_menuIndexes[MenuType.Items] = 0;
         }
 
@@ -238,7 +205,7 @@ namespace RPGTest.UI.Battle
                 case MenuType.Root:
                     SelectButton(RootButtons);
                     break;
-                case MenuType.AbilityCategory:
+                case MenuType.Abilities:
                 case MenuType.Items:
                     SelectButton(m_instantiatedButtons);
                     break;
@@ -283,7 +250,7 @@ namespace RPGTest.UI.Battle
                 m_eatOneInput = false;
                 return;
             }
-            if(!m_waitingForTarget && m_isActive)
+            if (!m_waitingForTarget && m_isActive)
             {
                 m_waitingForTarget = true;
                 m_selectedActionId = actionId;
@@ -293,21 +260,31 @@ namespace RPGTest.UI.Battle
                 {
                     case ActionType.Ability:
                         m_selectedActionType = ActionType.Ability;
-                        var ability = AbilitiesCollector.TryGetAbility(m_playableCharacter.DefaultAttack);
-                        defaultTargetting = ability.DefaultTarget;
+                        var ability = AbilitiesCollector.TryGetAbility(actionId);
+                        if (ability.DefaultTarget != TargetType.None)
+                        {
+                            defaultTargetting = ability.DefaultTarget;
+                        }
+
                         availableTargetting = ability.TargetTypes;
                         break;
                     case ActionType.Item:
                         m_selectedActionType = ActionType.Item;
                         var item = (Consumable)ItemCollector.TryGetItem(actionId);
                         defaultTargetting = item.DefaultTarget;
+                        if (item.DefaultTarget != TargetType.None)
+                        {
+                            defaultTargetting = item.DefaultTarget;
+                        }
                         availableTargetting = item.TargetTypes;
                         break;
                 }
                 m_playerInput.Disable();
                 PlayerTargetingRequested(m_playableCharacter, defaultTargetting, availableTargetting);
-                if(dummyButton != null)
-                    dummyButton.Select();
+
+                if(DummyButton != null)
+                    DummyButton.Select();
+
                 GetComponent<Canvas>().enabled = false;
             }
         }
@@ -320,8 +297,6 @@ namespace RPGTest.UI.Battle
 
         public void ScopeMainRoot()
         {
-            AbilitiesPanel.SetActive(false);
-
             m_currentMenuType = MenuType.Root;
 
             SelectButton(RootButtons);
@@ -329,24 +304,10 @@ namespace RPGTest.UI.Battle
 
         public void ScopeAbilities()
         {
-            AbilitiesPanel.SetActive(true);
-
-            m_currentMenuType = MenuType.AbilityRoot;
-            AbilitiesSubCategories[0].GetComponent<Button>().interactable = m_playableCharacter.GetAbilitiesOfType(AbilityType.Weapon).Any();
-            AbilitiesSubCategories[1].GetComponent<Button>().interactable = m_playableCharacter.GetAbilitiesOfType(AbilityType.AttackMagic).Any();
-            AbilitiesSubCategories[2].GetComponent<Button>().interactable = m_playableCharacter.GetAbilitiesOfType(AbilityType.SupportMagic).Any();
-            AbilitiesSubCategories[3].GetComponent<Button>().interactable = m_playableCharacter.GetAbilitiesOfType(AbilityType.Talent).Any();
-
-            m_menuIndexes[m_currentMenuType] = AbilitiesSubCategories.IndexOf(AbilitiesSubCategories.FirstOrDefault(a => a.GetComponent<Button>().interactable));
-
-            SelectButton(AbilitiesSubCategories);
-        }
-
-        public void ScopeAbilityCategory()
-        {
-            m_currentMenuType = MenuType.AbilityCategory;
+            m_currentMenuType = MenuType.Abilities;
             m_menuIndexes[m_currentMenuType] = 0;
             PopulateAbilities();
+
             SelectButton(m_instantiatedButtons);
         }
 
@@ -398,13 +359,10 @@ namespace RPGTest.UI.Battle
                 case MenuType.Root:
                     HandleItemsNavigation(RootButtons, variation);
                     break;
-                case MenuType.AbilityRoot:
-                    HandleItemsNavigation(AbilitiesSubCategories, variation);
-                    break;
-                case MenuType.AbilityCategory:
+                case MenuType.Abilities:
                 case MenuType.Items:
                     HandleItemsNavigation(m_instantiatedButtons, variation);
-                    ActionViewport.GetComponent<UI_ViewportBehavior>().StepChange(variation);
+                    ActionsViewport.GetComponent<UI_ViewportBehavior>().StepChange(variation);
                     break;
             }
         }
@@ -442,30 +400,9 @@ namespace RPGTest.UI.Battle
         #region AbilityViewport
         private void PopulateAbilities()
         {
-            AbilityType abilityType;
-
-            switch (m_menuIndexes[MenuType.AbilityRoot])
-            {
-                case 0:
-                    abilityType = AbilityType.Weapon;
-                    break;
-                case 1:
-                    abilityType = AbilityType.AttackMagic;
-                    break;
-                case 2:
-                    abilityType = AbilityType.SupportMagic;
-                    break;
-                case 3:
-                    abilityType = AbilityType.Talent;
-                    break;
-                default:
-                    abilityType = AbilityType.Weapon;
-                    break;
-            }
-
             PopulateActionViewport(ActionType.Ability,
-                m_playableCharacter.GetAbilitiesOfType(abilityType).Select( a => (a.ability.Id, a.usable)),
-                AbilitiesSubCategories[m_menuIndexes[MenuType.AbilityRoot]].transform.position);
+                m_playableCharacter.GetAbilitiesOfType(AbilityType.Default).Select( a => (a.ability.Id, a.usable)),
+                2);
         }
         #endregion
 
@@ -474,17 +411,17 @@ namespace RPGTest.UI.Battle
         {
             PopulateActionViewport(ActionType.Item,
                 FindObjectOfType<GameManager>().InventoryManager.GetConsumables().Select(c => (c.Id, true)),
-                RootButtons[m_menuIndexes[MenuType.Root]].transform.position);
+                1);
         }
         #endregion
 
         #region viewport
-        private void PopulateActionViewport(ActionType actionType, IEnumerable<(string id, bool interactable)> actions, Vector3 position)
+        private void PopulateActionViewport(ActionType actionType, IEnumerable<(string id, bool interactable)> actions, int coeff)
         {
             foreach (var action in actions)
             {
-                var uiItem = Instantiate(InstantiableButton);
-                uiItem.transform.SetParent(ViewportContent.transform);
+                var uiItem = Instantiate(InstantiableActionButton);
+                uiItem.transform.SetParent(ActionsViewportContent.transform);
                 uiItem.name = action.id;
                 uiItem.transform.localScale = new Vector3(1, 1, 1);
                 var actionButton = uiItem.GetComponent<UI_ActionButton>();
@@ -499,13 +436,13 @@ namespace RPGTest.UI.Battle
                     Down: index < m_instantiatedButtons.Count - 1 ? m_instantiatedButtons[index + 1].GetComponent<Button>() : null);
             }
 
-            ActionViewport.SetActive(true);
-            ActionViewport.GetComponent<UI_ViewportBehavior>().Initialize(position, m_instantiatedButtons.Count, ActionButtonWidth);
+            ActionsViewport.SetActive(true);
+            ActionsViewport.GetComponent<UI_ViewportBehavior>().Initialize(m_instantiatedButtons.Count, coeff);
         }
 
         private void DepopulateActionViewport()
         {
-            ActionViewport.SetActive(false);
+            ActionsViewport.SetActive(false);
             foreach (var button in m_instantiatedButtons)
             {
                 var actionButton = button.GetComponent<UI_ActionButton>();
@@ -524,7 +461,7 @@ namespace RPGTest.UI.Battle
         private void ChangeStance(bool cycleRight)
         {
             m_playableCharacter.Stance.ChangeCurrentStance(cycleRight);
-            StancesWidget.ChangeStanceImage((int)m_playableCharacter.Stance.GetCurrentStance());
+            //StancesWidget.ChangeStanceImage((int)m_playableCharacter.Stance.GetCurrentStance());
         }
     }
 }

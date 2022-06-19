@@ -109,6 +109,13 @@ namespace RPGTest.Models.Entity
             SequenceState = ActionState.Executing;
             foreach(EntityAction action in Actions)
             {
+                // Return early if one action has exited early
+                if (Actions.Any(a => a.ActionState == ActionState.Cancelled))
+                {
+                    SequenceState = ActionState.Completed;
+                    action.CancelCast();
+                    break;
+                }
                 manager.StartCoroutine(action.Execute(allies, enemies));
                 while(action.ActionState == ActionState.Executing)
                 {
@@ -123,13 +130,13 @@ namespace RPGTest.Models.Entity
                 {
                     Debug.Log("WIN");
                     ActionSequenceCompleted(this);
-                    break;
+                    yield break;
                 }
                 else if (allies.TrueForAll(x => !x.IsAlive))
                 {
                     Debug.Log("LOSE");
                     ActionSequenceCompleted(this);
-                    break;
+                    yield break;
                 }
             }
 
@@ -140,7 +147,7 @@ namespace RPGTest.Models.Entity
 
             if(SequenceState == ActionState.Completed)
             {
-                //ActionSequenceCompleted(this);
+                ActionSequenceCompleted(this);
                 Caster.ResetATB((int)Mathf.Ceil(BackSwing));
             }
             
@@ -169,8 +176,8 @@ namespace RPGTest.Models.Entity
         private float m_delay = 1.0f;
         private float m_endDelay = 0.75f;
 
-        public event ActionStartedHandler ActionStarted;
-        public delegate void ActionStartedHandler(string display);
+        public event ActionMessageHandler ActionMessage;
+        public delegate void ActionMessageHandler(string display);
 
         private InventoryManager m_InventoryManager;
 
@@ -261,25 +268,32 @@ namespace RPGTest.Models.Entity
             switch (ActionType)
             {
                 case ActionType.Ability:
-                    ActionStarted($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
                     var ability = AbilitiesCollector.TryGetAbility(ActionId);
+
+                    if(!Caster.IsAbilityCastable(ability))
+                    {
+                        ActionState = ActionState.Completed;
+                        ActionMessage($"{Caster.Name} tries to use {GetActionName()} but failed to! (missing resources)");
+                        yield break;
+                    }
                     yield return new WaitForSeconds(m_delay);
                     if(ActionState != ActionState.Cancelled)
                     {
                         foreach (var resourceCost in ability.CastCost)
                         {
-                            Caster.ApplyDamage(resourceCost.Key, resourceCost.Value);
+                            Caster.ApplyResourceModification(resourceCost.Key, resourceCost.Value);
                         }
                         effects = ability.Effects;
                     }
+                    ActionMessage($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
                     break;
                 case ActionType.Item:
-                    ActionStarted($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
                     effects = ItemCollector.TryGetConsumable(ActionId).Effects;
                     if (m_InventoryManager != null)
                     {
                         m_InventoryManager.RemoveItem(ActionId, 1);
                     }
+                    ActionMessage($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
                     break;
                 case ActionType.ItemMenu:
                     effects = ItemCollector.TryGetConsumable(ActionId).Effects;
@@ -328,7 +342,7 @@ namespace RPGTest.Models.Entity
                                 }
                                 else
                                 {
-                                    target.ApplyDamage(attribute.Key, (int)Mathf.Ceil((curePower) * effect.PowerRange.GetValue()));
+                                    target.ApplyResourceModification(attribute.Key, (int)Mathf.Ceil((curePower) * effect.PowerRange.GetValue()));
                                 }
                             }
                         }
@@ -339,6 +353,7 @@ namespace RPGTest.Models.Entity
             yield return new WaitForSeconds(m_endDelay);
             ActionState = ActionState.Completed;  
         }
+
 
         public void InterruptCast()
         {
