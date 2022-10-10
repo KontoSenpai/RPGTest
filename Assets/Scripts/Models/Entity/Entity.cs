@@ -44,6 +44,10 @@ namespace RPGTest.Models.Entity
 
         public Stance Stance { get; set; } = new Stance();
 
+        public List<AttributeChange> Buffs { get; set; }
+
+        public List<AttributeChange> Debuff { get; set; }
+
         public Dictionary<StatusEffect, int> StatusEffects { get; set; }
 
         public Dictionary<StatusEffect, int> StatusEffectResistance { get; set; }
@@ -164,6 +168,11 @@ namespace RPGTest.Models.Entity
                     }
                     break;
             }
+        }
+
+        public virtual void ApplyBuff(Attribute attribute, int value)
+        {
+
         }
 
         public bool InflictStatusEffect(StatusEffect effect, int potency)

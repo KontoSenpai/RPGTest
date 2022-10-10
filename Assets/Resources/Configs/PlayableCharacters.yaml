@@ -9,7 +9,6 @@ PlayableCharacters:
         - A0002
         - A0003
         - A0004
-
       BaseAttributes    :
         MaxHP           : 30
         MaxMP           : 0
@@ -18,7 +17,7 @@ PlayableCharacters:
         Defense         : 7
         Magic           : 3
         Resistance      : 4
-        Speed           : 1
+        Speed           : 8
       AttributesGrowth  :
         MaxHP           : 12
         MaxMP           : 0
@@ -72,7 +71,7 @@ PlayableCharacters:
         Defense         : 9
         Magic           : 12
         Resistance      : 9
-        Speed           : 1
+        Speed           : 6
       AttributesGrowth  :
         MaxHP           : 8
         MaxMP           : 11

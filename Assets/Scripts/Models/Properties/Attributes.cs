@@ -21,4 +21,12 @@ namespace RPGTest.Models
 
         public int Accuracy { get; set; }
     }
+
+    public class AttributeChange
+    {
+        public Enums.Attribute Attribute { get; set; }
+
+        public int Value { get; set; }
+        public int Duration { get; set; }
+    }
 }

@@ -176,13 +176,13 @@ namespace RPGTest.Models.Entity
         private float m_delay = 1.0f;
         private float m_endDelay = 0.75f;
 
-        public event ActionMessageHandler ActionMessage;
+        public event ActionMessageHandler ActionLogged;
         public delegate void ActionMessageHandler(string display);
 
-        private InventoryManager m_InventoryManager;
+        public event ActionExecutionHandler ActionExecuted;
+        public delegate void ActionExecutionHandler(Entity target, Enums.EffectType type, Enums.Attribute attribute, int value);
 
-        public event ActionDamageAppliedHandler ActionDamageApplied;
-        public delegate void ActionDamageAppliedHandler(Entity target, Enums.Attribute attribute, int value);
+        private InventoryManager m_InventoryManager;
 
         public EntityAction(Entity caster, ActionType actionType, string actionId, List<Entity> targets, InventoryManager manager = null)
         {
@@ -273,7 +273,7 @@ namespace RPGTest.Models.Entity
                     if(!Caster.IsAbilityCastable(ability))
                     {
                         ActionState = ActionState.Completed;
-                        ActionMessage($"{Caster.Name} tries to use {GetActionName()} but failed to! (missing resources)");
+                        ActionLogged($"{Caster.Name} tries to use {GetActionName()} but failed to! (missing resources)");
                         yield break;
                     }
                     yield return new WaitForSeconds(m_delay);
@@ -281,11 +281,11 @@ namespace RPGTest.Models.Entity
                     {
                         foreach (var resourceCost in ability.CastCost)
                         {
-                            Caster.ApplyResourceModification(resourceCost.Key, resourceCost.Value);
+                            Caster.ApplyResourceModification(resourceCost.Key, -resourceCost.Value);
                         }
                         effects = ability.Effects;
                     }
-                    ActionMessage($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
+                    ActionLogged($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
                     break;
                 case ActionType.Item:
                     effects = ItemCollector.TryGetConsumable(ActionId).Effects;
@@ -293,7 +293,7 @@ namespace RPGTest.Models.Entity
                     {
                         m_InventoryManager.RemoveItem(ActionId, 1);
                     }
-                    ActionMessage($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
+                    ActionLogged($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
                     break;
                 case ActionType.ItemMenu:
                     effects = ItemCollector.TryGetConsumable(ActionId).Effects;
@@ -320,32 +320,56 @@ namespace RPGTest.Models.Entity
 
                             foreach (var target in GetTargets(effect.TargetType, allies, enemies))
                             {
-                                ActionDamageApplied(target, attribute.Key, (int)Mathf.Ceil((attackPower * -1) * effect.PowerRange.GetValue()));
+                                var attackValue = (int)Mathf.Ceil((attackPower * -1) * effect.PowerRange.GetValue());
+
+                                target.ApplyResourceModification(attribute.Key, attackValue);
+                                ActionExecuted(target, effect.EffectType, attribute.Key, attackValue);
                             }
                         }
                         break;
-                    case EffectType.Cure:
+                    case EffectType.Heal:
                         foreach(var attribute in effect.Attributes)
                         {
                             List<Entity> targets = new List<Entity>();
-                            var curePower = attribute.Value.Potency;
+                            var healPotency = attribute.Value.Potency;
                             foreach (var scaling in effect.Scalings)
                             {
-                                curePower += Caster.GetAttribute(scaling.Key) * scaling.Value;
+                                healPotency += Caster.GetAttribute(scaling.Key) * scaling.Value;
                             }
 
                             foreach (var target in GetTargets(effect.TargetType, allies, enemies))
                             {
-                                if(ActionType == ActionType.Ability || ActionType == ActionType.Item)
+                                var healValue = (int)Mathf.Ceil(healPotency * effect.PowerRange.GetValue());
+
+                                target.ApplyResourceModification(attribute.Key, healValue);
+                                if (ActionType == ActionType.Ability || ActionType == ActionType.Item)
                                 {
-                                    ActionDamageApplied(target, attribute.Key, (int)Mathf.Ceil((curePower) * effect.PowerRange.GetValue()));
-                                }
-                                else
-                                {
-                                    target.ApplyResourceModification(attribute.Key, (int)Mathf.Ceil((curePower) * effect.PowerRange.GetValue()));
+                                    ActionExecuted(target, effect.EffectType, attribute.Key, healValue);
                                 }
                             }
                         }
+                        break;
+                    case EffectType.Buff:
+                        foreach (var attribute in effect.Attributes)
+                        {
+                            List<Entity> targets = new List<Entity>();
+                            var buffPotency = attribute.Value.Potency;
+
+                            foreach (var target in GetTargets(effect.TargetType, allies, enemies))
+                            {
+                                if (ActionType == ActionType.Ability || ActionType == ActionType.Item)
+                                {
+                                    ActionExecuted(target, effect.EffectType, attribute.Key, (int)Mathf.Ceil((buffPotency) * effect.PowerRange.GetValue()));
+                                }
+                                else
+                                {
+                                    target.ApplyResourceModification(attribute.Key, (int)Mathf.Ceil((buffPotency) * effect.PowerRange.GetValue()));
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        Debug.LogError("effect type not supported : ");
                         break;
                 }
             }

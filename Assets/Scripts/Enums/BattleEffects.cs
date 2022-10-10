@@ -17,10 +17,12 @@ namespace RPGTest.Enums
 
     public enum EffectType
     {
-        Cure,
+        Heal,
         Damage,
         Buff,
-        Break
+        Debuff,
+        Alter,
+        Cure
     }
 
     public enum DamageType

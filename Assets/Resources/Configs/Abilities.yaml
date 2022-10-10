@@ -19,7 +19,7 @@ Abilities:
         - SingleAlly
 
 #Weapon Abilities
-    - Id                    : A0002
+    - Id                    : AW0001
       Name                  : Sword thurst
       Description           : Attack an enemy with the tip of a blade
       AbilityType           : Weapon
@@ -35,9 +35,9 @@ Abilities:
       TargetTypes           :
         - SingleEnemy
       CastCost              :
-        Stamina             : -5
+        Stamina             : 5
 
-    - Id                    : A0003
+    - Id                    : AW0002
       Name                  : Sword sweep
       Description           : Perform a powerful spin with a blade to strike all the enemies
       AbilityType           : Weapon
@@ -61,9 +61,9 @@ Abilities:
       TargetTypes           :
         - Enemies
       CastCost              :
-        Stamina             : -30
+        Stamina             : 30
 
-    - Id                    : A0004
+    - Id                    : AW0003
       Name                  : Spear point
       Description           : Perform a powerfull sping with a blade to strike all the enemies
       AbilityType           : Weapon
@@ -79,7 +79,24 @@ Abilities:
       TargetTypes           :
         - SingleEnemy
       CastCost              :
-        Stamina             : -13
+        Stamina             : 13
+
+#Talent Abilities 
+    - Id                    : AP0001
+      Name                  : Ralying Cry
+      Description           : Shout loudly to raly allies and increase their defense
+      AbilityType           : Talent
+      EquipmentRestrictrion : 
+        - Spear
+      Effects               :
+        - EffectType        : Buff
+          Attributes        :
+            Defense         : 
+              Potency       : 20
+      TargetTypes           :
+        - Allies
+      CastCost              :
+        Stamina             : 4
 
 #Magic Abilities
     - Id                    : A0005
@@ -97,7 +114,7 @@ Abilities:
         - SingleEnemy
       Backswing             : 2000
       CastCost              :
-        MP                  : -8
+        MP                  : 8
 
     - Id                    : A0006
       Name                  : Flame Thrower
@@ -123,7 +140,7 @@ Abilities:
       CastTime              : 2.0
       Backswing             : 1.0
       CastCost              :
-        MP                  : -8
+        MP                  : 8
 
 #Monster Abilities
     - Id                    : AM001

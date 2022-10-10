@@ -37,7 +37,7 @@ namespace RPGTest.Models
             bool valid = false;
             switch(EffectType)
             {
-                case EffectType.Cure:
+                case EffectType.Heal:
                     foreach (var attribute in Attributes)
                     {
                         switch (attribute.Key)

@@ -177,8 +177,8 @@ namespace RPGTest.Managers
         {
             foreach(EntityAction action in actionSequence.Actions)
             {
-                action.ActionMessage += Action_OnActionMessage;
-                action.ActionDamageApplied += Action_OnDamageApplied;
+                action.ActionLogged += Action_OnActionLogged;
+                action.ActionExecuted += Action_OnActionExecuted;
             }
 
             actionSequence.ActionSequenceCompleted += ActionSequence_OnSequenceCompleted;
@@ -219,7 +219,7 @@ namespace RPGTest.Managers
             }
         }
 
-        private void Action_OnActionMessage(string actionString)
+        private void Action_OnActionLogged(string actionString)
         {
             StartCoroutine(m_battleOverlay.DisplayMessage(actionString));
         }
@@ -228,8 +228,8 @@ namespace RPGTest.Managers
         {
             foreach(EntityAction action in actionSequence.Actions)
             {
-                action.ActionMessage -= Action_OnActionMessage;
-                action.ActionDamageApplied -= Action_OnDamageApplied;
+                action.ActionLogged -= Action_OnActionLogged;
+                action.ActionExecuted -= Action_OnActionExecuted;
             }
             actionSequence.ActionSequenceCompleted -= ActionSequence_OnSequenceCompleted;
             m_actionQueue.Remove(actionSequence);
@@ -254,7 +254,7 @@ namespace RPGTest.Managers
             }
         }
 
-        private void Action_OnDamageApplied(Entity entity, Enums.Attribute attribute, int value)
+        private void Action_OnActionExecuted(Entity entity, Enums.EffectType effectType, Enums.Attribute attribute, int value)
         {
             var position = Camera.current.WorldToScreenPoint(entity.BattleModel.transform.position);
             position.y += 200;
@@ -272,8 +272,7 @@ namespace RPGTest.Managers
             {
                 sprite.GetComponent<Animator>().SetBool("Healing", true);
             }
-            
-            entity.ApplyResourceModification(attribute, value);
+           
 
             if(!entity.IsAlive)
             {
