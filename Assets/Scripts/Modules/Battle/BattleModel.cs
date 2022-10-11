@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace RPGTest.Battle
+namespace RPGTest.Modules.Battle
 {
     public class BattleModel : MonoBehaviour
     {

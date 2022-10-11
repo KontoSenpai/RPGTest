@@ -1,8 +1,9 @@
-﻿using RPGTest.Battle;
-using RPGTest.Collectors;
+﻿using RPGTest.Collectors;
 using RPGTest.Controllers;
 using RPGTest.Models;
+using RPGTest.Models.Action;
 using RPGTest.Models.Entity;
+using RPGTest.Modules.Battle;
 using RPGTest.UI.Battle;
 using System;
 using System.Collections;

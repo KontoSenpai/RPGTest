@@ -8,7 +8,7 @@ Consumables:
       Description           : Basic concoction soothing pain of whom consume it
       Value                 : 30
       Effects               :
-        - EffectType        : Cure
+        - EffectType        : Heal
           Attributes        :
             HP              : 
               Potency       : 30
@@ -23,7 +23,7 @@ Consumables:
       Description           : A brevage rich in myst, resplenishing mystical energy
       Value                 : 100
       Effects               :
-        - EffectType        : Cure
+        - EffectType        : Heal
           Attributes        :
             MP              :
               Potency       : 50
@@ -38,7 +38,7 @@ Consumables:
       Description           : A powerful concotion that is able to cure any poisoning
       Value                 : 40
       Effects               :
-        - EffectType        : Cure
+        - EffectType        : Cleanse
           Statuses          :
             Poison          :
               Potency       : 100
@@ -53,7 +53,7 @@ Consumables:
       Description           : A blend of herbs fixing tense muscles when applied
       Value                 : 40
       Effects               :
-        - EffectType        : Cure
+        - EffectType        : Cleanse
           Statuses          :
             Paralysis       :
               Potency       : 100
@@ -68,7 +68,7 @@ Consumables:
       Description           : A concoction used to cure eye sore
       Value                 : 40
       Effects               :
-        - EffectType        : Cure
+        - EffectType        : Cleanse
           Statuses          :
             Blind           :
               Potency       : 100

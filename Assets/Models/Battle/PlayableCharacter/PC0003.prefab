@@ -1300,9 +1300,9 @@ GameObject:
   - component: {fileID: 95612694983450844}
   - component: {fileID: 5992906534417126238}
   - component: {fileID: 3786908119477755956}
-  - component: {fileID: -1487021238007800563}
+  - component: {fileID: 3513214355309864527}
   m_Layer: 0
-  m_Name: Base
+  m_Name: PC0003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1373,7 +1373,7 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &-1487021238007800563
+--- !u!114 &3513214355309864527
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1382,7 +1382,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1968476592218994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d761e50ae8cd880468e55017d228ae8c, type: 3}
+  m_Script: {fileID: 11500000, guid: 28295fb9f34a3e541af3384857ad6c72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Cursor: {fileID: 7733910922353901626, guid: a647af5c6ce82d14a80c590c467a3d3e, type: 3}

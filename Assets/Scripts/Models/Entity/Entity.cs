@@ -1,7 +1,9 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Managers;
+using RPGTest.Models.Action;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using YamlDotNet.Serialization;
 
@@ -44,11 +46,11 @@ namespace RPGTest.Models.Entity
 
         public Stance Stance { get; set; } = new Stance();
 
-        public List<AttributeChange> Buffs { get; set; }
+        public List<Buff> StatChanges { get; set; }
 
-        public List<AttributeChange> Debuff { get; set; }
+        public List<Status> StatusEffects { get; set; }
 
-        public Dictionary<StatusEffect, int> StatusEffects { get; set; }
+        public Dictionary<Buff, int> StatChangeResistance { get; set; }
 
         public Dictionary<StatusEffect, int> StatusEffectResistance { get; set; }
 
@@ -72,7 +74,7 @@ namespace RPGTest.Models.Entity
         public virtual bool FillATB()
         {
             m_currentATB += GetAttribute(Attribute.Speed);
-            return m_currentATB > m_maxATB;
+            return m_currentATB >= m_maxATB;
         }
 
         public abstract IEnumerator SelectAction(BattleManager manager, List<PlayableCharacter> playerParty, List<Enemy> enemyParty, System.Action<ActionSequence> selectedAction);
@@ -95,7 +97,7 @@ namespace RPGTest.Models.Entity
 
         public virtual bool IsAbilityCastable(Ability ability)
         {
-
+            Debug.LogWarning(ability);
             foreach (var castCost in ability.CastCost)
             {
                 var cost = System.Math.Abs(castCost.Value);
@@ -125,59 +127,6 @@ namespace RPGTest.Models.Entity
                 }
             }
             return true;
-        }
-
-        public virtual void ApplyResourceModification(Attribute attribute, int value)
-        {
-            switch (attribute)
-            {
-                case Attribute.MaxHP:
-                case Attribute.HP:
-                    CurrentHP += value;
-                    if(CurrentHP < 0)
-                    {
-                        CurrentHP = 0;
-                    }
-                    else if(CurrentHP > BaseAttributes.MaxHP)
-                    {
-                        CurrentHP = BaseAttributes.MaxHP;
-                    }
-                    break;
-                case Attribute.MaxMP:
-                case Attribute.MP:
-                    CurrentMP += value;
-                    if (CurrentMP < 0)
-                    {
-                        CurrentMP = 0;
-                    }
-                    else if (CurrentMP > BaseAttributes.MaxMP)
-                    {
-                        CurrentMP = BaseAttributes.MaxMP;
-                    }
-                    break;
-                case Attribute.MaxStamina:
-                case Attribute.Stamina:
-                    CurrentStamina += value;
-                    if (CurrentStamina < 0)
-                    {
-                        CurrentStamina = 0;
-                    }
-                    else if (CurrentStamina > BaseAttributes.MaxStamina)
-                    {
-                        CurrentStamina = BaseAttributes.MaxStamina;
-                    }
-                    break;
-            }
-        }
-
-        public virtual void ApplyBuff(Attribute attribute, int value)
-        {
-
-        }
-
-        public bool InflictStatusEffect(StatusEffect effect, int potency)
-        {
-            return false;
         }
 
         public virtual float GetAttribute(Attribute attribute)
@@ -212,5 +161,98 @@ namespace RPGTest.Models.Entity
 
             return attributes;
         }
+
+
+        #region Modifications
+        /// <summary>
+        /// Apply an attribute modification to an Entity
+        /// </summary>
+        /// <param name="attribute">Attribute targeted by the modification</param>
+        /// <param name="value">Amount that should be modified</param>
+        public virtual void ApplyAttributeModification(Attribute attribute, int value)
+        {
+            switch (attribute)
+            {
+                case Attribute.MaxHP:
+                case Attribute.HP:
+                    CurrentHP += value;
+                    if (CurrentHP < 0)
+                    {
+                        CurrentHP = 0;
+                    }
+                    else if (CurrentHP > BaseAttributes.MaxHP)
+                    {
+                        CurrentHP = BaseAttributes.MaxHP;
+                    }
+                    break;
+                case Attribute.MaxMP:
+                case Attribute.MP:
+                    CurrentMP += value;
+                    if (CurrentMP < 0)
+                    {
+                        CurrentMP = 0;
+                    }
+                    else if (CurrentMP > BaseAttributes.MaxMP)
+                    {
+                        CurrentMP = BaseAttributes.MaxMP;
+                    }
+                    break;
+                case Attribute.MaxStamina:
+                case Attribute.Stamina:
+                    CurrentStamina += value;
+                    if (CurrentStamina < 0)
+                    {
+                        CurrentStamina = 0;
+                    }
+                    else if (CurrentStamina > BaseAttributes.MaxStamina)
+                    {
+                        CurrentStamina = BaseAttributes.MaxStamina;
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Apply a buff to the selected Entity.
+        /// If a a buff of a same value is re-applied, it's duration will be extended
+        /// </summary>
+        /// <param name="entity">Entity on which the modification should be applied to</param>
+        /// <param name="buff">Buff to assign</param>
+        public virtual void ApplyBuff(Attribute attribute, int potency, int duration, RemovalType removalType)
+        {
+            Buff newBuff = new Buff { 
+                Attribute = attribute,
+                Value = potency,
+                Duration = duration,
+                RemovalType = removalType
+            };
+
+            int existingBuffIndex = StatChanges.FindIndex(b => b.Attribute == newBuff.Attribute && b.Value == newBuff.Value);
+
+            if(existingBuffIndex != -1)
+            {
+                StatChanges[existingBuffIndex] = newBuff;
+            } else
+            {
+                StatChanges.Add(newBuff);
+            }
+        }
+
+        public virtual void RemoveBuff(RemovalType removalType)
+        {
+            StatChanges.RemoveAll(b => b.RemovalType == removalType);
+        }
+
+        public virtual bool ApplyStatusEffect(StatusEffect effect, int potency)
+        {
+            return false;
+        }
+
+        public virtual void RemoveStatusEffect(RemovalType removalType)
+        {
+            StatusEffects.RemoveAll(s => s.RemovalType == removalType);
+            return;
+        }
+        #endregion
     }
 }

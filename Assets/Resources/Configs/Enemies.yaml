@@ -36,9 +36,9 @@ Enemies:
       CombatThresholds      :
         - Threshold         : 100
           Abilities         :
-            - Id            : A0001
+            - Id            : AMST001
               Probability   : 0.8
-            - Id            : AM001
+            - Id            : AMST001
               Probability   : 0.2
       GoldBounty            : 12
       ExperienceBounty      : 200

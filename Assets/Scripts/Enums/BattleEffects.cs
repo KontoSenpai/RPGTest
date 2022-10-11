@@ -22,7 +22,7 @@ namespace RPGTest.Enums
         Buff,
         Debuff,
         Alter,
-        Cure
+        Cleanse
     }
 
     public enum DamageType

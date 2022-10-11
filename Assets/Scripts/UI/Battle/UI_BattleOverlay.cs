@@ -1,5 +1,5 @@
-﻿using RPGTest.Battle;
-using RPGTest.Models.Entity;
+﻿using RPGTest.Models.Entity;
+using RPGTest.Modules.Battle;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;

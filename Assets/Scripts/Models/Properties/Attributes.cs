@@ -1,4 +1,6 @@
 ﻿
+using RPGTest.Enums;
+
 namespace RPGTest.Models
 {
     public class Attributes
@@ -22,11 +24,23 @@ namespace RPGTest.Models
         public int Accuracy { get; set; }
     }
 
-    public class AttributeChange
+    public class Buff
     {
-        public Enums.Attribute Attribute { get; set; }
+        public Attribute Attribute { get; set; }
 
         public int Value { get; set; }
+
         public int Duration { get; set; }
+
+        public RemovalType RemovalType { get; set; }
+    }
+
+    public class Status
+    {
+        public StatusEffect StatusEffect { get; set; }
+
+        public int Duration { get; set; }
+
+        public RemovalType RemovalType { get; set; }
     }
 }

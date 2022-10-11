@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using RPGTest.Helpers;
+using RPGTest.Models.Action;
 
 namespace RPGTest.UI.Battle 
 {

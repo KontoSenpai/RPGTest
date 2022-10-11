@@ -7,7 +7,9 @@ namespace RPGTest.Models
     {
         public float Potency { get; set; }
 
-        public int TurnInEffect { get; set; }
+        public RemovalType RemovalType { get; set; } = RemovalType.None;
+
+        public int Duration { get; set; }
     }
 
     public class Effect
@@ -18,7 +20,7 @@ namespace RPGTest.Models
 
         public Dictionary<Attribute, float> Scalings { get; set; } = new Dictionary<Attribute, float>();
 
-        public Dictionary<StatusEffect, EffectPotency> Statuses { get; set; }
+        public Dictionary<StatusEffect, EffectPotency> Statuses { get; set; } = new Dictionary<StatusEffect, EffectPotency>();
 
         public Dictionary<Element, int> Elements { get; set; }
 
@@ -29,8 +31,6 @@ namespace RPGTest.Models
         public List<float> HitPower { get; set; } = new List<float> { 1 };
 
         public Range PowerRange { get; set; } = new Range();
-
-        public bool Dispellable { get; set; }
 
         public bool EvaluateEffect(Dictionary<Attribute, float> entityAttributes)
         {

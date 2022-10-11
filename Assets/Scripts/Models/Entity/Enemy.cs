@@ -2,6 +2,7 @@
 using RPGTest.Assets.Scripts.Models.Items;
 using RPGTest.Enums;
 using RPGTest.Managers;
+using RPGTest.Models.Action;
 using System;
 using System.Collections;
 using System.Collections.Generic;

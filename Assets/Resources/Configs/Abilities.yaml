@@ -93,13 +93,14 @@ Abilities:
           Attributes        :
             Defense         : 
               Potency       : 20
+              Duration      : 4
       TargetTypes           :
         - Allies
       CastCost              :
         Stamina             : 4
 
 #Magic Abilities
-    - Id                    : A0005
+    - Id                    : AM0001
       Name                  : Flame Ball
       Description           : Perform a powerfull sping with a blade to strike all the enemies
       AbilityType           : AttackMagic
@@ -116,7 +117,7 @@ Abilities:
       CastCost              :
         MP                  : 8
 
-    - Id                    : A0006
+    - Id                    : AM0002
       Name                  : Flame Thrower
       Description           : Perform a powerfull sping with a blade to strike all the enemies
       AbilityType           : AttackMagic
@@ -143,7 +144,7 @@ Abilities:
         MP                  : 8
 
 #Monster Abilities
-    - Id                    : AM001
+    - Id                    : AMST001
       Name                  : Bite
       AbilityType           : Monster
       Effects               :

@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace RPGTest.Enums
 {
-    public enum AbilityType
+    public enum RemovalType
     {
-        Default,
-        Weapon,
-        AttackMagic,
-        SupportMagic,
-        Talent,
-        Monster,
+        None,
+        Purge,
+        Dispel,
+        Undispellable,
+        Unpurgeable,
     }
 }

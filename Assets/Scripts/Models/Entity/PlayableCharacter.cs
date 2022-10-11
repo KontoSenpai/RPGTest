@@ -2,6 +2,7 @@
 using RPGTest.Enums;
 using RPGTest.Helpers;
 using RPGTest.Managers;
+using RPGTest.Models.Action;
 using RPGTest.Models.Items;
 using System;
 using System.Collections;
@@ -125,9 +126,9 @@ namespace RPGTest.Models.Entity
             CurrentMP = BaseAttributes.MaxMP;
         }
 
-        public override void ApplyResourceModification(Enums.Attribute attribute, int value)
+        public override void ApplyAttributeModification(Enums.Attribute attribute, int value)
         {
-            base.ApplyResourceModification(attribute, value);
+            base.ApplyAttributeModification(attribute, value);
             PlayerWidgetUpdated(attribute);
         }
 

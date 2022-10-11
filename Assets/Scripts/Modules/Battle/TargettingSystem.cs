@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RPGTest.Battle
+namespace RPGTest.Modules.Battle
 {
     public class TargettingSystem : MonoBehaviour
     {
