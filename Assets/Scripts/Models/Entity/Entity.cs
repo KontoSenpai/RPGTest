@@ -46,7 +46,7 @@ namespace RPGTest.Models.Entity
 
         public Stance Stance { get; set; } = new Stance();
 
-        public List<Buff> StatChanges { get; set; }
+        public List<Buff> Buffs { get; set; }
 
         public List<Status> StatusEffects { get; set; }
 
@@ -227,20 +227,20 @@ namespace RPGTest.Models.Entity
                 RemovalType = removalType
             };
 
-            int existingBuffIndex = StatChanges.FindIndex(b => b.Attribute == newBuff.Attribute && b.Value == newBuff.Value);
+            int existingBuffIndex = Buffs.FindIndex(b => b.Attribute == newBuff.Attribute && b.Value == newBuff.Value);
 
             if(existingBuffIndex != -1)
             {
-                StatChanges[existingBuffIndex] = newBuff;
+                Buffs[existingBuffIndex] = newBuff;
             } else
             {
-                StatChanges.Add(newBuff);
+                Buffs.Add(newBuff);
             }
         }
 
         public virtual void RemoveBuff(RemovalType removalType)
         {
-            StatChanges.RemoveAll(b => b.RemovalType == removalType);
+            Buffs.RemoveAll(b => b.RemovalType == removalType);
         }
 
         public virtual bool ApplyStatusEffect(StatusEffect effect, int potency)

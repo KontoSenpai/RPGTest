@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace RPGTest.Modules.Battle
 {
-    public class TargettingSystem : MonoBehaviour
+    public partial class TargettingSystem : MonoBehaviour
     {
         private bool m_targetMode = false;
 
@@ -20,6 +20,7 @@ namespace RPGTest.Modules.Battle
 
         //Target navigation
         private bool m_targetEnemy = false;
+        private bool m_targetSide = false;
         private bool m_targetAll = false;
         private int m_targetIndex = -1;
 
@@ -59,31 +60,15 @@ namespace RPGTest.Modules.Battle
             if(m_targetMode)
             {
                 var movement = obj.ReadValue<Vector2>();
-                if(movement.y > 0)
+                if(movement.y > 0 && CanSelectSingleTarget())
                 {
-                    if (m_targetAll)
-                    {
-                        ChangeAllTargeting(false, 0);
-                    }
-                    else if (m_targetEnemy && m_targetIndex < m_enemies.Where(e => e.IsAlive).Count() - 1)
-                    {
-                        ChangeTargeting(1);
-                    }
-                    else if (!m_targetEnemy && m_targetIndex < m_party.Count() - 1)
-                    {
-                        ChangeTargeting(1);
-                    }
+                    SelectSingleTarget(true);
+                    UpdateCursorState();
                 }
-                else if(movement.y < 0)
+                else if(movement.y < 0 && CanSelectSingleTarget())
                 {
-                    if (m_targetAll)
-                    {
-                        ChangeAllTargeting(false, m_targetEnemy ? m_enemies.Count - 1 : m_party.Count - 1);
-                    }
-                    else if (m_targetIndex > 0)
-                    {
-                        ChangeTargeting(-1);
-                    }
+                    SelectSingleTarget(false);
+                    UpdateCursorState();
                 }
                 else if(movement.x < 0)
                 {
@@ -215,6 +200,24 @@ namespace RPGTest.Modules.Battle
                 ToggleTargetCursor(true);
             }
 
+        }
+
+        private void UpdateCursorState()
+        {
+            if (m_targetEnemy || m_targetAll)
+            {
+                for(int i = 0; i < m_enemies.Where(e => e.IsAlive).Count(); i++)
+                {
+                    m_enemies.Where(e => e.IsAlive).ToList()[i].BattleModel.GetComponent<BattleModel>().ToggleCursor(m_targetIndex == i || m_targetAll || m_targetSide);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < m_party.Count; i++)
+                {
+                    m_party[i].BattleModel.GetComponent<BattleModel>().ToggleCursor(m_targetIndex == i || m_targetAll || m_targetSide);
+                }
+            }
         }
 
         private void ChangeAllTargeting(bool toAll, int newIndex = -1)

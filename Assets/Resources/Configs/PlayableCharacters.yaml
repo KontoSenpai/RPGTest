@@ -35,6 +35,7 @@ PlayableCharacters:
       Abilities         :
         - AM0001
         - AM0002
+        - AP0001
       BaseAttributes    :
         MaxHP           : 24
         MaxMP           : 12

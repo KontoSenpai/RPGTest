@@ -265,6 +265,9 @@ namespace RPGTest.UI.Battle
                         if (ability.DefaultTarget != TargetType.None)
                         {
                             defaultTargetting = ability.DefaultTarget;
+                        } else if (ability.TargetTypes.Count >= 1)
+                        {
+                            defaultTargetting = ability.TargetTypes.First();
                         }
 
                         availableTargetting = ability.TargetTypes;

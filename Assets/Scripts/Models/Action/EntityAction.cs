@@ -173,7 +173,7 @@ namespace RPGTest.Models.Action
                         ExecuteDamage(effect, allies, enemies);
                         break;
                     case EffectType.Heal:
-                        ExecuteDamage(effect, allies, enemies);
+                        ExecuteHeal(effect, allies, enemies);
                         break;
                     case EffectType.Buff:
                         ExecuteBuff(effect, allies, enemies);

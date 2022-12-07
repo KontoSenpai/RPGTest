@@ -63,15 +63,23 @@ namespace RPGTest.Models.Action
             foreach (var attribute in effect.Attributes)
             {
                 List<Entity.Entity> targets = new List<Entity.Entity>();
-                var buffPotency = (int)Mathf.Ceil(attribute.Value.Potency);
+                var potency = (int)Mathf.Ceil(attribute.Value.Potency);
+
+                Buff buff = new Buff
+                {
+                    Attribute = attribute.Key,
+                    Value = potency,
+                    Duration = attribute.Value.Duration,
+                    RemovalType = attribute.Value.RemovalType
+                };
 
                 foreach (var target in GetTargets(effect.TargetType, allies, enemies))
                 {
-                    target.ApplyBuff(attribute.Key, buffPotency, attribute.Value.Duration, attribute.Value.RemovalType);
+                    target.AddBuff(buff);
 
                     if (ActionType == ActionType.Ability || ActionType == ActionType.Item)
                     {
-                        ActionExecuted(target, effect.EffectType, attribute.Key, buffPotency);
+                        ActionExecuted(target, effect.EffectType, attribute.Key, buff.Value);
                     }
                 }
             }

@@ -1386,5 +1386,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cursor: {fileID: 7733910922353901626, guid: a647af5c6ce82d14a80c590c467a3d3e, type: 3}
-  DefaultPosition: {x: 0, y: 0, z: 0}
+  DefaultPosition: {x: 0, y: 1.5, z: 0}
   DamageSprite: {fileID: 8736163791041326226, guid: fe4b73ca40255bf409c1bf294587ba60, type: 3}

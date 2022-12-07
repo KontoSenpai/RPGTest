@@ -86,8 +86,6 @@ Abilities:
       Name                  : Ralying Cry
       Description           : Shout loudly to raly allies and increase their defense
       AbilityType           : Talent
-      EquipmentRestrictrion : 
-        - Spear
       Effects               :
         - EffectType        : Buff
           Attributes        :
