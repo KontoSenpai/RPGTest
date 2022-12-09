@@ -96,11 +96,38 @@ Abilities:
         - Allies
       CastCost              :
         Stamina             : 4
+    - Id                    : AP0002
+      Name                  : Fleet of foot
+      Description           : Take up a stance to react more quickly
+      AbilityType           : Talent
+      Effects               :
+        - EffectType        : Buff
+          Attributes        :
+            Speed           : 
+              Potency       : 50
+              Duration      : 3
+      TargetTypes           :
+        - Allies
+      CastCost              :
+        Stamina             : 4
+    - Id                    : AP0003
+      Name                  : Embolden 
+      Description           : 
+      AbilityType           : Talent
+      Effects               :
+        - EffectType        : Buff
+          Attributes        :
+            Attack          : 
+              Potency       : 200
+              Duration      : 2
+      DefaultTarget         : Self
+      CastCost              :
+        Stamina             : 4
 
 #Magic Abilities
     - Id                    : AM0001
       Name                  : Flame Ball
-      Description           : Perform a powerfull sping with a blade to strike all the enemies
+      Description           : Send a magically confured flame ball to the target.
       AbilityType           : AttackMagic
       Effects               :
         - EffectType        : Damage
@@ -109,17 +136,26 @@ Abilities:
               Potency       : 5
           Scalings          :
             Magic           : 0.8
+      DefaultTarget         : SingleEnemy 
       TargetTypes           :
         - SingleEnemy
+        - Enemies
+        - SingleAlly
+        - Allies
       Backswing             : 2000
       CastCost              :
         MP                  : 8
 
     - Id                    : AM0002
       Name                  : Flame Thrower
-      Description           : Perform a powerfull sping with a blade to strike all the enemies
+      Description           : Unleash wide flames to the targets and reduce their fire resistance
       AbilityType           : AttackMagic
       Effects               :
+        - EffectType        : Buff
+          Attributes        :
+            Speed           : 
+              Potency       : 30
+              Duration      : 2
         - EffectType        : Damage
           Attributes        :
             HP              : 

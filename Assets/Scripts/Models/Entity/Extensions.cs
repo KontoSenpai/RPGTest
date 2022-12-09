@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RPGTest.Enums;
 
@@ -6,6 +7,42 @@ namespace RPGTest.Models.Entity
 {
     public static class Extensions
     {
+        public static int GetFirstAliveIndex(this List<Enemy> entities)
+        {
+            for(int i = 0; i < entities.Count; i++)
+            {
+                if(entities[i].IsAlive)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public static int GetLastAliveIndex(this List<Enemy> entities)
+        {
+            for (int i = entities.Count - 1; i > 0 ; i--)
+            {
+                if (entities[i].IsAlive)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public static int GetIndexOfAlly(this List<PlayableCharacter> entities, PlayableCharacter ally)
+        {
+            for (int i = 0; i < entities.Count; i++)
+            {
+                if (entities[i].Id == ally.Id)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         /// <summary>
         /// Apply a buff to the Entity.
         /// If a a buff of a same value is re-applied, it's duration will be extended

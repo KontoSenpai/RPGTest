@@ -60,58 +60,15 @@ namespace RPGTest.Modules.Battle
             if(m_targetMode)
             {
                 var movement = obj.ReadValue<Vector2>();
-                if(movement.y > 0 && CanSelectSingleTarget())
+                if (movement.y != 0 && CanSelectSingleTarget())
                 {
-                    SelectSingleTarget(true);
-                    UpdateCursorState();
+                    SelectSingleTarget(movement.y > 0);
                 }
-                else if(movement.y < 0 && CanSelectSingleTarget())
+                else if (movement.x != 0)
                 {
-                    SelectSingleTarget(false);
-                    UpdateCursorState();
+                    SelectOtherSide();
                 }
-                else if(movement.x < 0)
-                {
-                    if (m_targetEnemy && !m_targetAll && m_possibleTargets.Contains(TargetType.Enemies))
-                    {
-                        ChangeAllTargeting(true);
-                    }
-                    else if (!m_targetEnemy && m_targetAll && m_possibleTargets.Contains(TargetType.SingleAlly))
-                    {
-                        ChangeAllTargeting(false);
-                    }
-                    else if (!m_targetEnemy && m_possibleTargets.Contains(TargetType.SingleEnemy))
-                    {
-                        ChangeTargetingSide(true);
-                    }
-                    else if (!m_targetEnemy && m_possibleTargets.Contains(TargetType.Enemies))
-                    {
-                        ChangeTargetingSide(true, true);
-                    }
-                }
-                else if(movement.x > 0)
-                {
-                    if (m_targetEnemy && m_targetAll && m_possibleTargets.Contains(TargetType.SingleEnemy))
-                    {
-                        ChangeAllTargeting(false);
-                    }
-                    else if (!m_targetEnemy && m_possibleTargets.Contains(TargetType.Allies))
-                    {
-                        ChangeAllTargeting(true);
-                    }
-                    else if (m_targetEnemy && m_targetAll && m_possibleTargets.Contains(TargetType.SingleEnemy))
-                    {
-                        ChangeAllTargeting(false);
-                    }
-                    else if (m_targetEnemy && m_possibleTargets.Contains(TargetType.SingleAlly))
-                    {
-                        ChangeTargetingSide(false);
-                    }
-                    else if (m_targetEnemy && m_possibleTargets.Contains(TargetType.Allies))
-                    {
-                        ChangeTargetingSide(false, true);
-                    }
-                }
+                UpdateCursorState();
             }
         }
 
@@ -126,22 +83,39 @@ namespace RPGTest.Modules.Battle
             switch (defaultTargetType)
             {
                 case TargetType.Enemies:
-                    ChangeTargetingSide(true, true);
+                    m_targetEnemy = true;
+                    m_targetSide = true;
                     break;
                 case TargetType.SingleEnemy:
-                    ChangeTargetingSide(true);
+                    m_targetEnemy = true;
+                    m_targetSide = false;
+                    m_targetIndex = m_enemies.GetFirstAliveIndex();
                     break;
                 case TargetType.Allies:
-                    ChangeTargetingSide(false, true);
+                    m_targetEnemy = false;
+                    m_targetSide = true;
                     break;
                 case TargetType.SingleAlly:
                 case TargetType.Self:
-                    ChangeTargetingSide(false);
+                    m_targetEnemy = false;
+                    m_targetIndex = m_party.GetIndexOfAlly(playableCharacter);
+                    break;
+                case TargetType.All:
+                    m_targetAll = true;
                     break;
             }
+            UpdateCursorState();
 
-            m_possibleTargets = targetTypes;
             m_requester = playableCharacter;
+            if (targetTypes != null && targetTypes.Count > 0)
+            {
+                m_possibleTargets = targetTypes;
+            }
+            else
+            {
+                m_possibleTargets = new List<TargetType> { defaultTargetType };
+            }
+
             m_targetMode = true;
         }
 
@@ -150,7 +124,12 @@ namespace RPGTest.Modules.Battle
             List<Entity> targets = new List<Entity>();
             if (submit)
             {
-                if (m_targetEnemy && m_targetAll)
+                if(m_targetAll)
+                {
+                    targets.AddRange(m_enemies.Where(en => en.IsAlive));
+                    targets.AddRange(m_party.Where(en => en.IsAlive));
+                }
+                else if (m_targetEnemy && m_targetSide)
                 {
                     targets.AddRange(m_enemies.Where(en => en.IsAlive));
                 }
@@ -158,7 +137,7 @@ namespace RPGTest.Modules.Battle
                 {
                     targets.Add(m_enemies[m_targetIndex]);
                 }
-                else if (!m_targetEnemy && m_targetAll)
+                else if (!m_targetEnemy && m_targetSide)
                 {
                     targets.AddRange(m_party);
                 }
@@ -167,40 +146,17 @@ namespace RPGTest.Modules.Battle
                     targets.Add(m_party[m_targetIndex]);
                 }
             }
-
-            ToggleTargetsCursor(false);
-            PlayerTargettingDone(m_requester, submit, submit ? targets : null);
-            m_requester = null;
+          
+            m_targetAll = false;
+            m_targetSide = false;
             m_targetIndex = -1;
-            m_possibleTargets = null;
+            
+            UpdateCursorState();
+
             m_targetMode = false;
+            PlayerTargettingDone(m_requester, submit, submit ? targets : null);
         }
 
-        private void ChangeTargeting(int indexVariation = 0)
-        {
-            ToggleTargetCursor(false);
-            m_targetIndex += indexVariation;
-            ToggleTargetCursor(true);
-        }
-
-        private void ChangeTargetingSide(bool targetEnemy, bool toAll = false)
-        {
-            ToggleTargetsCursor(false);
-
-            m_targetEnemy = targetEnemy;
-            m_targetIndex = 0;
-            m_targetAll = toAll;
-
-            if (m_targetAll)
-            {
-                ToggleTargetsCursor(true);
-            }
-            else
-            {
-                ToggleTargetCursor(true);
-            }
-
-        }
 
         private void UpdateCursorState()
         {
@@ -217,57 +173,6 @@ namespace RPGTest.Modules.Battle
                 {
                     m_party[i].BattleModel.GetComponent<BattleModel>().ToggleCursor(m_targetIndex == i || m_targetAll || m_targetSide);
                 }
-            }
-        }
-
-        private void ChangeAllTargeting(bool toAll, int newIndex = -1)
-        {
-            if (m_targetAll == toAll)
-                return;
-
-            if (newIndex != -1)
-                m_targetIndex = newIndex;
-
-            m_targetAll = toAll;
-            if (m_targetAll)
-            {
-                ToggleTargetsCursor(true);
-            }
-            else
-            {
-                ToggleTargetsCursor(false);
-                ToggleTargetCursor(true);
-            }
-
-        }
-
-        private void ToggleTargetsCursor(bool visibility)
-        {
-            if (m_targetEnemy)
-            {
-                foreach (var enemy in m_enemies)
-                {
-                    enemy.BattleModel.GetComponent<BattleModel>().ToggleCursor(visibility);
-                }
-            }
-            else
-            {
-                foreach (var partyMember in m_party)
-                {
-                    partyMember.BattleModel.GetComponent<BattleModel>().ToggleCursor(visibility);
-                }
-            }
-        }
-
-        private void ToggleTargetCursor(bool visibility)
-        {
-            if (m_targetEnemy)
-            {
-                m_enemies[m_targetIndex].BattleModel.GetComponent<BattleModel>().ToggleCursor(visibility);
-            }
-            else
-            {
-                m_party[m_targetIndex].BattleModel.GetComponent<BattleModel>().ToggleCursor(visibility);
             }
         }
     }

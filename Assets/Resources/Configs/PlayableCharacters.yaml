@@ -8,6 +8,8 @@ PlayableCharacters:
       Abilities         :
         - AW0001
         - AW0002
+        - AP0001
+        - AP0003
       BaseAttributes    :
         MaxHP           : 30
         MaxMP           : 0
@@ -35,7 +37,6 @@ PlayableCharacters:
       Abilities         :
         - AM0001
         - AM0002
-        - AP0001
       BaseAttributes    :
         MaxHP           : 24
         MaxMP           : 12
@@ -63,6 +64,7 @@ PlayableCharacters:
       Abilities         :
         - AM0001
         - AM0002
+        - AP0002
       BaseAttributes    :
         MaxHP           : 24
         MaxMP           : 12

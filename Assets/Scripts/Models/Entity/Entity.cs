@@ -46,15 +46,15 @@ namespace RPGTest.Models.Entity
 
         public Stance Stance { get; set; } = new Stance();
 
-        public List<Buff> Buffs { get; set; }
+        public List<Buff> Buffs { get; set; } = new List<Buff>();
 
-        public List<Status> StatusEffects { get; set; }
+        public List<Status> StatusEffects { get; set; } = new List<Status>();
 
-        public Dictionary<Buff, int> StatChangeResistance { get; set; }
+        public Dictionary<Buff, int> StatChangeResistance { get; set; } = new Dictionary<Buff, int>();
 
-        public Dictionary<StatusEffect, int> StatusEffectResistance { get; set; }
+        public Dictionary<StatusEffect, int> StatusEffectResistance { get; set; } = new Dictionary<StatusEffect, int>();
 
-        public Dictionary<Element, int> ElementResistance { get; set; }
+        public Dictionary<Element, int> ElementResistance { get; set; } = new Dictionary<Element, int>();
 
         public virtual Range PowerRange { get; set; } = new Range() { Min = 0.75f, Max = 1.25f };
         #endregion
@@ -97,7 +97,6 @@ namespace RPGTest.Models.Entity
 
         public virtual bool IsAbilityCastable(Ability ability)
         {
-            Debug.LogWarning(ability);
             foreach (var castCost in ability.CastCost)
             {
                 var cost = System.Math.Abs(castCost.Value);

@@ -18,7 +18,6 @@ EnemySpawners:
              FrontRow        : true
            - EnemyID         : EN0002
              FrontRow        : false
-    - Id                     : EG0002
 
 Enemies:
     - Id                    : EN0001
