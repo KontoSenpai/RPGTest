@@ -151,9 +151,9 @@ Abilities:
       Description           : Unleash wide flames to the targets and reduce their fire resistance
       AbilityType           : AttackMagic
       Effects               :
-        - EffectType        : Buff
+        - EffectType        : Debuff
           Attributes        :
-            Speed           : 
+            Resistence      : 
               Potency       : 30
               Duration      : 2
         - EffectType        : Damage

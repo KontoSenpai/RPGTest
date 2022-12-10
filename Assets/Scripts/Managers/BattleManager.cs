@@ -273,7 +273,7 @@ namespace RPGTest.Managers
                 }
                 else
                 {
-                    sprite.GetComponent<Animator>().SetBool("Healing", true);
+                    sprite.GetComponent<Animator>().SetBool("Heal", true);
                 }
             }         
 

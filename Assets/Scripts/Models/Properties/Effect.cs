@@ -7,6 +7,8 @@ namespace RPGTest.Models
     {
         public float Potency { get; set; }
 
+        public float IgnoreDefense { get; set; } = 0.0f;
+
         public RemovalType RemovalType { get; set; } = RemovalType.None;
 
         public int Duration { get; set; }

@@ -14,18 +14,11 @@ namespace RPGTest.Models.Action
         /// <param name="enemies">List of enemies of the caster</param>
         public void ExecuteDamage(Effect effect, List<PlayableCharacter> allies, List<Enemy> enemies)
         {
-            foreach (var attribute in effect.Attributes)
+            foreach (var target in GetTargets(effect.TargetType, allies, enemies))
             {
-                List<Entity.Entity> targets = new List<Entity.Entity>();
-                float attackPower = attribute.Value.Potency;
-                foreach (var scaling in effect.Scalings)
+                foreach (var attribute in effect.Attributes)
                 {
-                    attackPower += Caster.GetAttribute(scaling.Key) * scaling.Value;
-                }
-
-                foreach (var target in GetTargets(effect.TargetType, allies, enemies))
-                {
-                    var attackValue = (int)Mathf.Ceil((attackPower * -1) * effect.PowerRange.GetValue());
+                    var attackValue = target.CalculateDamage(Caster, effect, attribute.Value);
 
                     target.ApplyAttributeModification(attribute.Key, attackValue);
 

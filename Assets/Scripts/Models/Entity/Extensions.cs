@@ -2,11 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using RPGTest.Enums;
+using UnityEngine;
 
 namespace RPGTest.Models.Entity
 {
     public static class Extensions
     {
+        public static int CalculateDamage(this Entity entity, Entity caster, Effect effect, EffectPotency effectPotency)
+        {
+            List<float> attackValues = new List<float>();
+            foreach (var attribute in effect.Attributes)
+            {
+                var attributePotency = attribute.Value.Potency;
+
+                foreach (var scaling in effect.Scalings)
+                {
+                    // Get entity defensive response to scaling
+                    var defensePower = entity.GetDefensiveAttribute(scaling.Key) * (1 - attribute.Value.IgnoreDefense);
+
+                    attackValues.Add((caster.GetAttribute(scaling.Key) * scaling.Value) / (1 + defensePower * 0.06f));
+                }
+            }
+
+            var attackValue = (int)Mathf.Ceil((attackValues.Sum() * -1) * effect.PowerRange.GetValue());
+
+            return attackValue;
+        }
+
+        public static float GetDefensiveAttribute(this Entity entity, Enums.Attribute attribute)
+        {
+            switch (attribute) {
+                case Enums.Attribute.Attack:
+                case Enums.Attribute.Defense:
+                    return entity.GetAttribute(Enums.Attribute.Defense);
+                case Enums.Attribute.Magic:
+                case Enums.Attribute.Resistance:
+                    return entity.GetAttribute(Enums.Attribute.Resistance);
+            }
+            return 0.0f;
+        }
+
         public static int GetFirstAliveIndex(this List<Enemy> entities)
         {
             for(int i = 0; i < entities.Count; i++)
