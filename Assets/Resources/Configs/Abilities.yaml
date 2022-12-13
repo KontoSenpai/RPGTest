@@ -153,7 +153,7 @@ Abilities:
       Effects               :
         - EffectType        : Debuff
           Attributes        :
-            Resistence      : 
+            Resistance      : 
               Potency       : 30
               Duration      : 2
         - EffectType        : Damage

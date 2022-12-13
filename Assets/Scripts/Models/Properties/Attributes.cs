@@ -28,7 +28,7 @@ namespace RPGTest.Models
     {
         public Attribute Attribute { get; set; }
 
-        public int Value { get; set; }
+        public float Value { get; set; }
 
         public int Duration { get; set; }
 

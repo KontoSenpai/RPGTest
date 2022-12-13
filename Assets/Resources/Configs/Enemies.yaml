@@ -24,7 +24,7 @@ Enemies:
       Name                  : White Wolf
       Level                 : 3
       BaseAttributes        :
-        MaxHP               : 16
+        MaxHP               : 5000
         MaxMP               : 0
         MaxStamina          : 10
         Attack              : 4

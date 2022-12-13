@@ -3,7 +3,6 @@ using RPGTest.Managers;
 using RPGTest.Models.Action;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using YamlDotNet.Serialization;
 
@@ -18,7 +17,7 @@ namespace RPGTest.Models.Entity
         Equip
     }
 
-    public abstract class Entity : IdObject
+    public abstract partial class Entity : IdObject
     {
         #region properties
         public GameObject BattleModel { get; set; }
@@ -138,16 +137,14 @@ namespace RPGTest.Models.Entity
         {
             Dictionary<Attribute, float> attributes = new Dictionary<Attribute, float>();
 
+            // Base Attributes
             attributes.Add(Attribute.HP, CurrentHP);
-            attributes.Add(Attribute.HPPercentage, (float)CurrentHP / (float)BaseAttributes.MaxHP);
             attributes.Add(Attribute.MaxHP, BaseAttributes.MaxHP);
 
             attributes.Add(Attribute.MP, CurrentMP);
-            attributes.Add(Attribute.MPPercentage, BaseAttributes.MaxMP > 0 ? (float)CurrentMP / BaseAttributes.MaxMP : 1.0f);
             attributes.Add(Attribute.MaxMP, BaseAttributes.MaxMP);
 
             attributes.Add(Attribute.Stamina, CurrentStamina);
-            attributes.Add(Attribute.StaminaPercentage, (float)CurrentStamina / BaseAttributes.MaxStamina);
             attributes.Add(Attribute.MaxStamina, BaseAttributes.MaxStamina);
 
             attributes.Add(Attribute.Attack, BaseAttributes.Attack);
@@ -157,7 +154,18 @@ namespace RPGTest.Models.Entity
             attributes.Add(Attribute.Resistance, BaseAttributes.Resistance);
 
             attributes.Add(Attribute.Speed, BaseAttributes.Speed);
+            //attributes.Add(Attribute.Block);
 
+            // Computed Attributes
+            attributes.Add(Attribute.HPPercentage, (float)CurrentHP / (float)BaseAttributes.MaxHP);
+            attributes.Add(Attribute.MPPercentage, BaseAttributes.MaxMP > 0 ? (float)CurrentMP / BaseAttributes.MaxMP : 1.0f);
+            attributes.Add(Attribute.StaminaPercentage, (float)CurrentStamina / BaseAttributes.MaxStamina);
+
+            attributes.Add(Attribute.TotalAttack, Mathf.Ceil(attributes[Attribute.Attack] * GetHighestBuff(Attribute.Attack)));
+            attributes.Add(Attribute.TotalDefense, Mathf.Ceil(attributes[Attribute.Defense] * GetHighestBuff(Attribute.Defense)));
+            attributes.Add(Attribute.TotalMagic, Mathf.Ceil(attributes[Attribute.Magic] * GetHighestBuff(Attribute.Magic)));
+            attributes.Add(Attribute.TotalResistance, Mathf.Ceil(attributes[Attribute.Resistance] * GetHighestBuff(Attribute.Resistance)));
+            attributes.Add(Attribute.TotalSpeed, Mathf.Ceil(attributes[Attribute.Speed] * GetHighestBuff(Attribute.Speed)));
             return attributes;
         }
 
@@ -209,37 +217,6 @@ namespace RPGTest.Models.Entity
                     }
                     break;
             }
-        }
-
-        /// <summary>
-        /// Apply a buff to the selected Entity.
-        /// If a a buff of a same value is re-applied, it's duration will be extended
-        /// </summary>
-        /// <param name="entity">Entity on which the modification should be applied to</param>
-        /// <param name="buff">Buff to assign</param>
-        public virtual void ApplyBuff(Attribute attribute, int potency, int duration, RemovalType removalType)
-        {
-            Buff newBuff = new Buff { 
-                Attribute = attribute,
-                Value = potency,
-                Duration = duration,
-                RemovalType = removalType
-            };
-
-            int existingBuffIndex = Buffs.FindIndex(b => b.Attribute == newBuff.Attribute && b.Value == newBuff.Value);
-
-            if(existingBuffIndex != -1)
-            {
-                Buffs[existingBuffIndex] = newBuff;
-            } else
-            {
-                Buffs.Add(newBuff);
-            }
-        }
-
-        public virtual void RemoveBuff(RemovalType removalType)
-        {
-            Buffs.RemoveAll(b => b.RemovalType == removalType);
         }
 
         public virtual bool ApplyStatusEffect(StatusEffect effect, int potency)

@@ -56,12 +56,11 @@ namespace RPGTest.Models.Action
             foreach (var attribute in effect.Attributes)
             {
                 List<Entity.Entity> targets = new List<Entity.Entity>();
-                var potency = (int)Mathf.Ceil(attribute.Value.Potency);
 
                 Buff buff = new Buff
                 {
                     Attribute = attribute.Key,
-                    Value = potency,
+                    Value = attribute.Value.Potency / 100,
                     Duration = attribute.Value.Duration,
                     RemovalType = attribute.Value.RemovalType
                 };
@@ -72,7 +71,7 @@ namespace RPGTest.Models.Action
 
                     if (ActionType == ActionType.Ability || ActionType == ActionType.Item)
                     {
-                        ActionExecuted(target, effect.EffectType, attribute.Key, buff.Value);
+                        ActionExecuted(target, effect.EffectType, attribute.Key, (int)(buff.Value * 100));
                     }
                 }
             }

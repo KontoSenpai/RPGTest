@@ -18,9 +18,11 @@ namespace RPGTest.Models.Entity
                 foreach (var scaling in effect.Scalings)
                 {
                     // Get entity defensive response to scaling
-                    var defensePower = entity.GetDefensiveAttribute(scaling.Key) * (1 - attribute.Value.IgnoreDefense);
+                    var attackPower = caster.GetOffensiveAttribute(scaling.Key) * scaling.Value;
 
-                    attackValues.Add((caster.GetAttribute(scaling.Key) * scaling.Value) / (1 + defensePower * 0.06f));
+                    var defensePower = entity.GetDefensiveAttribute(scaling.Key) * (1 - attribute.Value.IgnoreDefense) * 0.06f;
+
+                    attackValues.Add(attackPower / (1 + defensePower));
                 }
             }
 
@@ -41,6 +43,25 @@ namespace RPGTest.Models.Entity
             }
             return 0.0f;
         }
+
+        public static float GetOffensiveAttribute(this Entity entity, Enums.Attribute attribute)
+        {
+            switch (attribute)
+            {
+                case Enums.Attribute.Attack:
+                    return entity.GetAttribute(Enums.Attribute.TotalAttack);
+                case Enums.Attribute.Defense:
+                    return entity.GetAttribute(Enums.Attribute.TotalDefense);
+                case Enums.Attribute.Magic:
+                    return entity.GetAttribute(Enums.Attribute.TotalMagic);
+                case Enums.Attribute.Resistance:
+                    return entity.GetAttribute(Enums.Attribute.TotalResistance);
+                default:
+                    Debug.LogError("Unsupported attribute");
+                    return 0.0f;
+            }
+        }
+
 
         public static int GetFirstAliveIndex(this List<Enemy> entities)
         {
@@ -76,38 +97,6 @@ namespace RPGTest.Models.Entity
                 }
             }
             return -1;
-        }
-
-        /// <summary>
-        /// Apply a buff to the Entity.
-        /// If a a buff of a same value is re-applied, it's duration will be extended
-        /// </summary>
-        /// <param name="entity">Entity on which the modification should be applied to</param>
-        /// <param name="buff">Buff to add</param>
-        public static void AddBuff(this Entity entity, Buff buff)
-        {
-            int existingBuffIndex = entity.Buffs.FindIndex(b => b.Attribute == buff.Attribute && b.Value == buff.Value);
-
-            if (existingBuffIndex != -1)
-            {
-                entity.Buffs[existingBuffIndex] = buff;
-            }
-            else
-            {
-                entity.Buffs.Add(buff);
-            }
-        }
-
-        public static Buff GetBuff(this Entity entity, Predicate<Buff> predicate)
-        {
-            var buff = entity.Buffs.FirstOrDefault(b => predicate(b));
-
-            return buff;
-        }
-
-        public static void RemoveBuffs(this Entity entity, Predicate<Buff> predicate)
-        {
-            entity.Buffs.RemoveAll(b => predicate(b));
         }
     }
 }

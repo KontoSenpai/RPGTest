@@ -226,20 +226,20 @@ namespace RPGTest.Models.Entity
 
         public override Dictionary<Attribute, float> GetAttributes()
         {
+            return  GetAttributes(EquipmentSlots.CurrentPreset);
+        }
+
+        public Dictionary<Attribute, float> GetAttributes(PresetSlot slot)
+        {
             var attributes = base.GetAttributes();
 
-            var preset1 = EquipmentSlots.GetEquipmentPreset(PresetSlot.First);
-            attributes.Add(Attribute.TotalAttackP1, BaseAttributes.Attack + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Attack).Value));
-            attributes.Add(Attribute.TotalDefenseP1, BaseAttributes.Defense + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Defense).Value));
-            attributes.Add(Attribute.TotalMagicP1, BaseAttributes.Magic + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Magic).Value));
-            attributes.Add(Attribute.TotalResistanceP1, BaseAttributes.Resistance + preset1.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Resistance).Value));
+            var preset = EquipmentSlots.GetEquipmentPreset(slot);
 
-            var preset2 = EquipmentSlots.GetEquipmentPreset(PresetSlot.Second);
-            attributes.Add(Attribute.TotalAttackP2, BaseAttributes.Attack + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Attack).Value));
-            attributes.Add(Attribute.TotalDefenseP2, BaseAttributes.Defense + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Defense).Value));
-            attributes.Add(Attribute.TotalMagicP2, BaseAttributes.Magic + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Magic).Value));
-            attributes.Add(Attribute.TotalResistanceP2, BaseAttributes.Resistance + preset2.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Resistance).Value));
-
+            attributes[Attribute.TotalAttack] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Attack).Value);
+            attributes[Attribute.TotalDefense] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Defense).Value);
+            attributes[Attribute.TotalMagic] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Magic).Value);
+            attributes[Attribute.TotalResistance] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Resistance).Value);
+            attributes[Attribute.TotalSpeed] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Speed).Value);
             return attributes;
         }
 

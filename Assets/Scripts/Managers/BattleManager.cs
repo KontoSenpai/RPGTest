@@ -257,24 +257,10 @@ namespace RPGTest.Managers
 
         private void Action_OnActionExecuted(Entity entity, Enums.EffectType effectType, Enums.Attribute attribute, int value)
         {
-            var position = Camera.current.WorldToScreenPoint(entity.BattleModel.transform.position);
-            position.y += 200;
-
             if (effectType == Enums.EffectType.Damage || effectType == Enums.EffectType.Heal)
             {
                 var sprite = Instantiate(SpriteDamage, entity.BattleModel.transform);
-                sprite.GetComponentInChildren<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-
-                sprite.GetComponentInChildren<TextMeshProUGUI>().transform.position = position;
-                sprite.GetComponentInChildren<TextMeshProUGUI>().text = Math.Abs(value).ToString();
-                if (value < 0)
-                {
-                    sprite.GetComponent<Animator>().SetBool("Damage", true);
-                }
-                else
-                {
-                    sprite.GetComponent<Animator>().SetBool("Heal", true);
-                }
+                sprite.GetComponent<BattleSprite>().Initialize(entity.BattleModel.transform.position, value);
             }         
 
             if(!entity.IsAlive)

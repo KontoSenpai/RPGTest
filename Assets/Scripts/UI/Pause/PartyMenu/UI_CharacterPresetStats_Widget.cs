@@ -35,8 +35,8 @@ namespace RPGTest.UI.PartyMenu
 
             StaminaWidget.Refresh(Attribute.MaxStamina.GetDescription(), (int)attributes[Attribute.MaxStamina]);
 
-            firstPair = new KeyValuePair<string, int>(Attribute.Attack.GetDescription(), (int)attributes[Attribute.TotalAttackP1]);
-            secondPair = new KeyValuePair<string, int>(Attribute.Defense.GetDescription(), (int)attributes[Attribute.TotalDefenseP2]);
+            firstPair = new KeyValuePair<string, int>(Attribute.Attack.GetDescription(), (int)attributes[Attribute.TotalAttack]);
+            secondPair = new KeyValuePair<string, int>(Attribute.Defense.GetDescription(), (int)attributes[Attribute.TotalDefense]);
             AtkDefDualWidget.Refresh(firstPair,secondPair);
         }
 
