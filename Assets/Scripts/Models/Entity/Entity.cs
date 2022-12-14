@@ -72,7 +72,7 @@ namespace RPGTest.Models.Entity
 
         public virtual bool FillATB()
         {
-            m_currentATB += GetAttribute(Attribute.Speed);
+            m_currentATB += GetAttribute(Attribute.TotalSpeed);
             return m_currentATB >= m_maxATB;
         }
 

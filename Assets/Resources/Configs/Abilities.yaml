@@ -118,7 +118,7 @@ Abilities:
         - EffectType        : Buff
           Attributes        :
             Attack          : 
-              Potency       : 200
+              Potency       : 30
               Duration      : 2
       DefaultTarget         : Self
       CastCost              :

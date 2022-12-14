@@ -76,5 +76,10 @@ namespace RPGTest.Models.Action
                 }
             }
         }
+
+        public void ExecuteDebuff(Effect effect, List<PlayableCharacter> allies, List<Enemy> enemies)
+        {
+            // TODO
+        }
     }
 }
