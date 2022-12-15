@@ -84,6 +84,17 @@ namespace RPGTest.Models.Entity
             m_maxATB = m_baseMaxATB + variation;
         }
 
+        public virtual void RefillResources() {}
+
+        public virtual void ReduceStatusDurations()
+        {
+            Buffs.RemoveAll(b => b.Duration == 1);
+            foreach(var b in Buffs)
+            {
+                b.Duration--;
+            }
+        }
+
         public void PerformAction()
         {
             m_currentATB = 0;
@@ -161,14 +172,33 @@ namespace RPGTest.Models.Entity
             attributes.Add(Attribute.MPPercentage, BaseAttributes.MaxMP > 0 ? (float)CurrentMP / BaseAttributes.MaxMP : 1.0f);
             attributes.Add(Attribute.StaminaPercentage, (float)CurrentStamina / BaseAttributes.MaxStamina);
 
-            attributes.Add(Attribute.TotalAttack, Mathf.Ceil(attributes[Attribute.Attack] * GetHighestBuff(Attribute.Attack)));
-            attributes.Add(Attribute.TotalDefense, Mathf.Ceil(attributes[Attribute.Defense] * GetHighestBuff(Attribute.Defense)));
-            attributes.Add(Attribute.TotalMagic, Mathf.Ceil(attributes[Attribute.Magic] * GetHighestBuff(Attribute.Magic)));
-            attributes.Add(Attribute.TotalResistance, Mathf.Ceil(attributes[Attribute.Resistance] * GetHighestBuff(Attribute.Resistance)));
-            attributes.Add(Attribute.TotalSpeed, Mathf.Ceil(attributes[Attribute.Speed] * GetHighestBuff(Attribute.Speed)));
+            attributes.Add(Attribute.TotalAttack, 
+                Mathf.Ceil(attributes[Attribute.Attack] *
+                GetHighestBuff(Attribute.Attack) /
+                GetHighestDebuff(Attribute.Attack))
+            );
+            attributes.Add(Attribute.TotalDefense,
+                Mathf.Ceil(attributes[Attribute.Defense] *
+                GetHighestBuff(Attribute.Defense) /
+                GetHighestDebuff(Attribute.Defense))
+            );
+            attributes.Add(Attribute.TotalMagic, 
+                Mathf.Ceil(attributes[Attribute.Magic] *
+                GetHighestBuff(Attribute.Magic) /
+                GetHighestDebuff(Attribute.Magic))
+            );
+            attributes.Add(Attribute.TotalResistance,
+                Mathf.Ceil(attributes[Attribute.Resistance] *
+                GetHighestBuff(Attribute.Resistance) /
+                GetHighestDebuff(Attribute.Resistance))
+            );
+            attributes.Add(Attribute.TotalSpeed,
+                Mathf.Ceil(attributes[Attribute.Speed] *
+                GetHighestBuff(Attribute.Speed) /
+                GetHighestDebuff(Attribute.Speed))
+            );
             return attributes;
         }
-
 
         #region Modifications
         /// <summary>

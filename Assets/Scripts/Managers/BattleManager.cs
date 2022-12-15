@@ -164,6 +164,8 @@ namespace RPGTest.Managers
                         {
                             if (!m_waitingForUserInput && !m_actionQueue.Any(x => x.Caster.Name == entity.Name) && entity.FillATB())
                             {
+                                entity.RefillResources();
+                                entity.ReduceStatusDurations();
                                 StartCoroutine(entity.SelectAction(this, m_party, m_enemies, selectedActions => QueueActionSequence(selectedActions)));
                             }
                         }

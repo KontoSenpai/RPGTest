@@ -27,26 +27,23 @@ namespace RPGTest.Models.Action
             }
         }
 
+        /// <summary>
+        /// Execute the process of registering a heal application on the appropriate targets
+        /// </summary>
+        /// <param name="effect">Effect to be applied</param>
+        /// <param name="allies">List of allies of the caster</param>
+        /// <param name="enemies">List of enemies of the caster</param>
         public void ExecuteHeal(Effect effect, List<PlayableCharacter> allies, List<Enemy> enemies)
         {
-            foreach (var attribute in effect.Attributes)
+            foreach(var target in GetTargets(effect.TargetType, allies, enemies))
             {
-                List<Entity.Entity> targets = new List<Entity.Entity>();
-                var healPotency = attribute.Value.Potency;
-                foreach (var scaling in effect.Scalings)
+                foreach (var attribute in effect.Attributes)
                 {
-                    healPotency += Caster.GetAttribute(scaling.Key) * scaling.Value;
-                }
-
-                foreach (var target in GetTargets(effect.TargetType, allies, enemies))
-                {
-                    var healValue = (int)Mathf.Ceil(healPotency * effect.PowerRange.GetValue());
+                    var healValue = target.CalculateHealing(Caster, effect, attribute.Value);
 
                     target.ApplyAttributeModification(attribute.Key, healValue);
-                    if (ActionType == ActionType.Ability || ActionType == ActionType.Item)
-                    {
-                        ActionExecuted(target, effect.EffectType, attribute.Key, healValue);
-                    }
+
+                    ActionExecuted(target, effect.EffectType, attribute.Key, healValue);
                 }
             }
         }
@@ -55,8 +52,6 @@ namespace RPGTest.Models.Action
         {
             foreach (var attribute in effect.Attributes)
             {
-                List<Entity.Entity> targets = new List<Entity.Entity>();
-
                 Buff buff = new Buff
                 {
                     Attribute = attribute.Key,
@@ -79,7 +74,26 @@ namespace RPGTest.Models.Action
 
         public void ExecuteDebuff(Effect effect, List<PlayableCharacter> allies, List<Enemy> enemies)
         {
-            // TODO
+            foreach (var attribute in effect.Attributes)
+            {
+                Buff buff = new Buff
+                {
+                    Attribute = attribute.Key,
+                    Value = (attribute.Value.Potency / 100) * -1,
+                    Duration = attribute.Value.Duration,
+                    RemovalType = attribute.Value.RemovalType
+                };
+
+                foreach (var target in GetTargets(effect.TargetType, allies, enemies))
+                {
+                    target.AddBuff(buff);
+
+                    if (ActionType == ActionType.Ability || ActionType == ActionType.Item)
+                    {
+                        ActionExecuted(target, effect.EffectType, attribute.Key, (int)(buff.Value * 100));
+                    }
+                }
+            }
         }
     }
 }

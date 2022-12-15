@@ -178,6 +178,9 @@ namespace RPGTest.Models.Action
                     case EffectType.Buff:
                         ExecuteBuff(effect, allies, enemies);
                         break;
+                    case EffectType.Debuff:
+                        ExecuteDebuff(effect, allies, enemies);
+                        break;
                     default:
                         Debug.LogError("effect type not supported : ");
                         break;

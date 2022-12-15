@@ -14,10 +14,24 @@ namespace RPGTest.Models.Entity
 
             if (buff != null)
             {
-                return buff.Value;
+                return 1 + buff.Value;
             }
             return 1.0f;
         }
+
+        public virtual float GetHighestDebuff(Attribute attribute)
+        {
+            var debuff = Buffs.FindAll(b => b.Attribute == attribute && b.Attribute < 0)
+                .OrderBy(b => b.Value)
+                .FirstOrDefault();
+
+            if (debuff != null)
+            {
+                return 1 + debuff.Value;
+            }
+            return 1.0f;
+        }
+
         /// <summary>
         /// Apply a buff to the selected Entity.
         /// If a a buff of a same value is re-applied, it's duration will be extended
@@ -45,6 +59,11 @@ namespace RPGTest.Models.Entity
         public void RemoveBuffs(RemovalType removalType)
         {
             Buffs.RemoveAll(b => b.RemovalType == removalType);
+        }
+
+        public void RemoveBuff(Buff buff)
+        {
+            Buffs.Remove(buff);
         }
     }
 }

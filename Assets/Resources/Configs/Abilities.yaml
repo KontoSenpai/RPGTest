@@ -81,6 +81,29 @@ Abilities:
       CastCost              :
         Stamina             : 13
 
+    - Id                    : AW0004
+      Name                  : Armor Pierce
+      Description           : Perform a powerfull sping with a blade to strike all the enemies
+      AbilityType           : Weapon
+      EquipmentRestrictrion : 
+        - Short_Sword
+      Effects               :
+        - EffectType        : Damage
+          Attributes        :
+            HP              : 
+              Potency       : 5
+          Scalings          :
+            Attack          : 0.8
+        - EffectType        : Debuff
+          Attributes        :
+            Defense         : 
+              Potency       : 30
+              Duration      : 50
+      TargetTypes           :
+        - SingleEnemy
+      CastCost              :
+        Stamina             : 8
+
 #Talent Abilities 
     - Id                    : AP0001
       Name                  : Ralying Cry
@@ -111,7 +134,7 @@ Abilities:
       CastCost              :
         Stamina             : 4
     - Id                    : AP0003
-      Name                  : Embolden 
+      Name                  : Sharpen Blade 
       Description           : 
       AbilityType           : Talent
       Effects               :

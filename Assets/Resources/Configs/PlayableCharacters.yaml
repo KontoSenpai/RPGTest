@@ -8,6 +8,7 @@ PlayableCharacters:
       Abilities         :
         - AW0001
         - AW0002
+        - AW0004
         - AP0001
         - AP0003
       BaseAttributes    :

@@ -48,7 +48,7 @@ namespace RPGTest.Models.Entity
         public delegate void ATBProgressHandler(float atbCharge);
 
         public event UpdatingBarHandler PlayerWidgetUpdated;
-        public delegate void UpdatingBarHandler(Enums.Attribute attribute);
+        public delegate void UpdatingBarHandler(Attribute attribute);
 
         public event ExperienceChangedHandler PlayerExperienceChanged;
         public delegate void ExperienceChangedHandler();
@@ -76,6 +76,13 @@ namespace RPGTest.Models.Entity
             var full = base.FillATB();
             PlayerATBChanged(m_currentATB);
             return full;
+        }
+
+        public override void RefillResources()
+        {
+            //base.ApplyAttributeModification(Attribute.HP, 0);
+            ApplyAttributeModification(Attribute.MP, (int)Mathf.Ceil(GetAttribute(Attribute.MaxMP) * .1f));
+            ApplyAttributeModification(Attribute.Stamina, (int)Mathf.Ceil(GetAttribute(Attribute.MaxStamina) * .1f));
         }
 
         public override void ResetATB(int variation = 0)
@@ -126,7 +133,7 @@ namespace RPGTest.Models.Entity
             CurrentMP = BaseAttributes.MaxMP;
         }
 
-        public override void ApplyAttributeModification(Enums.Attribute attribute, int value)
+        public override void ApplyAttributeModification(Attribute attribute, int value)
         {
             base.ApplyAttributeModification(attribute, value);
             PlayerWidgetUpdated(attribute);
@@ -226,13 +233,12 @@ namespace RPGTest.Models.Entity
 
         public override Dictionary<Attribute, float> GetAttributes()
         {
-            return  GetAttributes(EquipmentSlots.CurrentPreset);
+            return GetAttributes(EquipmentSlots.CurrentPreset);
         }
 
         public Dictionary<Attribute, float> GetAttributes(PresetSlot slot)
         {
             var attributes = base.GetAttributes();
-
             var preset = EquipmentSlots.GetEquipmentPreset(slot);
 
             attributes[Attribute.TotalAttack] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Attack).Value);
@@ -240,6 +246,7 @@ namespace RPGTest.Models.Entity
             attributes[Attribute.TotalMagic] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Magic).Value);
             attributes[Attribute.TotalResistance] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Resistance).Value);
             attributes[Attribute.TotalSpeed] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Speed).Value);
+
             return attributes;
         }
 
