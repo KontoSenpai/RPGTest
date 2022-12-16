@@ -53,7 +53,71 @@ namespace RPGTest.Models.Entity
         public event ExperienceChangedHandler PlayerExperienceChanged;
         public delegate void ExperienceChangedHandler();
 
+        public event BuffRefreshedHandler PlayerBuffsRefreshed;
+        public delegate void BuffRefreshedHandler(List<Buff> buffs);
+
         #region public methods
+        #region overrides
+        public override bool FillATB()
+        {
+            var full = base.FillATB();
+            PlayerATBChanged(m_currentATB);
+            return full;
+        }
+
+        public override void RefillResources()
+        {
+            //base.ApplyAttributeModification(Attribute.HP, 0);
+            ApplyAttributeModification(Attribute.MP, (int)Mathf.Ceil(GetAttribute(Attribute.MaxMP) * .1f));
+            ApplyAttributeModification(Attribute.Stamina, (int)Mathf.Ceil(GetAttribute(Attribute.MaxStamina) * .1f));
+        }
+
+        public override void ReduceStatusDurations()
+        {
+            base.ReduceStatusDurations();
+            PlayerBuffsRefreshed(Buffs);
+        }
+
+        public override void ResetATB(int variation = 0)
+        {
+            base.ResetATB(variation);
+            if (PlayerATBChanged != null)
+                PlayerATBChanged(m_currentATB);
+        }
+
+        public override IEnumerator SelectAction(BattleManager manager, List<PlayableCharacter> playerParty, List<Enemy> enemyParty, Action<ActionSequence> selectedActions)
+        {
+            manager.m_waitingForUserInput = true;
+            yield return manager.StartCoroutine(ActionChoice());
+            manager.m_waitingForUserInput = false;
+
+            selectedActions(m_selectedActions);
+        }
+
+        public override float GetAttribute(Attribute attribute)
+        {
+            GetAttributes().TryGetValue(attribute, out float value);
+            return value;
+        }
+
+        public override Dictionary<Attribute, float> GetAttributes()
+        {
+            return GetAttributes(EquipmentSlots.CurrentPreset);
+        }
+
+        public override void AddBuff(Buff buff)
+        {
+            base.AddBuff(buff);
+            PlayerBuffsRefreshed(Buffs);
+        }
+
+        public override void RemoveBuff(Buff buff)
+        {
+            base.RemoveBuff(buff);
+            PlayerBuffsRefreshed(Buffs);
+        }
+        #endregion
+
         public IEnumerable<(Ability ability, bool usable)> GetAbilitiesOfType(AbilityType type)
         {
             List<(Ability ability, bool usable)> validAbilities = new List<(Ability ability, bool usable)>();
@@ -70,51 +134,9 @@ namespace RPGTest.Models.Entity
             return validAbilities;
         }
 
-
-        public override bool FillATB()
-        {
-            var full = base.FillATB();
-            PlayerATBChanged(m_currentATB);
-            return full;
-        }
-
-        public override void RefillResources()
-        {
-            //base.ApplyAttributeModification(Attribute.HP, 0);
-            ApplyAttributeModification(Attribute.MP, (int)Mathf.Ceil(GetAttribute(Attribute.MaxMP) * .1f));
-            ApplyAttributeModification(Attribute.Stamina, (int)Mathf.Ceil(GetAttribute(Attribute.MaxStamina) * .1f));
-        }
-
-        public override void ResetATB(int variation = 0)
-        {
-            base.ResetATB(variation);
-            if(PlayerATBChanged != null)
-                PlayerATBChanged(m_currentATB);
-        }
-
         public void CreateNewActionSequence()
         {
             m_selectedActions = new ActionSequence(this);
-        }
-
-        public override IEnumerator SelectAction(BattleManager manager, List<PlayableCharacter> playerParty, List<Enemy> enemyParty, Action<ActionSequence> selectedActions)
-        {
-            manager.m_waitingForUserInput = true;
-            yield return manager.StartCoroutine(ActionChoice());
-            manager.m_waitingForUserInput = false;
-
-            selectedActions(m_selectedActions);
-        }
-
-        private IEnumerator ActionChoice()
-        {
-            PlayerInputRequested(this, true);
-            m_actionSelected = false;
-            while (!m_actionSelected)
-            {
-                yield return null;
-            }
-            PlayerInputRequested(this, false);
         }
 
         public void SetSelectedActions(List<EntityAction> entityActions)
@@ -224,18 +246,6 @@ namespace RPGTest.Models.Entity
             return removedEquipments.Any();
         }
 
-        public override float GetAttribute(Attribute attribute)
-        {
-            GetAttributes().TryGetValue(attribute, out float value);
-            return value;
-        }
-        #endregion
-
-        public override Dictionary<Attribute, float> GetAttributes()
-        {
-            return GetAttributes(EquipmentSlots.CurrentPreset);
-        }
-
         public Dictionary<Attribute, float> GetAttributes(PresetSlot slot)
         {
             var attributes = base.GetAttributes();
@@ -254,5 +264,19 @@ namespace RPGTest.Models.Entity
         {
             return m_GrowthTable.XPToNextLevel[level - 1];
         }
+        #endregion
+
+        #region private methodes
+        private IEnumerator ActionChoice()
+        {
+            PlayerInputRequested(this, true);
+            m_actionSelected = false;
+            while (!m_actionSelected)
+            {
+                yield return null;
+            }
+            PlayerInputRequested(this, false);
+        }
+        #endregion
     }
 }

@@ -18,6 +18,8 @@ namespace RPGTest.UI.Battle
         [SerializeField] private UI_Bar_Widget StaminaBarWidget;
         [SerializeField] private UI_Bar_Widget ATBBarWidget;
 
+        [SerializeField] private UI_Combat_BuffList_Widget BuffsWidget;
+
         public UI_Stances_Widget StanceWidget;
         #endregion
 
@@ -48,8 +50,11 @@ namespace RPGTest.UI.Battle
             StaminaBarWidget.Initialize("Stamina", (int)m_playableCharacter.GetAttribute(Attribute.Stamina), (int)m_playableCharacter.GetAttribute(Attribute.MaxStamina));
             ATBBarWidget.Initialize("ATB", 0, 1000);
 
+            BuffsWidget.Initialize(m_playableCharacter);
+
             m_playableCharacter.PlayerWidgetUpdated += Player_OnPlayerWidgetUpdated;
             m_playableCharacter.PlayerATBChanged += Player_OnPlayerATBChanged;
+
 
             m_playableCharacter.Stance.InitializeCurrentStance();
             if(StanceWidget != null)
@@ -67,6 +72,8 @@ namespace RPGTest.UI.Battle
         {
             m_playableCharacter.PlayerWidgetUpdated -= Player_OnPlayerWidgetUpdated;
             m_playableCharacter.PlayerATBChanged -= Player_OnPlayerATBChanged;
+
+            BuffsWidget.DisableEvents(m_playableCharacter);
         }
 
         #region events

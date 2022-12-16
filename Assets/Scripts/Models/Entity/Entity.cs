@@ -88,11 +88,11 @@ namespace RPGTest.Models.Entity
 
         public virtual void ReduceStatusDurations()
         {
-            Buffs.RemoveAll(b => b.Duration == 1);
             foreach(var b in Buffs)
             {
                 b.Duration--;
             }
+            Buffs.RemoveAll(b => b.Duration <= 0);
         }
 
         public void PerformAction()

@@ -52,16 +52,15 @@ namespace RPGTest.Models.Action
         {
             foreach (var attribute in effect.Attributes)
             {
-                Buff buff = new Buff
-                {
-                    Attribute = attribute.Key,
-                    Value = attribute.Value.Potency / 100,
-                    Duration = attribute.Value.Duration,
-                    RemovalType = attribute.Value.RemovalType
-                };
-
                 foreach (var target in GetTargets(effect.TargetType, allies, enemies))
                 {
+                    Buff buff = new Buff
+                    {
+                        Attribute = attribute.Key,
+                        Value = attribute.Value.Potency / 100,
+                        Duration = attribute.Value.Duration,
+                        RemovalType = attribute.Value.RemovalType
+                    };
                     target.AddBuff(buff);
 
                     if (ActionType == ActionType.Ability || ActionType == ActionType.Item)
@@ -76,16 +75,16 @@ namespace RPGTest.Models.Action
         {
             foreach (var attribute in effect.Attributes)
             {
-                Buff buff = new Buff
-                {
-                    Attribute = attribute.Key,
-                    Value = (attribute.Value.Potency / 100) * -1,
-                    Duration = attribute.Value.Duration,
-                    RemovalType = attribute.Value.RemovalType
-                };
-
                 foreach (var target in GetTargets(effect.TargetType, allies, enemies))
                 {
+                    Buff buff = new Buff
+                    {
+                        Attribute = attribute.Key,
+                        Value = (attribute.Value.Potency / 100) * -1,
+                        Duration = attribute.Value.Duration,
+                        RemovalType = attribute.Value.RemovalType
+                    };
+
                     target.AddBuff(buff);
 
                     if (ActionType == ActionType.Ability || ActionType == ActionType.Item)

@@ -56,12 +56,12 @@ namespace RPGTest.Models.Entity
         /// Remove buffs corresponding to the given removal type rule
         /// </summary>
         /// <param name="removalType">RemovalType of the action</param>
-        public void RemoveBuffs(RemovalType removalType)
+        public virtual void RemoveBuffs(RemovalType removalType)
         {
             Buffs.RemoveAll(b => b.RemovalType == removalType);
         }
 
-        public void RemoveBuff(Buff buff)
+        public virtual void RemoveBuff(Buff buff)
         {
             Buffs.Remove(buff);
         }
