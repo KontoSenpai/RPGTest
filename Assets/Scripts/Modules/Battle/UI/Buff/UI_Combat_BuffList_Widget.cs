@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RPGTest.UI.Battle
+namespace RPGTest.Modules.Battle.UI
 {
     public class UI_Combat_BuffList_Widget : MonoBehaviour
     {

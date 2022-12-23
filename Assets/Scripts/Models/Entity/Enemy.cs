@@ -1,8 +1,8 @@
 ﻿using RPGTest.AI;
 using RPGTest.Assets.Scripts.Models.Items;
 using RPGTest.Enums;
-using RPGTest.Managers;
-using RPGTest.Models.Action;
+using RPGTest.Modules.Battle;
+using RPGTest.Modules.Battle.Action;
 using System;
 using System.Collections;
 using System.Collections.Generic;

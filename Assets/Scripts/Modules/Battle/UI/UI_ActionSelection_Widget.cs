@@ -2,19 +2,18 @@
 using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Managers;
-using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
-using RPGTest.UI.Widgets;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using RPGTest.Helpers;
-using RPGTest.Models.Action;
+using RPGTest.Modules.Battle.Action;
+using RPGTest.UI;
 
-namespace RPGTest.UI.Battle 
+namespace RPGTest.Modules.Battle.UI
 {
     public class UI_ActionSelection_Widget : MonoBehaviour
     {

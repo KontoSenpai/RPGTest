@@ -1,19 +1,17 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Controllers;
+using RPGTest.Managers;
 using RPGTest.Models;
-using RPGTest.Models.Action;
 using RPGTest.Models.Entity;
-using RPGTest.Modules.Battle;
-using RPGTest.UI.Battle;
-using System;
+using RPGTest.Modules.Battle.Action;
+using RPGTest.Modules.Battle.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TMPro;
 using UnityEngine;
 
-namespace RPGTest.Managers
+namespace RPGTest.Modules.Battle
 {
     public class BattleManager : MonoBehaviour 
     {
@@ -165,7 +163,6 @@ namespace RPGTest.Managers
                             if (!m_waitingForUserInput && !m_actionQueue.Any(x => x.Caster.Name == entity.Name) && entity.FillATB())
                             {
                                 entity.RefillResources();
-                                Debug.Log(entity.Name);
                                 entity.ReduceStatusDurations();
                                 StartCoroutine(entity.SelectAction(this, m_party, m_enemies, selectedActions => QueueActionSequence(selectedActions)));
                             }

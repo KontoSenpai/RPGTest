@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-namespace RPGTest.UI.Battle
+namespace RPGTest.Modules.Battle.UI
 {
     public class UI_PanelMulticast : MonoBehaviour
     {

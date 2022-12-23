@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace RPGTest.UI.Battle
+namespace RPGTest.Modules.Battle.UI
 {
     public class UI_WeaponPreset_Widget : MonoBehaviour
     {

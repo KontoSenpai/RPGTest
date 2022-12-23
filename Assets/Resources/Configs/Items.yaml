@@ -8,10 +8,10 @@ Consumables:
       Description           : Basic concoction soothing pain of whom consume it
       Value                 : 30
       Effects               :
-        - EffectType        : Heal
-          Attributes        :
-            HP              : 
-              Potency       : 30
+        - Type              : Heal
+          Potency           :  
+            Attribute       : HP 
+            Potency         : 30
       DefaultTarget         : Self
       TargetTypes           :
         - SingleAlly
@@ -23,10 +23,10 @@ Consumables:
       Description           : A brevage rich in myst, resplenishing mystical energy
       Value                 : 100
       Effects               :
-        - EffectType        : Heal
-          Attributes        :
-            MP              :
-              Potency       : 50
+        - Type              : Heal
+          Potency           :  
+            Attribute       : MP
+            Potency         : 50
       DefaultTarget         : Self
       TargetTypes           : 
         - SingleAlly
@@ -38,10 +38,10 @@ Consumables:
       Description           : A powerful concotion that is able to cure any poisoning
       Value                 : 40
       Effects               :
-        - EffectType        : Cleanse
-          Statuses          :
-            Poison          :
-              Potency       : 100
+        - Type              : Cleanse
+          Potency           :
+            StatusEffect    : Poison
+            Potency         : 100
       DefaultTarget         : Self
       TargetTypes           : 
         - SingleAlly
@@ -53,10 +53,10 @@ Consumables:
       Description           : A blend of herbs fixing tense muscles when applied
       Value                 : 40
       Effects               :
-        - EffectType        : Cleanse
-          Statuses          :
-            Paralysis       :
-              Potency       : 100
+        - Type              : Cleanse
+          Potency           :
+            StatusEffect    : Paralysis
+            Potency         : 100
       DefaultTarget         : Self
       TargetTypes           : 
         - SingleAlly
@@ -68,10 +68,10 @@ Consumables:
       Description           : A concoction used to cure eye sore
       Value                 : 40
       Effects               :
-        - EffectType        : Cleanse
-          Statuses          :
-            Blind           :
-              Potency       : 100
+        - Type              : Cleanse
+          Potency           :
+            StatusEffect    : Blind
+            Potency         : 100
       DefaultTarget         : Self
       TargetTypes           :
         - SingleAlly

@@ -1,19 +1,18 @@
-﻿using RPGTest.Managers;
-using RPGTest.Models.Entity;
+﻿using RPGTest.Models.Entity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RPGTest.Models.Action
+namespace RPGTest.Modules.Battle.Action
 {
     [Serializable]
     public class ActionSequence
     {
         private ActionState stateBeforeInterruption;
         public ActionState SequenceState { get; private set; }
-        public Entity.Entity Caster { get; }
+        public Entity Caster { get; }
         public List<EntityAction> Actions { get; set; } = new List<EntityAction>();
 
         public float BackSwing { get; set; } = 0;
@@ -27,7 +26,7 @@ namespace RPGTest.Models.Action
         public event ActionSequenceCompletedHandler ActionSequenceCompleted;
         public delegate void ActionSequenceCompletedHandler(ActionSequence actionSequence);
 
-        public ActionSequence(Entity.Entity caster)
+        public ActionSequence(Entity caster)
         {
             Caster = caster;
             SequenceState = ActionState.Pending;

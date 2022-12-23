@@ -1,5 +1,6 @@
 ﻿using RPGTest.Models.Entity;
 using RPGTest.Modules.Battle;
+using RPGTest.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RPGTest.UI.Battle
+namespace RPGTest.Modules.Battle.UI
 {
     public class UI_BattleOverlay : UI_Base
     {

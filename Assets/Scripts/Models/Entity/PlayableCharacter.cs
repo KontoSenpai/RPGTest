@@ -1,9 +1,9 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Helpers;
-using RPGTest.Managers;
-using RPGTest.Models.Action;
 using RPGTest.Models.Items;
+using RPGTest.Modules.Battle;
+using RPGTest.Modules.Battle.Action;
 using System;
 using System.Collections;
 using System.Collections.Generic;

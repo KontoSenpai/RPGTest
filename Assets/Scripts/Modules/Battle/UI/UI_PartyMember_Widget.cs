@@ -5,7 +5,7 @@ using RPGTest.UI.Widgets;
 using TMPro;
 using RPGTest.Enums;
 
-namespace RPGTest.UI.Battle
+namespace RPGTest.Modules.Battle.UI
 {
     public class UI_PartyMember_Widget : MonoBehaviour
     {

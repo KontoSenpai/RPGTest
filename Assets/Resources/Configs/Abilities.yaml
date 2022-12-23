@@ -4,10 +4,9 @@ Abilities:
       Name                  : Attack
       Description           : Default Attack
       Effects               :
-        - EffectType        : Damage
-          Attributes        :
-            HP              :
-              Potency       : 1
+        - Type              : Damage
+          Potency           :
+            Attribute       : HP
           Scalings          :
             Attack          : 1
           PowerRange        :
@@ -26,10 +25,10 @@ Abilities:
       EquipmentRestrictrion : 
         - Short_Sword
       Effects               :
-        - EffectType        : Damage
-          Attributes        :
-            HP              : 
-              Potency       : 7
+        - Type              : Damage
+          Potency           : 
+            Attribute       : HP
+            Potency         : 7
           Scalings          :
             Attack          : 1.1
       TargetTypes           :
@@ -44,16 +43,16 @@ Abilities:
       EquipmentRestrictrion : 
         - Long_Sword
       Effects               :
-        - EffectType        : Damage
-          Attributes        :
-            HP              : 
-              Potency       : 5
+        - Type              : Damage
+          Potency           :
+            Attribute       : HP
+            Potency         : 5
           Scalings          :
             Attack          : 0.8
-        - EffectType        : Damage
-          Attributes        :
-            HP              : 
-              Potency       : 5
+        - Type              : Damage
+          Potency           :
+            Attribute       : HP
+            Potency         : 5
           Scalings          :
             Attack          : 0.8
           TargetType        :
@@ -70,10 +69,10 @@ Abilities:
       EquipmentRestrictrion : 
         - Spear
       Effects               :
-        - EffectType        : Damage
-          Attributes        :
-            HP              : 
-              Potency       : 5
+        - Type              : Damage
+          Potency           :
+            Attribute       : HP
+            Potency         : 5
           Scalings          :
             Attack          : 0.8
       TargetTypes           :
@@ -88,17 +87,17 @@ Abilities:
       EquipmentRestrictrion : 
         - Short_Sword
       Effects               :
-        - EffectType        : Damage
-          Attributes        :
-            HP              : 
-              Potency       : 5
+        - Type              : Damage
+          Potency           :
+            Attribute       : HP 
+            Potency         : 5
           Scalings          :
             Attack          : 0.8
-        - EffectType        : Debuff
-          Attributes        :
-            Defense         : 
-              Potency       : 30
-              Duration      : 50
+        - Type              : Debuff
+          Potency           :
+            Attribute       : Defense
+            Potency         : 30
+            Duration        : 50
       TargetTypes           :
         - SingleEnemy
       CastCost              :
@@ -110,11 +109,11 @@ Abilities:
       Description           : Shout loudly to raly allies and increase their defense
       AbilityType           : Talent
       Effects               :
-        - EffectType        : Buff
-          Attributes        :
-            Defense         : 
-              Potency       : 20
-              Duration      : 4
+        - Type              : Buff
+          Potency           :
+            Attribute     : Defense 
+            Potency       : 20
+            Duration      : 4
       TargetTypes           :
         - Allies
       CastCost              :
@@ -124,11 +123,11 @@ Abilities:
       Description           : Take up a stance to react more quickly
       AbilityType           : Talent
       Effects               :
-        - EffectType        : Buff
-          Attributes        :
-            Speed           : 
-              Potency       : 50
-              Duration      : 3
+        - Type              : Buff
+          Potency           :
+            Attribute       : Speed
+            Potency         : 50
+            Duration        : 3
       TargetTypes           :
         - Allies
       CastCost              :
@@ -138,11 +137,11 @@ Abilities:
       Description           : 
       AbilityType           : Talent
       Effects               :
-        - EffectType        : Buff
-          Attributes        :
-            Attack          : 
-              Potency       : 30
-              Duration      : 2
+        - Type              : Buff
+          Potency           :
+            Attribute       : Attack 
+            Potency         : 30
+            Duration        : 2
       DefaultTarget         : Self
       CastCost              :
         Stamina             : 4
@@ -153,10 +152,10 @@ Abilities:
       Description           : Send a magically confured flame ball to the target.
       AbilityType           : AttackMagic
       Effects               :
-        - EffectType        : Damage
-          Attributes        :
-            HP              : 
-              Potency       : 5
+        - Type              : Damage
+          Potency           :
+            Attribute       : HP
+            Potency         : 5
           Scalings          :
             Magic           : 0.8
       DefaultTarget         : SingleEnemy 
@@ -174,15 +173,15 @@ Abilities:
       Description           : Unleash wide flames to the targets and reduce their fire resistance
       AbilityType           : AttackMagic
       Effects               :
-        - EffectType        : Debuff
-          Attributes        :
-            Resistance      : 
-              Potency       : 30
-              Duration      : 2
-        - EffectType        : Damage
-          Attributes        :
-            HP              : 
-              Potency       : 5
+        - Type              : Debuff
+          Potency           :
+            Attribute       : Resistance 
+            Potency         : 30
+            Duration        : 2
+        - Type              : Damage
+          Potency           :
+            Attribute       : HP 
+            Potency         : 5
           Scalings          :
             Magic           : 0.8
           HitFrames         :
@@ -205,10 +204,10 @@ Abilities:
       Name                  : Bite
       AbilityType           : Monster
       Effects               :
-        - EffectType        : Damage
-          Attributes        :
-            HP              :
-              Potency       : 2
+        - Type              : Damage
+          Potency           :
+            Attribute       : HP
+            Potency         : 2
           Scalings          :
             Attack          : 1
           PowerRange        :

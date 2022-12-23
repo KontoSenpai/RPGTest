@@ -1,6 +1,6 @@
 ﻿using RPGTest.Enums;
-using RPGTest.Managers;
-using RPGTest.Models.Action;
+using RPGTest.Modules.Battle;
+using RPGTest.Modules.Battle.Action;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

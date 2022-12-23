@@ -1,6 +1,7 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Managers;
+using RPGTest.Models;
 using RPGTest.Models.Entity;
 using System;
 using System.Collections;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RPGTest.Models.Action
+namespace RPGTest.Modules.Battle.Action
 {
     public enum ActionState
     {
@@ -30,8 +31,8 @@ namespace RPGTest.Models.Action
 
         public string ActionId { get; set; }
 
-        public Entity.Entity Caster { get; }
-        public List<Entity.Entity> Targets { get; set; } = new List<Entity.Entity>();
+        public Entity Caster { get; }
+        public List<Entity> Targets { get; set; } = new List<Entity>();
 
         public float CastTime { get; private set; }
         private float m_delay = 1.0f;
@@ -41,11 +42,11 @@ namespace RPGTest.Models.Action
         public delegate void ActionMessageHandler(string display);
 
         public event ActionExecutionHandler ActionExecuted = delegate {};
-        public delegate void ActionExecutionHandler(Entity.Entity target, Enums.EffectType type, Enums.Attribute attribute, int value);
+        public delegate void ActionExecutionHandler(Entity target, Enums.EffectType type, Enums.Attribute attribute, int value);
 
         private InventoryManager m_InventoryManager;
 
-        public EntityAction(Entity.Entity caster, ActionType actionType, string actionId, List<Entity.Entity> targets, InventoryManager manager = null)
+        public EntityAction(Entity caster, ActionType actionType, string actionId, List<Entity> targets, InventoryManager manager = null)
         {
             Caster = caster;
             ActionType = actionType;
@@ -96,9 +97,9 @@ namespace RPGTest.Models.Action
         /// <param name="allies">Allies present on the battlefield</param>
         /// <param name="enemies">Enemis present on the battlefield</param>
         /// <returns>Desired targets</returns>
-        private List<Entity.Entity> GetTargets(TargetType targetType, List<PlayableCharacter> allies = null, List<Enemy> enemies = null)
+        private List<Entity> GetTargets(TargetType targetType, List<PlayableCharacter> allies = null, List<Enemy> enemies = null)
         {
-            var targets = new List<Entity.Entity>();
+            var targets = new List<Entity>();
             switch (targetType)
             {
                 case TargetType.None:
@@ -167,7 +168,7 @@ namespace RPGTest.Models.Action
 
             foreach (var effect in effects)
             {
-                switch (effect.EffectType)
+                switch (effect.Type)
                 {
                     case EffectType.Damage:
                         ExecuteDamage(effect, allies, enemies);
