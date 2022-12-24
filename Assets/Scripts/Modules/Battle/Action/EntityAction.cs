@@ -1,7 +1,7 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Managers;
-using RPGTest.Models;
+using RPGTest.Models.Abilities;
 using RPGTest.Models.Entity;
 using System;
 using System.Collections;
@@ -23,7 +23,7 @@ namespace RPGTest.Modules.Battle.Action
     }
 
     [Serializable]
-    public partial class EntityAction
+    public partial class EntityAction : MonoBehaviour
     {
         public ActionState ActionState { get; private set; }
 
@@ -31,7 +31,7 @@ namespace RPGTest.Modules.Battle.Action
 
         public string ActionId { get; set; }
 
-        public Entity Caster { get; }
+        public Entity Caster { get; set; }
         public List<Entity> Targets { get; set; } = new List<Entity>();
 
         public float CastTime { get; private set; }
@@ -41,8 +41,11 @@ namespace RPGTest.Modules.Battle.Action
         public event ActionMessageHandler ActionLogged;
         public delegate void ActionMessageHandler(string display);
 
-        public event ActionExecutionHandler ActionExecuted = delegate {};
-        public delegate void ActionExecutionHandler(Entity target, Enums.EffectType type, Enums.Attribute attribute, int value);
+        public event EffectAppliedHandler EffectApplied = delegate {};
+        public delegate void EffectAppliedHandler(EffectEvaluation effect, int value);
+
+        public event ActionCompletedHandler ActionCompleted = delegate {};
+        public delegate void ActionCompletedHandler(IEnumerable<Entity> targets);
 
         private InventoryManager m_InventoryManager;
 
@@ -147,7 +150,7 @@ namespace RPGTest.Modules.Battle.Action
                         }
                         effects = ability.Effects;
                     }
-                    ActionLogged($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
+                    ActionLogged($"{Caster.Name} uses {GetActionName()}");
                     break;
                 case ActionType.Item:
                     effects = ItemCollector.TryGetConsumable(ActionId).Effects;
@@ -155,7 +158,7 @@ namespace RPGTest.Modules.Battle.Action
                     {
                         m_InventoryManager.RemoveItem(ActionId, 1);
                     }
-                    ActionLogged($"{Caster.Name} uses {GetActionName()} on {string.Join(", ", Targets.Select(x => x.Name))}");
+                    ActionLogged($"{Caster.Name} uses {GetActionName()}");
                     break;
                 case ActionType.ItemMenu:
                     effects = ItemCollector.TryGetConsumable(ActionId).Effects;
@@ -166,28 +169,14 @@ namespace RPGTest.Modules.Battle.Action
                     break;
             }
 
-            foreach (var effect in effects)
+            m_effectEvaluations = new Dictionary<int, List<EffectEvaluation>>();
+            for(int i = 0; i < effects.Count; i++)
             {
-                switch (effect.Type)
-                {
-                    case EffectType.Damage:
-                        ExecuteDamage(effect, allies, enemies);
-                        break;
-                    case EffectType.Heal:
-                        ExecuteHeal(effect, allies, enemies);
-                        break;
-                    case EffectType.Buff:
-                        ExecuteBuff(effect, allies, enemies);
-                        break;
-                    case EffectType.Debuff:
-                        ExecuteDebuff(effect, allies, enemies);
-                        break;
-                    default:
-                        Debug.LogError("effect type not supported : ");
-                        break;
-                }
+                m_effectEvaluations[i] = effects[i].Evaluate(ActionType, Caster, Targets, allies, enemies);
             }
 
+            StartCoroutine(RegisterEffects());
+            ActionCompleted(GetAffectedTargets());
             yield return new WaitForSeconds(m_endDelay);
             ActionState = ActionState.Completed;  
         }
@@ -201,6 +190,16 @@ namespace RPGTest.Modules.Battle.Action
         public void CancelCast()
         {
             ActionState = ActionState.Cancelled;
+        }
+
+        private IEnumerable<Entity> GetAffectedTargets() 
+        {
+            var targets = from e in m_effectEvaluations.Values
+                          from v in e
+                          group v by v.Target into Utargets
+                          select Utargets.Key;
+
+            return targets;
         }
     }
 }

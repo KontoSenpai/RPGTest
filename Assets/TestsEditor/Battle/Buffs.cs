@@ -1,40 +1,30 @@
 using NUnit.Framework;
+using RPGTest.Enums;
 using RPGTest.Models;
 using RPGTest.Models.Entity;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TestsEditor.Battle
 {
     public class Buffs : BattleFixture
     {
-        Buff buffAttack = new Buff
-        {
-            Attribute = RPGTest.Enums.Attribute.Attack,
-            Duration = 2,
-            Value = .5f,
-            RemovalType = RPGTest.Enums.RemovalType.None
-        };
-
-        Buff buffAttack2 = new Buff
-        {
-            Attribute = RPGTest.Enums.Attribute.Attack,
-            Duration = 1,
-            Value = 1f,
-            RemovalType = RPGTest.Enums.RemovalType.None
-        };
-
         [Test]
-        public void Add_Buff_Should_Succeed()
+        [TestCase("B0001")]
+        public void Add_Buff_Should_Succeed(string abilityID)
         {
-            Character.AddBuff(buffAttack);
+            var ability = Abilities.FirstOrDefault(ability => ability.Id == abilityID);
+            var toto = new MockEntityAction(Character, ActionType.Ability, ability, new List<Entity> { Character });
+                       
+            //Character.AddBuff(buffAttack);
             Assert.IsNotNull(Character.GetHighestBuff(RPGTest.Enums.Attribute.Attack));
         }
 
         [Test]
         public void Add_Buff_Should_Become_New_Highest()
         {
-            Character.AddBuff(buffAttack);
-            Character.AddBuff(buffAttack2);
+            //Character.AddBuff(buffAttack);
+            //Character.AddBuff(buffAttack2);
 
             var value = Character.GetHighestBuff(RPGTest.Enums.Attribute.Attack);
 
@@ -44,14 +34,14 @@ namespace TestsEditor.Battle
         [Test]
         public void Buff_Value_Should_Apply()
         {
-            Character.AddBuff(buffAttack);
+            //Character.AddBuff(buffAttack);
             Assert.AreEqual(15, Character.GetOffensiveAttribute(RPGTest.Enums.Attribute.Attack));
         }
 
         [Test]
         public void Buff_Refresh_Should_Succeed()
         {
-            Character.AddBuff(buffAttack);
+            //Character.AddBuff(buffAttack);
             Character.ReduceStatusDurations();
 
             Assert.AreEqual(1, Character.Buffs[0].Duration);

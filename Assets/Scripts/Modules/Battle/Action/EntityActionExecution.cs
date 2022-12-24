@@ -1,29 +1,86 @@
-﻿using RPGTest.Models;
+﻿using RPGTest.Enums;
+using RPGTest.Models;
+using RPGTest.Models.Abilities;
 using RPGTest.Models.Entity;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RPGTest.Modules.Battle.Action
 {
-    public partial class EntityAction
+    public partial class EntityAction : MonoBehaviour
     {
+        Dictionary<int, List<EffectEvaluation>> m_effectEvaluations;
+
+        /// <summary>
+        /// Execute and apply any changes evaluated in the previous step, sequencially for all targets
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator RegisterEffects()
+        {
+            foreach(var effectEvaluations in m_effectEvaluations)
+            {
+                foreach(var effectEvaluation in effectEvaluations.Value)
+                {
+                    StartCoroutine(ExecuteEffectEvaluation(effectEvaluation));
+                }
+                while (effectEvaluations.Value.Any(a => a.State == ActionState.Executing))
+                {
+                    yield return null;
+                }
+            }
+            yield return new WaitForSeconds(m_endDelay);
+        }
+
+        private IEnumerator ExecuteEffectEvaluation(EffectEvaluation effectEvaluation)
+        {
+            if (effectEvaluation.Frames.Count != effectEvaluation.HitPower.Count)
+            {
+                Debug.LogError("Mismatch between frame counts and ");
+                yield break;
+            }
+            effectEvaluation.State = ActionState.Executing;
+            for (int i = 0; i < effectEvaluation.Frames.Count; i++)
+            {
+                ExecuteEffect(effectEvaluation, effectEvaluation.HitPower[i]);
+                yield return new WaitForSeconds(effectEvaluation.Frames[i]);
+            }
+            effectEvaluation.State = ActionState.Completed;
+            yield return null;
+        }
+
+        private void ExecuteEffect(EffectEvaluation effect, float coef)
+        {
+            switch (effect.EffectType)
+            {
+                case EffectType.Damage:
+                    ExecuteDamage(effect, coef);
+                    break;
+                case EffectType.Heal:
+                    ExecuteHeal(effect, coef);
+                    break;
+                case EffectType.Buff:
+                case EffectType.Debuff:
+                    ExecuteAttributeChange(effect, coef);
+                    break;
+                default:
+                    Debug.LogError("effect type not supported : ");
+                    break;
+            }
+        }
+
         /// <summary>
         /// Execute the process of registering a damage application on the appropriate targets
         /// </summary>
         /// <param name="effect">Effect to be applied</param>
         /// <param name="allies">List of allies of the caster</param>
         /// <param name="enemies">List of enemies of the caster</param>
-        public void ExecuteDamage(Effect effect, List<PlayableCharacter> allies, List<Enemy> enemies)
+        private void ExecuteDamage(EffectEvaluation effect, float coefficent)
         {
-            var attribute = effect.Potency.Attribute;
-            foreach (var target in GetTargets(effect.TargetType, allies, enemies))
-            {
-                var attackValue = target.CalculateDamage(Caster, effect, effect.Potency);
-
-                target.ApplyAttributeModification(attribute, attackValue);
-
-                ActionExecuted(target, effect.Type, attribute, attackValue);
-            }
+            var framePower = Mathf.CeilToInt(effect.Value * coefficent);
+            effect.Target.ApplyAttributeModification(effect.Attribute, framePower);
+            EffectApplied(effect, framePower);
         }
 
         /// <summary>
@@ -32,50 +89,26 @@ namespace RPGTest.Modules.Battle.Action
         /// <param name="effect">Effect to be applied</param>
         /// <param name="allies">List of allies of the caster</param>
         /// <param name="enemies">List of enemies of the caster</param>
-        public void ExecuteHeal(Effect effect, List<PlayableCharacter> allies, List<Enemy> enemies)
+        public void ExecuteHeal(EffectEvaluation effect, float coefficent)
         {
-            var attribute = effect.Potency.Attribute;
-            foreach (var target in GetTargets(effect.TargetType, allies, enemies))
+            var framePower = Mathf.CeilToInt(effect.Value * coefficent);
+            effect.Target.ApplyAttributeModification(effect.Attribute, framePower);
+            EffectApplied(effect, framePower);
+        }
+
+        private void ExecuteAttributeChange(EffectEvaluation effect, float coefficent)
+        {
+            var framePower = Mathf.CeilToInt(effect.Value * coefficent);
+
+            Buff buffInstance = new Buff
             {
-                var healValue = target.CalculateHealing(Caster, effect, effect.Potency);
-
-                target.ApplyAttributeModification(attribute, healValue);
-
-                ActionExecuted(target, effect.Type, attribute, healValue);
-            }
-        }
-
-        public void ExecuteBuff(Effect effect, List<PlayableCharacter> allies, List<Enemy> enemies)
-        {
-            ExecuteBuffDebuff(GetTargets(effect.TargetType, allies, enemies), effect, false);
-        }
-
-        public void ExecuteDebuff(Effect effect, List<PlayableCharacter> allies, List<Enemy> enemies)
-        {
-            ExecuteBuffDebuff(GetTargets(effect.TargetType, allies, enemies), effect, true);
-        }
-
-        private void ExecuteBuffDebuff(List<Entity> targets, Effect effect, bool debuff)
-        {
-            var attribute = effect.Potency.Attribute;
-            foreach (var target in targets)
-            {
-                var potency = (effect.Potency.Potency / 100);
-                Buff buffInstance = new Buff
-                {
-                    Attribute = attribute,
-                    Value = debuff? potency * -1 : potency,
-                    Duration = effect.Potency.Duration,
-                    RemovalType = effect.Potency.RemovalType
-                };
-
-                target.AddBuff(buffInstance);
-
-                if (ActionType == ActionType.Ability || ActionType == ActionType.Item)
-                {
-                    ActionExecuted(target, effect.Type, attribute, (int)(buffInstance.Value * 100));
-                }
-            }
+                Attribute = effect.Attribute,
+                Value = framePower,
+                Duration = effect.Duration,
+                RemovalType = effect.RemovalType
+            };
+            effect.Target.AddBuff(buffInstance);
+            EffectApplied(effect, framePower);
         }
     }
 }

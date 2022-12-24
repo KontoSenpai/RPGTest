@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using RPGTest.Models.Abilities;
+using System.Collections.Generic;
 
 namespace RPGTest.Models.Banks
 {

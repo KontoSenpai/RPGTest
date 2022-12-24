@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using RPGTest.Models.Abilities;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace RPGTest.Models.Entity
 {
     public static class Extensions
     { 
-        public static int CalculateDamage(this Entity entity, Entity caster, Effect effect, EffectPotency effectPotency)
+        public static int CalculateDamage(this Entity entity, Entity caster, Effect effect)
         {
             List<float> attackValues = new List<float>();
 
@@ -25,10 +26,9 @@ namespace RPGTest.Models.Entity
             return attackValue;
         }
 
-        public static int CalculateHealing(this Entity entity, Entity caster, Effect effect, EffectPotency effectPotency)
+        public static int CalculateHealing(this Entity entity, Entity caster, Effect effect)
         {
             List<float> healValues = new List<float>();
-            var attributePotency = effect.Potency.Potency;
 
             foreach (var scaling in effect.Scalings)
             {

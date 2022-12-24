@@ -2,6 +2,7 @@
 using RPGTest.Enums;
 using RPGTest.Helpers;
 using RPGTest.Models.Items;
+using RPGTest.Models.Abilities;
 using RPGTest.Modules.Battle;
 using RPGTest.Modules.Battle.Action;
 using System;

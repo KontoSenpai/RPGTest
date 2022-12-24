@@ -1,9 +1,32 @@
 ﻿using RPGTest.Enums;
+using RPGTest.Modules.Battle.Action;
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace RPGTest.Models
+namespace RPGTest.Models.Abilities
 {
+    public class EffectEvaluation
+    {
+        public ActionType ActionType { get; set; }
+
+        public EffectType EffectType { get; set; }
+
+        public Entity.Entity Target { get; set; }
+
+        public Attribute Attribute { get; set; }
+
+        public int Value { get; set; }
+
+        public int Duration { get; set; } = 0;
+
+        public RemovalType RemovalType { get; set; } = RemovalType.None;
+
+        public List<float> Frames { get; set; } = new List<float> { 0 };
+
+        public List<float> HitPower { get; set; } = new List<float> { 1 };
+
+        public ActionState State { get; set; } = ActionState.Pending;
+    }
+
     public class EffectPotency
     {
         public Attribute Attribute { get; set; } = Attribute.None;
@@ -21,7 +44,7 @@ namespace RPGTest.Models
         public int Duration { get; set; } = 0;
     }
 
-    public class Effect
+    public partial class Effect
     {
         public EffectType Type { get; set; }
 
@@ -58,7 +81,7 @@ namespace RPGTest.Models
         }
     }
 
-    public class Ability : IdObject
+    public partial class Ability : IdObject
     {
         public string Description { get; set; }
 
@@ -83,17 +106,5 @@ namespace RPGTest.Models
         public float CastTime { get; set; } = 1.0f;
 
         public float Backswing { get; set; } = 0.5f;
-    }
-
-    public class Range
-    {
-        public float Min { get; set; }
-
-        public float Max { get; set; }
-
-        public float GetValue()
-        {
-            return Min == 0 && Max == 0 ? 1.0f : Random.Range(Min, Max);
-        }
     }
 }

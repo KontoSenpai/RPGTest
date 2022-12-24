@@ -1,4 +1,5 @@
 ﻿using RPGTest.Enums;
+using RPGTest.Models.Abilities;
 using RPGTest.Modules.Battle;
 using RPGTest.Modules.Battle.Action;
 using System.Collections;
@@ -8,15 +9,6 @@ using YamlDotNet.Serialization;
 
 namespace RPGTest.Models.Entity
 {
-    public enum ActionType
-    {
-        Ability,
-        Item,
-        AbilityMenu,
-        ItemMenu,
-        Equip
-    }
-
     public abstract partial class Entity : IdObject
     {
         #region properties

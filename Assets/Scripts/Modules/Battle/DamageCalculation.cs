@@ -1,9 +1,8 @@
-﻿using RPGTest.Models.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RPGTest.Models.Abilities;
+using RPGTest.Models.Entity;
 using UnityEngine;
 
 namespace RPGTest.Modules.Battle
@@ -28,7 +27,7 @@ namespace RPGTest.Modules.Battle
             { 190,  .5f  },
         };
 
-        public static int GetOffensivePotencyValue(Entity entity, Models.Effect effect)
+        public static int GetOffensivePotencyValue(Entity entity, Effect effect)
         {
             var scalingAmount = effect.Scalings.Count;
             float attackPower = 0.0f;
@@ -39,7 +38,7 @@ namespace RPGTest.Modules.Battle
             return Mathf.CeilToInt(Mathf.Pow(attackPower, m_offensiveCoefficient));
         }
 
-        public static int GetDefensivePotencyValue(Entity entity, Models.Effect effect)
+        public static int GetDefensivePotencyValue(Entity entity, Effect effect)
         {
             var scalingAmount = effect.Scalings.Count;
             float defensePower = 0.0f;

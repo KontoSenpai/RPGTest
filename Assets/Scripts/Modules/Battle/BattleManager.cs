@@ -2,6 +2,7 @@
 using RPGTest.Controllers;
 using RPGTest.Managers;
 using RPGTest.Models;
+using RPGTest.Models.Abilities;
 using RPGTest.Models.Entity;
 using RPGTest.Modules.Battle.Action;
 using RPGTest.Modules.Battle.UI;
@@ -179,7 +180,8 @@ namespace RPGTest.Modules.Battle
             foreach(EntityAction action in actionSequence.Actions)
             {
                 action.ActionLogged += Action_OnActionLogged;
-                action.ActionExecuted += Action_OnActionExecuted;
+                action.EffectApplied += Action_OnEffectApplied;
+                action.ActionCompleted += Action_OnActionCompleted;
             }
 
             actionSequence.ActionSequenceCompleted += ActionSequence_OnSequenceCompleted;
@@ -220,17 +222,13 @@ namespace RPGTest.Modules.Battle
             }
         }
 
-        private void Action_OnActionLogged(string actionString)
-        {
-            StartCoroutine(m_battleOverlay.DisplayMessage(actionString));
-        }
-
         private void ActionSequence_OnSequenceCompleted(ActionSequence actionSequence)
         {
             foreach(EntityAction action in actionSequence.Actions)
             {
                 action.ActionLogged -= Action_OnActionLogged;
-                action.ActionExecuted -= Action_OnActionExecuted;
+                action.EffectApplied -= Action_OnEffectApplied;
+                action.ActionCompleted-= Action_OnActionCompleted;
             }
             actionSequence.ActionSequenceCompleted -= ActionSequence_OnSequenceCompleted;
             m_actionQueue.Remove(actionSequence);
@@ -255,22 +253,34 @@ namespace RPGTest.Modules.Battle
             }
         }
 
-        private void Action_OnActionExecuted(Entity entity, Enums.EffectType effectType, Enums.Attribute attribute, int value)
+        private void Action_OnActionLogged(string actionString)
         {
-            if (effectType == Enums.EffectType.Damage || effectType == Enums.EffectType.Heal)
-            {
-                var sprite = Instantiate(SpriteDamage, entity.BattleModel.transform);
-                sprite.GetComponent<BattleSprite>().Initialize(entity.BattleModel.transform.position, value);
-            }         
+            StartCoroutine(m_battleOverlay.DisplayMessage(actionString));
+        }
 
-            if(!entity.IsAlive)
+        private void Action_OnEffectApplied(EffectEvaluation effect, int value)
+        {
+            if (effect.EffectType == Enums.EffectType.Damage || effect.EffectType == Enums.EffectType.Heal)
             {
-                foreach(ActionSequence actionSequence in m_actionQueue.Where(a => a.Caster == entity))
+                var targetTransform = effect.Target.BattleModel.transform;
+                var sprite = Instantiate(SpriteDamage, targetTransform);
+                sprite.GetComponent<BattleSprite>().Initialize(targetTransform.position, value);
+            }
+        }
+
+        private void Action_OnActionCompleted(IEnumerable<Entity> entities)
+        {
+            foreach(var entity in entities)
+            {
+                if (!entity.IsAlive)
                 {
-                    actionSequence.InterruptSequence();
+                    foreach (ActionSequence actionSequence in m_actionQueue.Where(a => a.Caster == entity))
+                    {
+                        actionSequence.InterruptSequence();
+                    }
+                    m_actionQueue.RemoveAll(a => a.Caster == entity);
+                    entity.ResetATB();
                 }
-                m_actionQueue.RemoveAll(a => a.Caster == entity);
-                entity.ResetATB();
             }
         }
 
