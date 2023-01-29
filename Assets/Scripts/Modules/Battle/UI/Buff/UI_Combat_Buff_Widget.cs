@@ -1,4 +1,6 @@
-﻿using RPGTest.Models;
+﻿using RPGTest.Collectors;
+using RPGTest.Enums;
+using RPGTest.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,14 +28,16 @@ namespace RPGTest.Modules.Battle.UI
 
         public void Refresh()
         {
-            BuffColor.color = m_buff.Value > 0 ? BuffColorTemplate : DebuffColorTemplate;
-            BuffAttribute.text = m_buff.Attribute.ToString()[0].ToString();
+            var effect = EffectsCollector.TryGetEffect(m_buff.Id);
+
+            BuffColor.color = effect.Type == EffectType.Buff ? BuffColorTemplate : DebuffColorTemplate;
+            BuffAttribute.text = effect.Icon;
             BuffDuration.text = m_buff.Duration.ToString();
         }
 
-        public Enums.Attribute GetAttribute()
+        public string GetId()
         {
-            return m_buff.Attribute;
+            return m_buff.Id;
         }
         #endregion
     }

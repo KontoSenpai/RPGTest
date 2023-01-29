@@ -3,9 +3,9 @@ using RPGTest.Models.Entity;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPGTest.Models.Abilities
+namespace RPGTest.Models.Effects
 {
-    public partial class Effect
+    public partial class Effect : IdObject
     {
         private ActionType m_actionType;
         private List<Entity.Entity> m_targets;
@@ -55,14 +55,13 @@ namespace RPGTest.Models.Abilities
 
                 effectEvaluations.Add(new EffectEvaluation
                 {
+                    Id = Id,
                     ActionType = m_actionType,
                     EffectType = Type,
                     Target = target,
                     Attribute = Potency.Attribute,
                     Value = value,
                 });
-
-                //target.ApplyAttributeModification(attribute, value);
             }
             return effectEvaluations;
         }
@@ -86,14 +85,13 @@ namespace RPGTest.Models.Abilities
 
                 effectEvaluations.Add(new EffectEvaluation
                 {
+                    Id = Id,
                     ActionType = m_actionType,
                     EffectType = Type,
                     Target = target,
                     Attribute = Potency.Attribute,
                     Value = value,
                 });
-
-                //target.ApplyAttributeModification(attribute, value);
             }
             return effectEvaluations;
         }
@@ -126,29 +124,18 @@ namespace RPGTest.Models.Abilities
             foreach (var target in targets)
             {
                 var value = Mathf.CeilToInt(effect.Potency.Potency / 100);
-                //Buff buffInstance = new Buff
-                //{
-                //    Attribute = attribute,
-                //    Value = debuff ? potency * -1 : potency,
-                //    Duration = effect.Potency.Duration,
-                //    RemovalType = effect.Potency.RemovalType
-                //};
 
                 effectEvaluations.Add(new EffectEvaluation
                 {
+                    Id = Id,
                     ActionType = m_actionType,
                     EffectType = Type,
                     Target = target,
                     Attribute = Potency.Attribute,
                     Value = debuff ? value * -1 : value,
                     Duration = Potency.Duration,
-                    Frames = HitFrames,
-                    HitPower = HitPower,
                     RemovalType = Potency.RemovalType,
                 });
-
-
-                //target.AddBuff(buffInstance);
             }
             return effectEvaluations;
         }

@@ -21,7 +21,7 @@ namespace TestsEditor.Battle
         public void Apply_Damage_Should_Succeed(string abilityID, int expectedDamage, int exepectedHealth)
         {
             var ability = Abilities.FirstOrDefault(ability => ability.Id == abilityID);
-            var effect = ability.Effects[0];
+            var effect = Effects.FirstOrDefault(effect => effect.Id == ability.Effects[0]);
             var attackValue = DamageCalculation.GetOffensivePotencyValue(Character, effect);
             var defenseValue = DamageCalculation.GetDefensivePotencyValue(Enemy, effect);
 
@@ -41,7 +41,7 @@ namespace TestsEditor.Battle
         public void Apply_Damage_With_Piercing_Damage_Should_Succeed(string abilityID, int expectedDamage, int expectedHealth)
         {
             var ability = Abilities.FirstOrDefault(ability => ability.Id == abilityID);
-            var effect = ability.Effects[0];
+            var effect = Effects.FirstOrDefault(effect => effect.Id == ability.Effects[0]);
             var attackValue = DamageCalculation.GetOffensivePotencyValue(Character, effect);
             var defenseValue = DamageCalculation.GetDefensivePotencyValue(Enemy, effect);
 

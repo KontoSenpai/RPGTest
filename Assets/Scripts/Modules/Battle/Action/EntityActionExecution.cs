@@ -1,7 +1,6 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Models;
-using RPGTest.Models.Abilities;
-using RPGTest.Models.Entity;
+using RPGTest.Models.Effects;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using UnityEngine;
 
 namespace RPGTest.Modules.Battle.Action
 {
-    public partial class EntityAction : MonoBehaviour
+    public partial class EntityAction
     {
         Dictionary<int, List<EffectEvaluation>> m_effectEvaluations;
 
@@ -17,13 +16,13 @@ namespace RPGTest.Modules.Battle.Action
         /// Execute and apply any changes evaluated in the previous step, sequencially for all targets
         /// </summary>
         /// <returns></returns>
-        public IEnumerator RegisterEffects()
+        public IEnumerator RegisterEffects(MonoBehaviour managerBehaviour)
         {
             foreach(var effectEvaluations in m_effectEvaluations)
             {
                 foreach(var effectEvaluation in effectEvaluations.Value)
                 {
-                    StartCoroutine(ExecuteEffectEvaluation(effectEvaluation));
+                    managerBehaviour.StartCoroutine(ExecuteEffectEvaluation(effectEvaluation));
                 }
                 while (effectEvaluations.Value.Any(a => a.State == ActionState.Executing))
                 {
@@ -102,8 +101,7 @@ namespace RPGTest.Modules.Battle.Action
 
             Buff buffInstance = new Buff
             {
-                Attribute = effect.Attribute,
-                Value = framePower,
+                Id = effect.Id,
                 Duration = effect.Duration,
                 RemovalType = effect.RemovalType
             };

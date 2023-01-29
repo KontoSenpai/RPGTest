@@ -1,21 +1,30 @@
 # Abilities.yaml
+# Contains all Abilities used by playable characters and enemies
+
+
 Abilities:
-    - Id                    : A0001
+    - Id                    : A0001 # Sword Auto Attack
       Name                  : Attack
       Description           : Default Attack
       Effects               :
-        - Type              : Damage
-          Potency           :
-            Attribute       : HP
-          Scalings          :
-            Attack          : 1
-          PowerRange        :
-            Min             : 0.75
-            Max             : 1.25
+        - E0001
       DefaultTarget         : SingleEnemy 
       TargetTypes           :
         - SingleEnemy
         - SingleAlly
+        
+    - Id                    : A0002 # Spear Auto Attack
+      Name                  : Attack
+      Description           : Default Attack
+      Effects               :
+        - E0002
+      DefaultTarget         : SingleEnemy 
+      TargetTypes           :
+        - SingleEnemy
+        - Enemies
+        - SingleAlly
+        - Allies
+        
 
 #Weapon Abilities
     - Id                    : AW0001
@@ -25,12 +34,7 @@ Abilities:
       EquipmentRestrictrion : 
         - Short_Sword
       Effects               :
-        - Type              : Damage
-          Potency           : 
-            Attribute       : HP
-            Potency         : 7
-          Scalings          :
-            Attack          : 1.1
+        - EW0001.1
       TargetTypes           :
         - SingleEnemy
       CastCost              :
@@ -43,20 +47,8 @@ Abilities:
       EquipmentRestrictrion : 
         - Long_Sword
       Effects               :
-        - Type              : Damage
-          Potency           :
-            Attribute       : HP
-            Potency         : 5
-          Scalings          :
-            Attack          : 0.8
-        - Type              : Damage
-          Potency           :
-            Attribute       : HP
-            Potency         : 5
-          Scalings          :
-            Attack          : 0.8
-          TargetType        :
-            Enemies
+        - EW0002.1
+        - EW0003.1
       TargetTypes           :
         - Enemies
       CastCost              :
@@ -69,12 +61,7 @@ Abilities:
       EquipmentRestrictrion : 
         - Spear
       Effects               :
-        - Type              : Damage
-          Potency           :
-            Attribute       : HP
-            Potency         : 5
-          Scalings          :
-            Attack          : 0.8
+        - EW0004.1
       TargetTypes           :
         - SingleEnemy
       CastCost              :
@@ -87,17 +74,8 @@ Abilities:
       EquipmentRestrictrion : 
         - Short_Sword
       Effects               :
-        - Type              : Damage
-          Potency           :
-            Attribute       : HP 
-            Potency         : 5
-          Scalings          :
-            Attack          : 0.8
-        - Type              : Debuff
-          Potency           :
-            Attribute       : Defense
-            Potency         : 30
-            Duration        : 50
+        - EW0005.1
+        - EW0006.1
       TargetTypes           :
         - SingleEnemy
       CastCost              :
@@ -109,11 +87,7 @@ Abilities:
       Description           : Shout loudly to raly allies and increase their defense
       AbilityType           : Talent
       Effects               :
-        - Type              : Buff
-          Potency           :
-            Attribute     : Defense 
-            Potency       : 20
-            Duration      : 4
+        - ET0001.1
       TargetTypes           :
         - Allies
       CastCost              :
@@ -123,11 +97,7 @@ Abilities:
       Description           : Take up a stance to react more quickly
       AbilityType           : Talent
       Effects               :
-        - Type              : Buff
-          Potency           :
-            Attribute       : Speed
-            Potency         : 50
-            Duration        : 3
+        - ET0002.1
       TargetTypes           :
         - Allies
       CastCost              :
@@ -137,11 +107,7 @@ Abilities:
       Description           : 
       AbilityType           : Talent
       Effects               :
-        - Type              : Buff
-          Potency           :
-            Attribute       : Attack 
-            Potency         : 30
-            Duration        : 2
+        - ET0003.1
       DefaultTarget         : Self
       CastCost              :
         Stamina             : 4
@@ -152,12 +118,7 @@ Abilities:
       Description           : Send a magically confured flame ball to the target.
       AbilityType           : AttackMagic
       Effects               :
-        - Type              : Damage
-          Potency           :
-            Attribute       : HP
-            Potency         : 5
-          Scalings          :
-            Magic           : 0.8
+        - EM0001.1
       DefaultTarget         : SingleEnemy 
       TargetTypes           :
         - SingleEnemy
@@ -173,25 +134,8 @@ Abilities:
       Description           : Unleash wide flames to the targets and reduce their fire resistance
       AbilityType           : AttackMagic
       Effects               :
-        - Type              : Debuff
-          Potency           :
-            Attribute       : Resistance 
-            Potency         : 30
-            Duration        : 2
-        - Type              : Damage
-          Potency           :
-            Attribute       : HP 
-            Potency         : 5
-          Scalings          :
-            Magic           : 0.8
-          HitFrames         :
-            - 0.4
-            - 0.4
-            - 0.4
-          HitPower          :
-            - 0.25
-            - 0.25
-            - 0.5
+        - EM0002.1
+        - EM0003.1
       TargetTypes           :
         - SingleEnemy
       CastTime              : 2.0
@@ -204,14 +148,6 @@ Abilities:
       Name                  : Bite
       AbilityType           : Monster
       Effects               :
-        - Type              : Damage
-          Potency           :
-            Attribute       : HP
-            Potency         : 2
-          Scalings          :
-            Attack          : 1
-          PowerRange        :
-            Min             : 1.0
-            Max             : 1.2
+        - EMST0001.1
       TargetTypes           :
         - SingleEnemy

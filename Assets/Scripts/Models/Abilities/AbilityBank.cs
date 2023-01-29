@@ -1,7 +1,7 @@
 ﻿using RPGTest.Models.Abilities;
 using System.Collections.Generic;
 
-namespace RPGTest.Models.Banks
+namespace RPGTest.Models.Abilities
 {
     public class AbilityBank
     {

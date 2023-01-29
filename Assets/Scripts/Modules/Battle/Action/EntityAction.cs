@@ -1,9 +1,8 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Managers;
-using RPGTest.Models.Abilities;
+using RPGTest.Models.Effects;
 using RPGTest.Models.Entity;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +21,7 @@ namespace RPGTest.Modules.Battle.Action
         Cancelled
     }
 
-    [Serializable]
-    public partial class EntityAction : MonoBehaviour
+    public partial class EntityAction
     {
         public ActionState ActionState { get; private set; }
 
@@ -125,7 +123,7 @@ namespace RPGTest.Modules.Battle.Action
             return targets;
         }
 
-        public IEnumerator Execute(List<PlayableCharacter> allies, List<Enemy> enemies)
+        public IEnumerator Execute(MonoBehaviour managerBehaviour, List<PlayableCharacter> allies, List<Enemy> enemies)
         {
             ActionState = ActionState.Executing;
 
@@ -148,7 +146,7 @@ namespace RPGTest.Modules.Battle.Action
                         {
                             Caster.ApplyAttributeModification(resourceCost.Key, -resourceCost.Value);
                         }
-                        effects = ability.Effects;
+                        effects = EffectsCollector.TryGetEffects(ability.Effects);
                     }
                     ActionLogged($"{Caster.Name} uses {GetActionName()}");
                     break;
@@ -175,7 +173,7 @@ namespace RPGTest.Modules.Battle.Action
                 m_effectEvaluations[i] = effects[i].Evaluate(ActionType, Caster, Targets, allies, enemies);
             }
 
-            StartCoroutine(RegisterEffects());
+            managerBehaviour.StartCoroutine(RegisterEffects(managerBehaviour));
             ActionCompleted(GetAffectedTargets());
             yield return new WaitForSeconds(m_endDelay);
             ActionState = ActionState.Completed;  

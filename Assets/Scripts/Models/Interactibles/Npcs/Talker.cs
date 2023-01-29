@@ -1,4 +1,4 @@
-﻿namespace RPGTest.Models
+﻿namespace RPGTest.Models.Interactibles
 {
     public class Talker : Npc
     {

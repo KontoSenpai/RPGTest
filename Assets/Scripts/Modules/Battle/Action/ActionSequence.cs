@@ -103,7 +103,7 @@ namespace RPGTest.Modules.Battle.Action
                     action.CancelCast();
                     break;
                 }
-                manager.StartCoroutine(action.Execute(allies, enemies));
+                manager.StartCoroutine(action.Execute( manager, allies, enemies));
                 while (action.ActionState == ActionState.Executing)
                 {
                     if (SequenceState == ActionState.Cancelled)

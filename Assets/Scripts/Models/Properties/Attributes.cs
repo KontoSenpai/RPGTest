@@ -26,9 +26,7 @@ namespace RPGTest.Models
 
     public class Buff
     {
-        public Attribute Attribute { get; set; }
-
-        public float Value { get; set; }
+        public string Id { get; set; }
 
         public int Duration { get; set; }
 

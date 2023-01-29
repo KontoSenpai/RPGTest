@@ -1,33 +1,32 @@
-﻿using RPGTest.Enums;
+﻿using RPGTest.Collectors;
+using RPGTest.Enums;
 using System.Linq;
 
 namespace RPGTest.Models.Entity
 {
 
-    public abstract partial class Entity
+    public abstract partial class Entity : IdObject
     {
         public virtual float GetHighestBuff(Attribute attribute)
         {
-            var buff = Buffs.FindAll(b => b.Attribute == attribute)
-                .OrderByDescending( b => b.Value)
-                .FirstOrDefault();
-
-            if (buff != null)
-            {
-                return 1 + buff.Value;
-            }
-            return 1.0f;
+            return GetHighestStatChange(attribute, EffectType.Buff);
         }
 
         public virtual float GetHighestDebuff(Attribute attribute)
         {
-            var debuff = Buffs.FindAll(b => b.Attribute == attribute && b.Attribute < 0)
-                .OrderBy(b => b.Value)
+            return GetHighestStatChange(attribute, EffectType.Debuff);
+        }
+
+        private float GetHighestStatChange(Attribute attribute, EffectType type)
+        {
+            var effects = EffectsCollector.TryGetEffects(Buffs.Select(x => x.Id).ToList());
+            var change = effects.FindAll(e => e.Potency.Attribute == attribute && e.Type == type)
+                .OrderByDescending(e => e.Potency.Potency)
                 .FirstOrDefault();
 
-            if (debuff != null)
+            if (change != null)
             {
-                return 1 + debuff.Value;
+                return 1 + change.Potency.Potency;
             }
             return 1.0f;
         }
@@ -40,7 +39,7 @@ namespace RPGTest.Models.Entity
         /// <param name="buff">Buff to assign</param>
         public virtual void AddBuff(Buff buff)
         {
-            int existingBuffIndex = Buffs.FindIndex(b => b.Attribute == buff.Attribute && b.Value == buff.Value);
+            int existingBuffIndex = Buffs.FindIndex(b => b.Id == buff.Id);
 
             if (existingBuffIndex != -1)
             {

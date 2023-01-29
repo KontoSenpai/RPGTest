@@ -1,4 +1,5 @@
-﻿using RPGTest.Models;
+﻿using RPGTest.Collectors;
+using RPGTest.Models;
 using RPGTest.Models.Entity;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace RPGTest.Modules.Battle.UI
             // Remove widgets that don't have buff anymore
             for(int i = 0; i < m_allWidgets.Count; i++)
             {
-                var buff = buffs.FirstOrDefault(b => b.Attribute == m_allWidgets[i].GetComponent<UI_Combat_Buff_Widget>().GetAttribute());
+                var buff = buffs.FirstOrDefault(b => b.Id == m_allWidgets[i].GetComponent<UI_Combat_Buff_Widget>().GetId());
                 if (buff == null)
                 {
                     Destroy(m_allWidgets[i]);
@@ -36,10 +37,11 @@ namespace RPGTest.Modules.Battle.UI
                     m_allWidgets[i].GetComponent<UI_Combat_Buff_Widget>().Initialize(buff);
                 }
             }
+
             // Create new widgets
             foreach(var buff in buffs)
             {
-               if(!m_allWidgets.Any(w => w.GetComponent<UI_Combat_Buff_Widget>().GetAttribute() == buff.Attribute))
+               if (!m_allWidgets.Any(w => w.GetComponent<UI_Combat_Buff_Widget>().GetId() == buff.Id))
                 {
                     InstantiateBuff(buff);
                 }
@@ -49,8 +51,8 @@ namespace RPGTest.Modules.Battle.UI
         private GameObject InstantiateBuff(Buff buff)
         {
             var widget = Instantiate(BuffInstantiate);
-            widget.transform.SetParent(buff.Value > 0 ? BuffsList.transform : DebuffsList.transform);
-            widget.name = buff.Attribute.ToString();
+            widget.transform.SetParent(BuffsList.transform);
+            widget.name = buff.Id;
             widget.transform.localScale = new Vector3(1, 1, 1);
 
             Debug.LogWarning(buff);

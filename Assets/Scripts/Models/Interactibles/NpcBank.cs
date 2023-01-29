@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
-namespace RPGTest.Models.Banks
+namespace RPGTest.Models.Interactibles
 {
     public class NpcBank
     {

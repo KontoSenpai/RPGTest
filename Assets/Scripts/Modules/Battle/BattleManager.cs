@@ -3,6 +3,7 @@ using RPGTest.Controllers;
 using RPGTest.Managers;
 using RPGTest.Models;
 using RPGTest.Models.Abilities;
+using RPGTest.Models.Effects;
 using RPGTest.Models.Entity;
 using RPGTest.Modules.Battle.Action;
 using RPGTest.Modules.Battle.UI;

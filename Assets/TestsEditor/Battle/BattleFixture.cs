@@ -2,9 +2,11 @@
 using RPGTest.Enums;
 using RPGTest.Models;
 using RPGTest.Models.Abilities;
+using RPGTest.Models.Effects;
 using RPGTest.Models.Entity;
 using RPGTest.Modules.Battle.Action;
 using System.Collections.Generic;
+using Attribute = RPGTest.Enums.Attribute;
 
 namespace TestsEditor.Battle
 {
@@ -32,20 +34,10 @@ namespace TestsEditor.Battle
                 Id = "A0001",
                 Name = "Attack no Piercing",
                 AbilityType = AbilityType.Weapon,
-                Effects = new List<Effect>
+                Effects = new List<string>
                 {
-                    new Effect {
-                        Type = EffectType.Damage,
-                        Potency = new EffectPotency
-                        {
-                            Attribute = Attribute.HP,
-                        },
-                        Scalings = new Dictionary<Attribute, float>
-                        {
-                            { Attribute.Attack, 1.0f }
-                        }
-                    },
-                }
+                    "D0001",
+                },
             },
             new Ability
             {
@@ -56,21 +48,9 @@ namespace TestsEditor.Battle
                 {
                     EquipmentType.Spear
                 },
-                Effects = new List<Effect>
-                {
-                    new Effect
-                    {
-                        Type = EffectType.Damage,
-                        Potency = new EffectPotency
-                        {
-                            Attribute = Attribute.HP,
-                            IgnoreDefense = .6f,
-                        },
-                        Scalings = new Dictionary<Attribute, float>
-                        {
-                            { Attribute.Attack, 1.0f }
-                        }
-                    },
+                Effects = new List<string>
+                {   
+                    "D0001",
                 },
             },
             new Ability
@@ -78,21 +58,9 @@ namespace TestsEditor.Battle
                 Id = "A0003",
                 Name = "Attack full Piercing",
                 AbilityType = AbilityType.Weapon,
-                Effects = new List<Effect>
+                Effects = new List<string>
                 {
-                    new Effect
-                    {
-                        Type = EffectType.Damage,
-                        Potency = new EffectPotency
-                        {
-                            Attribute = Attribute.HP,
-                            IgnoreDefense = 1f,
-                        },
-                        Scalings = new Dictionary<Attribute, float>
-                        {
-                            { Attribute.Attack, 1.0f }
-                        }
-                    },
+                    "D0003",
                 },
             },
             new Ability
@@ -100,20 +68,9 @@ namespace TestsEditor.Battle
                 Id = "M0001",
                 Name = "Magic no piercing",
                 AbilityType = AbilityType.AttackMagic,
-                Effects = new List<Effect>
+                Effects = new List<string>
                 {
-                    new Effect // Magic, no piercing
-                    {
-                        Type = EffectType.Damage,
-                        Potency = new EffectPotency
-                        {
-                            Attribute = Attribute.HP,
-                        },
-                        Scalings = new Dictionary<Attribute, float>
-                        {
-                            { Attribute.Magic, 1.0f }
-                        },
-                    }
+                    "D0004",
                 },
             },
             new Ability
@@ -121,17 +78,9 @@ namespace TestsEditor.Battle
                 Id = "B0001",
                 Name = "Buff Attack",
                 AbilityType = AbilityType.SupportMagic,
-                Effects = new List<Effect>
+                Effects = new List<string>
                 {
-                    new Effect
-                    {
-                        Type = EffectType.Buff,
-                        Potency = new EffectPotency
-                        {
-                            Attribute = Attribute.Attack,
-                            Potency = 50,
-                        },
-                    }
+                    "B0001",
                 }
             },
             new Ability
@@ -139,19 +88,89 @@ namespace TestsEditor.Battle
                 Id = "B0002",
                 Name = "Buff Defense",
                 AbilityType = AbilityType.SupportMagic,
-                Effects = new List<Effect>
+                Effects = new List<string>
                 {
-                    new Effect
-                    {
-                        Type = EffectType.Buff,
-                        Potency = new EffectPotency
-                        {
-                            Attribute = Attribute.Defense,
-                            Potency = 50,
-                        },
-                    }
+                    "B0002",
                 }
             },
+        };
+
+        public Effect[] Effects { get; set; } =
+        {
+            new Effect
+            {
+                Id = "D0001",
+                Type = EffectType.Damage,
+                Potency = new EffectPotency
+                {
+                    Attribute = Attribute.HP,
+                },
+                Scalings = new Dictionary<Attribute, float>
+                {
+                    { Attribute.Attack, 1.0f }
+                }
+            },
+             new Effect
+             {
+                Id = "D0002",
+                Type = EffectType.Damage,
+                Potency = new EffectPotency
+                {
+                    Attribute = Attribute.HP,
+                    IgnoreDefense = .6f,
+                },
+                Scalings = new Dictionary<Attribute, float>
+                {
+                    { Attribute.Attack, 1.0f }
+                }
+            },
+            new Effect
+            {
+                Id = "D0003",
+                Type = EffectType.Damage,
+                Potency = new EffectPotency
+                {
+                    Attribute = Attribute.HP,
+                    IgnoreDefense = 1f,
+                },
+                Scalings = new Dictionary<Attribute, float>
+                {
+                    { Attribute.Attack, 1.0f }
+                }
+            },
+            new Effect // Magic, no piercing
+            {
+                Id = "D0004",
+                Type = EffectType.Damage,
+                Potency = new EffectPotency
+                {
+                    Attribute = Attribute.HP,
+                },
+                Scalings = new Dictionary<Attribute, float>
+                {
+                    { Attribute.Magic, 1.0f }
+                },
+            },
+            new Effect
+            {   
+                Id = "B0001",
+                Type = EffectType.Buff,
+                Potency = new EffectPotency
+                {
+                    Attribute = Attribute.Attack,
+                    Potency = 50,
+                },
+            },
+            new Effect
+            {
+                Id = "B0002",
+                Type = EffectType.Buff,
+                Potency = new EffectPotency
+                {
+                    Attribute = Attribute.Defense,
+                    Potency = 50,
+                },
+            }
         };
 
         [SetUp]

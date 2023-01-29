@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
-namespace RPGTest.Models.Banks
+namespace RPGTest.Models.Interactibles
 {
     public class InteractiblesBank
     {

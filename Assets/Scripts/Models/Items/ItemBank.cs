@@ -1,8 +1,7 @@
-﻿using RPGTest.Models.Items;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
-namespace RPGTest.Models.Banks
+namespace RPGTest.Models.Items
 {
     public class ItemBank
     {
