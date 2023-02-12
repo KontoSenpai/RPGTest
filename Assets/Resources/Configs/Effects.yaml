@@ -112,6 +112,7 @@ Effects:
         Attribute       : Defense 
         Potency         : 20
         Duration        : 4
+        RemovalType     : Dispel
     # Fleet of Foot
     - Id                : ET0002.1
       Label             : Increases Speed by ${Potency}%
@@ -167,7 +168,7 @@ Effects:
         
 # Monster Effects
     # Bite
-    - Id                : EMST0001.1
+    - Id                : EMST0001
       Type              : Damage
       Potency           :
         Attribute       : HP
@@ -177,3 +178,8 @@ Effects:
       PowerRange        :
         Min             : 1.0
         Max             : 1.2
+    # Shierk
+    - Id                : EMST0002
+      Type              : Cleanse
+      Potency           :
+        RemovalType     : Dispel

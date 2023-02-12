@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bea1c1919cf21740a711455f6bdc71e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ActionEntityFilter: 2
+  ActionEntityIDFilter: 
   mainCamera: {fileID: 0}
   SpriteDamage: {fileID: 8736163791041326226, guid: fe4b73ca40255bf409c1bf294587ba60, type: 3}
   Character: {fileID: 0}

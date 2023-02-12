@@ -15,8 +15,19 @@ using UnityEngine;
 
 namespace RPGTest.Modules.Battle
 {
+    public enum EntityFilter
+    {
+        Enemy,
+        Party,
+        All
+    }
     public class BattleManager : MonoBehaviour 
     {
+#if UNITY_EDITOR
+        public EntityFilter ActionEntityFilter = EntityFilter.All;
+        public string ActionEntityIDFilter;
+#endif
+
         public Camera mainCamera;
         public GameObject SpriteDamage;
         public GameObject Character;
@@ -39,6 +50,7 @@ namespace RPGTest.Modules.Battle
         private UI_BattleOverlay m_battleOverlay => FindObjectOfType<GameManager>().UIManager.GetUIComponent<UI_BattleOverlay>();
 
         private Coroutine m_battleCoroutine;
+
 
         void Start()
         {
@@ -162,6 +174,9 @@ namespace RPGTest.Modules.Battle
                     {
                         foreach (Entity entity in m_entities.Where(e => e.IsAlive))
                         {
+#if UNITY_EDITOR
+                            if (!FilterApplies(entity)) continue;
+#endif
                             if (!m_waitingForUserInput && !m_actionQueue.Any(x => x.Caster.Name == entity.Name) && entity.FillATB())
                             {
                                 entity.RefillResources();
@@ -175,6 +190,23 @@ namespace RPGTest.Modules.Battle
             }
             while (true);
         }
+
+#if UNITY_EDITOR
+        private bool FilterApplies(Entity entity)
+        {
+            if (ActionEntityFilter == EntityFilter.All) return true;
+            if (entity.Id.StartsWith("PC") && ActionEntityFilter != EntityFilter.Party)
+            {
+                return false;
+
+            } else if (!entity.Id.StartsWith("PC") && ActionEntityFilter != EntityFilter.Enemy)
+            {
+                return false;
+            }
+
+            return string.IsNullOrEmpty(ActionEntityIDFilter) || entity.Id == ActionEntityIDFilter;
+        }
+#endif
 
         private void QueueActionSequence(ActionSequence actionSequence)
         {

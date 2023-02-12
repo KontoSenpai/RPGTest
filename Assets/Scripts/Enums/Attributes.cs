@@ -47,7 +47,10 @@ namespace RPGTest.Enums
         [Description("BLC")]
         Block,
         [Description("ACC")]
-        Accuracy
+        Accuracy,
+
+        Hit,
+        TotalHit
     }
 
     public enum Aptitude

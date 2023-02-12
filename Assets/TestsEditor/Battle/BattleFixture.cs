@@ -198,11 +198,12 @@ namespace TestsEditor.Battle
             };
             Enemy.CurrentHP = Enemy.BaseAttributes.MaxHP;
 
-            Character.PlayerBuffsRefreshed += OnBuffApplied;
+            Character.BuffsRefreshed += OnBuffApplied;
         }
 
-        private void OnBuffApplied(List<Buff> buffs)
+        private void OnBuffApplied(object sender, BuffsRefreshedArgs e)
         {
+
         }
     }
 }

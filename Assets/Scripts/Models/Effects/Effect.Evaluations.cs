@@ -30,6 +30,8 @@ namespace RPGTest.Models.Effects
                     return EvaluateBuff(caster, allies, enemies);
                 case EffectType.Debuff:
                     return EvaluateDebuff(caster, allies, enemies);
+                case EffectType.Cleanse:
+                    return EvaluateCleanse(caster, allies, enemies);
                 default:
                     Debug.LogError("effect type not supported : ");
                     return null;
@@ -90,6 +92,7 @@ namespace RPGTest.Models.Effects
                     EffectType = Type,
                     Target = target,
                     Attribute = Potency.Attribute,
+                    StatusEffect = Potency.StatusEffect,
                     Value = value,
                 });
             }
@@ -135,6 +138,29 @@ namespace RPGTest.Models.Effects
                     Value = debuff ? value * -1 : value,
                     Duration = Potency.Duration,
                     RemovalType = Potency.RemovalType,
+                });
+            }
+            return effectEvaluations;
+        }
+
+        private List<EffectEvaluation> EvaluateCleanse(
+            Entity.Entity caster,
+            List<PlayableCharacter> allies,
+            List<Enemy> enemies
+        )
+        {
+            var effectEvaluations = new List<EffectEvaluation>();
+            foreach (var target in GetTargets(TargetType, caster, allies, enemies))
+            {
+                effectEvaluations.Add(new EffectEvaluation
+                {
+                    Id = Id,
+                    ActionType = m_actionType,
+                    EffectType = Type,
+                    Target = target,
+                    RemovalType = Potency.RemovalType,
+                    Attribute = Potency.Attribute,
+                    StatusEffect = Potency.StatusEffect,
                 });
             }
             return effectEvaluations;

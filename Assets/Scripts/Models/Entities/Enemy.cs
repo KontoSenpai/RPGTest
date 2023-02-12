@@ -1,13 +1,12 @@
-﻿using RPGTest.AI;
-using RPGTest.Assets.Scripts.Models.Items;
+﻿using RPGTest.Assets.Scripts.Models.Items;
 using RPGTest.Enums;
 using RPGTest.Modules.Battle;
 using RPGTest.Modules.Battle.Action;
+using RPGTest.Modules.Battle.AI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace RPGTest.Models.Entity
 {

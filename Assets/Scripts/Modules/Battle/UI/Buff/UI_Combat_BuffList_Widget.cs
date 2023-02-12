@@ -1,5 +1,4 @@
-﻿using RPGTest.Collectors;
-using RPGTest.Models;
+﻿using RPGTest.Models;
 using RPGTest.Models.Entity;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +17,16 @@ namespace RPGTest.Modules.Battle.UI
 
         public void Initialize(PlayableCharacter playableCharacter)
         {
-            playableCharacter.PlayerBuffsRefreshed += OnBuffsRefreshed;
+            playableCharacter.BuffsRefreshed += OnBuffsRefreshed;
         }
 
-        private void OnBuffsRefreshed(List<Buff> buffs)
+        private void OnBuffsRefreshed(object sender, BuffsRefreshedArgs e)
         {
             // Remove widgets that don't have buff anymore
             for(int i = 0; i < m_allWidgets.Count; i++)
             {
-                var buff = buffs.FirstOrDefault(b => b.Id == m_allWidgets[i].GetComponent<UI_Combat_Buff_Widget>().GetId());
+                var buff = e.Buffs.FirstOrDefault(b => b.Id == m_allWidgets[i].GetComponent<UI_Combat_Buff_Widget>().GetId());
+                Debug.Log(buff);
                 if (buff == null)
                 {
                     Destroy(m_allWidgets[i]);
@@ -39,7 +39,7 @@ namespace RPGTest.Modules.Battle.UI
             }
 
             // Create new widgets
-            foreach(var buff in buffs)
+            foreach(var buff in e.Buffs)
             {
                if (!m_allWidgets.Any(w => w.GetComponent<UI_Combat_Buff_Widget>().GetId() == buff.Id))
                 {
@@ -55,7 +55,6 @@ namespace RPGTest.Modules.Battle.UI
             widget.name = buff.Id;
             widget.transform.localScale = new Vector3(1, 1, 1);
 
-            Debug.LogWarning(buff);
             widget.GetComponent<UI_Combat_Buff_Widget>().Initialize(buff);
             m_allWidgets.Add(widget);
             return widget;
@@ -67,7 +66,7 @@ namespace RPGTest.Modules.Battle.UI
         /// <param name="playableCharacter">Entity to whom the widget was connected to</param>
         public void DisableEvents(PlayableCharacter playableCharacter)
         {
-            playableCharacter.PlayerBuffsRefreshed -= OnBuffsRefreshed;
+            playableCharacter.BuffsRefreshed -= OnBuffsRefreshed;
         }
     }
 }

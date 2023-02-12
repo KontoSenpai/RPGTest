@@ -1,13 +1,11 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Models.Entity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Attribute = RPGTest.Enums.Attribute;
 
-namespace RPGTest.AI
+namespace RPGTest.Modules.Battle.AI
 {
     public class CombatBehavior
     {

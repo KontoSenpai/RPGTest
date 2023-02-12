@@ -19,7 +19,7 @@ PlayableCharacters:
         Defense         : 7
         Magic           : 3
         Resistance      : 4
-        Speed           : 8
+        Speed           : 5
       AttributesGrowth  :
         MaxHP           : 12
         MaxMP           : 0
@@ -46,7 +46,7 @@ PlayableCharacters:
         Defense         : 4
         Magic           : 12
         Resistance      : 9
-        Speed           : 10
+        Speed           : 4
       AttributesGrowth  :
         MaxHP           : 8
         MaxMP           : 11
@@ -74,7 +74,7 @@ PlayableCharacters:
         Defense         : 9
         Magic           : 12
         Resistance      : 9
-        Speed           : 6
+        Speed           : 4
       AttributesGrowth  :
         MaxHP           : 8
         MaxMP           : 11

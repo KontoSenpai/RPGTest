@@ -31,13 +31,13 @@ Enemies:
         Defense             : 5
         Magic               : 0
         Resistance          : 2
-        Speed               : 1
+        Speed               : 4
       CombatThresholds      :
         - Threshold         : 100
           Abilities         :
-            - Id            : AMST001
+            - Id            : AMST0002
               Probability   : 0.8
-            - Id            : AMST001
+            - Id            : AMST0001
               Probability   : 0.2
       GoldBounty            : 12
       ExperienceBounty      : 200

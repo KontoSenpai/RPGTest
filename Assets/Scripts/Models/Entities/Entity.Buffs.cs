@@ -1,6 +1,9 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Enums;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using Attribute = RPGTest.Enums.Attribute;
 
 namespace RPGTest.Models.Entity
 {
@@ -49,20 +52,35 @@ namespace RPGTest.Models.Entity
             {
                 Buffs.Add(buff);
             }
+            OnBuffsRefreshed(new BuffsRefreshedArgs(Buffs));
         }
 
         /// <summary>
         /// Remove buffs corresponding to the given removal type rule
         /// </summary>
         /// <param name="removalType">RemovalType of the action</param>
-        public virtual void RemoveBuffs(RemovalType removalType)
+        public virtual void RemoveBuffs(Attribute attribute, RemovalType removalType)
         {
-            Buffs.RemoveAll(b => b.RemovalType == removalType);
+            if (attribute == Attribute.None)
+            {
+                Buffs.RemoveAll(b => b.RemovalType == removalType);
+            } 
+            else
+            {
+                Buffs.RemoveAll(b => 
+                {
+                    var effect = EffectsCollector.TryGetEffect(b.Id);
+                    Debug.Log(effect.Id);
+                    return effect.Potency.Attribute == attribute && b.RemovalType == removalType;
+                });
+            }
+            OnBuffsRefreshed(new BuffsRefreshedArgs(Buffs));
         }
 
         public virtual void RemoveBuff(Buff buff)
         {
             Buffs.Remove(buff);
+            OnBuffsRefreshed(new BuffsRefreshedArgs(Buffs));
         }
     }
 }

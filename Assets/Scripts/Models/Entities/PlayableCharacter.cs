@@ -54,9 +54,6 @@ namespace RPGTest.Models.Entity
         public event ExperienceChangedHandler PlayerExperienceChanged;
         public delegate void ExperienceChangedHandler();
 
-        public event BuffRefreshedHandler PlayerBuffsRefreshed;
-        public delegate void BuffRefreshedHandler(List<Buff> buffs);
-
         #region public methods
         #region overrides
         public override bool FillATB()
@@ -71,12 +68,6 @@ namespace RPGTest.Models.Entity
             //base.ApplyAttributeModification(Attribute.HP, 0);
             ApplyAttributeModification(Attribute.MP, (int)Mathf.Ceil(GetAttribute(Attribute.MaxMP) * .1f));
             ApplyAttributeModification(Attribute.Stamina, (int)Mathf.Ceil(GetAttribute(Attribute.MaxStamina) * .1f));
-        }
-
-        public override void ReduceStatusDurations()
-        {
-            base.ReduceStatusDurations();
-            PlayerBuffsRefreshed(Buffs);
         }
 
         public override void ResetATB(int variation = 0)
@@ -104,18 +95,6 @@ namespace RPGTest.Models.Entity
         public override Dictionary<Attribute, float> GetAttributes()
         {
             return GetAttributes(EquipmentSlots.CurrentPreset);
-        }
-
-        public override void AddBuff(Buff buff)
-        {
-            base.AddBuff(buff);
-            PlayerBuffsRefreshed(Buffs);
-        }
-
-        public override void RemoveBuff(Buff buff)
-        {
-            base.RemoveBuff(buff);
-            PlayerBuffsRefreshed(Buffs);
         }
         #endregion
 

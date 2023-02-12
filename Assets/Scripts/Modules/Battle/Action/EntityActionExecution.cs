@@ -63,6 +63,9 @@ namespace RPGTest.Modules.Battle.Action
                 case EffectType.Debuff:
                     ExecuteAttributeChange(effect, coef);
                     break;
+                case EffectType.Cleanse:
+                    ExecuteCleanse(effect);
+                    break;
                 default:
                     Debug.LogError("effect type not supported : ");
                     break;
@@ -97,8 +100,6 @@ namespace RPGTest.Modules.Battle.Action
 
         private void ExecuteAttributeChange(EffectEvaluation effect, float coefficent)
         {
-            var framePower = Mathf.CeilToInt(effect.Value * coefficent);
-
             Buff buffInstance = new Buff
             {
                 Id = effect.Id,
@@ -106,7 +107,14 @@ namespace RPGTest.Modules.Battle.Action
                 RemovalType = effect.RemovalType
             };
             effect.Target.AddBuff(buffInstance);
-            EffectApplied(effect, framePower);
+            EffectApplied(effect, 0);
+        }
+
+        private void ExecuteCleanse(EffectEvaluation effect)
+        {
+            effect.Target.RemoveBuffs(effect.Attribute, effect.RemovalType);
+            effect.Target.RemoveStatusEffect(effect.StatusEffect, effect.RemovalType);
+            EffectApplied(effect, 0);
         }
     }
 }

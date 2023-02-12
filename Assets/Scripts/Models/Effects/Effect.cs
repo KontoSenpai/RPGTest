@@ -15,7 +15,9 @@ namespace RPGTest.Models.Effects
 
         public Entity.Entity Target { get; set; }
 
-        public Attribute Attribute { get; set; }
+        public Attribute Attribute { get; set; } = Attribute.None;
+
+        public StatusEffect StatusEffect { get; set; }
 
         public int Value { get; set; }
 

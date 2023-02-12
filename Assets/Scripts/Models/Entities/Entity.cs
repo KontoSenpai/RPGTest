@@ -2,13 +2,26 @@
 using RPGTest.Models.Abilities;
 using RPGTest.Modules.Battle;
 using RPGTest.Modules.Battle.Action;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using YamlDotNet.Serialization;
+using Attribute = RPGTest.Enums.Attribute;
 
 namespace RPGTest.Models.Entity
 {
+    // Special EventArgs class to hold info about Shapes.
+    public class BuffsRefreshedArgs : EventArgs
+    {
+        public BuffsRefreshedArgs(List<Buff> buffs)
+        {
+            Buffs = buffs;
+        }
+
+        public List<Buff> Buffs { get; }
+    }
+
     public abstract partial class Entity : IdObject
     {
         #region properties
@@ -50,6 +63,14 @@ namespace RPGTest.Models.Entity
         public virtual Range PowerRange { get; set; } = new Range() { Min = 0.75f, Max = 1.25f };
         #endregion
 
+        #region event handling
+        protected virtual void OnBuffsRefreshed(BuffsRefreshedArgs e)
+        {
+            BuffsRefreshed?.Invoke(this, e);
+        }
+        public event EventHandler<BuffsRefreshedArgs> BuffsRefreshed;
+        #endregion
+
         #region variables
         protected float m_currentATB = 0.0f;
 
@@ -85,6 +106,7 @@ namespace RPGTest.Models.Entity
                 b.Duration--;
             }
             Buffs.RemoveAll(b => b.Duration <= 0);
+            OnBuffsRefreshed(new BuffsRefreshedArgs(Buffs));
         }
 
         public void PerformAction()
@@ -157,6 +179,8 @@ namespace RPGTest.Models.Entity
             attributes.Add(Attribute.Resistance, BaseAttributes.Resistance);
 
             attributes.Add(Attribute.Speed, BaseAttributes.Speed);
+
+            attributes.Add(Attribute.Hit, BaseAttributes.Hit);
             //attributes.Add(Attribute.Block);
 
             // Computed Attributes
@@ -188,6 +212,10 @@ namespace RPGTest.Models.Entity
                 Mathf.Ceil(attributes[Attribute.Speed] *
                 GetHighestBuff(Attribute.Speed) /
                 GetHighestDebuff(Attribute.Speed))
+            );
+            attributes.Add(Attribute.TotalHit,
+                attributes[Attribute.Hit] * 
+                GetHighestBuff(Attribute.Hit)
             );
             return attributes;
         }
@@ -246,7 +274,7 @@ namespace RPGTest.Models.Entity
             return false;
         }
 
-        public virtual void RemoveStatusEffect(RemovalType removalType)
+        public virtual void RemoveStatusEffect(StatusEffect statusEffect, RemovalType removalType)
         {
             StatusEffects.RemoveAll(s => s.RemovalType == removalType);
             return;

@@ -144,10 +144,17 @@ Abilities:
         MP                  : 8
 
 #Monster Abilities
-    - Id                    : AMST001
+    - Id                    : AMST0001
       Name                  : Bite
       AbilityType           : Monster
       Effects               :
-        - EMST0001.1
+        - EMST0001
       TargetTypes           :
         - SingleEnemy
+    - Id                    : AMST0002
+      Name                  : Shierk
+      AbilityType           : Monster
+      Effects               :
+        - EMST0002
+      TargetTypes           :
+        - Enemies

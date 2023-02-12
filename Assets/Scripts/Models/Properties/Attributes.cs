@@ -22,6 +22,8 @@ namespace RPGTest.Models
         public int Speed { get; set; }
 
         public int Accuracy { get; set; }
+
+        public int Hit { get; set; } = 1;
     }
 
     public class Buff
