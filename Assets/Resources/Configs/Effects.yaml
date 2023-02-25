@@ -172,7 +172,7 @@ Effects:
       Type              : Damage
       Potency           :
         Attribute       : HP
-        Potency         : 2
+        Potency         : 10
       Scalings          :
         Attack          : 1
       PowerRange        :

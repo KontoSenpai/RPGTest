@@ -34,6 +34,15 @@ namespace RPGTest.Models.Entity
             return 1.0f;
         }
 
+        private List<Buff> GetBuffs(EffectType type)
+        {
+            var effectIds = EffectsCollector.TryGetEffects(Buffs.Select(x => x.Id).ToList())
+                .Where(e => e.Type == type)
+                .Select(e => e.Id);
+
+            return Buffs.Where(b => effectIds.Contains(b.Id)).ToList();
+        }
+
         /// <summary>
         /// Apply a buff to the selected Entity.
         /// If a a buff of a same value is re-applied, it's duration will be extended
@@ -52,7 +61,7 @@ namespace RPGTest.Models.Entity
             {
                 Buffs.Add(buff);
             }
-            OnBuffsRefreshed(new BuffsRefreshedArgs(Buffs));
+            OnBuffsRefreshed(new BuffsRefreshedArgs(GetBuffs(EffectType.Buff), GetBuffs(EffectType.Debuff)));
         }
 
         /// <summary>
@@ -74,13 +83,15 @@ namespace RPGTest.Models.Entity
                     return effect.Potency.Attribute == attribute && b.RemovalType == removalType;
                 });
             }
-            OnBuffsRefreshed(new BuffsRefreshedArgs(Buffs));
+
+
+            OnBuffsRefreshed(new BuffsRefreshedArgs(GetBuffs(EffectType.Buff), GetBuffs(EffectType.Debuff)));
         }
 
         public virtual void RemoveBuff(Buff buff)
         {
             Buffs.Remove(buff);
-            OnBuffsRefreshed(new BuffsRefreshedArgs(Buffs));
+            OnBuffsRefreshed(new BuffsRefreshedArgs(GetBuffs(EffectType.Buff), GetBuffs(EffectType.Debuff)));
         }
     }
 }

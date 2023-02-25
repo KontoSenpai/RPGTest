@@ -2,7 +2,6 @@
 using RPGTest.Controllers;
 using RPGTest.Managers;
 using RPGTest.Models;
-using RPGTest.Models.Abilities;
 using RPGTest.Models.Effects;
 using RPGTest.Models.Entity;
 using RPGTest.Modules.Battle.Action;
@@ -31,6 +30,7 @@ namespace RPGTest.Modules.Battle
         public Camera mainCamera;
         public GameObject SpriteDamage;
         public GameObject Character;
+        public GameObject BattleEntityTemplate;
         public List<GameObject> EnemyModels;
         public bool m_waitingForUserInput = false;
 
@@ -78,12 +78,17 @@ namespace RPGTest.Modules.Battle
 
             foreach (var enemy in m_enemies)
             {
-                enemy.BattleModel = InstantiateModel(enemy, position, (1 + (enemy.FrontRow ? 0 : 1)), m_enemies.Count > 1 ? m_enemies.IndexOf(enemy) - 1 : -2);
+                enemy.BattleModel = Instantiate(BattleEntityTemplate, this.transform);
+                enemy.BattleModel.GetComponent<BattleEntity>().Initialize(enemy, EnemyModels.SingleOrDefault(x => x.name == enemy.Id), position, (1 + (enemy.FrontRow ? 0 : 1)), m_enemies.Count > 1 ? m_enemies.IndexOf(enemy) - 1 : -2);
             }
 
             foreach (var partyMember in m_party)
             {
-                partyMember.BattleModel = InstantiateModel(partyMember, position, -1 * (1 + (partyMember.FrontRow ? 0 : 1)), m_party.Count > 1 ? m_party.IndexOf(partyMember) - 1 : -2, true);
+                var mesh = FindObjectOfType<GameManager>().PartyManager.BattleModels.SingleOrDefault(x => x.name == partyMember.Id);
+                
+                partyMember.BattleModel = Instantiate(BattleEntityTemplate, this.transform);
+                partyMember.BattleModel.GetComponent<BattleEntity>().Initialize(partyMember, mesh, position, -1 * (1 + (partyMember.FrontRow ? 0 : 1)), m_party.Count > 1 ? m_party.IndexOf(partyMember) - 1 : -2, true);
+                
                 partyMember.CurrentStamina = partyMember.BaseAttributes.MaxStamina;
                 partyMember.PlayerInputRequested += PartyMember_OnPlayerInputRequested;
             }
@@ -327,34 +332,6 @@ namespace RPGTest.Modules.Battle
         }
         #endregion
 
-        /// <summary>
-        /// Instantiate the character model for each participating entity
-        /// </summary>
-        /// <param name="entity">Owner of the model</param>
-        /// <param name="position">Position of the model</param>
-        /// <param name="offset">Offset for front and back row</param>
-        /// <param name="count">position index</param>
-        /// <param name="party">Weither or not this is a party member or an enemy</param>
-        /// <returns></returns>
-        private GameObject InstantiateModel(Entity entity, Vector3 position, float offset, int count = -2, bool party = false)
-        {
-            GameObject en = null;
-            bool invertZaxis = false;
-            if (!party)
-            {
-                en = Instantiate(EnemyModels.SingleOrDefault(x => x.name == entity.Id), this.transform);
-            }
-            else
-            {
-                en = Instantiate(FindObjectOfType<GameManager>().PartyManager.BattleModels.SingleOrDefault(x => x.name == entity.Id), this.transform);
-                invertZaxis = true;
-            }
-            en.transform.position = new Vector3(position.x + (count > -2 ? 1 * count : 0), position.y -0.5f, position.z + offset - (count * (invertZaxis ? -0.4f : 0.4f)));
-            en.transform.localEulerAngles = new Vector3(0, offset > 0 ? 195 : -15, 0);
-            en.name = entity.Name;
-            return en;
-        }
-
         private void InitializeBattleUI()
         {
             m_battleOverlay.Initialize(m_party);
@@ -363,12 +340,11 @@ namespace RPGTest.Modules.Battle
         private void InitializeEntities()
         {
             m_enemies = GetEnemies().ToList();
-
-
             m_entities = new List<Entity>();
             m_entities.AddRange(m_enemies);
             m_entities.AddRange(m_party);
         }
+
         private IEnumerable<Enemy> GetEnemies()
         {
             foreach (KeyValuePair<Enemy, int> pair in m_enemiesMap)
@@ -400,7 +376,6 @@ namespace RPGTest.Modules.Battle
                 }
 
             }
-
 
             switch (encounterType) {
                 case Enums.EncounterType.Normal:

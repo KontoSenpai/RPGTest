@@ -14,12 +14,15 @@ namespace RPGTest.Models.Entity
     // Special EventArgs class to hold info about Shapes.
     public class BuffsRefreshedArgs : EventArgs
     {
-        public BuffsRefreshedArgs(List<Buff> buffs)
+        public BuffsRefreshedArgs(List<Buff> buffs, List<Buff> debuffs)
         {
             Buffs = buffs;
+            Debuffs = debuffs;
         }
 
         public List<Buff> Buffs { get; }
+
+        public List<Buff> Debuffs { get; }
     }
 
     public abstract partial class Entity : IdObject
@@ -106,7 +109,7 @@ namespace RPGTest.Models.Entity
                 b.Duration--;
             }
             Buffs.RemoveAll(b => b.Duration <= 0);
-            OnBuffsRefreshed(new BuffsRefreshedArgs(Buffs));
+            OnBuffsRefreshed(new BuffsRefreshedArgs(GetBuffs(EffectType.Buff), GetBuffs(EffectType.Debuff)));
         }
 
         public void PerformAction()

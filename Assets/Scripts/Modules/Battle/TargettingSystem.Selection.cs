@@ -10,27 +10,27 @@ namespace RPGTest.Modules.Battle
     {
         private bool CanSelectSingleTarget()
         {
-            return m_possibleTargets.Any(t => t == TargetType.SingleAlly || t == TargetType.SingleEnemy);
+            return m_possibleTargetsTypes.Any(t => t == TargetType.SingleAlly || t == TargetType.SingleEnemy);
         }
 
         private bool CanSelectAllEnemies()
         {
-            return m_possibleTargets.Any(t => t == TargetType.Enemies);
+            return m_possibleTargetsTypes.Any(t => t == TargetType.Enemies);
         }
 
         private bool CanSelectSingleEnemy()
         {
-            return m_possibleTargets.Any(t => t == TargetType.SingleEnemy);
+            return m_possibleTargetsTypes.Any(t => t == TargetType.SingleEnemy);
         }
 
         private bool CanSelectSingleAlly()
         {
-            return m_possibleTargets.Any(t => t == TargetType.SingleAlly);
+            return m_possibleTargetsTypes.Any(t => t == TargetType.SingleAlly);
         }
 
         private bool CanSelectAllAllies()
         {
-            return m_possibleTargets.Any(t => t == TargetType.Allies);
+            return m_possibleTargetsTypes.Any(t => t == TargetType.Allies);
         }
 
         private int GetNextValidIndex(List<Enemy> entities, bool positive)

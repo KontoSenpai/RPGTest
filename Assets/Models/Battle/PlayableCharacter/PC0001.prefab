@@ -1300,7 +1300,6 @@ GameObject:
   - component: {fileID: 95612694983450844}
   - component: {fileID: 5992906534417126238}
   - component: {fileID: 3786908119477755956}
-  - component: {fileID: 3229127427961256324}
   m_Layer: 0
   m_Name: PC0001
   m_TagString: Untagged
@@ -1373,18 +1372,3 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &3229127427961256324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1968476592218994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28295fb9f34a3e541af3384857ad6c72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Cursor: {fileID: 7733910922353901626, guid: a647af5c6ce82d14a80c590c467a3d3e, type: 3}
-  DefaultPosition: {x: 0, y: 1.5, z: 0}
-  DamageSprite: {fileID: 8736163791041326226, guid: fe4b73ca40255bf409c1bf294587ba60, type: 3}

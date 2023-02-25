@@ -11,7 +11,7 @@ namespace RPGTest.Modules.Battle
     {
         private bool m_targetMode = false;
 
-        private List<TargetType> m_possibleTargets;
+        private List<TargetType> m_possibleTargetsTypes;
 
         private List<Enemy> m_enemies;
         private List<PlayableCharacter> m_party;
@@ -68,7 +68,7 @@ namespace RPGTest.Modules.Battle
                 {
                     SelectOtherSide();
                 }
-                UpdateCursorState();
+                UpdateInformationState();
             }
         }
 
@@ -104,17 +104,18 @@ namespace RPGTest.Modules.Battle
                     m_targetAll = true;
                     break;
             }
-            UpdateCursorState();
 
             m_requester = playableCharacter;
             if (targetTypes != null && targetTypes.Count > 0)
             {
-                m_possibleTargets = targetTypes;
+                m_possibleTargetsTypes = targetTypes;
             }
             else
             {
-                m_possibleTargets = new List<TargetType> { defaultTargetType };
+                m_possibleTargetsTypes = new List<TargetType> { defaultTargetType };
             }
+
+            UpdateInformationState();
 
             m_targetMode = true;
         }
@@ -150,29 +151,23 @@ namespace RPGTest.Modules.Battle
             m_targetAll = false;
             m_targetSide = false;
             m_targetIndex = -1;
-            
-            UpdateCursorState();
+
+            UpdateInformationState();
 
             m_targetMode = false;
             PlayerTargettingDone(m_requester, submit, submit ? targets : null);
         }
 
 
-        private void UpdateCursorState()
+        private void UpdateInformationState()
         {
-            if (m_targetEnemy || m_targetAll)
+            for (int i = 0; i < m_enemies.Where(e => e.IsAlive).Count(); i++)
             {
-                for(int i = 0; i < m_enemies.Where(e => e.IsAlive).Count(); i++)
-                {
-                    m_enemies.Where(e => e.IsAlive).ToList()[i].BattleModel.GetComponent<BattleModel>().ToggleCursor(m_targetIndex == i || m_targetAll || m_targetSide);
-                }
+                m_enemies.Where(e => e.IsAlive).ToList()[i].BattleModel.GetComponent<BattleEntity>().ToggleCursor((m_targetIndex == i && m_targetEnemy) || m_targetAll || m_targetSide);
             }
-            else
+            for (int i = 0; i < m_party.Count; i++)
             {
-                for (int i = 0; i < m_party.Count; i++)
-                {
-                    m_party[i].BattleModel.GetComponent<BattleModel>().ToggleCursor(m_targetIndex == i || m_targetAll || m_targetSide);
-                }
+                m_party[i].BattleModel.GetComponent<BattleEntity>().ToggleCursor((m_targetIndex == i && !m_targetEnemy) || m_targetAll || m_targetSide);
             }
         }
     }

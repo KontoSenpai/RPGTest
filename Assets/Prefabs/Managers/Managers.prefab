@@ -49,6 +49,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   SpriteDamage: {fileID: 8736163791041326226, guid: fe4b73ca40255bf409c1bf294587ba60, type: 3}
   Character: {fileID: 0}
+  BattleEntityTemplate: {fileID: 7208519777342229264, guid: eb7e65af67e3535498bd272273a866f7, type: 3}
   EnemyModels: []
   m_waitingForUserInput: 0
 --- !u!114 &5381801195904833612

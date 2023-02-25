@@ -26,7 +26,6 @@ namespace RPGTest.Modules.Battle.UI
             for(int i = 0; i < m_allWidgets.Count; i++)
             {
                 var buff = e.Buffs.FirstOrDefault(b => b.Id == m_allWidgets[i].GetComponent<UI_Combat_Buff_Widget>().GetId());
-                Debug.Log(buff);
                 if (buff == null)
                 {
                     Destroy(m_allWidgets[i]);

@@ -42,7 +42,7 @@ namespace RPGTest.UI.Widgets
             m_maxValue = max;
 
             CurrentValue.text = m_currentValue.ToString();
-            MaxValue.text = m_maxValue.ToString();
+            MaxValue.text = m_maxValue.ToString();            
 
             float fillAmount = m_maxValue > 0 ? m_currentValue / m_maxValue : 1.0f;
             SetColor(fillAmount);
