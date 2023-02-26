@@ -1,9 +1,6 @@
-﻿using RPGTest.Collectors;
-using RPGTest.Managers;
-using RPGTest.Models;
-using RPGTest.Models.Entity;
+﻿using RPGTest.Models;
+using RPGTest.Modules.Battle;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace RPGTest.Interactibles
@@ -23,6 +20,7 @@ namespace RPGTest.Interactibles
             Bgm = bgm;
         }
 
+        // Triger battle initiation in the BattleManager
         public void Interact()
         {
             FindObjectOfType<BattleManager>().Initialize(Enemies, this.transform.parent.transform.position, EncounterType, SpecialText, Bgm);

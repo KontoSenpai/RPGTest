@@ -1,7 +1,7 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Controllers;
 using RPGTest.Managers;
-using RPGTest.Models;
+using RPGTest.Models.Interactibles;
 using RPGTest.UI;
 using System.Collections.Generic;
 using System.Linq;

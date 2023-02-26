@@ -1,4 +1,5 @@
 ﻿using RPGTest.Enums;
+using RPGTest.Models.Effects;
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
 

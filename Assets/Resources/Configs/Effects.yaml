@@ -1,0 +1,185 @@
+# Effects.yaml
+# Contains all effects of the game
+
+
+Effects:
+# Auto Attacks effects
+    - Id                : E0001 # Sword Auto Attack
+      Type              : Damage
+      Potency           :
+        Attribute       : HP
+      Scalings          :
+        Attack          : 1
+      PowerRange        :
+        Min             : 0.75
+        Max             : 1.25
+        
+    - Id                : E0002 # Spear Auto Attack
+      Type              : Damage
+      Potency           :
+        Attribute       : HP
+      Scalings          :
+        Attack          : 1
+      PowerRange        :
+        Min             : 0.9
+        Max             : 1.1
+        
+# Weapon Effects
+    # Sword thurst
+    - Id                : EW0001.1
+      Type              : Damage
+      Potency           : 
+        Attribute       : HP
+        Potency         : 7
+      Scalings          :
+        Attack          : 1.1
+    - Id                : EW0001.2
+      Type              : Damage
+      Potency           : 
+        Attribute       : HP
+        Potency         : 9
+      Scalings          :
+        Attack          : 1.2
+    - Id                : EW0001.3
+      Type              : Damage
+      Potency           : 
+        Attribute       : HP
+        Potency         : 9
+      Scalings          :
+        Attack          : 1.2
+    - Id                : EW0001.4
+      Type              : Damage
+      Potency           : 
+        Attribute       : HP
+        Potency         : 9
+      Scalings          :
+        Attack          : 1.2
+    - Id                : EW0001.5
+      Type              : Damage
+      Potency           : 
+        Attribute       : HP
+        Potency         : 9
+      Scalings          :
+        Attack          : 1.2
+    # Sword sweep
+    - Id                : EW0002.1
+      Type              : Damage
+      Potency           :
+        Attribute       : HP
+        Potency         : 5
+      Scalings          :
+        Attack          : 0.8
+    - Id                : EW0003.1
+      Type              : Damage
+      Potency           :
+        Attribute       : HP
+        Potency         : 5
+      Scalings          :
+        Attack          : 0.8
+      TargetType        : Enemies
+    # Spear sweep
+    - Id                : EW0004.1
+      Type              : Damage
+      Potency           :
+        Attribute       : HP
+        Potency         : 5
+      Scalings          :
+        Attack          : 0.8
+    # Armor pierce
+    - Id                : EW0005.1
+      Label             : Reduce Defense by ${Potency}%
+      Icon              : D
+      Type              : Debuff
+      Potency           :
+        Attribute       : Defense
+        Potency         : 30
+        Duration        : 50
+    - Id                : EW0006.1
+      Type              : Damage
+      Potency           :
+        Attribute       : HP 
+        Potency         : 5
+      Scalings          :
+        Attack          : 0.8
+
+# Talent Effects
+    # Rallying Cry
+    - Id                : ET0001.1
+      Label             : Increases Defense by ${Potency}%
+      Icon              : D
+      Type              : Buff
+      Potency           :
+        Attribute       : Defense 
+        Potency         : 20
+        Duration        : 4
+        RemovalType     : Dispel
+    # Fleet of Foot
+    - Id                : ET0002.1
+      Label             : Increases Speed by ${Potency}%
+      Icon              : S
+      Type              : Buff
+      Potency           :
+        Attribute       : Speed
+        Potency         : 50
+        Duration        : 3
+    # Sharpen Blade
+    - Id                : ET0003.1
+      Label             : Increases Attack by ${Potency}%
+      Icon              : A
+      Type              : Buff
+      Potency           :
+        Attribute       : Attack 
+        Potency         : 30
+        Duration        : 2
+
+# Magic Effects
+    # Fire Ball
+    - Id                : EM0001.1
+      Type              : Damage
+      Potency           :
+        Attribute       : HP
+        Potency         : 5
+      Scalings          :
+        Magic           : 0.8
+    # Flame thrower
+    - Id                : EM0002.1
+      Label             : Reduce Resistance by ${Potency}%
+      Icon              : R
+      Type              : Debuff
+      Potency           :
+        Attribute       : Resistance 
+        Potency         : 30
+        Duration        : 2
+    - Id                : EM0003.1
+      Type              : Damage
+      Potency           :
+        Attribute       : HP 
+        Potency         : 5
+      Scalings          :
+        Magic           : 0.8
+      HitFrames         :
+        - 0.4
+        - 0.4
+        - 0.4
+      HitPower          :
+        - 0.25
+        - 0.25
+        - 0.5
+        
+# Monster Effects
+    # Bite
+    - Id                : EMST0001
+      Type              : Damage
+      Potency           :
+        Attribute       : HP
+        Potency         : 10
+      Scalings          :
+        Attack          : 1
+      PowerRange        :
+        Min             : 1.0
+        Max             : 1.2
+    # Shierk
+    - Id                : EMST0002
+      Type              : Cleanse
+      Potency           :
+        RemovalType     : Dispel

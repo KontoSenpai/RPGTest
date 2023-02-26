@@ -331,6 +331,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 2069134857079760699, guid: 375f992ebb6f7bc418d4d9313e626d52, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 375f992ebb6f7bc418d4d9313e626d52, type: 3}
 --- !u!20 &1297123141 stripped
@@ -2100,7 +2104,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -30
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5703601151754888874, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
 --- !u!1 &1823785619 stripped
 GameObject:

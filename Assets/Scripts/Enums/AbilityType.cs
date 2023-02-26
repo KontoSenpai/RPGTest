@@ -13,6 +13,6 @@ namespace RPGTest.Enums
         AttackMagic,
         SupportMagic,
         Talent,
-        Monster
+        Monster,
     }
 }

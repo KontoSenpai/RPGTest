@@ -18,28 +18,27 @@ EnemySpawners:
              FrontRow        : true
            - EnemyID         : EN0002
              FrontRow        : false
-    - Id                     : EG0002
 
 Enemies:
     - Id                    : EN0001
       Name                  : White Wolf
       Level                 : 3
       BaseAttributes        :
-        MaxHP               : 16
+        MaxHP               : 5000
         MaxMP               : 0
         MaxStamina          : 10
         Attack              : 4
         Defense             : 5
         Magic               : 0
         Resistance          : 2
-        Speed               : 1
+        Speed               : 50
       CombatThresholds      :
         - Threshold         : 100
           Abilities         :
-            - Id            : A0001
-              Probability   : 0.8
-            - Id            : AM001
-              Probability   : 0.2
+            - Id            : AMST0002
+              Probability   : 0.05
+            - Id            : AMST0001
+              Probability   : 0.95
       GoldBounty            : 12
       ExperienceBounty      : 200
       LootTable             :

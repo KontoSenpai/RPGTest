@@ -4,6 +4,7 @@ using RPGTest.Inputs;
 using RPGTest.Managers;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
+using RPGTest.Modules.Battle.Action;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -193,7 +194,7 @@ namespace RPGTest.UI.InventoryMenu
                     }
 
                     var action = new EntityAction(character, m_actionType, m_item.Id, new List<Entity>() { character }, m_inventoryManager);
-                    StartCoroutine(action.Execute(null, null));
+                    StartCoroutine(action.Execute(m_partyManager, null, null));
                     break;
                 case MenuItemActionType.Equip:
                     if (m_actionInProgress == false)

@@ -17,8 +17,8 @@ namespace RPGTest.UI.PartyMenu
             }
             else
             {
-                StatsPreset1.Refresh(playableCharacter.GetAttributes());
-                StatsPreset2.Refresh(playableCharacter.GetAttributes());
+                StatsPreset1.Refresh(playableCharacter.GetAttributes(Models.PresetSlot.First));
+                StatsPreset2.Refresh(playableCharacter.GetAttributes(Models.PresetSlot.Second));
             }
         }
     }

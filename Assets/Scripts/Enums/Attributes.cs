@@ -33,29 +33,24 @@ namespace RPGTest.Enums
         HPPercentage,
         MPPercentage,
         StaminaPercentage,
-        AttackP1,
-        TotalAttackP1,
-        AttackP2,
-        TotalAttackP2,
-        DefenseP1,
-        TotalDefenseP1,
-        DefenseP2,
-        TotalDefenseP2,
-        MagicP1,
-        TotalMagicP1,
-        MagicP2,
-        TotalMagicP2,
-        ResistanceP1,
-        TotalResistanceP1,
-        ResistanceP2,
-        TotalResistanceP2,
+
+        TotalAttack,
+        TotalDefense,
+        TotalMagic,
+        TotalResistance,
+        TotalSpeed,
+        TotalBlock,
+        TotalAccuracy,
 
         [Description("SPD")]
         Speed,
         [Description("BLC")]
         Block,
         [Description("ACC")]
-        Accuracy
+        Accuracy,
+
+        Hit,
+        TotalHit
     }
 
     public enum Aptitude

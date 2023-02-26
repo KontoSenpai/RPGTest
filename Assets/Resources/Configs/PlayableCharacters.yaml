@@ -6,10 +6,11 @@ PlayableCharacters:
       Level             : 1
       DefaultAttack       : A0001
       Abilities         :
-        - A0002
-        - A0003
-        - A0004
-
+        - AW0001
+        - AW0002
+        - AW0004
+        - AP0001
+        - AP0003
       BaseAttributes    :
         MaxHP           : 30
         MaxMP           : 0
@@ -18,7 +19,7 @@ PlayableCharacters:
         Defense         : 7
         Magic           : 3
         Resistance      : 4
-        Speed           : 1
+        Speed           : 5
       AttributesGrowth  :
         MaxHP           : 12
         MaxMP           : 0
@@ -35,8 +36,8 @@ PlayableCharacters:
       Level             : 1
       DefaultAttack       : A0001
       Abilities         :
-        - A0004
-        - A0005
+        - AM0001
+        - AM0002
       BaseAttributes    :
         MaxHP           : 24
         MaxMP           : 12
@@ -45,7 +46,7 @@ PlayableCharacters:
         Defense         : 4
         Magic           : 12
         Resistance      : 9
-        Speed           : 10
+        Speed           : 4
       AttributesGrowth  :
         MaxHP           : 8
         MaxMP           : 11
@@ -62,8 +63,9 @@ PlayableCharacters:
       Level             : 1
       DefaultAttack       : A0001
       Abilities         :
-        - A0004
-        - A0005
+        - AM0001
+        - AM0002
+        - AP0002
       BaseAttributes    :
         MaxHP           : 24
         MaxMP           : 12
@@ -72,7 +74,7 @@ PlayableCharacters:
         Defense         : 9
         Magic           : 12
         Resistance      : 9
-        Speed           : 1
+        Speed           : 4
       AttributesGrowth  :
         MaxHP           : 8
         MaxMP           : 11
@@ -89,8 +91,8 @@ PlayableCharacters:
       Level             : 1
       DefaultAttack     : A0001
       Abilities         :
-        - A0004
-        - A0005
+        - AM0001
+        - AM0002
       BaseAttributes    :
         MaxHP           : 24
         MaxMP           : 12
@@ -116,8 +118,8 @@ PlayableCharacters:
       Level             : 1
       DefaultAttack     : A0001
       Abilities         :
-        - A0004
-        - A0005
+        - AM0001
+        - AM0002
       BaseAttributes    :
         MaxHP           : 24
         MaxMP           : 12

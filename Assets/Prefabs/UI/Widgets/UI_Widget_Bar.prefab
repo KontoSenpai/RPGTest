@@ -144,9 +144,9 @@ MonoBehaviour:
   Bar: {fileID: 8050544041948942149}
   ColorGradients:
   - Threshold: 0
-    Color: {r: 0.8509804, g: 0.3882353, b: 0, a: 0}
+    Color: {r: 0.8509804, g: 0.3882353, b: 0, a: 1}
   - Threshold: 1
-    Color: {r: 0, g: 0.5647059, b: 0.08627451, a: 0}
+    Color: {r: 0, g: 0.5647059, b: 0.08627451, a: 1}
   Interpolate: 0
 --- !u!1 &4314503011786484230
 GameObject:
