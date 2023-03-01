@@ -79,7 +79,7 @@ namespace RPGTest.Controllers
                     m_interactibleTarget = other.gameObject;
                     break;
                 case "Enemy":
-                    other.GetComponent<InteractibleEnemy>().Interact();
+                    other.GetComponent<InteractibleEnemy>().Interact(this.gameObject, other);
                     break;
                 case "LoadingZone":
                     other.GetComponent<InteractibleExit>().Interact();

@@ -1,5 +1,6 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Controllers;
+using RPGTest.Interactibles;
 using RPGTest.Managers;
 using RPGTest.Models;
 using RPGTest.Models.Effects;
@@ -51,6 +52,7 @@ namespace RPGTest.Modules.Battle
 
         private Coroutine m_battleCoroutine;
 
+        private InteractibleEnemy m_interactibleEnemy;
 
         void Start()
         {
@@ -61,17 +63,22 @@ namespace RPGTest.Modules.Battle
             }
         }
 
-        public void Initialize(List<EnemyReference> enemies, Vector3 position, Enums.EncounterType encounterType, string specialText, AudioClip BGM)
+        public void Initialize(InteractibleEnemy interactibleEnemy, List<EnemyReference> enemies, Enums.EncounterType encounterType, string specialText, AudioClip BGM)
         {
             m_waitingForUserInput = false;
+
+            Character.SetActive(false);
+            m_interactibleEnemy = interactibleEnemy;
+            m_interactibleEnemy.transform.parent.gameObject.SetActive(false); // Disable the spawner
 
             m_enemiesMap = EnemiesCollector.EnemyReferencesToEnemies(enemies);
             m_party = m_partyManager.GetActivePartyMembers();
 
             InitializeEntities();
 
+            var position = m_interactibleEnemy.transform.parent.position;
+            // Move camera to appropriate position
             Camera camera = FindObjectOfType<Camera>();
-            Character.SetActive(false);
             camera.transform.position = new Vector3(position.x - 5, position.y + 2, position.z - 1);
             camera.transform.localEulerAngles = new Vector3(20, 80, 0);
             camera.gameObject.GetComponent<NoClippingCameraController>().enabled = false;
@@ -143,7 +150,7 @@ namespace RPGTest.Modules.Battle
 
                 m_battleOverlay.DisplayRewards(totalExp, items, totalGold);
             }
-            else
+            else // TODO, eventually
             {
 
             }
@@ -328,6 +335,8 @@ namespace RPGTest.Modules.Battle
 
             Camera camera = FindObjectOfType<Camera>();
             Character.SetActive(true);
+            m_interactibleEnemy.transform.parent.gameObject.SetActive(true);
+            m_interactibleEnemy.GetComponent<InteractibleEnemy>().Destroy();
             camera.gameObject.GetComponent<NoClippingCameraController>().enabled = true;
         }
         #endregion

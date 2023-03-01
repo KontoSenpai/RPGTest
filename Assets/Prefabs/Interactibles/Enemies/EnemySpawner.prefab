@@ -110,5 +110,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpawnerId: EG0001
   enemyObject: {fileID: 4747585957157406868, guid: c4c39cfd6ebdcd045805733b1f173534, type: 3}
-  MaxUnits: 3
+  MaxUnits: 1
   SpawnRadius: 10
+  EncounterType: 0
+  SpecialText: 
+  BGM: {fileID: 0}
+  TimeBeforeRespawn: 30

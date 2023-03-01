@@ -1,6 +1,7 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Interactibles;
 using RPGTest.Models;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,24 +18,22 @@ namespace RPGTest.Managers
         [SerializeField] private string SpecialText;
         [SerializeField] private AudioClip BGM;
 
+        [SerializeField] float TimeBeforeRespawn = 30f;
+
         private List<GameObject> m_spawnedGroups = new List<GameObject>();
         private EnemySpawner m_enemySpawner;
-        //private int m_cooldownBeforeRespawn = 60;
-        private bool m_init = false;
+
 
         // Start is called before the first frame update
         void Start()
         {
             this.GetComponent<MeshRenderer>().enabled = false;
+            Initialize();
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (m_spawnedGroups.Count == 0 && !m_init)
-            {
-                Initialize();
-            }
         }
 
         private void Initialize()
@@ -46,20 +45,31 @@ namespace RPGTest.Managers
                 obj.transform.parent = this.transform;
                 m_spawnedGroups.Add(obj);
             }
-            m_init = true;
+        }
+
+        private IEnumerator RespawnObject(InteractibleEnemy interactible, float respawnTimer)
+        {
+            yield return new WaitForSeconds(respawnTimer);
+            interactible.gameObject.SetActive(true);
+            interactible.Reset();
+            yield return null;
         }
 
         private GameObject SpawnObject()
         {
-            var group = Instantiate(enemyObject);
-            group.GetComponent<InteractibleEnemy>().Initialize(GetGroup(), EncounterType, SpecialText, BGM);
-            var groupPosition = new Vector3(this.transform.position.x + Random.Range(-SpawnRadius, SpawnRadius), this.transform.position.y, this.transform.position.z + Random.Range(-SpawnRadius, SpawnRadius));
-            if (Physics.Raycast(groupPosition, Vector3.down, out RaycastHit raycastHit, 5.0f))
-            {
-                group.transform.position = new Vector3(groupPosition.x, raycastHit.transform.position.y + 1, groupPosition.z);
-            }
+            var interactible = Instantiate(enemyObject);
+            interactible.transform.parent = this.transform;
+            var interactibleEnemy = interactible.GetComponent<InteractibleEnemy>();
+            interactibleEnemy.Initialize(GetGroup(), EncounterType, SpecialText, BGM, SpawnRadius);
+            interactibleEnemy.EnemyDestroyed += OnEnemyDestroyed;
             
-            return group;
+            return interactible;
+        }
+
+        private void OnEnemyDestroyed(InteractibleEnemy interactible, float respawnOverride)
+        {
+            interactible.gameObject.SetActive(false);
+            StartCoroutine(RespawnObject(interactible, respawnOverride > 0.0f ? respawnOverride : TimeBeforeRespawn));
         }
 
         private List<EnemyReference> GetGroup()
