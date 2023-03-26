@@ -119,7 +119,11 @@ namespace RPGTest.Interactibles
         // TODO : failsafe in case of infinite recursivity
         private Vector3 GetPositionWithinRadius(Vector3 referencePoint, float radius)
         {
-            var groupPosition = new Vector3(this.transform.position.x + Random.Range(-radius, radius), this.transform.position.y, this.transform.position.z + Random.Range(-radius, radius));
+            var groupPosition = new Vector3(
+                referencePoint.x + Random.Range(-radius, radius),
+                referencePoint.y,
+                referencePoint.z + Random.Range(-radius, radius)
+            );
             if (Physics.Raycast(groupPosition, Vector3.down, out RaycastHit raycastHit, 5.0f))
             {
                 return new Vector3(groupPosition.x, raycastHit.transform.position.y + 1, groupPosition.z);

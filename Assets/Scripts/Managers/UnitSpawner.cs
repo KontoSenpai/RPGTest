@@ -42,7 +42,6 @@ namespace RPGTest.Managers
             while (m_spawnedGroups.Count < MaxUnits)
             {
                 var obj = SpawnObject();
-                obj.transform.parent = this.transform;
                 m_spawnedGroups.Add(obj);
             }
         }
