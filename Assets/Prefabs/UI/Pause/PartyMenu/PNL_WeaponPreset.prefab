@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4738865574285890203}
   - component: {fileID: 8812888779150440359}
   - component: {fileID: 6547701010926365182}
-  - component: {fileID: 2979511740635952746}
   - component: {fileID: 8457716074982240021}
+  - component: {fileID: 2979511740635952746}
   m_Layer: 0
   m_Name: PNL_WeaponPreset
   m_TagString: Untagged
@@ -80,25 +80,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2979511740635952746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7189004026776900616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12cd17f0b009ac549a7ae3462174c11f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InstantiableStatPanel: {fileID: 2951907371238854156, guid: 82c049f54f0a31c4aa2ef68493b7e409, type: 3}
-  LeftImage: {fileID: 668474917023585855}
-  LeftItemName: {fileID: 5675145140720245871}
-  LeftStatsPanel: {fileID: 6004060445383839219}
-  RightImage: {fileID: 4642096749795306044}
-  RightItemName: {fileID: 569923523973374060}
-  RightStatsPanel: {fileID: 1907372475154149872}
 --- !u!114 &8457716074982240021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +100,25 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2979511740635952746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7189004026776900616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12cd17f0b009ac549a7ae3462174c11f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InstantiableStatPanel: {fileID: 2951907371238854156, guid: 82c049f54f0a31c4aa2ef68493b7e409, type: 3}
+  LeftImage: {fileID: 668474917023585855}
+  LeftItemName: {fileID: 5675145140720245871}
+  LeftStatsPanel: {fileID: 6004060445383839219}
+  RightImage: {fileID: 4642096749795306044}
+  RightItemName: {fileID: 569923523973374060}
+  RightStatsPanel: {fileID: 1907372475154149872}
 --- !u!1 &8484551096207506917
 GameObject:
   m_ObjectHideFlags: 0

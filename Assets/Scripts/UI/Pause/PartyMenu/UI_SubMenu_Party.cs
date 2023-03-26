@@ -1,7 +1,5 @@
-﻿using RPGTest.Helpers;
-using RPGTest.Managers;
+﻿using RPGTest.Managers;
 using RPGTest.Models.Entity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -34,6 +32,8 @@ namespace RPGTest.UI.PartyMenu
         private bool m_swapInProgress = false;
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
+
+        private PlayableCharacter m_currentCharacter => PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_Member_Widget>().GetCharacter();
 
         // Hold navigation control
         private bool m_navigateStarted = false;
@@ -132,7 +132,7 @@ namespace RPGTest.UI.PartyMenu
         {
             if (StatsWidget != null && (movement.x < -0.4f || movement.x > 0.04f))
             {
-                StatsWidget.ChangeDisplay(movement.x > 0.04f);
+                StatsWidget.ChangePreset(m_currentCharacter);
             }
         }
         #endregion
@@ -146,7 +146,6 @@ namespace RPGTest.UI.PartyMenu
             m_currentNavigationIndex = 0;
             if(StatsWidget != null)
             {
-                StatsWidget.Open(true);
                 RefreshDetailsPanel();
             }
         }
@@ -294,10 +293,9 @@ namespace RPGTest.UI.PartyMenu
 
         private void RefreshDetailsPanel()
         {
-            PlayableCharacter character = PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_Member_Widget>().GetCharacter();
             if (StatsWidget != null)
             {
-                StatsWidget.Refresh(character);
+                StatsWidget.Refresh(m_currentCharacter);
             }
         }
 
