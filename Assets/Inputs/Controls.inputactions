@@ -287,7 +287,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Secondary Navigate",
+                    "name": "SecondaryNavigate",
                     "type": "Value",
                     "id": "0f43e7e5-377b-4bc0-982b-3804666550c1",
                     "expectedControlType": "Vector2",
@@ -359,7 +359,7 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "SubAction1",
+                    "name": "SecondaryAction",
                     "type": "Button",
                     "id": "3fa05128-5176-4ff6-885e-69d34ee84a69",
                     "expectedControlType": "Button",
@@ -602,11 +602,11 @@
                 {
                     "name": "",
                     "id": "d24622ed-6c53-445c-9047-3f8e934c2bc8",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "SubAction1",
+                    "action": "SecondaryAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -617,7 +617,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PS",
-                    "action": "SubAction1",
+                    "action": "SecondaryAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -650,7 +650,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Secondary Navigate",
+                    "action": "SecondaryNavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -661,7 +661,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Secondary Navigate",
+                    "action": "SecondaryNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -672,7 +672,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Secondary Navigate",
+                    "action": "SecondaryNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -683,7 +683,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Secondary Navigate",
+                    "action": "SecondaryNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -694,7 +694,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Secondary Navigate",
+                    "action": "SecondaryNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -705,7 +705,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PS",
-                    "action": "Secondary Navigate",
+                    "action": "SecondaryNavigate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

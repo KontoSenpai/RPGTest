@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,14 +13,14 @@ namespace RPGTest.UI.PartyMenu
     public class UI_SubMenu_Party : UI_Pause_SubMenu
     {
         [SerializeField] private GameObject[] PartyMemberWidgets;
+        [SerializeField] private GameObject GuestMemberWidget;
         [SerializeField] private UI_MemberDetails_Widget StatsWidget;
         [SerializeField] private TextMeshProUGUI Money;
         [SerializeField] private TextMeshProUGUI Location;
 
         //private int m_actualActiveMemberCount => ActivePartyMembersList.Where(m => m.GetComponent<UI_Member_Widget>().GetCharacter() != null).Count() -1;
         //private int m_actualInactiveMemberCount => InactivePartyMembersList.Where(m => m.GetComponent<UI_Member_Widget>().GetCharacter() != null).Count();
-
-        
+      
         //Items control
         private int m_currentNavigationIndex = 0;
         private int m_inactiveMembersPerRow = 4;
@@ -43,17 +44,25 @@ namespace RPGTest.UI.PartyMenu
         public override void Awake()
         {
             base.Awake();
-            m_playerInput.UI.Navigate.started += ctx => { m_navigateStarted = true; };
+            m_playerInput.UI.Navigate.started += ctx => { 
+                m_navigateStarted = true;
+                UpdateIconDisplay(ctx.control.device, GetActions());
+            };
             m_playerInput.UI.Navigate.performed += ctx => 
             {
                 m_performTimeStamp = Time.time + 0.3f;
                 Navigate(ctx.ReadValue<Vector2>());
+                UpdateIconDisplay(ctx.control.device, GetActions());
             };
             m_playerInput.UI.SecondaryNavigate.performed += ctx =>
             {
                 SecondaryNavigate_Performed(ctx.ReadValue<Vector2>());
+                UpdateIconDisplay(ctx.control.device, GetActions());
             };
-            m_playerInput.UI.Navigate.canceled += ctx => { m_navigateStarted = false; };
+            m_playerInput.UI.Navigate.canceled += ctx => { 
+                m_navigateStarted = false;
+                UpdateIconDisplay(ctx.control.device, GetActions());
+            };
         }
 
         public void Start()
@@ -68,7 +77,6 @@ namespace RPGTest.UI.PartyMenu
 
         public void Update()
         {
-
             if (m_navigateStarted && (Time.time - m_performTimeStamp) >= WaitTimeBetweenPerforms)
             {
                 m_performTimeStamp = Time.time;
@@ -82,11 +90,10 @@ namespace RPGTest.UI.PartyMenu
             m_playerInput.Player.Debug.performed += Debug_performed;
         }
 
-        private void Debug_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-        {
+        public override void OnDisable() {
+            base.OnDisable();
+            m_playerInput.Player.Debug.performed -= Debug_performed;
         }
-
-        public override void OnDisable() => m_playerInput.Disable();
 
         #region Input Events
         protected override void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -135,11 +142,15 @@ namespace RPGTest.UI.PartyMenu
                 StatsWidget.ChangePreset(m_currentCharacter);
             }
         }
+
+        private void Debug_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+        }
         #endregion
 
-        public override void OpenMenu()
+        public override void OpenMenu(InputDevice device)
         {
-            base.OpenMenu();
+            base.OpenMenu(device);
             m_playerInput.UI.Cancel.performed += Cancel_performed;
 
             PartyMemberWidgets.First(w => w.GetComponent<UI_Member_Widget>().GetCharacter() != null).GetComponent<Button>().Select();
@@ -148,6 +159,7 @@ namespace RPGTest.UI.PartyMenu
             {
                 RefreshDetailsPanel();
             }
+            UpdateIconDisplay(device, GetActions());
         }
 
         public override void CloseMenu()
@@ -163,13 +175,37 @@ namespace RPGTest.UI.PartyMenu
                 m_indexToSwap = 0; 
             }
 
-            InitializeWidgets(PartyMemberWidgets, m_partyManager.GetAllPartyMembers());
+            InitializeWidgets();
             Money.text = FindObjectOfType<InventoryManager>().Money.ToString();
             Location.text = SceneManager.GetActiveScene().name;
         }
 
         public override void Clear()
         {
+        }
+
+        protected override Dictionary<string, string> GetActions()
+        {
+
+            var actions = new Dictionary<string, string>()
+            {
+                { "UI_" + m_playerInput.UI.Navigate.name, "Change Character" },
+                { "UI_" + m_playerInput.UI.SecondaryNavigate.name + ".horizontal", "Cycle Presets" },
+            };
+
+            if(m_swapInProgress)
+            {
+                actions.Add("UI_" + m_playerInput.UI.Submit.name, "Validate Position");
+                actions.Add("UI_" + m_playerInput.UI.Cancel.name, "Cancel Selection");
+            } else
+            {
+                actions.Add("UI_" + m_playerInput.UI.Submit.name, "Validate Position");
+                actions.Add("UI_" + m_playerInput.UI.Cancel.name, "Exit Menu");
+            }
+            Debug.Log(m_playerInput.UI.Submit.name);
+
+
+            return actions;
         }
 
         #region Private Methods
@@ -215,7 +251,6 @@ namespace RPGTest.UI.PartyMenu
 
         private void NavigateLeft()
         {
-
             int remainder = (m_currentNavigationIndex - m_activePartyMemberCount) % m_inactiveMembersPerRow;
 
             if (m_currentNavigationIndex > m_activePartyMemberCount && remainder != 0)
@@ -235,19 +270,22 @@ namespace RPGTest.UI.PartyMenu
             }
         }
 
-        private void InitializeWidgets(GameObject[] widgets, List<PlayableCharacter> characters)
+        private void InitializeWidgets()
         {
-            if (widgets.Count() != characters.Count)
+            var characters = m_partyManager.GetAllPartyMembers();
+            if (PartyMemberWidgets.Count() != characters.Count)
             {
-                Debug.LogError($"Missmatch! widgets : {widgets.Count()} != characters : {characters.Count}");
+                Debug.LogError($"Missmatch! widgets : {PartyMemberWidgets.Count()} != characters : {characters.Count}");
                 return;
             }
 
             for (int index = 0; index < characters.Count; index++)
             {
                 PlayableCharacter character = characters[index];
-                widgets[index].GetComponent<UI_Member_Widget>().Initialize(character);
+                PartyMemberWidgets[index].GetComponent<UI_Member_Widget>().Initialize(character);
             }
+
+            GuestMemberWidget.GetComponent<UI_Member_Widget>().Initialize(m_partyManager.GetGuestCharacter());
         }
 
         /// <summary>

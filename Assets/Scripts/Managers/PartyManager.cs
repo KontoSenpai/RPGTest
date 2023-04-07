@@ -56,6 +56,11 @@ namespace RPGTest.Managers
             return m_partyMembers.ToList();
         }
 
+        public PlayableCharacter GetGuestCharacter()
+        {
+            return null;
+        }
+
         public PlayableCharacter GetPartyMemberAtIndex(int index)
         {
             if (index < m_partyMembers.Length)

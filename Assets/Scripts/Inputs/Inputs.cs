@@ -302,7 +302,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Secondary Navigate"",
+                    ""name"": ""SecondaryNavigate"",
                     ""type"": ""Value"",
                     ""id"": ""0f43e7e5-377b-4bc0-982b-3804666550c1"",
                     ""expectedControlType"": ""Vector2"",
@@ -374,7 +374,7 @@ namespace RPGTest.Inputs
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""SubAction1"",
+                    ""name"": ""SecondaryAction"",
                     ""type"": ""Button"",
                     ""id"": ""3fa05128-5176-4ff6-885e-69d34ee84a69"",
                     ""expectedControlType"": ""Button"",
@@ -617,11 +617,11 @@ namespace RPGTest.Inputs
                 {
                     ""name"": """",
                     ""id"": ""d24622ed-6c53-445c-9047-3f8e934c2bc8"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""SubAction1"",
+                    ""action"": ""SecondaryAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -632,7 +632,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS"",
-                    ""action"": ""SubAction1"",
+                    ""action"": ""SecondaryAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -665,7 +665,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Secondary Navigate"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -676,7 +676,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Secondary Navigate"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -687,7 +687,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Secondary Navigate"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -698,7 +698,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Secondary Navigate"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -709,7 +709,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Secondary Navigate"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -720,7 +720,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS"",
-                    ""action"": ""Secondary Navigate"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -780,7 +780,7 @@ namespace RPGTest.Inputs
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
-            m_UI_SecondaryNavigate = m_UI.FindAction("Secondary Navigate", throwIfNotFound: true);
+            m_UI_SecondaryNavigate = m_UI.FindAction("SecondaryNavigate", throwIfNotFound: true);
             m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
             m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
             m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
@@ -789,7 +789,7 @@ namespace RPGTest.Inputs
             m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_CycleMenus = m_UI.FindAction("CycleMenus", throwIfNotFound: true);
-            m_UI_SubAction1 = m_UI.FindAction("SubAction1", throwIfNotFound: true);
+            m_UI_SecondaryAction = m_UI.FindAction("SecondaryAction", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -930,7 +930,7 @@ namespace RPGTest.Inputs
         private readonly InputAction m_UI_MiddleClick;
         private readonly InputAction m_UI_RightClick;
         private readonly InputAction m_UI_CycleMenus;
-        private readonly InputAction m_UI_SubAction1;
+        private readonly InputAction m_UI_SecondaryAction;
         public struct UIActions
         {
             private @Controls m_Wrapper;
@@ -945,7 +945,7 @@ namespace RPGTest.Inputs
             public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
             public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
             public InputAction @CycleMenus => m_Wrapper.m_UI_CycleMenus;
-            public InputAction @SubAction1 => m_Wrapper.m_UI_SubAction1;
+            public InputAction @SecondaryAction => m_Wrapper.m_UI_SecondaryAction;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -985,9 +985,9 @@ namespace RPGTest.Inputs
                     @CycleMenus.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
-                    @SubAction1.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
-                    @SubAction1.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
-                    @SubAction1.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
+                    @SecondaryAction.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
+                    @SecondaryAction.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
+                    @SecondaryAction.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1022,9 +1022,9 @@ namespace RPGTest.Inputs
                     @CycleMenus.started += instance.OnCycleMenus;
                     @CycleMenus.performed += instance.OnCycleMenus;
                     @CycleMenus.canceled += instance.OnCycleMenus;
-                    @SubAction1.started += instance.OnSubAction1;
-                    @SubAction1.performed += instance.OnSubAction1;
-                    @SubAction1.canceled += instance.OnSubAction1;
+                    @SecondaryAction.started += instance.OnSecondaryAction;
+                    @SecondaryAction.performed += instance.OnSecondaryAction;
+                    @SecondaryAction.canceled += instance.OnSecondaryAction;
                 }
             }
         }
@@ -1078,7 +1078,7 @@ namespace RPGTest.Inputs
             void OnMiddleClick(InputAction.CallbackContext context);
             void OnRightClick(InputAction.CallbackContext context);
             void OnCycleMenus(InputAction.CallbackContext context);
-            void OnSubAction1(InputAction.CallbackContext context);
+            void OnSecondaryAction(InputAction.CallbackContext context);
         }
     }
 }

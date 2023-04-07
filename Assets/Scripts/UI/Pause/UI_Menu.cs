@@ -22,6 +22,7 @@ namespace RPGTest.UI
 
         [SerializeField] private Button[] MenuButtons;
         [SerializeField] private GameObject[] MenuWidgets;
+        [SerializeField] private GameObject MenuFooter;
 
         public bool IsSubMenuSelected = false;
 
@@ -59,7 +60,7 @@ namespace RPGTest.UI
             if(newIndex != m_currentNavigationIndex)
             {
                 m_currentNavigationIndex = newIndex;
-                SelectSubMenu(MenuWidgets[m_currentNavigationIndex]);
+                SelectSubMenu(ctx.control.device, MenuWidgets[m_currentNavigationIndex]);
             }
         }
         private void Navigate_performed(InputAction.CallbackContext ctx)
@@ -90,7 +91,7 @@ namespace RPGTest.UI
 
         public void Submit_Performed(InputAction.CallbackContext ctx)
         {
-            SelectSubMenu(MenuWidgets[m_pendingNavigationIndex]);
+            SelectSubMenu(ctx.control.device, MenuWidgets[m_pendingNavigationIndex]);
         }
 
         public void Cancel_Performed(InputAction.CallbackContext ctx)
@@ -102,17 +103,17 @@ namespace RPGTest.UI
         }
         #endregion
 
-        public void InitializeDefault()
+        public void InitializeDefault(InputDevice device)
         {
-            Initialize(DefaultButton, DefaultWidget);
+            Initialize(device, DefaultButton, DefaultWidget);
         }
 
-        public void InitializeMap()
+        public void InitializeMap(InputDevice device)
         {
-            Initialize(MapButton, MapWidget);
+            Initialize(device, MapButton, MapWidget);
         }
 
-        private void Initialize(Button button, GameObject widget)
+        private void Initialize(InputDevice device, Button button, GameObject widget)
         {
             UIOpened(this, null);
             foreach (var menu in MenuWidgets)
@@ -122,23 +123,28 @@ namespace RPGTest.UI
                     menu.GetComponent<UI_Pause_SubMenu>().Initialize();
                     menu.GetComponent<UI_Pause_SubMenu>().SubMenuOpened += OpenSubMenu;
                     menu.GetComponent<UI_Pause_SubMenu>().SubMenuClosed += ExitSubMenu;
+                    menu.GetComponent<UI_Pause_SubMenu>().InputHintsChanged += UpdateHintsFooter;
                 }
             }
             button.Select();
             button.interactable = false;
-            SelectSubMenu(widget);
+            SelectSubMenu(device, widget);
+        }
+
+        private void UpdateHintsFooter(object sender, HintEventArgs e)
+        {
+            MenuFooter.GetComponent<UI_Footer_Hints>().Refresh(e.InputDisplays);
         }
 
         #region ButtonEvents      
-        public void SelectSubMenu(GameObject go)
+        public void SelectSubMenu(InputDevice device, GameObject go)
         {
             m_currentNavigationIndex = Array.IndexOf(MenuWidgets, go);
             Array.ForEach(MenuWidgets, w => w.SetActive(Array.IndexOf(MenuWidgets, w) == m_currentNavigationIndex));
             MenuButtons[m_currentNavigationIndex].Select();
             Array.ForEach(MenuButtons, b => b.interactable = !(Array.IndexOf(MenuButtons, b) == m_currentNavigationIndex));
 
-            go.GetComponent<UI_Pause_SubMenu>().OpenMenu();
-
+            go.GetComponent<UI_Pause_SubMenu>().OpenMenu(device);
         }
         #endregion
 
