@@ -101,6 +101,11 @@ namespace RPGTest.UI
                 UIClosed(this, null);
             }
         }
+
+        public void MouseMoved_Performed(InputAction.CallbackContext ctx)
+        {
+
+        }
         #endregion
 
         public void InitializeDefault(InputDevice device)

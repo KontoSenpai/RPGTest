@@ -80,11 +80,11 @@ namespace RPGTest.UI.InventoryMenu
             foreach (var member in m_partyManager.GetAllExistingPartyMembers())
             {
                 var uiMember = CreateInstantiateItem(ItemInstantiate);
-                var uiMemberScript = uiMember.GetComponent<UI_Member_Widget>();
+                var uiMemberScript = uiMember.GetComponent<UI_Party_Member>();
                 uiMemberScript.Initialize(member);
                 member.PlayerWidgetUpdated += Member_PlayerWidgetUpdated;
 
-                uiMemberScript.MemberSelected += Member_Selected;
+                uiMemberScript.MemberSelected += onMember_Selected;
                 m_InstantiatedItems.Add(uiMember);
             }
 
@@ -132,7 +132,7 @@ namespace RPGTest.UI.InventoryMenu
             {
                 foreach (var item in m_InstantiatedItems)
                 {
-                    item.GetComponent<UI_Member_Widget>().MemberSelected -= Member_Selected;
+                    item.GetComponent<UI_Party_Member>().MemberSelected -= onMember_Selected;
                     Destroy(item);
                 }
                 m_InstantiatedItems.Clear();
@@ -182,9 +182,9 @@ namespace RPGTest.UI.InventoryMenu
             ActionFinished(m_panelActionType, new List<Item> { m_item });
         }
 
-        public void Member_Selected(GameObject member)
+        public void onMember_Selected(MemberSelection selection, GameObject member)
         {
-            var character = member.GetComponent<UI_Member_Widget>().GetCharacter();
+            var character = member.GetComponent<UI_Party_Member>().GetCharacter();
             switch (m_panelActionType)
             {
                 case MenuItemActionType.Use:
@@ -210,7 +210,7 @@ namespace RPGTest.UI.InventoryMenu
         public void onEquipmentSlotSelected(Slot slot)
         {
             m_actionInProgress = false;
-            var character = m_InstantiatedItems[m_memberIndex].GetComponent<UI_Member_Widget>().GetCharacter();
+            var character = m_InstantiatedItems[m_memberIndex].GetComponent<UI_Party_Member>().GetCharacter();
 
             character.TryEquip(slot, (Equipment)m_item, out List<Item> removedItems);
             removedItems.Add(m_item);
@@ -247,13 +247,13 @@ namespace RPGTest.UI.InventoryMenu
             m_memberIndex = 0;
             foreach (var item in m_InstantiatedItems)
             {
-                item.GetComponent<UI_Member_Widget>().Refresh();
+                item.GetComponent<UI_Party_Member>().Refresh();
             }
         }
 
         private void RefreshEquipmentPanel()
         {
-            var character = m_InstantiatedItems[m_memberIndex].GetComponent<UI_Member_Widget>().GetCharacter();
+            var character = m_InstantiatedItems[m_memberIndex].GetComponent<UI_Party_Member>().GetCharacter();
             m_PanelEquipment.GetComponent<UI_SubMenu_Inventory_Equipment>().UpdateContent(character);
         }
 

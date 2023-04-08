@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace RPGTest.UI.PartyMenu
 {
-    public class UI_MemberDetails_Widget : MonoBehaviour
+    public class UI_Party_Member_Details : MonoBehaviour
     {
         [SerializeField] private UI_Equipment_Widget EquipmentWidget;
-        [SerializeField] private UI_CharacterStats_Widget StatsWidget;
+        [SerializeField] private UI_Party_Member_Stats StatsWidget;
 
         private PresetSlot m_currentPreset;
 

@@ -1,20 +1,25 @@
 ﻿using RPGTest.Managers;
 using RPGTest.Models.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace RPGTest.UI.PartyMenu
 {
-    public class UI_SubMenu_Party : UI_Pause_SubMenu
+    public class UI_Party_SubMenu : UI_Pause_SubMenu
     {
         [SerializeField] private GameObject[] PartyMemberWidgets;
         [SerializeField] private GameObject GuestMemberWidget;
-        [SerializeField] private UI_MemberDetails_Widget StatsWidget;
+
+        [SerializeField] private GameObject SubActionMenu;
+
+        [SerializeField] private UI_Party_Member_Details DetailsWidget;
         [SerializeField] private TextMeshProUGUI Money;
         [SerializeField] private TextMeshProUGUI Location;
 
@@ -28,13 +33,12 @@ namespace RPGTest.UI.PartyMenu
         private int m_maxRegularNavigationIndex => m_partyManager.GetIndexofLastExistingPartyMember() < PartyMemberWidgets.Count() ? m_partyManager.GetIndexofLastExistingPartyMember() : PartyMemberWidgets.Count() - 1;
 
         // Swap controls
-        private int m_indexToSwap = 0;
-        private int m_maxSwappingIndex = 0;
+        private GameObject m_characterToSwap = null;
         private bool m_swapInProgress = false;
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
 
-        private PlayableCharacter m_currentCharacter => PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_Member_Widget>().GetCharacter();
+        private PlayableCharacter m_currentCharacter => PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_Party_Member>().GetCharacter();
 
         // Hold navigation control
         private bool m_navigateStarted = false;
@@ -51,7 +55,7 @@ namespace RPGTest.UI.PartyMenu
             m_playerInput.UI.Navigate.performed += ctx => 
             {
                 m_performTimeStamp = Time.time + 0.3f;
-                Navigate(ctx.ReadValue<Vector2>());
+                Navigate_Performed(ctx.ReadValue<Vector2>());
                 UpdateIconDisplay(ctx.control.device, GetActions());
             };
             m_playerInput.UI.SecondaryNavigate.performed += ctx =>
@@ -63,14 +67,28 @@ namespace RPGTest.UI.PartyMenu
                 m_navigateStarted = false;
                 UpdateIconDisplay(ctx.control.device, GetActions());
             };
+            m_playerInput.UI.Submit.performed += ctx =>
+            {
+                Submit_Performed();
+                UpdateIconDisplay(ctx.control.device, GetActions());
+            };
+            m_playerInput.UI.SecondaryAction.performed += ctx =>
+            {
+                SecondaryAction_Performed();
+                UpdateIconDisplay(ctx.control.device, GetActions());
+            };
+            m_playerInput.UI.MouseMoved.performed += ctx =>
+            {
+                MouseMoved_Performed();
+            };
         }
 
         public void Start()
         {
             foreach(var widget in PartyMemberWidgets)
             {
-                var widgetScript = widget.GetComponent<UI_Member_Widget>();
-                widgetScript.MemberSelected += SwapMembers;
+                var widgetScript = widget.GetComponent<UI_Party_Member>();
+                widgetScript.MemberSelected += onMember_Selected;
                 widgetScript.SetSecondarySelect(() => widgetScript.ToggleCover());
             }
         }
@@ -80,7 +98,7 @@ namespace RPGTest.UI.PartyMenu
             if (m_navigateStarted && (Time.time - m_performTimeStamp) >= WaitTimeBetweenPerforms)
             {
                 m_performTimeStamp = Time.time;
-                Navigate(m_playerInput.UI.Navigate.ReadValue<Vector2>());
+                Navigate_Performed(m_playerInput.UI.Navigate.ReadValue<Vector2>());
             }
         }
 
@@ -96,11 +114,26 @@ namespace RPGTest.UI.PartyMenu
         }
 
         #region Input Events
-        protected override void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        // Select character
+        private void Submit_Performed()
+        {
+            if (m_currentNavigationIndex == -1) return;
+            PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_Party_Member>().ToggleCover();
+            SwapCharacterPositions(PartyMemberWidgets[m_currentNavigationIndex]);
+        }
+
+        // Open Action Menus 
+        private void SecondaryAction_Performed()
+        {
+            OpenCharacterActionsMenu(PartyMemberWidgets[m_currentNavigationIndex]);
+        }
+
+        // Cancel current action (swap or sub menu)
+        protected override void Cancel_performed(InputAction.CallbackContext obj)
         {
             if(m_swapInProgress)
             {
-                PartyMemberWidgets[m_indexToSwap].GetComponent<UI_Member_Widget>().ToggleCover();
+                m_characterToSwap.GetComponent<UI_Party_Member>().ToggleCover();
                 m_swapInProgress = false;
             }
             else
@@ -109,8 +142,14 @@ namespace RPGTest.UI.PartyMenu
             }
         }
 
-        public void Navigate(Vector2 movement)
+        // Change character
+        private void Navigate_Performed(Vector2 movement)
         {
+            if (m_currentNavigationIndex == -1)
+            {
+                m_currentNavigationIndex = 0;
+            }
+
             if (IsSubMenuSelected)
             {
                 if (movement.y > 0.4f)
@@ -135,16 +174,43 @@ namespace RPGTest.UI.PartyMenu
             }
         }
 
+        // Cycle Presets
         private void SecondaryNavigate_Performed(Vector2 movement)
         {
-            if (StatsWidget != null && (movement.x < -0.4f || movement.x > 0.04f))
+            if (DetailsWidget != null && (movement.x < -0.4f || movement.x > 0.04f))
             {
-                StatsWidget.ChangePreset(m_currentCharacter);
+                DetailsWidget.ChangePreset(m_currentCharacter);
             }
         }
 
-        private void Debug_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        // Deselect Button
+        private void MouseMoved_Performed()
         {
+            FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
+            m_currentNavigationIndex = -1;
+        }
+
+        private void Debug_performed(InputAction.CallbackContext obj)
+        {
+        }
+        #endregion
+
+        #region Event Handlers 
+        /// <summary>
+        /// Trigged by an Event sent with a Button press on a party member gameObject.
+        /// </summary>
+        /// <param name="selectedItem">Selected party member</param>
+        private void onMember_Selected(MemberSelection selection, GameObject selectedCharacter)
+        {
+            switch(selection)
+            {
+                case MemberSelection.Primary:
+                    SwapCharacterPositions(selectedCharacter);
+                    break;
+                case MemberSelection.Secondary:
+                    OpenCharacterActionsMenu(selectedCharacter);
+                    break;
+            };
         }
         #endregion
 
@@ -153,12 +219,9 @@ namespace RPGTest.UI.PartyMenu
             base.OpenMenu(device);
             m_playerInput.UI.Cancel.performed += Cancel_performed;
 
-            PartyMemberWidgets.First(w => w.GetComponent<UI_Member_Widget>().GetCharacter() != null).GetComponent<Button>().Select();
+            PartyMemberWidgets.First(w => w.GetComponent<UI_Party_Member>().GetCharacter() != null).GetComponent<Button>().Select();
             m_currentNavigationIndex = 0;
-            if(StatsWidget != null)
-            {
-                RefreshDetailsPanel();
-            }
+            RefreshDetailsPanel();
             UpdateIconDisplay(device, GetActions());
         }
 
@@ -172,7 +235,7 @@ namespace RPGTest.UI.PartyMenu
         {
             if (refreshAll)
             {
-                m_indexToSwap = 0; 
+                m_characterToSwap = null;
             }
 
             InitializeWidgets();
@@ -186,7 +249,6 @@ namespace RPGTest.UI.PartyMenu
 
         protected override Dictionary<string, string> GetActions()
         {
-
             var actions = new Dictionary<string, string>()
             {
                 { "UI_" + m_playerInput.UI.Navigate.name, "Change Character" },
@@ -202,16 +264,13 @@ namespace RPGTest.UI.PartyMenu
                 actions.Add("UI_" + m_playerInput.UI.Submit.name, "Validate Position");
                 actions.Add("UI_" + m_playerInput.UI.Cancel.name, "Exit Menu");
             }
-            Debug.Log(m_playerInput.UI.Submit.name);
-
-
             return actions;
         }
 
         #region Private Methods
         private void NavigateDown()
         {
-            int maxIndex = m_swapInProgress ? m_maxSwappingIndex : m_maxRegularNavigationIndex;
+            int maxIndex = m_swapInProgress ? GetLastPossibleIndex() : m_maxRegularNavigationIndex;
             if (m_currentNavigationIndex < m_activePartyMemberCount)
             {
                 m_currentNavigationIndex += 1;
@@ -261,7 +320,7 @@ namespace RPGTest.UI.PartyMenu
 
         private void NavigateRight()
         {
-            int maxIndex = m_swapInProgress ? m_maxSwappingIndex : m_maxRegularNavigationIndex;
+            int maxIndex = m_swapInProgress ? GetLastPossibleIndex() : m_maxRegularNavigationIndex;
             if (m_currentNavigationIndex >= m_activePartyMemberCount
                 && m_currentNavigationIndex < maxIndex
                 && m_currentNavigationIndex - m_activePartyMemberCount != m_inactiveMembersPerRow - 1)
@@ -282,46 +341,10 @@ namespace RPGTest.UI.PartyMenu
             for (int index = 0; index < characters.Count; index++)
             {
                 PlayableCharacter character = characters[index];
-                PartyMemberWidgets[index].GetComponent<UI_Member_Widget>().Initialize(character);
+                PartyMemberWidgets[index].GetComponent<UI_Party_Member>().Initialize(character);
             }
 
-            GuestMemberWidget.GetComponent<UI_Member_Widget>().Initialize(m_partyManager.GetGuestCharacter());
-        }
-
-        /// <summary>
-        /// Trigged by an Event sent with a Button press on a party member.
-        /// </summary>
-        /// <param name="selectedItem">Selected party member</param>
-        private void SwapMembers(GameObject selectedItem)
-        {
-            if(!m_swapInProgress)
-            {
-                m_indexToSwap = m_currentNavigationIndex;
-                if (m_currentNavigationIndex < m_activePartyMemberCount)
-                {
-                    m_maxSwappingIndex =  m_partyManager.GetExistingActivePartyMembers().Count() > 1 ? m_maxRegularNavigationIndex + 1 : m_maxRegularNavigationIndex;
-                }
-                else
-                {
-                    m_maxSwappingIndex = m_maxRegularNavigationIndex;
-                }
-
-                m_swapInProgress = true;
-            }
-            else
-            {
-                var indexToSwapWith = m_currentNavigationIndex;
-                if (indexToSwapWith != m_indexToSwap)
-                {
-                    m_partyManager.PerformSwap(m_indexToSwap, indexToSwapWith);
-                    FindAndFixHoles();
-
-
-                    Refresh();
-                    RefreshDetailsPanel();
-                }
-                m_swapInProgress = false;
-            }
+            GuestMemberWidget.GetComponent<UI_Party_Member>().Initialize(m_partyManager.GetGuestCharacter());
         }
 
         private void Refresh()
@@ -331,31 +354,69 @@ namespace RPGTest.UI.PartyMenu
 
         private void RefreshDetailsPanel()
         {
-            if (StatsWidget != null)
+            if (DetailsWidget != null)
             {
-                StatsWidget.Refresh(m_currentCharacter);
+                DetailsWidget.Refresh(m_currentCharacter);
             }
         }
 
-        // Fix any potential holes between 2 members after a swap
-        private void FindAndFixHoles()
+        private void SwapCharacterPositions(GameObject selectedCharacter)
         {
-            bool foundEmptyIndex = false;
-            for (int i = m_activePartyMemberCount; i < m_partyManager.GetAllPartyMembers().Count; i++)
-            { 
-                if (foundEmptyIndex)
+            if (!m_swapInProgress)
+            {
+                m_characterToSwap = selectedCharacter;
+                m_swapInProgress = true;
+            }
+            else
+            {
+                var initialIndex = Array.FindIndex(PartyMemberWidgets, widget => widget == m_characterToSwap);
+                var otherIndex = Array.FindIndex(PartyMemberWidgets, widget => widget == selectedCharacter);
+                
+                if (initialIndex != otherIndex)
                 {
-                    m_partyManager.PerformSwap(i, i -1);
-                }
+                    m_partyManager.PerformSwap(initialIndex, otherIndex);
+                    FindAndFixHoles(m_activePartyMemberCount);
 
-                PlayableCharacter member = m_partyManager.GetPartyMemberAtIndex(i);
-                if (member == null)
+                    Refresh();
+                    RefreshDetailsPanel();
+                }
+                m_swapInProgress = false;
+            }
+        }
+
+        private void OpenCharacterActionsMenu(GameObject selectedCharacter)
+        {
+
+        }
+
+        // Retrieve the first empty index.
+        private int GetLastPossibleIndex()
+        {
+            var index = m_partyManager.GetIndexofLastExistingPartyMember();
+            if (index < PartyMemberWidgets.Length - 1)
+            {
+                index++;
+                return index;
+            }
+            return index;
+        }
+
+        // Fix any potential holes between 2 members after a swap
+        private void FindAndFixHoles(int startIndex)
+        {
+            var firstEmptyIndex = -1;
+            for (int i = startIndex; i < m_partyManager.GetAllPartyMembers().Count; i++)
+            {
+                var member = m_partyManager.GetPartyMemberAtIndex(i);
+                if (member == null && firstEmptyIndex == -1)
                 {
-                    foundEmptyIndex = true;
-                    continue;
+                    firstEmptyIndex = i;
+                } else if(member != null && firstEmptyIndex != -1)
+                {
+                    m_partyManager.PerformSwap(firstEmptyIndex, i);
+                    i = firstEmptyIndex++;
+                    firstEmptyIndex = -1;
                 }
-
-                foundEmptyIndex = false;
             }
         }
         #endregion

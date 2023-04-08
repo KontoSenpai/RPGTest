@@ -483,19 +483,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7761436969818917987}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5186169309849609374}
-        m_TargetAssemblyTypeName: RPGTest.UI.UI_Member_Widget, RPGTest.Core
-        m_MethodName: Select
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &5186169309849609374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,6 +496,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531f6071b1bf12a40b851ee405d87a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5186169309849609374}
+        m_TargetAssemblyTypeName: RPGTest.UI.UI_Party_Member, RPGTest.Core
+        m_MethodName: PrimaryAction_Selected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  middleClick:
+    m_PersistentCalls:
+      m_Calls: []
+  rightClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5186169309849609374}
+        m_TargetAssemblyTypeName: RPGTest.UI.UI_Party_Member, RPGTest.Core
+        m_MethodName: SecondaryAction_Selected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   ContentPanel: {fileID: 9183580897659023279}
   Name: {fileID: 849549015509309890}
   LevelValue: {fileID: 6574375487212439467}

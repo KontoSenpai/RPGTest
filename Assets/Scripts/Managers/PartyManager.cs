@@ -77,7 +77,6 @@ namespace RPGTest.Managers
 
         public int GetIndexofLastExistingPartyMember()
         {
-            int toto = GetAllPartyMembers().FindLastIndex(c => c != null);
             return GetAllPartyMembers().FindLastIndex(c => c != null);
         }
 

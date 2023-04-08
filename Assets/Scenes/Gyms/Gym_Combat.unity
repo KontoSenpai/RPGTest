@@ -2081,6 +2081,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7218032186735286708, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_LeftClickAction
+      value: 
+      objectReference: {fileID: -8640677288075274151, guid: 160a595b82874e94aae12af861d79132, type: 3}
     - target: {fileID: 7347093574781589843, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

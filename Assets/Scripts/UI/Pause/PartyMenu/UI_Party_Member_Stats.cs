@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace RPGTest.UI.PartyMenu
 {
-    public class UI_CharacterStats_Widget : MonoBehaviour
+    public class UI_Party_Member_Stats : MonoBehaviour
     {
         [SerializeField] private UI_DualStatsWidget HpMpDualWidget;
         [SerializeField] private UI_StatWidget StaminaWidget;

@@ -63,7 +63,7 @@ namespace RPGTest.Modules.Battle.UI
                 ActiveMembers[i].SetActive(activeMembers[i] != null);
                 if(ActiveMembers[i].activeInHierarchy)
                 {
-                    UI_Member_Widget widgetScript = ActiveMembers[i].GetComponent<UI_Member_Widget>();
+                    var widgetScript = ActiveMembers[i].GetComponent<UI_Party_Member>();
                     widgetScript.Initialize(activeMembers[i]);
                     activeMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
                 }
@@ -75,7 +75,7 @@ namespace RPGTest.Modules.Battle.UI
                 InactiveMembers[i].SetActive(inactiveMembers[i] != null);
                 if (InactiveMembers[i].activeInHierarchy)
                 {
-                    UI_Member_Widget widgetScript = InactiveMembers[i].GetComponent<UI_Member_Widget>();
+                    var widgetScript = InactiveMembers[i].GetComponent<UI_Party_Member>();
                     widgetScript.Initialize(inactiveMembers[i]);
                     inactiveMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
                 }
@@ -153,7 +153,7 @@ namespace RPGTest.Modules.Battle.UI
             {
                 if (ActiveMembers[i].activeInHierarchy)
                 {
-                    activeMembers[i].PlayerExperienceChanged -= ActiveMembers[i].GetComponent<UI_Member_Widget>().RefreshExperience;
+                    activeMembers[i].PlayerExperienceChanged -= ActiveMembers[i].GetComponent<UI_Party_Member>().RefreshExperience;
                 }
             }
 
@@ -162,7 +162,7 @@ namespace RPGTest.Modules.Battle.UI
             {
                 if (InactiveMembers[i].activeInHierarchy)
                 {
-                    inactiveMembers[i].PlayerExperienceChanged -= InactiveMembers[i].GetComponent<UI_Member_Widget>().RefreshExperience;
+                    inactiveMembers[i].PlayerExperienceChanged -= InactiveMembers[i].GetComponent<UI_Party_Member>().RefreshExperience;
                 }
             }
 

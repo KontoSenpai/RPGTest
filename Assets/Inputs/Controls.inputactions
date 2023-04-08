@@ -319,7 +319,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Click",
+                    "name": "Left Click",
                     "type": "PassThrough",
                     "id": "a90eba87-47d0-4d07-991c-1758973591a3",
                     "expectedControlType": "Button",
@@ -363,6 +363,14 @@
                     "type": "Button",
                     "id": "3fa05128-5176-4ff6-885e-69d34ee84a69",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "MouseMoved",
+                    "type": "Value",
+                    "id": "db4692a2-80e2-4d22-b1c0-162cd2fd9ae5",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "Press"
                 }
@@ -517,8 +525,8 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Click",
+                    "groups": "Keyboard&Mouse;Keyboard",
+                    "action": "Left Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -528,7 +536,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;Keyboard",
                     "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -706,6 +714,17 @@
                     "processors": "",
                     "groups": "PS",
                     "action": "SecondaryNavigate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a749dc51-7069-46ae-b251-8b53121d18c5",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "MouseMoved",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

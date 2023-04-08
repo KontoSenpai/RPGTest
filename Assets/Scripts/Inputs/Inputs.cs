@@ -334,7 +334,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Click"",
+                    ""name"": ""Left Click"",
                     ""type"": ""PassThrough"",
                     ""id"": ""a90eba87-47d0-4d07-991c-1758973591a3"",
                     ""expectedControlType"": ""Button"",
@@ -378,6 +378,14 @@ namespace RPGTest.Inputs
                     ""type"": ""Button"",
                     ""id"": ""3fa05128-5176-4ff6-885e-69d34ee84a69"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""MouseMoved"",
+                    ""type"": ""Value"",
+                    ""id"": ""db4692a2-80e2-4d22-b1c0-162cd2fd9ae5"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": ""Press""
                 }
@@ -532,8 +540,8 @@ namespace RPGTest.Inputs
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Click"",
+                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""action"": ""Left Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -543,7 +551,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse;Keyboard"",
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -723,6 +731,17 @@ namespace RPGTest.Inputs
                     ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a749dc51-7069-46ae-b251-8b53121d18c5"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MouseMoved"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -784,12 +803,13 @@ namespace RPGTest.Inputs
             m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
             m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
             m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
-            m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
+            m_UI_LeftClick = m_UI.FindAction("Left Click", throwIfNotFound: true);
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
             m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_CycleMenus = m_UI.FindAction("CycleMenus", throwIfNotFound: true);
             m_UI_SecondaryAction = m_UI.FindAction("SecondaryAction", throwIfNotFound: true);
+            m_UI_MouseMoved = m_UI.FindAction("MouseMoved", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -925,12 +945,13 @@ namespace RPGTest.Inputs
         private readonly InputAction m_UI_Submit;
         private readonly InputAction m_UI_Cancel;
         private readonly InputAction m_UI_Point;
-        private readonly InputAction m_UI_Click;
+        private readonly InputAction m_UI_LeftClick;
         private readonly InputAction m_UI_ScrollWheel;
         private readonly InputAction m_UI_MiddleClick;
         private readonly InputAction m_UI_RightClick;
         private readonly InputAction m_UI_CycleMenus;
         private readonly InputAction m_UI_SecondaryAction;
+        private readonly InputAction m_UI_MouseMoved;
         public struct UIActions
         {
             private @Controls m_Wrapper;
@@ -940,12 +961,13 @@ namespace RPGTest.Inputs
             public InputAction @Submit => m_Wrapper.m_UI_Submit;
             public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
             public InputAction @Point => m_Wrapper.m_UI_Point;
-            public InputAction @Click => m_Wrapper.m_UI_Click;
+            public InputAction @LeftClick => m_Wrapper.m_UI_LeftClick;
             public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
             public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
             public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
             public InputAction @CycleMenus => m_Wrapper.m_UI_CycleMenus;
             public InputAction @SecondaryAction => m_Wrapper.m_UI_SecondaryAction;
+            public InputAction @MouseMoved => m_Wrapper.m_UI_MouseMoved;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -970,9 +992,9 @@ namespace RPGTest.Inputs
                     @Point.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
                     @Point.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
                     @Point.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
-                    @Click.started -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
-                    @Click.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
-                    @Click.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                    @LeftClick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnLeftClick;
+                    @LeftClick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnLeftClick;
+                    @LeftClick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnLeftClick;
                     @ScrollWheel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
                     @ScrollWheel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
                     @ScrollWheel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
@@ -988,6 +1010,9 @@ namespace RPGTest.Inputs
                     @SecondaryAction.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
                     @SecondaryAction.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
                     @SecondaryAction.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
+                    @MouseMoved.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
+                    @MouseMoved.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
+                    @MouseMoved.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1007,9 +1032,9 @@ namespace RPGTest.Inputs
                     @Point.started += instance.OnPoint;
                     @Point.performed += instance.OnPoint;
                     @Point.canceled += instance.OnPoint;
-                    @Click.started += instance.OnClick;
-                    @Click.performed += instance.OnClick;
-                    @Click.canceled += instance.OnClick;
+                    @LeftClick.started += instance.OnLeftClick;
+                    @LeftClick.performed += instance.OnLeftClick;
+                    @LeftClick.canceled += instance.OnLeftClick;
                     @ScrollWheel.started += instance.OnScrollWheel;
                     @ScrollWheel.performed += instance.OnScrollWheel;
                     @ScrollWheel.canceled += instance.OnScrollWheel;
@@ -1025,6 +1050,9 @@ namespace RPGTest.Inputs
                     @SecondaryAction.started += instance.OnSecondaryAction;
                     @SecondaryAction.performed += instance.OnSecondaryAction;
                     @SecondaryAction.canceled += instance.OnSecondaryAction;
+                    @MouseMoved.started += instance.OnMouseMoved;
+                    @MouseMoved.performed += instance.OnMouseMoved;
+                    @MouseMoved.canceled += instance.OnMouseMoved;
                 }
             }
         }
@@ -1073,12 +1101,13 @@ namespace RPGTest.Inputs
             void OnSubmit(InputAction.CallbackContext context);
             void OnCancel(InputAction.CallbackContext context);
             void OnPoint(InputAction.CallbackContext context);
-            void OnClick(InputAction.CallbackContext context);
+            void OnLeftClick(InputAction.CallbackContext context);
             void OnScrollWheel(InputAction.CallbackContext context);
             void OnMiddleClick(InputAction.CallbackContext context);
             void OnRightClick(InputAction.CallbackContext context);
             void OnCycleMenus(InputAction.CallbackContext context);
             void OnSecondaryAction(InputAction.CallbackContext context);
+            void OnMouseMoved(InputAction.CallbackContext context);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MyBox;
 using RPGTest.Enums;
+using RPGTest.Inputs;
 using RPGTest.Models.Entity;
 using RPGTest.UI.Widgets;
 using System;
@@ -8,7 +9,13 @@ using UnityEngine;
 
 namespace RPGTest.UI
 {
-    public class UI_Member_Widget : MonoBehaviour
+    public enum MemberSelection
+    {
+        Primary,
+        Secondary
+    };
+
+    public class UI_Party_Member : AdvancedButton
     {
         [SerializeField] private GameObject ContentPanel;
         [SerializeField] private TextMeshProUGUI Name;
@@ -24,7 +31,7 @@ namespace RPGTest.UI
         [HideInInspector]
         public MemberSelectedHandler MemberSelected { get; set; }
         [HideInInspector]
-        public delegate void MemberSelectedHandler(GameObject item);
+        public delegate void MemberSelectedHandler(MemberSelection selection, GameObject item);
 
         [HideInInspector]
         public EquipmentSlotSelectedHandler EquipmentSlotSelected { get; set; }
@@ -75,14 +82,30 @@ namespace RPGTest.UI
             }
         }
 
-        public void Select()
+
+        #region Input Events
+        // Select for swap
+        public void PrimaryAction_Selected()
         {
-            if(TwoStepSelect)
+            if (TwoStepSelect)
             {
                 m_secondaryAction.Invoke();
             }
-            MemberSelected(this.gameObject);
+            MemberSelected(MemberSelection.Primary, gameObject);
         }
+
+        // Select for SubMenu
+        public void SecondaryAction_Selected()
+        {
+            if (TwoStepSelect)
+            {
+                m_secondaryAction.Invoke();
+            }
+            MemberSelected(MemberSelection.Secondary, gameObject);
+        }
+        #endregion
+
+
 
         public void SetSecondarySelect(Action action)
         {
