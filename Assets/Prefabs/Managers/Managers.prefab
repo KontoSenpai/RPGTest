@@ -53,15 +53,18 @@ MonoBehaviour:
     - Action: UI_Submit
       Icons:
       - {fileID: 2800000, guid: c781bec316d01c14e8e9b9e81713573d, type: 3}
-    - Action: UI_Cancel
+    - Action: UI_LeftClick
       Icons:
-      - {fileID: 2800000, guid: facb185e91c49804fa8cd7526368a670, type: 3}
+      - {fileID: 2800000, guid: db234320475aabc4a93906eed35bfc93, type: 3}
     - Action: UI_Navigate
       Icons:
-      - {fileID: 2800000, guid: cb60c710f0722c548b42a2f2fec614ae, type: 3}
+      - {fileID: 2800000, guid: facb185e91c49804fa8cd7526368a670, type: 3}
       - {fileID: 2800000, guid: 3eddabbc015aa794aad2c7e65e6e2351, type: 3}
       - {fileID: 2800000, guid: 2d2faa5a77242374e8bd64526d9d673f, type: 3}
       - {fileID: 2800000, guid: df6749d31b3f0a24dabffecc7a7f79cb, type: 3}
+    - Action: UI_Cancel
+      Icons:
+      - {fileID: 2800000, guid: facb185e91c49804fa8cd7526368a670, type: 3}
   - Controller: 1
     Inputs: []
   - Controller: 2

@@ -888,6 +888,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5703601150821119009}
     m_Modifications:
+    - target: {fileID: 646560837245086394, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
+      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[3].Action
+      value: UI_Navigate
+      objectReference: {fileID: 0}
+    - target: {fileID: 646560837245086394, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
+      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[3].Icons.Array.data[0]
+      value: 
+      objectReference: {fileID: 2800000, guid: cb60c710f0722c548b42a2f2fec614ae, type: 3}
+    - target: {fileID: 646560837245086394, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
+      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[4].Icons.Array.data[1]
+      value: 
+      objectReference: {fileID: 2800000, guid: db234320475aabc4a93906eed35bfc93, type: 3}
+    - target: {fileID: 646560837245086394, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
+      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[4].Icons.Array.data[2]
+      value: 
+      objectReference: {fileID: 2800000, guid: db234320475aabc4a93906eed35bfc93, type: 3}
+    - target: {fileID: 646560837245086394, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
+      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[4].Icons.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: db234320475aabc4a93906eed35bfc93, type: 3}
     - target: {fileID: 1824516350989430720, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
       propertyPath: UIScripts.Array.size
       value: 4

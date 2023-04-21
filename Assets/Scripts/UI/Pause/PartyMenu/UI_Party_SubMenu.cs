@@ -33,12 +33,18 @@ namespace RPGTest.UI.PartyMenu
         private int m_maxRegularNavigationIndex => m_partyManager.GetIndexofLastExistingPartyMember() < PartyMemberWidgets.Count() ? m_partyManager.GetIndexofLastExistingPartyMember() : PartyMemberWidgets.Count() - 1;
 
         // Swap controls
-        private GameObject m_characterToSwap = null;
+        private GameObject m_selectedCharacterGo = null;
         private bool m_swapInProgress = false;
+
+        // SubMenu controls
+        private bool m_ActionMenuOpened = false;
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
 
         private PlayableCharacter m_currentCharacter => PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_Party_Member>().GetCharacter();
+
+        private int m_inventoryMenuIndex = 1; // todo : need to keep that const elsewhere
+        private int m_skillsMenuIndex = 2; // todo: same as line above
 
         // Hold navigation control
         private bool m_navigateStarted = false;
@@ -50,36 +56,35 @@ namespace RPGTest.UI.PartyMenu
             base.Awake();
             m_playerInput.UI.Navigate.started += ctx => { 
                 m_navigateStarted = true;
-                UpdateIconDisplay(ctx.control.device, GetActions());
             };
             m_playerInput.UI.Navigate.performed += ctx => 
             {
+                if (m_ActionMenuOpened) return;
                 m_performTimeStamp = Time.time + 0.3f;
                 Navigate_Performed(ctx.ReadValue<Vector2>());
-                UpdateIconDisplay(ctx.control.device, GetActions());
             };
             m_playerInput.UI.SecondaryNavigate.performed += ctx =>
             {
                 SecondaryNavigate_Performed(ctx.ReadValue<Vector2>());
-                UpdateIconDisplay(ctx.control.device, GetActions());
             };
             m_playerInput.UI.Navigate.canceled += ctx => { 
                 m_navigateStarted = false;
-                UpdateIconDisplay(ctx.control.device, GetActions());
             };
             m_playerInput.UI.Submit.performed += ctx =>
             {
                 Submit_Performed();
-                UpdateIconDisplay(ctx.control.device, GetActions());
             };
             m_playerInput.UI.SecondaryAction.performed += ctx =>
             {
                 SecondaryAction_Performed();
-                UpdateIconDisplay(ctx.control.device, GetActions());
             };
             m_playerInput.UI.MouseMoved.performed += ctx =>
             {
                 MouseMoved_Performed();
+            };
+            m_playerInput.UI.RightClick.performed += ctx =>
+            {
+                MouseRightClick_Performed();
             };
         }
 
@@ -131,15 +136,7 @@ namespace RPGTest.UI.PartyMenu
         // Cancel current action (swap or sub menu)
         protected override void Cancel_performed(InputAction.CallbackContext obj)
         {
-            if(m_swapInProgress)
-            {
-                m_characterToSwap.GetComponent<UI_Party_Member>().ToggleCover();
-                m_swapInProgress = false;
-            }
-            else
-            {
-                CloseMenu();
-            }
+            CancelCurrentAction();
         }
 
         // Change character
@@ -190,6 +187,32 @@ namespace RPGTest.UI.PartyMenu
             m_currentNavigationIndex = -1;
         }
 
+        public void MouseRightClick_Performed()
+        {
+            if (m_swapInProgress)
+            {
+                CancelSwapInProgress();
+                return;
+            }
+
+            PointerEventData pointerData = new PointerEventData(EventSystem.current)
+            {
+                pointerId = -1,
+            };
+
+            pointerData.position = new Vector2(Mouse.current.position.x.ReadValue(), Mouse.current.position.y.ReadValue());
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
+            if (results.All(r => r.gameObject.GetComponent<UI_Party_Member>() == null)) {
+                SubActionMenu.SetActive(false);
+            } else
+            {
+                var result = results.SingleOrDefault(r => r.gameObject.GetComponent<UI_Party_Member>());
+                OpenCharacterActionsMenu(result.gameObject);
+            }
+        }
+
         private void Debug_performed(InputAction.CallbackContext obj)
         {
         }
@@ -208,21 +231,31 @@ namespace RPGTest.UI.PartyMenu
                     SwapCharacterPositions(selectedCharacter);
                     break;
                 case MemberSelection.Secondary:
+                    if (m_swapInProgress)
+                    {
+
+                    }
                     OpenCharacterActionsMenu(selectedCharacter);
                     break;
             };
         }
+
+        protected override void onDevice_Changed(object sender, EventArgs e)
+        {
+            UpdateIconDisplay(GetInputActionDescriptions());
+        }
         #endregion
 
-        public override void OpenMenu(InputDevice device)
+        public override void OpenMenu(Dictionary<string, object> parameters)
         {
-            base.OpenMenu(device);
+            base.OpenMenu(parameters);
             m_playerInput.UI.Cancel.performed += Cancel_performed;
 
+            SubActionMenu.SetActive(false);
             PartyMemberWidgets.First(w => w.GetComponent<UI_Party_Member>().GetCharacter() != null).GetComponent<Button>().Select();
             m_currentNavigationIndex = 0;
             RefreshDetailsPanel();
-            UpdateIconDisplay(device, GetActions());
+            UpdateIconDisplay(GetInputActionDescriptions());
         }
 
         public override void CloseMenu()
@@ -235,7 +268,7 @@ namespace RPGTest.UI.PartyMenu
         {
             if (refreshAll)
             {
-                m_characterToSwap = null;
+                m_selectedCharacterGo = null;
             }
 
             InitializeWidgets();
@@ -247,24 +280,73 @@ namespace RPGTest.UI.PartyMenu
         {
         }
 
-        protected override Dictionary<string, string> GetActions()
+        protected override Dictionary<string, string[]> GetInputActionDescriptions()
         {
-            var actions = new Dictionary<string, string>()
+            var actions = new Dictionary<string, string[]>()
             {
-                { "UI_" + m_playerInput.UI.Navigate.name, "Change Character" },
-                { "UI_" + m_playerInput.UI.SecondaryNavigate.name + ".horizontal", "Cycle Presets" },
+                { 
+                    "Change Character", 
+                    new string[]
+                    { 
+                        "UI_" + m_playerInput.UI.Navigate.name
+                    }
+                },
+                { 
+                    "Cycle Presets", 
+                    new string[]
+                    { 
+                        "UI_" + m_playerInput.UI.SecondaryNavigate.name + ".horizontal"
+                    }
+                },
             };
 
             if(m_swapInProgress)
             {
-                actions.Add("UI_" + m_playerInput.UI.Submit.name, "Validate Position");
-                actions.Add("UI_" + m_playerInput.UI.Cancel.name, "Cancel Selection");
-            } else
+                actions.Add("Validate Position",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Submit.name,
+                        "UI_" + m_playerInput.UI.LeftClick.name
+                    });
+                actions.Add("Cancel Selection", 
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Cancel.name
+                    });
+            }
+            else
             {
-                actions.Add("UI_" + m_playerInput.UI.Submit.name, "Validate Position");
-                actions.Add("UI_" + m_playerInput.UI.Cancel.name, "Exit Menu");
+                actions.Add("Select Character",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Submit.name,
+                        "UI_" + m_playerInput.UI.LeftClick.name
+                    });
+                actions.Add("Exit Menu",
+                    new string[] 
+                    {
+                        "UI_" + m_playerInput.UI.Cancel.name
+                    });
             }
             return actions;
+        }
+
+        public void NavigateToOtherMenu(int index)
+        {
+            var parameters = new Dictionary<string, object>()
+            {
+                { "CharacterIndex", m_currentNavigationIndex },
+            };
+            switch (index) {
+                case 1: // Equipment
+                    ChangeMenu(m_inventoryMenuIndex, parameters);
+                    break;
+                case 2: // Skills
+                    ChangeMenu(m_skillsMenuIndex, parameters);
+                    break;
+                default:
+                    throw new Exception("Unsupported navigation index");
+            }
         }
 
         #region Private Methods
@@ -364,12 +446,12 @@ namespace RPGTest.UI.PartyMenu
         {
             if (!m_swapInProgress)
             {
-                m_characterToSwap = selectedCharacter;
+                m_selectedCharacterGo = selectedCharacter;
                 m_swapInProgress = true;
             }
             else
             {
-                var initialIndex = Array.FindIndex(PartyMemberWidgets, widget => widget == m_characterToSwap);
+                var initialIndex = Array.FindIndex(PartyMemberWidgets, widget => widget == m_selectedCharacterGo);
                 var otherIndex = Array.FindIndex(PartyMemberWidgets, widget => widget == selectedCharacter);
                 
                 if (initialIndex != otherIndex)
@@ -386,7 +468,35 @@ namespace RPGTest.UI.PartyMenu
 
         private void OpenCharacterActionsMenu(GameObject selectedCharacter)
         {
+            m_ActionMenuOpened = true;
+            SubActionMenu.SetActive(true);
+            var position = selectedCharacter.transform.position;
+            position.x += 250;
+            SubActionMenu.transform.position = position;
 
+            SubActionMenu.GetComponentsInChildren<Button>()[0].Select();
+        }
+
+        private void CancelSwapInProgress()
+        {
+            m_selectedCharacterGo.GetComponent<UI_Party_Member>().ToggleCover();
+            m_selectedCharacterGo = null;
+            m_swapInProgress = false;
+        }
+
+        private void CancelCurrentAction()
+        {
+            if (m_swapInProgress)
+            {
+                CancelSwapInProgress();
+            }
+            else if (m_ActionMenuOpened)
+            {
+                SubActionMenu.SetActive(false);
+            }
+            {
+                CloseMenu();
+            }
         }
 
         // Retrieve the first empty index.

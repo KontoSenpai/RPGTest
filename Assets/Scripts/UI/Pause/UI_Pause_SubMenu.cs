@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 
 namespace RPGTest.UI
 {
-    // Special EventArgs class to hold info about Shapes.
     public class HintEventArgs : EventArgs
     {
         public HintEventArgs(List<InputDisplay> inputDisplays)
@@ -18,6 +17,18 @@ namespace RPGTest.UI
         public List<InputDisplay> InputDisplays { get; }
     }
 
+    public class MenuChangeEventArgs: EventArgs
+    {
+        public MenuChangeEventArgs(int menuIndex, Dictionary<string, object> parameters)
+        {
+            MenuIndex = menuIndex;
+            Parameters = parameters;
+        }
+
+        public int MenuIndex{ get; }
+        public Dictionary<string, object> Parameters { get; }
+    }
+
     public partial class UI_Pause_SubMenu : MonoBehaviour
     {
         public bool IsSubMenuSelected { get; set; }
@@ -26,22 +37,30 @@ namespace RPGTest.UI
         
         protected Controls m_playerInput { get; set; }
 
-        protected InputDevice m_currentDevice { get; set; }
-
         public virtual void Awake()
         {
             m_playerInput = new Controls();
             InputManager = FindObjectOfType<InputDisplayManager>();
         }
 
-        public virtual void OnEnable() => m_playerInput.Enable();
-        public virtual void OnDisable() => m_playerInput.Disable();
+        public virtual void OnEnable()
+        {
+            m_playerInput.Enable();
+        }
 
-        public virtual void Initialize(bool refreshAll = true) { }
+        public virtual void OnDisable()
+        {
+            m_playerInput.Disable();
+            FindObjectOfType<InputDisplayManager>().DeviceChanged -= onDevice_Changed;
+        }
+
+        public virtual void Initialize(bool refreshAll = true)
+        {
+        }
         
         public virtual void Clear() { }
 
-        public virtual void OpenMenu(InputDevice device)
+        public virtual void OpenMenu(Dictionary<string, object> parameters)
         {
             IsSubMenuSelected = true;
             SubMenuOpened();
@@ -53,7 +72,7 @@ namespace RPGTest.UI
             SubMenuClosed();
         }
 
-        protected virtual void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        protected virtual void Cancel_performed(InputAction.CallbackContext obj)
         {
             if(IsSubMenuSelected)
             {
@@ -61,19 +80,33 @@ namespace RPGTest.UI
             }
         }
 
-        protected virtual Dictionary<string, string> GetActions()
+        protected virtual Dictionary<string, string[]> GetInputActionDescriptions()
         {
             throw new NotImplementedException();
         }
 
-        protected void UpdateIconDisplay(InputDevice device, Dictionary<string, string> actions)
+        protected virtual void onDevice_Changed(object sender, EventArgs e)
         {
-            var inputDisplays = InputManager.GetInputDisplays(device, actions);
+            throw new NotImplementedException();
+        }
+
+        // Update the input Hints on current page
+        protected void UpdateIconDisplay(Dictionary<string, string[]> actions)
+        {
+            var inputDisplays = InputManager.GetInputDisplays(actions);
             InputHintsChanged.Invoke(this, new HintEventArgs(inputDisplays));
+        }
+
+        // Open another menu from a sub menu action
+        protected void ChangeMenu(int index, Dictionary<string, object> parameters)
+        {
+            MenuChanged.Invoke(this, new MenuChangeEventArgs(index, parameters));
         }
 
         [HideInInspector]
         public event EventHandler<HintEventArgs> InputHintsChanged;
+        [HideInInspector]
+        public event EventHandler<MenuChangeEventArgs> MenuChanged;
         [HideInInspector]
         public MenuChangedHandler SubMenuOpened { get; set; }
         [HideInInspector]

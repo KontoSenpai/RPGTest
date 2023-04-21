@@ -26,7 +26,8 @@ namespace RPGTest.UI
                 var widget = Instantiate(HintWidgetObject);
                 widget.transform.SetParent(this.transform);
                 widget.transform.localScale = new Vector3(1, 1, 1);
-                widget.GetComponent<UI_Hint_Widget>().Create(i.Icons, i.Description);
+                widget.name = i.Description;
+                widget.GetComponent<UI_Hint_Widget>().Create(i.Description, i.Icons);
                 HintWidgets.Add(widget);
             });
         }

@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using RPGTest.Inputs;
+using UnityEngine.InputSystem.Users;
 
 namespace RPGTest.Managers
 {
@@ -13,9 +15,9 @@ namespace RPGTest.Managers
         XBox,
     }
 
-    public struct InputDisplay
+    public class InputDisplay
     {
-        public Texture2D[] Icons;
+        public List<Texture2D[]> Icons = new List<Texture2D[]>();
 
         public string Description;
     }
@@ -38,31 +40,68 @@ namespace RPGTest.Managers
 
     public class InputDisplayManager : MonoBehaviour
     {
+        [HideInInspector]
+        public event EventHandler<EventArgs> DeviceChanged;
+
         [SerializeField]
         private InputDisplayConfiguration[] InputDisplays;
 
-        public List<InputDisplay> GetInputDisplays(InputDevice device, Dictionary<string, string> inputs)
+        private Controls m_playerInput;
+
+        private InputControlScheme? m_currentControlScheme;
+
+        private void Awake()
         {
-            var support = InputDeviceToSupport(device);
+            m_playerInput = new Controls();
+            InputUser.onChange += Test;
+        }
+
+        public virtual void OnEnable() => m_playerInput.Enable();
+        public virtual void OnDisable() => m_playerInput.Disable();
+
+        private void Test(InputUser user, InputUserChange inputUserChange, InputDevice device)
+        {
+            if(user.controlScheme.HasValue && inputUserChange == InputUserChange.ControlSchemeChanged)
+            {
+                if (m_currentControlScheme == user.controlScheme) return;
+                m_currentControlScheme = user.controlScheme;
+
+                DeviceChanged.Invoke(this, new EventArgs());
+            }
+        }
+
+        public List<InputDisplay> GetInputDisplays(Dictionary<string, string[]> actions)
+        {
+            var support = InputSchemeToSupport();
             var displayConfiguration = InputDisplays.SingleOrDefault(i => i.Controller == support);
 
             var inputDisplays = new List<InputDisplay>();
-            foreach(var display in displayConfiguration.Inputs)
+            foreach(var action in actions)
             {
-                if (inputs.TryGetValue(display.Action, out string description)) {
-                    inputDisplays.Add( new InputDisplay{ Icons = display.Icons, Description = description });
+                var inputDisplay = new InputDisplay { Description = action.Key };
+                foreach(var a in action.Value)
+                {
+                    if(displayConfiguration.Inputs.Count(i => i.Action == a) == 1) {
+                        var input = displayConfiguration.Inputs.SingleOrDefault(x => x.Action == a);
+                        inputDisplay.Icons.Add(input.Icons);
+                    }
+                }
+                if (inputDisplay.Icons.Count > 0)
+                {
+                    inputDisplays.Add(inputDisplay);
                 }
             }
-
             return inputDisplays;
         }
 
-        private InputSupport InputDeviceToSupport(InputDevice device)
+        private InputSupport InputSchemeToSupport()
         {
-            switch (device.name) {
-                case "Mouse":
-                case "Keyboard":
+            if (!m_currentControlScheme.HasValue) throw new Exception("No scheme");
+            switch (m_currentControlScheme.Value.name) {
+                case "PC":
                     return InputSupport.PC;
+                case "PS":
+                    return InputSupport.PS;
                 default:
                     throw new Exception("Unrecognized platform");
             }

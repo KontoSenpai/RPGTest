@@ -39,9 +39,9 @@ namespace RPGTest.UI.InventoryMenu
         private int m_currentNavigationIndex = 0;
         private bool m_actionInProgress = false;
 
-        private Dictionary<string, string> m_actions => new Dictionary<string, string>()
+        private Dictionary<string, string[]> m_actions => new Dictionary<string, string[]>()
         {
-            { "Secondary Navigate.horizontal", "Cycle Presets" },
+            { "Cycle Presets", new string[] {"Secondary Navigate.horizontal" } },
         };
 
         public override void Awake()
@@ -67,9 +67,9 @@ namespace RPGTest.UI.InventoryMenu
             }
         }
 
-        public override void OpenMenu(InputDevice device)
+        public override void OpenMenu(Dictionary<string, object> parameters)
         {
-            base.OpenMenu(device);
+            base.OpenMenu(parameters);
             if (m_allGuiItems.Count > 0)
             {
                 m_allGuiItems[0].GetComponent<Button>().Select();
@@ -78,7 +78,7 @@ namespace RPGTest.UI.InventoryMenu
             DescriptionWidget.SetVisible(true);
             RefreshDetailsPanel();
             ActionSelectionWindow.GetComponent<UI_SubMenu_Inventory_ActionSelection>().ItemActionSelected += ItemAction_Selected;
-            UpdateIconDisplay(device, m_actions);
+            UpdateIconDisplay(m_actions);
         }
 
         public override void CloseMenu()

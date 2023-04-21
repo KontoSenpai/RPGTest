@@ -12,19 +12,23 @@ namespace RPGTest.UI.Widgets
         [SerializeField] private GameObject IconsGo;
         [SerializeField] private TextMeshProUGUI Description;
 
-        private List<GameObject> m_icons;
-
-        public void Create(Texture2D[] icons, string description)
+        public void Create(string description, List<Texture2D[]> icons)
         {
             Description.text = description;
 
-            icons.ForEach(icon =>
+            for(int i = 0; i < icons.Count; i++)
             {
-                var iconGo = Instantiate(IconPrefab);
-                iconGo.transform.SetParent(IconsGo.transform);
-                iconGo.transform.localScale = new Vector3(1, 1, 1);
-                iconGo.GetComponent<RawImage>().texture = icon;
-            });
+                GameObject lastIcon = null;
+                icons[i].ForEach(i =>
+                {
+                    var iconGo = Instantiate(IconPrefab);
+                    iconGo.transform.SetParent(IconsGo.transform);
+                    iconGo.transform.localScale = new Vector3(1, 1, 1);
+                    iconGo.GetComponent<RawImage>().texture = i;
+                    iconGo.name = i.name;
+                    lastIcon = iconGo;
+                });
+            }
         }
     }
 }
