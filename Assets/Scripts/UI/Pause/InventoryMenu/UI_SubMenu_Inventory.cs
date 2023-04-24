@@ -78,7 +78,7 @@ namespace RPGTest.UI.InventoryMenu
             DescriptionWidget.SetVisible(true);
             RefreshDetailsPanel();
             ActionSelectionWindow.GetComponent<UI_SubMenu_Inventory_ActionSelection>().ItemActionSelected += ItemAction_Selected;
-            UpdateIconDisplay(m_actions);
+            UpdateControlsDisplay(m_actions);
         }
 
         public override void CloseMenu()

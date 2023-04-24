@@ -1,3 +1,4 @@
+using RPGTest.Managers;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -7,7 +8,10 @@ namespace RPGTest.UI
     public class UI_Base : MonoBehaviour
     {
         public EventHandler UIOpened { get; set; }
+        public EventHandler DevicedChanged { get; set; }
         public EventHandler UIClosed { get; set; }
+
+        protected InputDisplayManager InputManager => FindObjectOfType<InputDisplayManager>();
 
         public IEnumerator Fade(bool fadeIn, float step = 0.2f)
         {
@@ -42,6 +46,11 @@ namespace RPGTest.UI
             uiItem.transform.localScale = new Vector3(1, 1, 1);
 
             return uiItem;
+        }
+
+        public virtual void UpdateHints()
+        {
+
         }
     }
 }

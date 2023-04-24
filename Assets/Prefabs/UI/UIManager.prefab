@@ -431,6 +431,74 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -100
       objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: Keyboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_NotificationBehavior
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionId
+      value: fc827537-6576-40c7-bfcd-d6b64be80248
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionId
+      value: ad22053e-a58a-4494-8433-7deb65f75c26
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionId
+      value: f407f56c-be66-4411-a6ba-f2313cafd55b
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionId
+      value: 4420ee44-5b1c-43ca-bf72-7743c499fd0a
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionId
+      value: 4420ee44-5b1c-43ca-bf72-7743c499fd0a
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_ActionId
+      value: 4420ee44-5b1c-43ca-bf72-7743c499fd0a
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[18].m_ActionId
+      value: 4420ee44-5b1c-43ca-bf72-7743c499fd0a
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionName
+      value: UI/ScrollWheel[/Mouse/scroll]
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionName
+      value: UI/MiddleClick[/Mouse/middleButton]
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionName
+      value: UI/RightClick[/Mouse/rightButton]
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionName
+      value: UI/CycleMenus[/Keyboard/1,/Keyboard/2]
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionName
+      value: UI/CycleMenus[/Keyboard/1,/Keyboard/2]
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_ActionName
+      value: UI/CycleMenus[/Keyboard/1,/Keyboard/2]
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727992109318472224, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[18].m_ActionName
+      value: UI/CycleMenus[/Keyboard/1,/Keyboard/2]
+      objectReference: {fileID: 0}
     - target: {fileID: 5746698929489831395, guid: 8a67331f1aebe67449794aefcb4376e7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RPGTest.UI
 {
-    public class UI_Footer_Hints: MonoBehaviour
+    public class UI_Controls_Display: MonoBehaviour
     {
         [SerializeField]
         private GameObject HintWidgetObject;

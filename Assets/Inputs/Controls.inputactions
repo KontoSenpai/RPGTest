@@ -384,6 +384,14 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "CloseMenu",
+                    "type": "Button",
+                    "id": "da5324da-8f3e-4676-911c-439009c6dbdf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -736,6 +744,17 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "MouseMoved",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a68f51d8-1a2e-47d0-8db8-0ce6edada3a1",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "CloseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

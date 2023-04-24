@@ -41,7 +41,7 @@ namespace RPGTest.Managers
     public class InputDisplayManager : MonoBehaviour
     {
         [HideInInspector]
-        public event EventHandler<EventArgs> DeviceChanged;
+        public event EventHandler<EventArgs> SchemeChanged;
 
         [SerializeField]
         private InputDisplayConfiguration[] InputDisplays;
@@ -53,20 +53,26 @@ namespace RPGTest.Managers
         private void Awake()
         {
             m_playerInput = new Controls();
-            InputUser.onChange += Test;
+            InputUser.onChange += onChange;
         }
 
         public virtual void OnEnable() => m_playerInput.Enable();
         public virtual void OnDisable() => m_playerInput.Disable();
 
-        private void Test(InputUser user, InputUserChange inputUserChange, InputDevice device)
+        private void onChange(InputUser user, InputUserChange inputUserChange, InputDevice device)
         {
-            if(user.controlScheme.HasValue && inputUserChange == InputUserChange.ControlSchemeChanged)
+            if (user.controlScheme.HasValue && inputUserChange == InputUserChange.ControlSchemeChanged)
             {
                 if (m_currentControlScheme == user.controlScheme) return;
                 m_currentControlScheme = user.controlScheme;
 
-                DeviceChanged.Invoke(this, new EventArgs());
+                if (SchemeChanged != null && SchemeChanged.GetInvocationList().Length > 0)
+                {
+                    Debug.Log("tot");
+                    Debug.Log(SchemeChanged);
+                    Debug.Log(SchemeChanged.GetInvocationList().Length);
+                    SchemeChanged.Invoke(this, new EventArgs());
+                }
             }
         }
 
@@ -96,7 +102,10 @@ namespace RPGTest.Managers
 
         private InputSupport InputSchemeToSupport()
         {
-            if (!m_currentControlScheme.HasValue) throw new Exception("No scheme");
+            if (!m_currentControlScheme.HasValue)
+            {
+                m_currentControlScheme = InputUser.all[0].controlScheme;
+            }
             switch (m_currentControlScheme.Value.name) {
                 case "PC":
                     return InputSupport.PC;

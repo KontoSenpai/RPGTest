@@ -34,9 +34,13 @@ namespace RPGTest.UI
 
         public void Awake()
         {
-            Debug.Log("wesh");
             m_playerInput = new Controls();
             m_playerInput.UI.CycleMenus.performed += CycleMenus_performed;
+            m_playerInput.UI.CloseMenu.performed += ctx =>
+            {
+                DefaultButton.Select();
+                UIClosed(this, null);
+            };
         }
 
         public void OnEnable()
@@ -53,7 +57,7 @@ namespace RPGTest.UI
         #region EventHandlers
         private void UpdateHintsFooter(object sender, HintEventArgs e)
         {
-            MenuFooter.GetComponent<UI_Footer_Hints>().Refresh(e.InputDisplays);
+            MenuFooter.GetComponent<UI_Controls_Display>().Refresh(e.InputDisplays);
         }
 
         private void ChangeMenu(object sender, MenuChangeEventArgs e)

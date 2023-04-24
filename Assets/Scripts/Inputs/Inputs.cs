@@ -399,6 +399,14 @@ namespace RPGTest.Inputs
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""CloseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""da5324da-8f3e-4676-911c-439009c6dbdf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -753,6 +761,17 @@ namespace RPGTest.Inputs
                     ""action"": ""MouseMoved"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a68f51d8-1a2e-47d0-8db8-0ce6edada3a1"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""CloseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -821,6 +840,7 @@ namespace RPGTest.Inputs
             m_UI_CycleMenus = m_UI.FindAction("CycleMenus", throwIfNotFound: true);
             m_UI_SecondaryAction = m_UI.FindAction("SecondaryAction", throwIfNotFound: true);
             m_UI_MouseMoved = m_UI.FindAction("MouseMoved", throwIfNotFound: true);
+            m_UI_CloseMenu = m_UI.FindAction("CloseMenu", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -963,6 +983,7 @@ namespace RPGTest.Inputs
         private readonly InputAction m_UI_CycleMenus;
         private readonly InputAction m_UI_SecondaryAction;
         private readonly InputAction m_UI_MouseMoved;
+        private readonly InputAction m_UI_CloseMenu;
         public struct UIActions
         {
             private @Controls m_Wrapper;
@@ -979,6 +1000,7 @@ namespace RPGTest.Inputs
             public InputAction @CycleMenus => m_Wrapper.m_UI_CycleMenus;
             public InputAction @SecondaryAction => m_Wrapper.m_UI_SecondaryAction;
             public InputAction @MouseMoved => m_Wrapper.m_UI_MouseMoved;
+            public InputAction @CloseMenu => m_Wrapper.m_UI_CloseMenu;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1024,6 +1046,9 @@ namespace RPGTest.Inputs
                     @MouseMoved.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
                     @MouseMoved.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
                     @MouseMoved.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
+                    @CloseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
+                    @CloseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
+                    @CloseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1064,6 +1089,9 @@ namespace RPGTest.Inputs
                     @MouseMoved.started += instance.OnMouseMoved;
                     @MouseMoved.performed += instance.OnMouseMoved;
                     @MouseMoved.canceled += instance.OnMouseMoved;
+                    @CloseMenu.started += instance.OnCloseMenu;
+                    @CloseMenu.performed += instance.OnCloseMenu;
+                    @CloseMenu.canceled += instance.OnCloseMenu;
                 }
             }
         }
@@ -1119,6 +1147,7 @@ namespace RPGTest.Inputs
             void OnCycleMenus(InputAction.CallbackContext context);
             void OnSecondaryAction(InputAction.CallbackContext context);
             void OnMouseMoved(InputAction.CallbackContext context);
+            void OnCloseMenu(InputAction.CallbackContext context);
         }
     }
 }

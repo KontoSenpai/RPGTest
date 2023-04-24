@@ -33,14 +33,13 @@ namespace RPGTest.UI
     {
         public bool IsSubMenuSelected { get; set; }
         
-        protected InputDisplayManager InputManager { get; set; }
-        
+        protected InputDisplayManager InputManager => FindObjectOfType<InputDisplayManager>();
+
         protected Controls m_playerInput { get; set; }
 
         public virtual void Awake()
         {
             m_playerInput = new Controls();
-            InputManager = FindObjectOfType<InputDisplayManager>();
         }
 
         public virtual void OnEnable()
@@ -51,7 +50,6 @@ namespace RPGTest.UI
         public virtual void OnDisable()
         {
             m_playerInput.Disable();
-            FindObjectOfType<InputDisplayManager>().DeviceChanged -= onDevice_Changed;
         }
 
         public virtual void Initialize(bool refreshAll = true)
@@ -85,13 +83,13 @@ namespace RPGTest.UI
             throw new NotImplementedException();
         }
 
-        protected virtual void onDevice_Changed(object sender, EventArgs e)
+        protected virtual void onScheme_Changed(object sender, EventArgs e)
         {
             throw new NotImplementedException();
         }
 
         // Update the input Hints on current page
-        protected void UpdateIconDisplay(Dictionary<string, string[]> actions)
+        protected void UpdateControlsDisplay(Dictionary<string, string[]> actions)
         {
             var inputDisplays = InputManager.GetInputDisplays(actions);
             InputHintsChanged.Invoke(this, new HintEventArgs(inputDisplays));

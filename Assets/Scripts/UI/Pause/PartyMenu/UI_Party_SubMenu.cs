@@ -110,11 +110,14 @@ namespace RPGTest.UI.PartyMenu
         public override void OnEnable()
         {
             base.OnEnable();
+            InputManager.SchemeChanged += onScheme_Changed;
             m_playerInput.Player.Debug.performed += Debug_performed;
+            UpdateControlsDisplay(GetInputActionDescriptions());
         }
 
         public override void OnDisable() {
             base.OnDisable();
+            InputManager.SchemeChanged -= onScheme_Changed;
             m_playerInput.Player.Debug.performed -= Debug_performed;
         }
 
@@ -174,7 +177,7 @@ namespace RPGTest.UI.PartyMenu
         // Cycle Presets
         private void SecondaryNavigate_Performed(Vector2 movement)
         {
-            if (DetailsWidget != null && (movement.x < -0.4f || movement.x > 0.04f))
+            if (m_currentCharacter != null && DetailsWidget != null && (movement.x < -0.4f || movement.x > 0.04f))
             {
                 DetailsWidget.ChangePreset(m_currentCharacter);
             }
@@ -240,9 +243,10 @@ namespace RPGTest.UI.PartyMenu
             };
         }
 
-        protected override void onDevice_Changed(object sender, EventArgs e)
+        protected override void onScheme_Changed(object sender, EventArgs e)
         {
-            UpdateIconDisplay(GetInputActionDescriptions());
+            Debug.Log("bruh");
+            UpdateControlsDisplay(GetInputActionDescriptions());
         }
         #endregion
 
@@ -255,7 +259,7 @@ namespace RPGTest.UI.PartyMenu
             PartyMemberWidgets.First(w => w.GetComponent<UI_Party_Member>().GetCharacter() != null).GetComponent<Button>().Select();
             m_currentNavigationIndex = 0;
             RefreshDetailsPanel();
-            UpdateIconDisplay(GetInputActionDescriptions());
+            UpdateControlsDisplay(GetInputActionDescriptions());
         }
 
         public override void CloseMenu()
