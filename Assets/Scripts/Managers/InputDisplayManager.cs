@@ -68,9 +68,6 @@ namespace RPGTest.Managers
 
                 if (SchemeChanged != null && SchemeChanged.GetInvocationList().Length > 0)
                 {
-                    Debug.Log("tot");
-                    Debug.Log(SchemeChanged);
-                    Debug.Log(SchemeChanged.GetInvocationList().Length);
                     SchemeChanged.Invoke(this, new EventArgs());
                 }
             }

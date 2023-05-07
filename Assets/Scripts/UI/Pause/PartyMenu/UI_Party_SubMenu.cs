@@ -245,7 +245,6 @@ namespace RPGTest.UI.PartyMenu
 
         protected override void onScheme_Changed(object sender, EventArgs e)
         {
-            Debug.Log("bruh");
             UpdateControlsDisplay(GetInputActionDescriptions());
         }
         #endregion

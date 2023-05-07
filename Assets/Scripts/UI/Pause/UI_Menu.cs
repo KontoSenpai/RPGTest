@@ -50,7 +50,11 @@ namespace RPGTest.UI
 
         public void OnDisable()
         {
-            MenuWidgets.ForEach(x => x.GetComponent<UI_Pause_SubMenu>().Clear());
+            MenuWidgets.ForEach(x =>
+            {
+                x.GetComponent<UI_Pause_SubMenu>().Clear();
+                x.GetComponent<UI_Pause_SubMenu>().MenuChanged += OnMenu_changed;
+            });
             m_playerInput.Disable();
         }
 
@@ -60,7 +64,7 @@ namespace RPGTest.UI
             MenuFooter.GetComponent<UI_Controls_Display>().Refresh(e.InputDisplays);
         }
 
-        private void ChangeMenu(object sender, MenuChangeEventArgs e)
+        private void OnMenu_changed(object sender, MenuChangeEventArgs e)
         {
             SelectSubMenu(e.MenuIndex, e.Parameters);
         }
@@ -151,7 +155,7 @@ namespace RPGTest.UI
                     menu.GetComponent<UI_Pause_SubMenu>().SubMenuOpened += OpenSubMenu;
                     menu.GetComponent<UI_Pause_SubMenu>().SubMenuClosed += ExitSubMenu;
                     menu.GetComponent<UI_Pause_SubMenu>().InputHintsChanged += UpdateHintsFooter;
-                    menu.GetComponent<UI_Pause_SubMenu>().MenuChanged += ChangeMenu;
+                    menu.GetComponent<UI_Pause_SubMenu>().MenuChanged += OnMenu_changed;
                 }
             }
             button.Select();
@@ -167,7 +171,7 @@ namespace RPGTest.UI
             MenuButtons[m_currentNavigationIndex].Select();
             Array.ForEach(MenuButtons, b => b.interactable = !(Array.IndexOf(MenuButtons, b) == m_currentNavigationIndex));
 
-            MenuWidgets[m_currentNavigationIndex].GetComponent<UI_Pause_SubMenu>().OpenMenu(null);
+            MenuWidgets[m_currentNavigationIndex].GetComponent<UI_Pause_SubMenu>().OpenMenu(parameters ?? new Dictionary<string, object>());
         }
         #endregion
 

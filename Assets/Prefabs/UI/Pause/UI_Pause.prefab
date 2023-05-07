@@ -535,6 +535,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: db4692a2-80e2-4d22-b1c0-162cd2fd9ae5
     m_ActionName: UI/MouseMoved[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: da5324da-8f3e-4676-911c-439009c6dbdf
+    m_ActionName: UI/CloseMenu[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: PC
   m_DefaultActionMap: UI
@@ -1301,8 +1305,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 804179105703971645, guid: a12c0e2def2427440a44d7035b03c5b3, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 804179105703971645, guid: a12c0e2def2427440a44d7035b03c5b3, type: 3}
       propertyPath: m_Name
-      value: PNL_Party_Menu
+      value: PNL_Party
       objectReference: {fileID: 0}
     - target: {fileID: 804179105703971645, guid: a12c0e2def2427440a44d7035b03c5b3, type: 3}
       propertyPath: m_IsActive
@@ -1850,11 +1858,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4698272933862352609, guid: a12c0e2def2427440a44d7035b03c5b3, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4698272933862352609, guid: a12c0e2def2427440a44d7035b03c5b3, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4698272933862352609, guid: a12c0e2def2427440a44d7035b03c5b3, type: 3}
       propertyPath: m_SizeDelta.x
