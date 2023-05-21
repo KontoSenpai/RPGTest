@@ -41,8 +41,7 @@ namespace RPGTest.UI.Widgets
         {
             m_equipedItem = equipedItem;
             m_previewItem = previewItem;
-
-            
+        
             m_EquipmentName.text = m_equipedItem == null ? "Empty" : m_equipedItem.Name;
         }
 
@@ -66,7 +65,7 @@ namespace RPGTest.UI.Widgets
 
         public void onClick()
         {
-            SlotSelected(this.Slot);
+            SlotSelected(Slot);
         }
 
         public void Enable(bool value)

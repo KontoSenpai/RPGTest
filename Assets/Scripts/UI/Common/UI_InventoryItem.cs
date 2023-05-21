@@ -1,14 +1,31 @@
 ﻿using RPGTest.Enums;
-using RPGTest.Managers;
+using RPGTest.Inputs;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RPGTest.UI.InventoryMenu
+namespace RPGTest.UI.Common
 {
-    public class UI_SubMenu_Inventory_Item : MonoBehaviour
+    public class ItemUsedEventArgs : EventArgs
+    {
+        public ItemUsedEventArgs(UIActionSelection selection, Item item, Slot slot, PlayableCharacter owner)
+        {
+            Selection = selection;
+            Item = item;
+            Slot = slot;
+            Owner = owner;
+        }
+
+        public UIActionSelection Selection { get; }
+        public Item Item { get; }
+        public Slot Slot { get; }
+        public PlayableCharacter Owner { get; }
+    }
+
+    public class UI_InventoryItem : AdvancedButton
     {
         [SerializeField] private Image ItemImage;
         [SerializeField] private TextMeshProUGUI ItemName;
@@ -17,9 +34,7 @@ namespace RPGTest.UI.InventoryMenu
         [SerializeField] private GameObject IsEquipped;
 
         [HideInInspector]
-        public ItemSelectedHandler ItemSelected { get; set; }
-        [HideInInspector]
-        public delegate void ItemSelectedHandler(Item item);
+        public event EventHandler<ItemUsedEventArgs> ItemUsed;
 
         private Item m_item;
         private PlayableCharacter m_owner;
@@ -45,6 +60,20 @@ namespace RPGTest.UI.InventoryMenu
             }
         }
 
+        #region Input Events
+        // Select for swap
+        public void PrimaryAction_Selected()
+        {
+            ItemUsed(this, new ItemUsedEventArgs(UIActionSelection.Primary, m_item, m_slot, m_owner));
+        }
+
+        // Select for SubMenu
+        public void SecondaryAction_Selected()
+        {
+            ItemUsed(this, new ItemUsedEventArgs(UIActionSelection.Secondary, m_item, m_slot, m_owner));
+        }
+        #endregion
+
         public Item GetItem()
         {
             return m_item;
@@ -52,7 +81,7 @@ namespace RPGTest.UI.InventoryMenu
 
         public void UseItem()
         {
-            ItemSelected(m_item);
+            ItemUsed(this, new ItemUsedEventArgs(UIActionSelection.Primary, m_item, m_slot, m_owner));
         }
 
         public void SetOWner(PlayableCharacter owner, Slot slot)

@@ -21,11 +21,6 @@ namespace RPGTest.UI
         private int m_currentNavigationIndex = 0;
         private bool m_actionInProgress = false;
 
-        // Hold navigation control
-        private bool m_navigateStarted = false;
-        public float WaitTimeBetweenPerforms = 0.4f;
-        private float m_performTimeStamp;
-
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
 
         public override void Awake()
@@ -86,14 +81,14 @@ namespace RPGTest.UI
         public override void OnEnable()
         {
             base.OnEnable();
-            InputManager.SchemeChanged += onScheme_Changed;
+            InputManager.SchemeChanged += OnScheme_Changed;
             UpdateControlsDisplay(GetInputActionDescriptions());
         }
 
         public override void OnDisable()
         {
             base.OnDisable();
-            InputManager.SchemeChanged -= onScheme_Changed;
+            InputManager.SchemeChanged -= OnScheme_Changed;
         }
 
         #region Input Events

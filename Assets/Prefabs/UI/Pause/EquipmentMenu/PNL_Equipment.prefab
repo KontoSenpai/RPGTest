@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6465795713551050560}
   - component: {fileID: 2101316248160816846}
   - component: {fileID: 4503587645951011738}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 2330079490214741263}
   - component: {fileID: 5495337963089527160}
   - component: {fileID: 1925996223964391737}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 8737209545186572285}
   - component: {fileID: 4164333952130524120}
   - component: {fileID: 6396108195069749795}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Equipment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -436,7 +436,7 @@ GameObject:
   - component: {fileID: 5636185775814959240}
   - component: {fileID: 6606749378689662000}
   - component: {fileID: 4367158732636090241}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_CharacterName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,7 +572,7 @@ GameObject:
   - component: {fileID: 6077214760224266522}
   - component: {fileID: 6682489337944538364}
   - component: {fileID: 6995695804109053542}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -697,7 +697,7 @@ GameObject:
   - component: {fileID: 7326918201503865027}
   - component: {fileID: 8619631721379554375}
   - component: {fileID: 8790649338622107336}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BTN_RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +845,7 @@ GameObject:
   - component: {fileID: 4742681893497362104}
   - component: {fileID: 6237794495256193818}
   - component: {fileID: 4181164246338626749}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Acessory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -949,7 +949,7 @@ GameObject:
   - component: {fileID: 8933688027867146095}
   - component: {fileID: 2328431577270122334}
   - component: {fileID: 8900245159658721489}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1104,7 +1104,7 @@ GameObject:
   - component: {fileID: 3042581312133567608}
   - component: {fileID: 3272393574746558676}
   - component: {fileID: 3246742404688690062}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1258,7 +1258,7 @@ GameObject:
   - component: {fileID: 8314242214516481263}
   - component: {fileID: 3586267153626847707}
   - component: {fileID: 5975215918944795950}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: IMG_Portrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1335,7 +1335,7 @@ GameObject:
   - component: {fileID: 1736387165361578123}
   - component: {fileID: 196226104002630908}
   - component: {fileID: 5182748771900377602}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BTN_Acessory2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1484,7 +1484,7 @@ GameObject:
   - component: {fileID: 5869580342503834873}
   - component: {fileID: 8175140275216284895}
   - component: {fileID: 8382369326156164370}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1597,7 +1597,7 @@ GameObject:
   - component: {fileID: 4230385241056114831}
   - component: {fileID: 5010209256500960693}
   - component: {fileID: 1885471696317441517}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1752,7 +1752,7 @@ GameObject:
   - component: {fileID: 5265737102046034624}
   - component: {fileID: 2535005614003912436}
   - component: {fileID: 1309031914532450152}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Stats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1848,7 +1848,7 @@ GameObject:
   - component: {fileID: 3906590988738820633}
   - component: {fileID: 7741136050286353464}
   - component: {fileID: 8211709812412462478}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1952,7 +1952,7 @@ GameObject:
   - component: {fileID: 7151051405010433345}
   - component: {fileID: 5266527428946136097}
   - component: {fileID: 1443090813030826702}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_ItemName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2107,7 +2107,7 @@ GameObject:
   - component: {fileID: 2087753217061411839}
   - component: {fileID: 8312211130698654042}
   - component: {fileID: 7672115153052609158}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2261,7 +2261,7 @@ GameObject:
   - component: {fileID: 2343833302872007470}
   - component: {fileID: 4109221746331352662}
   - component: {fileID: 778545721064112785}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2339,7 +2339,7 @@ GameObject:
   - component: {fileID: 6823999954726013048}
   - component: {fileID: 1469562024943349439}
   - component: {fileID: 7739499359353226932}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2494,7 +2494,7 @@ GameObject:
   - component: {fileID: 7672832231772635427}
   - component: {fileID: 5282050115175351331}
   - component: {fileID: 1269593994657770187}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2649,7 +2649,7 @@ GameObject:
   - component: {fileID: 6297863310010214539}
   - component: {fileID: 275306255986059076}
   - component: {fileID: 3130726432092417359}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_ItemName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2804,7 +2804,7 @@ GameObject:
   - component: {fileID: 538587187622158956}
   - component: {fileID: 4554862395480755663}
   - component: {fileID: 526453216834313262}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_ItemName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2960,7 +2960,7 @@ GameObject:
   - component: {fileID: 697944422288259373}
   - component: {fileID: 5256961221806161450}
   - component: {fileID: 1936154778033169764}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BTN_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3109,7 +3109,7 @@ GameObject:
   - component: {fileID: 4936171529195461349}
   - component: {fileID: 5414973471650772131}
   - component: {fileID: 523719212907953510}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BTN_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3259,7 +3259,7 @@ GameObject:
   - component: {fileID: 2148800795366431899}
   - component: {fileID: 1001564010501822039}
   - component: {fileID: 5012042076585110896}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Equipment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3392,7 +3392,7 @@ GameObject:
   - component: {fileID: 7423937055078800699}
   - component: {fileID: 7979471308805946829}
   - component: {fileID: 535671009186823458}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_ItemName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3547,7 +3547,7 @@ GameObject:
   - component: {fileID: 4887844055164898195}
   - component: {fileID: 6968301941100231616}
   - component: {fileID: 718073857623103152}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PNL_Weapoon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3651,8 +3651,9 @@ GameObject:
   - component: {fileID: 271744621271159845}
   - component: {fileID: 7440370269652215863}
   - component: {fileID: 3425972761030387856}
-  m_Layer: 0
-  m_Name: PNL_DescriptionAndChoice
+  - component: {fileID: 2330541522340115932}
+  m_Layer: 5
+  m_Name: PNL_List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3735,6 +3736,20 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2330541522340115932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083452619059973443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31425ffe9c0d2c9439064cc64fd77a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemGo: {fileID: 0}
+  ItemList: {fileID: 0}
 --- !u!1 &8253608986699452199
 GameObject:
   m_ObjectHideFlags: 0
@@ -3748,7 +3763,7 @@ GameObject:
   - component: {fileID: 4370801936588188970}
   - component: {fileID: 2196912136749759414}
   - component: {fileID: 2650988650825668975}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BTN_Acessory1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3897,7 +3912,7 @@ GameObject:
   - component: {fileID: 5086969925254517305}
   - component: {fileID: 8002594507893072430}
   - component: {fileID: 6626427794887050075}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BTN_LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4045,7 +4060,7 @@ GameObject:
   - component: {fileID: 1773255078762262734}
   - component: {fileID: 6134831319653770541}
   - component: {fileID: 1930359507051617897}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TXT_Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

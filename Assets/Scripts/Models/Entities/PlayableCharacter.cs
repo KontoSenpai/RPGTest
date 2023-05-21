@@ -214,7 +214,10 @@ namespace RPGTest.Models.Entity
 
         public bool TryEquip(Slot slot, Equipment equipPiece, out List<Item> removedEquipments)
         {
-            EquipmentSlots.TryEquip(slot, equipPiece, out removedEquipments);
+            if(!EquipmentSlots.TryEquip(slot, equipPiece, out removedEquipments))
+            {
+                Debug.Log("Wesh");
+            }
             removedEquipments.WhereNotNull();
             return EquipmentSlots.Equipment[slot] == equipPiece;
         }

@@ -2,7 +2,7 @@
 using RPGTest.Collectors;
 using RPGTest.Managers;
 using RPGTest.Models.Entity;
-using RPGTest.UI.InventoryMenu;
+using RPGTest.UI.Common;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +63,7 @@ namespace RPGTest.Modules.Battle.UI
                 ActiveMembers[i].SetActive(activeMembers[i] != null);
                 if(ActiveMembers[i].activeInHierarchy)
                 {
-                    var widgetScript = ActiveMembers[i].GetComponent<UI_Party_Member>();
+                    var widgetScript = ActiveMembers[i].GetComponent<UI_PartyMember>();
                     widgetScript.Initialize(activeMembers[i]);
                     activeMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
                 }
@@ -75,7 +75,7 @@ namespace RPGTest.Modules.Battle.UI
                 InactiveMembers[i].SetActive(inactiveMembers[i] != null);
                 if (InactiveMembers[i].activeInHierarchy)
                 {
-                    var widgetScript = InactiveMembers[i].GetComponent<UI_Party_Member>();
+                    var widgetScript = InactiveMembers[i].GetComponent<UI_PartyMember>();
                     widgetScript.Initialize(inactiveMembers[i]);
                     inactiveMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
                 }
@@ -88,7 +88,7 @@ namespace RPGTest.Modules.Battle.UI
                 {
                     GameObject uiItem = InstantiateItemInViewport(ItemItemInstantiate, item.Key, ItemsList);
 
-                    UI_SubMenu_Inventory_Item widgetScript = uiItem.GetComponent<UI_SubMenu_Inventory_Item>();
+                    UI_InventoryItem widgetScript = uiItem.GetComponent<UI_InventoryItem>();
                     widgetScript.Initialize(i, item.Value);
                     m_allItems.Add(uiItem);
                 }
@@ -153,7 +153,7 @@ namespace RPGTest.Modules.Battle.UI
             {
                 if (ActiveMembers[i].activeInHierarchy)
                 {
-                    activeMembers[i].PlayerExperienceChanged -= ActiveMembers[i].GetComponent<UI_Party_Member>().RefreshExperience;
+                    activeMembers[i].PlayerExperienceChanged -= ActiveMembers[i].GetComponent<UI_PartyMember>().RefreshExperience;
                 }
             }
 
@@ -162,7 +162,7 @@ namespace RPGTest.Modules.Battle.UI
             {
                 if (InactiveMembers[i].activeInHierarchy)
                 {
-                    inactiveMembers[i].PlayerExperienceChanged -= InactiveMembers[i].GetComponent<UI_Party_Member>().RefreshExperience;
+                    inactiveMembers[i].PlayerExperienceChanged -= InactiveMembers[i].GetComponent<UI_PartyMember>().RefreshExperience;
                 }
             }
 

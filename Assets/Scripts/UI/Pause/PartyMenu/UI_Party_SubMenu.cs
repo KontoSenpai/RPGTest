@@ -1,5 +1,7 @@
-﻿using RPGTest.Managers;
+﻿using RPGTest.Enums;
+using RPGTest.Managers;
 using RPGTest.Models.Entity;
+using RPGTest.UI.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,15 +43,10 @@ namespace RPGTest.UI.PartyMenu
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
 
-        private PlayableCharacter m_currentCharacter => PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_Party_Member>().GetCharacter();
+        private PlayableCharacter m_currentCharacter => PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_PartyMember>().GetCharacter();
 
         private int m_inventoryMenuIndex = 1; // todo : need to keep that const elsewhere
         private int m_skillsMenuIndex = 2; // todo: same as line above
-
-        // Hold navigation control
-        private bool m_navigateStarted = false;
-        public float WaitTimeBetweenPerforms = 0.4f;
-        private float m_performTimeStamp;
 
         public override void Awake()
         {
@@ -88,12 +85,30 @@ namespace RPGTest.UI.PartyMenu
             };
         }
 
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            InputManager.SchemeChanged += OnScheme_Changed;
+            m_playerInput.Player.Debug.performed += Debug_performed;
+            UpdateControlsDisplay(GetInputActionDescriptions());
+        }
+
+        public override void OnDisable()
+        {
+            base.OnDisable();
+            if (InputManager)
+            {
+                InputManager.SchemeChanged -= OnScheme_Changed;
+            }
+            m_playerInput.Player.Debug.performed -= Debug_performed;
+        }
+
         public void Start()
         {
             foreach(var widget in PartyMemberWidgets)
             {
-                var widgetScript = widget.GetComponent<UI_Party_Member>();
-                widgetScript.MemberSelected += onMember_Selected;
+                var widgetScript = widget.GetComponent<UI_PartyMember>();
+                widgetScript.MemberSelected += OnMember_Selected;
                 widgetScript.SetSecondarySelect(() => widgetScript.ToggleCover());
             }
         }
@@ -107,26 +122,12 @@ namespace RPGTest.UI.PartyMenu
             }
         }
 
-        public override void OnEnable()
-        {
-            base.OnEnable();
-            InputManager.SchemeChanged += onScheme_Changed;
-            m_playerInput.Player.Debug.performed += Debug_performed;
-            UpdateControlsDisplay(GetInputActionDescriptions());
-        }
-
-        public override void OnDisable() {
-            base.OnDisable();
-            InputManager.SchemeChanged -= onScheme_Changed;
-            m_playerInput.Player.Debug.performed -= Debug_performed;
-        }
-
         #region Input Events
         // Select character
         private void Submit_Performed()
         {
             if (m_currentNavigationIndex == -1) return;
-            PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_Party_Member>().ToggleCover();
+            PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_PartyMember>().ToggleCover();
             SwapCharacterPositions(PartyMemberWidgets[m_currentNavigationIndex]);
         }
 
@@ -137,7 +138,7 @@ namespace RPGTest.UI.PartyMenu
         }
 
         // Cancel current action (swap or sub menu)
-        protected override void Cancel_performed(InputAction.CallbackContext obj)
+        protected override void OnCancel_performed(InputAction.CallbackContext obj)
         {
             CancelCurrentAction();
         }
@@ -168,7 +169,6 @@ namespace RPGTest.UI.PartyMenu
                 {
                     NavigateRight();
                 }
-                
                 PartyMemberWidgets[m_currentNavigationIndex].GetComponent<Button>().Select();
                 RefreshDetailsPanel();
             }
@@ -207,11 +207,11 @@ namespace RPGTest.UI.PartyMenu
 
             List<RaycastResult> results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
-            if (results.All(r => r.gameObject.GetComponent<UI_Party_Member>() == null)) {
+            if (results.All(r => r.gameObject.GetComponent<UI_PartyMember>() == null)) {
                 SubActionMenu.SetActive(false);
             } else
             {
-                var result = results.SingleOrDefault(r => r.gameObject.GetComponent<UI_Party_Member>());
+                var result = results.SingleOrDefault(r => r.gameObject.GetComponent<UI_PartyMember>());
                 OpenCharacterActionsMenu(result.gameObject);
             }
         }
@@ -226,14 +226,14 @@ namespace RPGTest.UI.PartyMenu
         /// Trigged by an Event sent with a Button press on a party member gameObject.
         /// </summary>
         /// <param name="selectedItem">Selected party member</param>
-        private void onMember_Selected(MemberSelection selection, GameObject selectedCharacter)
+        private void OnMember_Selected(UIActionSelection selection, GameObject selectedCharacter)
         {
             switch(selection)
             {
-                case MemberSelection.Primary:
+                case UIActionSelection.Primary:
                     SwapCharacterPositions(selectedCharacter);
                     break;
-                case MemberSelection.Secondary:
+                case UIActionSelection.Secondary:
                     if (m_swapInProgress)
                     {
 
@@ -243,7 +243,7 @@ namespace RPGTest.UI.PartyMenu
             };
         }
 
-        protected override void onScheme_Changed(object sender, EventArgs e)
+        protected override void OnScheme_Changed(object sender, EventArgs e)
         {
             UpdateControlsDisplay(GetInputActionDescriptions());
         }
@@ -252,10 +252,10 @@ namespace RPGTest.UI.PartyMenu
         public override void OpenMenu(Dictionary<string, object> parameters)
         {
             base.OpenMenu(parameters);
-            m_playerInput.UI.Cancel.performed += Cancel_performed;
+            m_playerInput.UI.Cancel.performed += OnCancel_performed;
 
             SubActionMenu.SetActive(false);
-            PartyMemberWidgets.First(w => w.GetComponent<UI_Party_Member>().GetCharacter() != null).GetComponent<Button>().Select();
+            PartyMemberWidgets.First(w => w.GetComponent<UI_PartyMember>().GetCharacter() != null).GetComponent<Button>().Select();
             m_currentNavigationIndex = 0;
             RefreshDetailsPanel();
             UpdateControlsDisplay(GetInputActionDescriptions());
@@ -264,7 +264,7 @@ namespace RPGTest.UI.PartyMenu
         public override void CloseMenu()
         {
             base.CloseMenu();
-            m_playerInput.UI.Cancel.performed -= Cancel_performed;
+            m_playerInput.UI.Cancel.performed -= OnCancel_performed;
         }
 
         public override void Initialize(bool refreshAll = true)
@@ -426,10 +426,10 @@ namespace RPGTest.UI.PartyMenu
             for (int index = 0; index < characters.Count; index++)
             {
                 PlayableCharacter character = characters[index];
-                PartyMemberWidgets[index].GetComponent<UI_Party_Member>().Initialize(character);
+                PartyMemberWidgets[index].GetComponent<UI_PartyMember>().Initialize(character);
             }
 
-            GuestMemberWidget.GetComponent<UI_Party_Member>().Initialize(m_partyManager.GetGuestCharacter());
+            GuestMemberWidget.GetComponent<UI_PartyMember>().Initialize(m_partyManager.GetGuestCharacter());
         }
 
         private void Refresh()
@@ -482,7 +482,7 @@ namespace RPGTest.UI.PartyMenu
 
         private void CancelSwapInProgress()
         {
-            m_selectedCharacterGo.GetComponent<UI_Party_Member>().ToggleCover();
+            m_selectedCharacterGo.GetComponent<UI_PartyMember>().ToggleCover();
             m_selectedCharacterGo = null;
             m_swapInProgress = false;
         }

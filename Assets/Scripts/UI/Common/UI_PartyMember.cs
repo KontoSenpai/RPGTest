@@ -7,15 +7,12 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace RPGTest.UI
+namespace RPGTest.UI.Common
 {
-    public enum MemberSelection
-    {
-        Primary,
-        Secondary
-    };
-
-    public class UI_Party_Member : AdvancedButton
+    /// <summary>
+    /// Display of a party member.
+    /// </summary>
+    public class UI_PartyMember : AdvancedButton
     {
         [SerializeField] private GameObject ContentPanel;
         [SerializeField] private TextMeshProUGUI Name;
@@ -31,7 +28,7 @@ namespace RPGTest.UI
         [HideInInspector]
         public MemberSelectedHandler MemberSelected { get; set; }
         [HideInInspector]
-        public delegate void MemberSelectedHandler(MemberSelection selection, GameObject item);
+        public delegate void MemberSelectedHandler(UIActionSelection selection, GameObject item);
 
         [HideInInspector]
         public EquipmentSlotSelectedHandler EquipmentSlotSelected { get; set; }
@@ -91,7 +88,7 @@ namespace RPGTest.UI
             {
                 m_secondaryAction.Invoke();
             }
-            MemberSelected(MemberSelection.Primary, gameObject);
+            MemberSelected(UIActionSelection.Primary, gameObject);
         }
 
         // Select for SubMenu
@@ -101,7 +98,7 @@ namespace RPGTest.UI
             {
                 m_secondaryAction.Invoke();
             }
-            MemberSelected(MemberSelection.Secondary, gameObject);
+            MemberSelected(UIActionSelection.Secondary, gameObject);
         }
         #endregion
 

@@ -37,6 +37,11 @@ namespace RPGTest.UI
 
         protected Controls m_playerInput { get; set; }
 
+        // Navigation helpers
+        protected bool m_navigateStarted = false;
+        protected float WaitTimeBetweenPerforms = 0.4f;
+        protected float m_performTimeStamp;
+
         public virtual void Awake()
         {
             m_playerInput = new Controls();
@@ -70,7 +75,7 @@ namespace RPGTest.UI
             SubMenuClosed();
         }
 
-        protected virtual void Cancel_performed(InputAction.CallbackContext obj)
+        protected virtual void OnCancel_performed(InputAction.CallbackContext obj)
         {
             if(IsSubMenuSelected)
             {
@@ -83,7 +88,7 @@ namespace RPGTest.UI
             throw new NotImplementedException();
         }
 
-        protected virtual void onScheme_Changed(object sender, EventArgs e)
+        protected virtual void OnScheme_Changed(object sender, EventArgs e)
         {
             throw new NotImplementedException();
         }

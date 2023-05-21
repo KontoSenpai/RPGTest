@@ -57,74 +57,11 @@ namespace RPGTest.UI.InventoryMenu
         public void OnDisable() => m_playerInput.Disable();
 
         /// <summary>
-        /// Opens this UI component with the item we want to perform actions on
-        /// </summary>
-        /// <param name="item">Selected Item</param>
-        public void InitializeUse(Item item)
-        {
-            m_item = item;
-
-            ActionString.text = "Use";
-            InitializeGui(MenuItemActionType.Use);
-        }
-
-        public void InitializeEquip(Item item)
-        {
-            m_item = item;
-
-            ActionString.text = "Equip";
-            InitializeGui(MenuItemActionType.Equip);
-        }
-
-        public void InitializeUnequip(Item item, Slot slot, PlayableCharacter owner)
-        {
-            m_item = item;
-            m_slot = slot;
-            m_owner = owner;
-
-            ActionString.text = "Unequip";
-            InitializeGui(MenuItemActionType.Unequip);
-        }
-
-        private void InitializeGui(MenuItemActionType type)
-        {
-            HideUI(true);
-            ActionButton.Select();
-            m_actionType = type;
-
-            if (m_actionType == MenuItemActionType.Equip || m_actionType == MenuItemActionType.Use)
-            {
-                var component = UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>();
-                component.InitializePanel(type, m_item);
-                component.ActionFinished += Action_Finished;
-
-                if (!component.AnyApplicableMember)
-                {
-                    ActionButton.interactable = false;
-                    var nav = ThrowButton.navigation;
-                    nav.selectOnUp = null;
-                    ThrowButton.navigation = nav;
-                    ThrowButton.Select();
-                }
-
-            }
-            else if (type == MenuItemActionType.Unequip)
-            {
-                m_action = ActionType.Equip;
-            }
-
-            UsePanel.SetActive(false);
-            ThrowPanel.SetActive(false);
-
-            ThrowPanel.GetComponent<UI_Item_Interaction>().ItemInteractionRequested += OnItemInteractionRequested;
-        }
-
-        /// <summary>
         /// Will initiate the closing of this UI component
         /// </summary>
         public void Close()
         {
-            UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>().Clean();
+            //UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>().Clean();
             ThrowPanel.GetComponent<UI_Item_Interaction>().ItemInteractionRequested -= OnItemInteractionRequested;
             UsePanel.SetActive(false);
             gameObject.SetActive(false);
@@ -164,9 +101,9 @@ namespace RPGTest.UI.InventoryMenu
                 case MenuItemActionType.Use:
                 case MenuItemActionType.Equip:
                     UsePanel.SetActive(true);
-                    var component = UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>();
-                    component.Focus();
-                    component.ItemInteractionCancelled += UseInteraction_Cancelled;
+                    //var component = UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>();
+                    //component.Focus();
+                    //component.ItemInteractionCancelled += UseInteraction_Cancelled;
                     HideUI(false);
                     break;
                 case MenuItemActionType.Unequip:
@@ -174,7 +111,6 @@ namespace RPGTest.UI.InventoryMenu
                     ItemActionSelected(m_actionType, removedItems);
                     break;
             }
-
         }
 
         public void onClickThrow()
@@ -209,8 +145,8 @@ namespace RPGTest.UI.InventoryMenu
         {
             this.HideUI(true);
 
-            var component = UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>();
-            component.ItemInteractionCancelled += UseInteraction_Cancelled;
+            //var component = UsePanel.GetComponent<UI_SubMenu_Inventory_UseControl>();
+            //component.ItemInteractionCancelled += UseInteraction_Cancelled;
             UsePanel.SetActive(false);
             ActionButton.Select();
         }

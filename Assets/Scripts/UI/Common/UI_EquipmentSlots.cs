@@ -7,18 +7,19 @@ using RPGTest.Models.Items;
 using RPGTest.Models.Entity;
 using RPGTest.Enums;
 using System.Linq;
+using UnityEngine.EventSystems;
 
-namespace RPGTest.UI.InventoryMenu
+namespace RPGTest.UI.Common
 {
-    public class UI_SubMenu_Inventory_Equipment : MonoBehaviour
+    public class UI_EquipmentSlots : MonoBehaviour
     {
         [SerializeField]
         private UI_EquipmentSlot[] m_equipmentSlots;
 
         [HideInInspector]
-        public CancelActionHandler ItemInteractionCancelled { get; set; }
+        public CancelActionHandler EquipActionCancelled { get; set; }
         [HideInInspector]
-        public EquipmentSlotSelectedHandler SlotSelected { get; set; }
+        public EquipmentSlotSelectedHandler EquipActionPerformed { get; set; }
 
         private PlayableCharacter m_character;
         private Equipment m_selectedItem;
@@ -28,27 +29,35 @@ namespace RPGTest.UI.InventoryMenu
         public virtual void Awake()
         {
             m_playerInput = new Controls();
-            m_playerInput.UI.Navigate.performed += Navigate_performed;
-            m_playerInput.UI.Cancel.performed += Cancel_performed;
+            m_playerInput.UI.Submit.performed += OnSubmit_Performed;
+            m_playerInput.UI.Navigate.performed += OnNavigate_performed;
+            m_playerInput.UI.Cancel.performed += OnCancel_performed;
 
             foreach (UI_EquipmentSlot slot in m_equipmentSlots)
             {
-                slot.SlotSelected += OnSlotSelected;
+                slot.SlotSelected += OnSlot_Selected;
             }
         }
 
-        public void OnEnable() => m_playerInput.Enable();
-        public void OnDisable() => m_playerInput.Disable();
-
         #region Input Events
-        private void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void OnSubmit_Performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            this.ItemInteractionCancelled();
+            var go = FindObjectOfType<EventSystem>().currentSelectedGameObject;
+            if(go.TryGetComponent<UI_EquipmentSlot>(out var equipmentSlot))
+            {
+                equipmentSlot.onClick();
+            }
         }
 
-        private void Navigate_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void OnCancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            var movement = obj.ReadValue<Vector2>();
+            m_playerInput.Disable();
+            EquipActionCancelled();
+        }
+
+        private void OnNavigate_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        {
+            var movement = ctx.ReadValue<Vector2>();
             if (movement.x < 0)
             {
                 //TryChangePurchaseQuantity(-1);
@@ -62,24 +71,29 @@ namespace RPGTest.UI.InventoryMenu
 
 
         #region Events
-        public void OnSlotSelected()
+        private void OnSlot_Selected(Slot slot)
         {
-
-        }
-
-        public void OnSlotDeselected()
-        {
+            m_playerInput.Disable();
+            EquipActionPerformed(slot);
         }
         #endregion
 
         #region Public Methods
-        public void Initialize(Equipment item)
+        public void Initialize(PlayableCharacter character, Equipment item)
         {
+            m_character = character;
             m_selectedItem = item;
+
+            foreach (UI_EquipmentSlot slot in m_equipmentSlots)
+            {
+                slot.Initialize(m_character.EquipmentSlots.Equipment[slot.Slot], m_selectedItem);
+            }
         }
 
-        public void Focus()
+        public void Open()
         {
+            m_playerInput.Enable();
+
             if (m_selectedItem.EquipmentType < EquipmentType.Helmet) // Weapons
             {
                 m_equipmentSlots.ForEach(s => s.Enable(s.Slot < Slot.Head));
@@ -96,47 +110,35 @@ namespace RPGTest.UI.InventoryMenu
                 m_equipmentSlots.ForEach(s => s.Enable(s.Slot > Slot.Body));
             }
 
-            foreach (var slot in m_equipmentSlots)
+            foreach (var equipmentSlot in m_equipmentSlots)
             {
-                var index = Array.IndexOf(m_equipmentSlots, slot);
-
+                var index = Array.IndexOf(m_equipmentSlots, equipmentSlot);
+                //slot.SlotSelected
                 if (index % 2 == 0) // Even = left slot
                 {
-                    slot.GetButton().ExplicitNavigation(
+                    equipmentSlot.GetButton().ExplicitNavigation(
                         Right : index < m_equipmentSlots.Length - 1 && m_equipmentSlots[index + 1].GetButton().interactable ? m_equipmentSlots[index + 1].GetButton() : null,
                         Up: index > 1 && m_equipmentSlots[index - 2].GetButton().interactable ? m_equipmentSlots[index - 2].GetButton() : null,
                         Down: index < m_equipmentSlots.Length - 2 && m_equipmentSlots[index + 2].GetButton().interactable ? m_equipmentSlots[index + 2].GetButton() : null);
                 } else // Odd = right slot
                 {
-                    slot.GetButton().ExplicitNavigation(
+                    equipmentSlot.GetButton().ExplicitNavigation(
                         Left: index > 0 && m_equipmentSlots[index - 1].GetButton().interactable ? m_equipmentSlots[index - 1].GetButton() : null,
                         Up: index > 1 && m_equipmentSlots[index - 2].GetButton().interactable ? m_equipmentSlots[index - 2].GetButton() : null,
                         Down: index < m_equipmentSlots.Length - 2 && m_equipmentSlots[index + 2].GetButton().interactable ? m_equipmentSlots[index + 2].GetButton() : null);
                 }
             }
-
             m_equipmentSlots.FirstOrDefault(s => s.GetButton().interactable).GetButton().Select();
         }
 
-        public void UpdateContent(PlayableCharacter character)
+        public void Close()
         {
-            m_character = character;
-            foreach (UI_EquipmentSlot slot in m_equipmentSlots)
-            {
-                slot.Initialize(m_character.EquipmentSlots.Equipment[slot.Slot], m_selectedItem);
-            }
+
         }
 
         public void Clean()
         {
             m_character = null;
-        }
-        #endregion
-
-        #region Private Methods
-        private void OnSlotSelected(Slot slot)
-        {
-            SlotSelected(slot);
         }
         #endregion
     }
