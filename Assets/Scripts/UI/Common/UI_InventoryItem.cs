@@ -9,9 +9,9 @@ using UnityEngine.UI;
 
 namespace RPGTest.UI.Common
 {
-    public class ItemUsedEventArgs : EventArgs
+    public class ItemSelectionConfirmedEventArgs : EventArgs
     {
-        public ItemUsedEventArgs(UIActionSelection selection, Item item, Slot slot, PlayableCharacter owner)
+        public ItemSelectionConfirmedEventArgs(UIActionSelection selection, Item item, Slot slot, PlayableCharacter owner)
         {
             Selection = selection;
             Item = item;
@@ -34,7 +34,7 @@ namespace RPGTest.UI.Common
         [SerializeField] private GameObject IsEquipped;
 
         [HideInInspector]
-        public event EventHandler<ItemUsedEventArgs> ItemUsed;
+        public event EventHandler<ItemSelectionConfirmedEventArgs> ItemSelectionConfirmed;
 
         private Item m_item;
         private PlayableCharacter m_owner;
@@ -64,13 +64,13 @@ namespace RPGTest.UI.Common
         // Select for swap
         public void PrimaryAction_Selected()
         {
-            ItemUsed(this, new ItemUsedEventArgs(UIActionSelection.Primary, m_item, m_slot, m_owner));
+            ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(UIActionSelection.Primary, m_item, m_slot, m_owner));
         }
 
         // Select for SubMenu
         public void SecondaryAction_Selected()
         {
-            ItemUsed(this, new ItemUsedEventArgs(UIActionSelection.Secondary, m_item, m_slot, m_owner));
+            ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(UIActionSelection.Secondary, m_item, m_slot, m_owner));
         }
         #endregion
 
@@ -81,7 +81,7 @@ namespace RPGTest.UI.Common
 
         public void UseItem()
         {
-            ItemUsed(this, new ItemUsedEventArgs(UIActionSelection.Primary, m_item, m_slot, m_owner));
+            ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(UIActionSelection.Primary, m_item, m_slot, m_owner));
         }
 
         public void SetOWner(PlayableCharacter owner, Slot slot)

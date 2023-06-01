@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace RPGTest.UI.Common
@@ -23,9 +24,9 @@ namespace RPGTest.UI.Common
         private InventoryManager m_inventoryManager => FindObjectOfType<GameManager>().InventoryManager;
         PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
 
-        private int m_currentItemIndex = 0;
+        private List<GameObject> m_items = new List<GameObject>(); // List of instantiaced Button to represent an item.
 
-        private List<GameObject> m_items = new List<GameObject>();
+        private int m_selectedItemIndex = 0; // Keep track of selected item index to reset selection on refocus after usage
 
         // Lambda to retrieve an Item GameObject from an item declaration
         private Func<GameObject, string, bool> m_findGOFunc = (gameO, id) => gameO.GetComponent<UI_InventoryItem>().GetItem().Id == id;
@@ -36,40 +37,31 @@ namespace RPGTest.UI.Common
         public delegate void ItemSelectedHandler(Item go);
 
         [HideInInspector]
-        public event EventHandler<ItemUsedEventArgs> ItemUsed;
+        public event EventHandler<ItemSelectionConfirmedEventArgs> ItemSelectionConfirmed;
 
         #region input events
-        public void OnNavigate_performed(Vector2 movement)
+        public void OnNavigate_performed()
         {
-            if (m_currentItemIndex == -1)
+            var go = FindObjectOfType<EventSystem>().currentSelectedGameObject;
+            if (go == null)
             {
-                m_currentItemIndex = 0;
-                m_items[m_currentItemIndex].GetComponent<Button>().Select();
-            } 
-            else
-            {
-                if (movement.y > 0 && m_currentItemIndex > 0)
-                {
-                    m_currentItemIndex -= 1;
-                }
-                else if (movement.y < 0 && m_currentItemIndex < m_items.Count - 1)
-                {
-                    m_currentItemIndex += 1;
-                }
+                FindObjectOfType<EventSystem>().SetSelectedGameObject(m_items[0]);
+                go = m_items[0];
             }
-            ItemSelected(m_items[m_currentItemIndex].GetComponent<UI_InventoryItem>().GetItem());
+            ItemSelected(go.GetComponent<UI_InventoryItem>().GetItem());
         }
 
         public void OnMouseMoved_Performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            m_currentItemIndex = -1;
+            FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
         }
         #endregion
 
         #region events
-        public void OnItem_Used(object sender, ItemUsedEventArgs args)
+        public void OnItemSelection_Confirmed(object sender, ItemSelectionConfirmedEventArgs args)
         {
-            ItemUsed.Invoke(this, args);
+            SetIndexOfCurrentlySelectedItem(args);
+            ItemSelectionConfirmed.Invoke(this, args);
         }
         #endregion
 
@@ -77,31 +69,27 @@ namespace RPGTest.UI.Common
         public void SelectDefault()
         {
             m_items.First().GetComponent<Button>().Select();
-            m_currentItemIndex = 0;
+            ItemSelected(m_items.First().GetComponent<UI_InventoryItem>().GetItem());
         }
 
         public void ReselectCurrentItem()
         {
-            if (m_currentItemIndex == 1) return;
-
-            m_items[m_currentItemIndex].GetComponent<Button>().Select();
+            FindObjectOfType<EventSystem>().SetSelectedGameObject(m_items[m_selectedItemIndex]);
         }
 
         public void Initialize()
         {
             Refresh();
-
-            m_currentItemIndex = 0;
         }
 
-        public void Refresh(bool refreshAll = true, List<Item> items = null, ItemType type = ItemType.None)
+        public bool Refresh(bool refreshAll = true, List<Item> items = null)
         {
             if (refreshAll)
             {
                 Clear();
             }
 
-            RefreshItems(items);
+            return RefreshItems(items);
         }
 
         public void Clear()
@@ -117,15 +105,18 @@ namespace RPGTest.UI.Common
 
         public UI_InventoryItem GetCurrentSelectedItem()
         {
-            if (m_currentItemIndex == 1) return null;
-
-            return m_items[m_currentItemIndex].GetComponent<UI_InventoryItem>();
+            var go = FindObjectOfType<EventSystem>().currentSelectedGameObject;
+            if (go != null && go.TryGetComponent<UI_InventoryItem>(out var inventoryItem))
+            {
+                return inventoryItem;
+            }
+            return null;
         }
         #endregion
 
-
-        private void RefreshItems(List<Item> items = null)
+        private bool RefreshItems(List<Item> items = null)
         {
+            bool refocus = false;
             if (items == null)
             {
                 items = m_inventoryManager.GetAllItems().Keys.Select(x => ItemCollector.TryGetItem(x)).ToList();
@@ -138,27 +129,42 @@ namespace RPGTest.UI.Common
                 {
                     case ItemType.Equipment:
                         UpdateEquipmentInformation(item, m_items.Where(g => m_findGOFunc(g, item.Id)), heldQuantity);
+                        refocus = true;
                         break;
                     case ItemType.Consumable:
-                        UpdateItemQuantity(item, m_items.FirstOrDefault(g => m_findGOFunc(g, item.Id)), heldQuantity);
+                        refocus = UpdateItemQuantity(item, m_items.FirstOrDefault(g => m_findGOFunc(g, item.Id)), heldQuantity);
                         break;
                 }
             }
 
-            if (m_items.Count > 0 && m_currentItemIndex > m_items.Count - 1)
+            if(m_items.Count > 0 && m_selectedItemIndex > m_items.Count -1)
             {
-                m_currentItemIndex = m_items.Count - 1;
+                m_selectedItemIndex = m_items.Count - 1;
             }
 
             RefreshHierarchy();
             SetNavigation();
+            return refocus;
         }
 
-        private void UpdateItemQuantity(Item item, GameObject guiItem, int quantity, PlayableCharacter owner = null, Slot slot = Slot.None)
+        /// <summary>
+        /// Refresh the display of item based on its quantity.
+        /// If item existed new quantity is equal to 0, the instantiated button is deleted
+        /// If item existed and new quantity is still 0, the insantiated button is updated
+        /// If item didn't exist, a new button is instantiated
+        /// </summary>
+        /// <param name="item">Item to refresh</param>
+        /// <param name="guiItem">GUI instantiation of item</param>
+        /// <param name="quantity">Current quantity of item held</param>
+        /// <param name="owner">(optional)Equipment Specific. To which character item got equipped</param>
+        /// <param name="slot">(optional)Equipment Specific. On which slot item got equipped</param>
+        /// <returns></returns>
+        private bool UpdateItemQuantity(Item item, GameObject guiItem, int quantity, PlayableCharacter owner = null, Slot slot = Slot.None)
         {
             if (guiItem != null && quantity <= 0)
             {
                 DestroyItem(guiItem);
+                return true;
             }
             else if (guiItem != null && quantity > 0)
             {
@@ -168,6 +174,7 @@ namespace RPGTest.UI.Common
             {
                 InstantiateItem(item, quantity);
             }
+            return false;
         }
 
         // Update the content of an instantiate Equipment item
@@ -205,12 +212,10 @@ namespace RPGTest.UI.Common
             deletionQueue.ForEach(x => DestroyItem(x));
         }
 
-
         private Dictionary<PlayableCharacter, IEnumerable<Slot>> GetEquipmentOwner(string id)
         {
             return m_partyManager.GetAllExistingPartyMembers().Where(p => p.EquipmentSlots.IsEquiped(id)).ToDictionary(p => p, p => p.EquipmentSlots.GetEquipedSlot(id));
         }
-
 
         private void RefreshHierarchy()
         {
@@ -248,8 +253,22 @@ namespace RPGTest.UI.Common
                 uiItem.GetComponent<UI_InventoryItem>().SetOWner(owner, slot);
             }
             m_items.Add(uiItem);
-            uiItem.GetComponent<UI_InventoryItem>().ItemUsed += OnItem_Used;
+            uiItem.GetComponent<UI_InventoryItem>().ItemSelectionConfirmed += OnItemSelection_Confirmed;
             return uiItem;
+        }
+
+        private void SetIndexOfCurrentlySelectedItem(ItemSelectionConfirmedEventArgs args)
+        {
+            for (int i = 0; i < m_items.Count(); i++)
+            {
+                var item = m_items[i].GetComponent<UI_InventoryItem>();
+                if (item.GetItem() == args.Item && item.GetOwner() == args.Owner && item.GetSlot() == args.Slot)
+                {
+                    m_selectedItemIndex = i;
+                    return;
+                }
+            }
+            m_selectedItemIndex = 0;
         }
 
         /// <summary>
@@ -258,7 +277,7 @@ namespace RPGTest.UI.Common
         /// <param name="obj"></param>
         private void DestroyItem(GameObject obj)
         {
-            obj.GetComponent<UI_InventoryItem>().ItemUsed -= OnItem_Used;
+            obj.GetComponent<UI_InventoryItem>().ItemSelectionConfirmed -= OnItemSelection_Confirmed;
             Destroy(obj);
             m_items.Remove(obj);
         }

@@ -88,18 +88,12 @@ namespace RPGTest.UI.PartyMenu
         public override void OnEnable()
         {
             base.OnEnable();
-            InputManager.SchemeChanged += OnScheme_Changed;
             m_playerInput.Player.Debug.performed += Debug_performed;
-            UpdateControlsDisplay(GetInputActionDescriptions());
         }
 
         public override void OnDisable()
         {
             base.OnDisable();
-            if (InputManager)
-            {
-                InputManager.SchemeChanged -= OnScheme_Changed;
-            }
             m_playerInput.Player.Debug.performed -= Debug_performed;
         }
 
@@ -242,11 +236,6 @@ namespace RPGTest.UI.PartyMenu
                     break;
             };
         }
-
-        protected override void OnScheme_Changed(object sender, EventArgs e)
-        {
-            UpdateControlsDisplay(GetInputActionDescriptions());
-        }
         #endregion
 
         public override void OpenMenu(Dictionary<string, object> parameters)
@@ -258,7 +247,7 @@ namespace RPGTest.UI.PartyMenu
             PartyMemberWidgets.First(w => w.GetComponent<UI_PartyMember>().GetCharacter() != null).GetComponent<Button>().Select();
             m_currentNavigationIndex = 0;
             RefreshDetailsPanel();
-            UpdateControlsDisplay(GetInputActionDescriptions());
+            UpdateInputActions();
         }
 
         public override void CloseMenu()
@@ -283,9 +272,9 @@ namespace RPGTest.UI.PartyMenu
         {
         }
 
-        protected override Dictionary<string, string[]> GetInputActionDescriptions()
+        protected override void UpdateInputActions()
         {
-            var actions = new Dictionary<string, string[]>()
+            m_inputActions = new Dictionary<string, string[]>()
             {
                 { 
                     "Change Character", 
@@ -305,13 +294,13 @@ namespace RPGTest.UI.PartyMenu
 
             if(m_swapInProgress)
             {
-                actions.Add("Validate Position",
+                m_inputActions.Add("Validate Position",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Submit.name,
                         "UI_" + m_playerInput.UI.LeftClick.name
                     });
-                actions.Add("Cancel Selection", 
+                m_inputActions.Add("Cancel Selection", 
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Cancel.name
@@ -319,19 +308,19 @@ namespace RPGTest.UI.PartyMenu
             }
             else
             {
-                actions.Add("Select Character",
+                m_inputActions.Add("Select Character",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Submit.name,
                         "UI_" + m_playerInput.UI.LeftClick.name
                     });
-                actions.Add("Exit Menu",
+                m_inputActions.Add("Exit Menu",
                     new string[] 
                     {
                         "UI_" + m_playerInput.UI.Cancel.name
                     });
             }
-            return actions;
+            base.UpdateInputActions();
         }
 
         public void NavigateToOtherMenu(int index)

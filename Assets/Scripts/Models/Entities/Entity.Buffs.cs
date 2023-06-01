@@ -79,7 +79,6 @@ namespace RPGTest.Models.Entity
                 Buffs.RemoveAll(b => 
                 {
                     var effect = EffectsCollector.TryGetEffect(b.Id);
-                    Debug.Log(effect.Id);
                     return effect.Potency.Attribute == attribute && b.RemovalType == removalType;
                 });
             }

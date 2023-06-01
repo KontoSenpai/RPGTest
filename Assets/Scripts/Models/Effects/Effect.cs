@@ -69,7 +69,12 @@ namespace RPGTest.Models.Effects
 
         public Range PowerRange { get; set; } = new Range();
 
-        public bool EvaluateEffect(Dictionary<Attribute, float> entityAttributes)
+        /// <summary>
+        /// Determine if the given attributes are valid for any potential modifications
+        /// </summary>
+        /// <param name="entityAttributes">Attributes to evaluates</param>
+        /// <returns></returns>
+        public bool EvaluateEffectAttributes(Dictionary<Attribute, float> entityAttributes)
         {
             bool valid = false;
             switch (Type)

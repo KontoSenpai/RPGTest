@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 5181901374344573481}
   - component: {fileID: 6769384212464602591}
   m_Layer: 5
-  m_Name: PNL_Inventory_Use_Item
+  m_Name: PNL_UseItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

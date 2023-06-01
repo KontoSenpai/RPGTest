@@ -1,6 +1,5 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Helpers;
-using RPGTest.Inputs;
 using RPGTest.Managers;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
@@ -16,7 +15,7 @@ using UnityEngine.UI;
 
 namespace RPGTest.UI.InventoryMenu
 {
-    public class UI_Inventory_UseItem : MonoBehaviour
+    public class UI_Inventory_UseItem : UI_Dialog
     {
         [SerializeField] private TextMeshProUGUI Header;
 
@@ -30,95 +29,216 @@ namespace RPGTest.UI.InventoryMenu
         [HideInInspector]
         public ItemInteractionPerformedHandler ItemInteractionPerformed { get; set; }
         [HideInInspector]
-        public delegate void ItemInteractionPerformedHandler(MenuItemActionType actionType, List<Item> items);
+        public delegate void ItemInteractionPerformedHandler(MenuActionType actionType, List<Item> items);
 
 
         private Item m_item;
-        private Slot m_slot;
-        private PlayableCharacter m_owner;
 
-        private MenuItemActionType m_panelActionType;
-        private ActionType m_actionType;
-
+        // Navigation
         private List<GameObject> m_partyMembers;
-
         private int m_memberIndex;
 
         //Equip Specific
-        private Slot m_selectedSlot;
+        private PlayableCharacter m_owner; // character currently using selected piece of gear
+        private Slot m_slot; // where the piece of gear is equipped on current owner
+        private Slot m_selectedSlot; // where the selected piece of gear will be equipped
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
         private InventoryManager m_inventoryManager => FindObjectOfType<GameManager>().InventoryManager;
         private GameObject m_currentSelectedPartyMember => m_partyMembers[m_memberIndex];
 
-        public bool AnyApplicableMember => m_partyMembers.Count > 0 && m_partyMembers.All(x => x.GetComponent<Button>().interactable);
+        //public bool AnyApplicableMember => m_partyMembers.Count > 0 && m_partyMembers.All(x => x.GetComponent<Button>().interactable);
 
-        private Controls m_playerInput;
-        public virtual void Awake()
+        public override void Awake()
         {
-            m_playerInput = new Controls();
+            base.Awake();
+
             m_playerInput.UI.Navigate.performed += OnNavigate_performed;
+
+            //m_playerInput.UI.Submit.performed += OnSubmit_performed;
+
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
+            m_playerInput.UI.RightClick.performed += OnCancel_performed;
+
             m_playerInput.UI.MouseMoved.performed += OnMouseMoved_performed;
-            m_playerInput.UI.Submit.performed += OnSubmit_performed;
 
             PanelEquipment.EquipActionPerformed += OnEquipAction_Performed;
             PanelEquipment.EquipActionCancelled += OnEquipAction_Cancelled;
         }
-        public void OnEnable() => m_playerInput.Enable();
-        public void OnDisable() => m_playerInput.Disable();
 
-        public void Initialize(Item item, Slot slot, PlayableCharacter owner)
+        /// <summary>
+        /// Behaviour when opening the window for a consummable
+        /// </summary>
+        /// <param name="item">Consummable to use</param>
+        public void Open(Item item)
+        {
+            Initialize(item);
+            InitializeUse();
+
+            EnableControls();
+            UpdateInputActions();
+        }
+
+        /// <summary>
+        /// Behaviour when opening the window for a piece of equipment
+        /// </summary>
+        /// <param name="item">Equipement to equip</param>
+        /// <param name="owner">Character who is currently using the piece of equipment. Can be null</param>
+        /// <param name="slot">Slot where the equipment is equipped on the current owner</param>
+        public void Open(Item item, PlayableCharacter owner, Slot slot)
+        {
+            Initialize(item);
+
+            if (owner == null)
+            {
+                InitializeEquip();
+            } 
+            else
+            {
+                m_owner = owner;
+                m_slot = slot;
+            }
+            RefreshEquipmentPanel();
+
+            EnableControls();
+            UpdateInputActions();
+        }
+
+        /// <summary>
+        /// Behaviour when closing the window
+        /// Clear all lists and reset the state of the window
+        /// </summary>
+        public void Close()
+        {
+            Clear();
+            gameObject.SetActive(false);
+            DisableControls();
+        }
+
+        protected override void UpdateInputActions()
+        {
+            m_inputActions = new Dictionary<string, string[]>()
+            {
+                {
+                    "Change Character",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Navigate.name  + ".vertical"
+                    }
+                },
+                {
+                    "Validate Selection",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Submit.name,
+                        "UI_" + m_playerInput.UI.LeftClick.name
+                    }
+                },
+                {
+                    "Cancel Selection",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Cancel.name,
+                        "UI_" + m_playerInput.UI.RightClick.name,
+                    }
+                }
+            };
+            base.UpdateInputActions();
+        }
+
+        #region input events
+        private void OnSubmit_performed(InputAction.CallbackContext ctx)
+        {
+            UseItem(m_currentSelectedPartyMember);
+        }
+        
+        private void OnNavigate_performed(InputAction.CallbackContext ctx)
+        {
+            var movement = ctx.ReadValue<Vector2>();
+            if (m_memberIndex == -1)
+            {
+                m_memberIndex = 0;
+                m_partyMembers[m_memberIndex].GetComponent<Button>().Select();
+            } 
+            else if (movement.y > 0 && m_memberIndex > 0)
+            {
+                m_memberIndex -= 1;
+            }
+            else if (movement.y < 0 && m_memberIndex < m_partyMembers.Count - 1)
+            {
+                m_memberIndex += 1;
+            }
+
+            if (m_item.Type == ItemType.Equipment)
+            {
+                RefreshEquipmentPanel();
+            }
+        }
+
+        private void OnCancel_performed(InputAction.CallbackContext ctx)
+        {
+            CancelAction();
+        }
+
+        private void OnMouseMoved_performed(InputAction.CallbackContext ctx)
+        {
+            FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
+            m_memberIndex = -1;
+        }
+        #endregion
+
+        #region 
+        public void OnMember_Selected(UIActionSelection selection, GameObject member)
+        {
+            UseItem(member);
+        }
+        
+        public void OnEquipAction_Performed(Slot slot)
+        {
+            var character = m_currentSelectedPartyMember.GetComponent<UI_PartyMember>().GetCharacter();
+
+            character.TryEquip(slot, (Equipment)m_item, out List<Item> changedItems);
+            changedItems.Add(m_item);
+            if (ItemInteractionPerformed != null)
+            {
+                ItemInteractionPerformed(MenuActionType.Equip, changedItems);
+            }
+        }
+
+        private void OnEquipAction_Cancelled()
+        {
+            m_currentSelectedPartyMember.GetComponent<Button>().Select();
+            EnableControls();
+        }
+
+        /// <summary>
+        /// Triggered everytime we perform a consumption that would trigger a change in the player state (HP/Mana/Status Effect)
+        /// </summary>
+        /// <param name="attribute"></param>
+        private void OnMemberPlayerWidget_Updated(Enums.Attribute attribute)
+        {
+            Refresh();
+            ItemInteractionPerformed(MenuActionType.Use, new List<Item> { m_item });
+        }
+        #endregion
+
+        #region private methods
+        /// <summary>
+        /// Enable the gameObject
+        /// Initialize the characterList
+        /// </summary>
+        /// <param name="item"></param>
+        private void Initialize(Item item)
         {
             this.gameObject.SetActive(true);
             m_item = item;
 
             InitializeCharacterList();
-
-            switch (item.Type)
-            {
-                case ItemType.Consumable:
-                    InitializeUse();
-                    m_panelActionType = MenuItemActionType.Use;
-                    m_actionType = ActionType.ItemMenu;
-                    break;
-                case ItemType.Equipment:
-                    if (slot == Slot.None)
-                    {
-                        InitializeEquip();
-                        m_panelActionType = MenuItemActionType.Equip;
-                        m_actionType = ActionType.Equip;
-                    } else
-                    {
-                        m_owner = owner;
-                    }
-                    RefreshEquipmentPanel();
-                    break;
-            }
-        }
-
-        public void Close()
-        {
-            Clear();
-            this.gameObject.SetActive(false);
         }
 
         /// <summary>
-        /// Opens this UI component with the item we want to perform actions on
+        /// Instiantiate Selector for all party members.
         /// </summary>
-        /// <param name="item">Selected Item</param>
-        private void InitializeUse()
-        {
-            Header.text = "Use Item";
-            PanelEquipment.gameObject.SetActive(false);
-        }
-
-        private void InitializeEquip()
-        {
-            Header.text = "Equip Item";
-            PanelEquipment.gameObject.SetActive(true);
-        }
-
         private void InitializeCharacterList()
         {
             m_partyMembers = new List<GameObject>();
@@ -150,48 +270,35 @@ namespace RPGTest.UI.InventoryMenu
             m_partyMembers.First().GetComponent<Button>().Select();
         }
 
-        #region input events
-        private void OnSubmit_performed(InputAction.CallbackContext ctx)
+        private void InitializeUse()
         {
-            UseItem(m_currentSelectedPartyMember);
+            Header.text = "Use Item";
+            PanelEquipment.gameObject.SetActive(false);
         }
-        
-        private void OnNavigate_performed(InputAction.CallbackContext ctx)
-        {
-            var movement = ctx.ReadValue<Vector2>();
-            if (m_memberIndex == -1)
-            {
-                m_memberIndex = 0;
-                m_partyMembers[m_memberIndex].GetComponent<Button>().Select();
-            } 
-            else if (movement.y > 0 && m_memberIndex > 0)
-            {
-                m_memberIndex -= 1;
-            }
-            else if (movement.y < 0 && m_memberIndex < m_partyMembers.Count - 1)
-            {
-                m_memberIndex += 1;
-            }
 
-            if (m_panelActionType == MenuItemActionType.Equip)
+        private void InitializeEquip()
+        {
+            Header.text = "Equip Item";
+            PanelEquipment.gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Will refresh all instantiated components
+        /// </summary>
+        private void Refresh()
+        {
+            m_memberIndex = 0;
+            foreach (var item in m_partyMembers)
             {
-                RefreshEquipmentPanel();
+                item.GetComponent<UI_PartyMember>().Refresh();
             }
         }
 
-        private void OnCancel_performed(InputAction.CallbackContext ctx)
-        {
-            CancelAction();
-        }
-
-        private void OnMouseMoved_performed(InputAction.CallbackContext ctx)
-        {
-            FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
-            m_memberIndex = -1;
-        }
-        #endregion
-
-        public void Clear()
+        /// <summary>
+        /// Clean everything that have been instantiated
+        /// Reset properties state
+        /// </summary>
+        private void Clear()
         {
             PanelEquipment.GetComponent<UI_EquipmentSlots>().Clean();
             PanelEquipment.gameObject.SetActive(false);
@@ -210,51 +317,9 @@ namespace RPGTest.UI.InventoryMenu
             {
                 member.PlayerWidgetUpdated -= OnMemberPlayerWidget_Updated;
             }
-        }
 
-        #region events
-        private void OnMemberPlayerWidget_Updated(Enums.Attribute attribute)
-        {
-            Refresh();
-            ItemInteractionPerformed(m_panelActionType, new List<Item> { m_item });
-        }
-
-        public void OnMember_Selected(UIActionSelection selection, GameObject member)
-        {
-            UseItem(member);
-        }
-        
-        public void OnEquipAction_Performed(Slot slot)
-        {
-            m_playerInput.Enable();
-            var character = m_currentSelectedPartyMember.GetComponent<UI_PartyMember>().GetCharacter();
-
-            character.TryEquip(slot, (Equipment)m_item, out List<Item> changedItems);
-            changedItems.Add(m_item);
-            if (ItemInteractionPerformed != null)
-            {
-                ItemInteractionPerformed(MenuItemActionType.Equip, changedItems);
-            }
-        }
-
-        private void OnEquipAction_Cancelled()
-        {
-            m_currentSelectedPartyMember.GetComponent<Button>().Select();
-            m_playerInput.Enable();
-        }
-        #endregion
-
-        #region private methods
-        /// <summary>
-        /// Will refresh all instantiated components
-        /// </summary>
-        private void Refresh()
-        {
-            m_memberIndex = 0;
-            foreach (var item in m_partyMembers)
-            {
-                item.GetComponent<UI_PartyMember>().Refresh();
-            }
+            m_owner = null;
+            m_slot = Slot.None;
         }
 
         private void RefreshEquipmentPanel()
@@ -280,19 +345,21 @@ namespace RPGTest.UI.InventoryMenu
         private void UseItem(GameObject member)
         {
             var character = member.GetComponent<UI_PartyMember>().GetCharacter();
-            switch (m_panelActionType)
+            switch (m_item.Type)
             {
-                case MenuItemActionType.Use:
-                    if (((Consumable)m_item).Effects.All(x => !x.EvaluateEffect(character.GetAttributes())))
-                    {
-                        return;
-                    }
+                case ItemType.Consumable:
+                    // Todo : Evaluate status effects (death, poison etc... ) (need to determine if they linger after battle)
+                    //if (((Consumable)m_item).Effects.All(x => !x.EvaluateEffectAttributes(character.GetAttributes())))
+                    //{
+                    //    // Todo : play meepmerp sound
+                    //    return;
+                    //}
 
-                    var action = new EntityAction(character, m_actionType, m_item.Id, new List<Entity>() { character }, m_inventoryManager);
+                    var action = new EntityAction(character, ActionType.Item, m_item.Id, new List<Entity>() { character }, m_inventoryManager);
                     StartCoroutine(action.Execute(m_partyManager, null, null));
                     break;
-                case MenuItemActionType.Equip:
-                    m_playerInput.Disable();
+                case ItemType.Equipment:
+                    DisableControls();
                     m_memberIndex = m_partyMembers.IndexOf(member);
                     PanelEquipment.GetComponent<UI_EquipmentSlots>().Open();
                     break;

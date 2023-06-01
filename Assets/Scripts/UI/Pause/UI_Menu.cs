@@ -59,11 +59,6 @@ namespace RPGTest.UI
         }
 
         #region EventHandlers
-        private void UpdateHintsFooter(object sender, HintEventArgs e)
-        {
-            MenuFooter.GetComponent<UI_Controls_Display>().Refresh(e.InputDisplays);
-        }
-
         private void OnMenu_changed(object sender, MenuChangeEventArgs e)
         {
             SelectSubMenu(e.MenuIndex, e.Parameters);
@@ -154,7 +149,6 @@ namespace RPGTest.UI
                     menu.GetComponent<UI_Pause_SubMenu>().Initialize();
                     menu.GetComponent<UI_Pause_SubMenu>().SubMenuOpened += OpenSubMenu;
                     menu.GetComponent<UI_Pause_SubMenu>().SubMenuClosed += ExitSubMenu;
-                    menu.GetComponent<UI_Pause_SubMenu>().InputHintsChanged += UpdateHintsFooter;
                     menu.GetComponent<UI_Pause_SubMenu>().MenuChanged += OnMenu_changed;
                 }
             }

@@ -81,14 +81,12 @@ namespace RPGTest.UI
         public override void OnEnable()
         {
             base.OnEnable();
-            InputManager.SchemeChanged += OnScheme_Changed;
-            UpdateControlsDisplay(GetInputActionDescriptions());
+            UpdateInputActions();
         }
 
         public override void OnDisable()
         {
             base.OnDisable();
-            InputManager.SchemeChanged -= OnScheme_Changed;
         }
 
         #region Input Events
@@ -119,9 +117,9 @@ namespace RPGTest.UI
         }
         #endregion
 
-        protected override Dictionary<string, string[]> GetInputActionDescriptions()
+        protected override void UpdateInputActions()
         {
-            var actions = new Dictionary<string, string[]>()
+            m_inputActions = new Dictionary<string, string[]>()
             {
                 {
                     "Navigate",
@@ -149,7 +147,7 @@ namespace RPGTest.UI
 
             if (m_actionInProgress)
             {
-                actions.Add("Cancel",
+                m_inputActions.Add("Cancel",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Cancel.name
@@ -157,13 +155,13 @@ namespace RPGTest.UI
             }
             else
             {
-                actions.Add("Exit Menu",
+                m_inputActions.Add("Exit Menu",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Cancel.name
                     });
             }
-            return actions;
+            base.UpdateInputActions();
         }
 
         public override void OpenMenu(Dictionary<string, object> parameters)
@@ -177,8 +175,7 @@ namespace RPGTest.UI
                 m_currentNavigationIndex = 0;
             }
             Initialize();
-
-            UpdateControlsDisplay(GetInputActionDescriptions());
+            UpdateInputActions();
         }
 
         public override void Initialize(bool refreshAll = true)

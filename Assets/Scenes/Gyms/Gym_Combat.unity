@@ -599,6 +599,17 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 358437931046694403, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
   m_PrefabInstance: {fileID: 1739146011}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1541326993 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7218032186735286708, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+  m_PrefabInstance: {fileID: 1739146011}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1573674124
 GameObject:
   m_ObjectHideFlags: 0
@@ -2345,18 +2356,6 @@ PrefabInstance:
       propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[4].Icons.Array.data[3]
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 6813861937404057970, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
-      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[5].Icons.Array.data[1]
-      value: 
-      objectReference: {fileID: 2800000, guid: 3eddabbc015aa794aad2c7e65e6e2351, type: 3}
-    - target: {fileID: 6813861937404057970, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
-      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[5].Icons.Array.data[2]
-      value: 
-      objectReference: {fileID: 2800000, guid: 2d2faa5a77242374e8bd64526d9d673f, type: 3}
-    - target: {fileID: 6813861937404057970, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
-      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[5].Icons.Array.data[3]
-      value: 
-      objectReference: {fileID: 2800000, guid: df6749d31b3f0a24dabffecc7a7f79cb, type: 3}
     - target: {fileID: 6962819100806576628, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2408,14 +2407,6 @@ PrefabInstance:
     - target: {fileID: 7078670450309489396, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7218032186735286708, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
-      propertyPath: m_LeftClickAction
-      value: 
-      objectReference: {fileID: -8640677288075274151, guid: 160a595b82874e94aae12af861d79132, type: 3}
-    - target: {fileID: 7218032186735286708, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
-      propertyPath: m_TrackedDevicePositionAction
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7347093574781589843, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2492,6 +2483,30 @@ PrefabInstance:
     - target: {fileID: 7616821505680564174, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770912189885159873, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_UIInputModule
+      value: 
+      objectReference: {fileID: 1541326993}
+    - target: {fileID: 7770912189885159873, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770912189885159873, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_ActionId
+      value: da5324da-8f3e-4676-911c-439009c6dbdf
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770912189885159873, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_ActionId
+      value: 005d4729-9b46-480d-b813-c6edd9ba5731
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770912189885159873, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_ActionName
+      value: UI/CloseMenu[/Keyboard/tab]
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770912189885159873, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_ActionName
+      value: UI/Cycle[/Keyboard/f1,/Keyboard/f2]
       objectReference: {fileID: 0}
     - target: {fileID: 7801435765061960166, guid: 9b303cb279f425346ad92c4a20febcab, type: 3}
       propertyPath: m_AnchorMax.y

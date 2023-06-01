@@ -1,4 +1,4 @@
-﻿using RPGTest.Inputs;
+﻿using RPGTest.UI.Common;
 using RPGTest.Managers;
 using System;
 using System.Collections.Generic;
@@ -29,33 +29,14 @@ namespace RPGTest.UI
         public Dictionary<string, object> Parameters { get; }
     }
 
-    public partial class UI_Pause_SubMenu : MonoBehaviour
+    public partial class UI_Pause_SubMenu : UI_Dialog
     {
         public bool IsSubMenuSelected { get; set; }
-        
-        protected InputDisplayManager InputManager => FindObjectOfType<InputDisplayManager>();
-
-        protected Controls m_playerInput { get; set; }
 
         // Navigation helpers
         protected bool m_navigateStarted = false;
         protected float WaitTimeBetweenPerforms = 0.4f;
         protected float m_performTimeStamp;
-
-        public virtual void Awake()
-        {
-            m_playerInput = new Controls();
-        }
-
-        public virtual void OnEnable()
-        {
-            m_playerInput.Enable();
-        }
-
-        public virtual void OnDisable()
-        {
-            m_playerInput.Disable();
-        }
 
         public virtual void Initialize(bool refreshAll = true)
         {
@@ -83,31 +64,12 @@ namespace RPGTest.UI
             }
         }
 
-        protected virtual Dictionary<string, string[]> GetInputActionDescriptions()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected virtual void OnScheme_Changed(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        // Update the input Hints on current page
-        protected void UpdateControlsDisplay(Dictionary<string, string[]> actions)
-        {
-            var inputDisplays = InputManager.GetInputDisplays(actions);
-            InputHintsChanged.Invoke(this, new HintEventArgs(inputDisplays));
-        }
-
         // Open another menu from a sub menu action
         protected void ChangeMenu(int index, Dictionary<string, object> parameters)
         {
             MenuChanged.Invoke(this, new MenuChangeEventArgs(index, parameters));
         }
 
-        [HideInInspector]
-        public event EventHandler<HintEventArgs> InputHintsChanged;
         [HideInInspector]
         public event EventHandler<MenuChangeEventArgs> MenuChanged;
         [HideInInspector]

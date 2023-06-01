@@ -156,7 +156,10 @@ namespace RPGTest.Modules.Battle.Action
                     {
                         m_InventoryManager.RemoveItem(ActionId, 1);
                     }
-                    ActionLogged($"{Caster.Name} uses {GetActionName()}");
+                    if(ActionLogged != null)
+                    {
+                        ActionLogged($"{Caster.Name} uses {GetActionName()}");
+                    }               
                     break;
                 case ActionType.ItemMenu:
                     effects = ItemCollector.TryGetConsumable(ActionId).Effects;

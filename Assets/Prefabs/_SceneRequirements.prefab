@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1060519010797253220}
   - component: {fileID: 4288486309928637537}
   - component: {fileID: 7218032186735286708}
+  - component: {fileID: 4159771458897678530}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -65,7 +66,7 @@ MonoBehaviour:
   m_PointAction: {fileID: 4933143325828053475, guid: 160a595b82874e94aae12af861d79132, type: 3}
   m_MoveAction: {fileID: 4696251690379372076, guid: 160a595b82874e94aae12af861d79132, type: 3}
   m_SubmitAction: {fileID: -1221171755758424474, guid: 160a595b82874e94aae12af861d79132, type: 3}
-  m_CancelAction: {fileID: -7346119845889905587, guid: 160a595b82874e94aae12af861d79132, type: 3}
+  m_CancelAction: {fileID: 2602171880769204737, guid: 160a595b82874e94aae12af861d79132, type: 3}
   m_LeftClickAction: {fileID: -8640677288075274151, guid: 160a595b82874e94aae12af861d79132, type: 3}
   m_MiddleClickAction: {fileID: 3279352641294131588, guid: 160a595b82874e94aae12af861d79132, type: 3}
   m_RightClickAction: {fileID: -8278633239960529032, guid: 160a595b82874e94aae12af861d79132, type: 3}
@@ -73,7 +74,20 @@ MonoBehaviour:
   m_TrackedDevicePositionAction: {fileID: 0}
   m_TrackedDeviceOrientationAction: {fileID: 0}
   m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
+  m_PointerBehavior: 1
+--- !u!114 &4159771458897678530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3386205109340429137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f30fa6534764764faffdad07dab26b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventSystem: {fileID: 4288486309928637537}
 --- !u!1 &5703601150821119022
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,18 +1104,6 @@ PrefabInstance:
       propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[4].Icons.Array.data[3]
       value: 
       objectReference: {fileID: 2800000, guid: db234320475aabc4a93906eed35bfc93, type: 3}
-    - target: {fileID: 646560837245086394, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
-      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[5].Icons.Array.data[1]
-      value: 
-      objectReference: {fileID: 2800000, guid: facb185e91c49804fa8cd7526368a670, type: 3}
-    - target: {fileID: 646560837245086394, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
-      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[5].Icons.Array.data[2]
-      value: 
-      objectReference: {fileID: 2800000, guid: facb185e91c49804fa8cd7526368a670, type: 3}
-    - target: {fileID: 646560837245086394, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
-      propertyPath: InputDisplays.Array.data[0].Inputs.Array.data[5].Icons.Array.data[3]
-      value: 
-      objectReference: {fileID: 2800000, guid: facb185e91c49804fa8cd7526368a670, type: 3}
     - target: {fileID: 1824516350989430720, guid: b7c5a2d2d58a93e42b1e1d4c5abc2c50, type: 3}
       propertyPath: UIScripts.Array.size
       value: 4

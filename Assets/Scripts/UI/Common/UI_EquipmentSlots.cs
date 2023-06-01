@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 
 namespace RPGTest.UI.Common
 {
-    public class UI_EquipmentSlots : MonoBehaviour
+    public class UI_EquipmentSlots : UI_Dialog
     {
         [SerializeField]
         private UI_EquipmentSlot[] m_equipmentSlots;

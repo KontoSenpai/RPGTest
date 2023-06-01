@@ -483,7 +483,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7761436969818917987}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5186169309849609374}
+        m_TargetAssemblyTypeName: RPGTest.UI.Common.UI_PartyMember, RPGTest.Core
+        m_MethodName: PrimaryAction_Selected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5186169309849609374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,19 +510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5186169309849609374}
-        m_TargetAssemblyTypeName: RPGTest.UI.UI_Party_Member, RPGTest.Core
-        m_MethodName: PrimaryAction_Selected
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   middleClick:
     m_PersistentCalls:
       m_Calls: []
