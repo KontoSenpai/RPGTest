@@ -7,7 +7,8 @@ using RPGTest.Models.Items;
 using RPGTest.Models.Entity;
 using RPGTest.Enums;
 using System.Linq;
-using UnityEngine.EventSystems;
+using RPGTest.Models;
+using static RPGTest.UI.Common.UI_PartyMember;
 
 namespace RPGTest.UI.Common
 {
@@ -21,78 +22,35 @@ namespace RPGTest.UI.Common
         [HideInInspector]
         public EquipmentSlotSelectedHandler EquipActionPerformed { get; set; }
 
+        private PresetSlot m_presetSlot;
         private PlayableCharacter m_character;
         private Equipment m_selectedItem;
 
-        private Controls m_playerInput;
-
-        public virtual void Awake()
+        public override void Awake()
         {
+            base.Awake();
+
             m_playerInput = new Controls();
-            m_playerInput.UI.Submit.performed += OnSubmit_Performed;
-            m_playerInput.UI.Navigate.performed += OnNavigate_performed;
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
-
-            foreach (UI_EquipmentSlot slot in m_equipmentSlots)
-            {
-                slot.SlotSelected += OnSlot_Selected;
-            }
         }
-
-        #region Input Events
-        private void OnSubmit_Performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-        {
-            var go = FindObjectOfType<EventSystem>().currentSelectedGameObject;
-            if(go.TryGetComponent<UI_EquipmentSlot>(out var equipmentSlot))
-            {
-                equipmentSlot.onClick();
-            }
-        }
-
-        private void OnCancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-        {
-            m_playerInput.Disable();
-            EquipActionCancelled();
-        }
-
-        private void OnNavigate_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-        {
-            var movement = ctx.ReadValue<Vector2>();
-            if (movement.x < 0)
-            {
-                //TryChangePurchaseQuantity(-1);
-            }
-            else if (movement.x > 0)
-            {
-                //TryChangePurchaseQuantity(1);
-            }
-        }
-        #endregion
-
-
-        #region Events
-        private void OnSlot_Selected(Slot slot)
-        {
-            m_playerInput.Disable();
-            EquipActionPerformed(slot);
-        }
-        #endregion
 
         #region Public Methods
         public void Initialize(PlayableCharacter character, Equipment item)
         {
             m_character = character;
             m_selectedItem = item;
+            m_presetSlot = PresetSlot.First;
 
+            var equipmentSlots = m_character.EquipmentSlots.GetEquipmentPreset(PresetSlot.First);
             foreach (UI_EquipmentSlot slot in m_equipmentSlots)
             {
-                slot.Initialize(m_character.EquipmentSlots.Equipment[slot.Slot], m_selectedItem);
+                slot.Initialize(equipmentSlots[slot.Slot], m_selectedItem);
             }
         }
 
-        public void Open()
+        public override void Open()
         {
-            m_playerInput.Enable();
+            base.Open();
 
             if (m_selectedItem.EquipmentType < EquipmentType.Helmet) // Weapons
             {
@@ -131,14 +89,23 @@ namespace RPGTest.UI.Common
             m_equipmentSlots.FirstOrDefault(s => s.GetButton().interactable).GetButton().Select();
         }
 
-        public void Close()
-        {
-
-        }
-
         public void Clean()
         {
             m_character = null;
+        }
+
+        public void OnSlotSelected(int slot)
+        {
+            EquipActionPerformed.Invoke(m_presetSlot, (Slot)slot);
+        }
+        #endregion
+
+
+        #region Input Events
+        private void OnCancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        {
+            m_playerInput.Disable();
+            EquipActionCancelled();
         }
         #endregion
     }

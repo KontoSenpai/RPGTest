@@ -1,6 +1,8 @@
 ﻿using MyBox;
+using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Managers;
+using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using RPGTest.UI.Common;
@@ -8,6 +10,7 @@ using RPGTest.UI.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace RPGTest.UI.InventoryMenu
@@ -16,6 +19,7 @@ namespace RPGTest.UI.InventoryMenu
     {
         public Item Item { get; set; }
         public PlayableCharacter Owner { get; set; }
+        public PresetSlot Preset { get; set; }
         public Slot Slot { get; set; }
     }
 
@@ -36,6 +40,17 @@ namespace RPGTest.UI.InventoryMenu
 
         private InventoryManager m_inventoryManager => FindObjectOfType<GameManager>().InventoryManager;
 
+        private List<ItemFilterCategory> m_filterCategories = new List<ItemFilterCategory>()
+        {
+            ItemFilterCategory.All,
+            ItemFilterCategory.Consumables,
+            ItemFilterCategory.Weapons,
+            ItemFilterCategory.Armors,
+            ItemFilterCategory.Accessories,
+            ItemFilterCategory.Materials,
+            ItemFilterCategory.Key
+        };
+
         public override void Awake()
         {
             base.Awake();
@@ -46,7 +61,7 @@ namespace RPGTest.UI.InventoryMenu
             m_playerInput.UI.Navigate.performed += ctx =>
             {
                 m_performTimeStamp = Time.time + 0.3f;
-                ItemList.OnNavigate_performed();
+                OnNavgate_Performed();
             };
             m_playerInput.UI.Navigate.canceled += ctx =>
             {
@@ -56,19 +71,12 @@ namespace RPGTest.UI.InventoryMenu
             {
                 OnCancel_performed(ctx);
             };
-            m_playerInput.UI.MouseMoved.performed += ctx =>
-            {
-                ItemList.OnMouseMoved_Performed(ctx);
-            };
-            m_playerInput.UI.RightClick.performed += ctx =>
-            {
-                OnMouseRightClick_Performed();
-            };
+            m_playerInput.UI.MouseMoved.performed += OnMouseMoved_Performed;
+            m_playerInput.UI.RightClick.performed += OnMouseRightClick_Performed;
 
             ItemUsageWindow.ItemInteractionCancelled += OnItemAction_Cancelled;
             ItemUsageWindow.ItemInteractionPerformed += OnItemAction_Performed;
 
-            ItemList.ItemSelected += OnItem_Selected;
             ItemList.ItemSelectionConfirmed += OnItemSelection_Confirmed;
 
             ItemQuantityDialog.DialogActionConfirmed += OnItemQuantityDialogAction_Confirmed;
@@ -100,7 +108,19 @@ namespace RPGTest.UI.InventoryMenu
 
         public override void Initialize(bool refreshAll = true)
         {
-            ItemList.Initialize();
+            var displayItems = new List<UIItemDisplay>();
+
+            foreach(var item in m_inventoryManager.GetAllItems())
+            {
+                var itemModel = ItemCollector.TryGetItem(item.Key);
+                displayItems.Add(
+                    new UIItemDisplay
+                    {
+                        Item = itemModel,
+                        Quantity = m_inventoryManager.GetHeldItemQuantity(item.Key)
+                    });
+            };
+            ItemList.Initialize(displayItems, m_filterCategories);
         }
 
         protected override void UpdateInputActions()
@@ -108,14 +128,14 @@ namespace RPGTest.UI.InventoryMenu
             m_inputActions = new Dictionary<string, string[]>()
             {
                 {
-                    "Change Item",
+                    "Select Item",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Navigate.name  + ".vertical"
                     }
                 },
                 {
-                    "Select Item",
+                    "Confirm",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Submit.name,
@@ -123,7 +143,7 @@ namespace RPGTest.UI.InventoryMenu
                     }
                 },
                 {
-                    "Cancel Selection",
+                    "Cancel",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Cancel.name
@@ -143,14 +163,27 @@ namespace RPGTest.UI.InventoryMenu
         }
 
         #region Input Events
+        private void OnNavgate_Performed()
+        {
+            if (FindObjectOfType<EventSystem>().currentSelectedGameObject == null)
+            {
+                ItemList.SelectDefault();
+            }
+        }
+
         protected override void OnCancel_performed(InputAction.CallbackContext ctx)
         {
             CancelCurrentAction();
         }
 
-        public void OnMouseRightClick_Performed()
+        private void OnMouseRightClick_Performed(InputAction.CallbackContext ctx)
         {
             CancelCurrentAction();
+        }
+
+        private void OnMouseMoved_Performed(InputAction.CallbackContext ctx)
+        {
+            FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
         }
         #endregion
 
@@ -158,7 +191,15 @@ namespace RPGTest.UI.InventoryMenu
         private void OnItemQuantityDialogAction_Confirmed(object sender, EventArgs e)
         {
             m_inventoryManager.RemoveItem(m_pendingItemSelection.Item.Id, ((ItemQuantitySelectedEventArgs)e).Quantity);
-            ItemList.Refresh(false, new List<Item> { m_pendingItemSelection.Item });
+
+            var displayItems = new List<UIItemDisplay>() {
+                new UIItemDisplay
+                {
+                    Item = m_pendingItemSelection.Item,
+                    Quantity = m_inventoryManager.GetHeldItemQuantity(m_pendingItemSelection.Item.Id)
+                }
+            };
+            ItemList.UpdateItems(displayItems);
 
             CloseItemQuantityDialog();
         }
@@ -212,26 +253,38 @@ namespace RPGTest.UI.InventoryMenu
 
         public void OnItemAction_Performed(MenuActionType actionType, List<Item> items)
         {
+            List<UIItemDisplay> displayItems = new List<UIItemDisplay>();
+            foreach(var item in items)
+            {
+                m_inventoryManager.GetHeldItemQuantity(item.Id);
+                displayItems.Add(new UIItemDisplay
+                {
+                    Item = item,
+                    Quantity = m_inventoryManager.GetHeldItemQuantity(item.Id)
+                });
+            }
+
+            bool closeUsageWindow = false;
             switch (actionType)
             {
                 case MenuActionType.Use:
-                    if(!ItemList.Refresh(false, items))
-                    {
-                        return;
-                    }
+                    closeUsageWindow = ItemList.UpdateItems(displayItems);
                     break;
                 case MenuActionType.Equip:
                 case MenuActionType.Unequip:
-                    ItemList.Refresh(false, items);
+                    ItemList.UpdateItems(displayItems);
                     break;
                 case MenuActionType.Cancel:
-                    ItemList.Refresh();
+                    ItemList.UpdateItems(displayItems);
                     break;
             }
 
-            ItemUsageWindow.Close();
-            EnableControls();
-            ItemList.ReselectCurrentItem();
+            if (closeUsageWindow)
+            {
+                ItemUsageWindow.Close();
+                EnableControls();
+                ItemList.ReselectCurrentItem();
+            }
         }
 
         public void OnItemAction_Cancelled()
@@ -278,7 +331,7 @@ namespace RPGTest.UI.InventoryMenu
                     ItemUsageWindow.Open(m_pendingItemSelection.Item, m_pendingItemSelection.Owner, m_pendingItemSelection.Slot);
                     break;
                 case MenuActionType.Unequip:
-                    m_pendingItemSelection.Owner.TryUnequip(m_pendingItemSelection.Slot, out var removedEquipment);
+                    m_pendingItemSelection.Owner.TryUnequip(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, out var removedEquipment);
                     break;
                 case MenuActionType.Discard:
                     ItemQuantityDialog.Open();

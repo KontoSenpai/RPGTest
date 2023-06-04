@@ -1,6 +1,7 @@
 ﻿using MyBox;
 using RPGTest.Enums;
 using RPGTest.Inputs;
+using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.UI.Widgets;
 using System;
@@ -33,7 +34,7 @@ namespace RPGTest.UI.Common
         [HideInInspector]
         public EquipmentSlotSelectedHandler EquipmentSlotSelected { get; set; }
         [HideInInspector]
-        public delegate void EquipmentSlotSelectedHandler(GameObject item, Slot slot);
+        public delegate void EquipmentSlotSelectedHandler(PresetSlot preset, Slot slot);
 
         public bool TwoStepSelect = false;
 
@@ -116,7 +117,7 @@ namespace RPGTest.UI.Common
 
         public void SelectSlot(Slot selectedSlot)
         {
-            EquipmentSlotSelected(this.gameObject, selectedSlot);
+            //EquipmentSlotSelected(this.gameObject, selectedSlot);
         }
 
         public void RefreshExperience()

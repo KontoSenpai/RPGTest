@@ -1,8 +1,10 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Inputs;
+using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,7 +39,9 @@ namespace RPGTest.UI.Common
         public event EventHandler<ItemSelectionConfirmedEventArgs> ItemSelectionConfirmed;
 
         private Item m_item;
-        private PlayableCharacter m_owner;
+
+        private List<PlayableCharacter> m_owners = new List<PlayableCharacter>();
+        private PresetSlot m_preset;
         private Slot m_slot;
 
         #region public Methods
@@ -50,27 +54,20 @@ namespace RPGTest.UI.Common
         public void Refresh(int count = 0)
         {
             ItemName.text = m_item.Name;
-            if(m_owner != null)
-            {
-                QuantityHeld.text = "1";
-            }
-            else
-            {
-                QuantityHeld.text = count.ToString();
-            }
+            QuantityHeld.text = count.ToString();
         }
 
         #region Input Events
         // Select for swap
         public void PrimaryAction_Selected()
         {
-            ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(UIActionSelection.Primary, m_item, m_slot, m_owner));
+            ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(UIActionSelection.Primary, m_item, m_slot, m_owners.Count > 1 ? m_owners[0] : null));
         }
 
         // Select for SubMenu
         public void SecondaryAction_Selected()
         {
-            ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(UIActionSelection.Secondary, m_item, m_slot, m_owner));
+            ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(UIActionSelection.Secondary, m_item, m_slot, m_owners.Count > 1 ? m_owners[0] : null));
         }
         #endregion
 
@@ -79,20 +76,40 @@ namespace RPGTest.UI.Common
             return m_item;
         }
 
-        public void UseItem()
+        public void SetOwners(List<PlayableCharacter> owners)
         {
-            ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(UIActionSelection.Primary, m_item, m_slot, m_owner));
+            m_owners = owners;
         }
 
-        public void SetOWner(PlayableCharacter owner, Slot slot)
+        public List<PlayableCharacter> GetOwners()
+        {
+            return m_owners;
+        }
+
+        public void SetOwner(PlayableCharacter owner, PresetSlot preset, Slot slot)
         {
             if(owner != null)
             {
-                m_owner = owner;
+                m_owners = new List<PlayableCharacter> { owner };
+                m_preset = preset;
                 m_slot = slot;
-                Owner.text = $"{m_owner.Name} - {m_slot.ToString()}";
+                Owner.text = $"{m_owners[0].Name}";
                 IsEquipped.SetActive(true);
             }
+        }
+
+        public PlayableCharacter GetOwner()
+        {
+            return m_owners.Count > 1 ? m_owners[0] : null;
+        }
+
+        public PresetSlot GetPreset()
+        {
+            if (GetOwner() != null)
+            {
+                return m_preset;
+            }
+            return PresetSlot.None;
         }
 
         public Slot GetSlot()
@@ -107,10 +124,6 @@ namespace RPGTest.UI.Common
             }           
         }
 
-        public PlayableCharacter GetOwner()
-        {
-            return m_owner;
-        }
 
         public bool GetIsEquipped()
         {

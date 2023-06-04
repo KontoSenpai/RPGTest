@@ -1,6 +1,7 @@
 ﻿using System;
 using RPGTest.Enums;
 using RPGTest.Helpers;
+using RPGTest.Models;
 using RPGTest.Models.Items;
 using TMPro;
 using Unity.Extensions.UI;
@@ -14,6 +15,7 @@ namespace RPGTest.UI.Widgets
     /// </summary>
     public class UI_EquipmentSlot: MonoBehaviour
     {
+        public PresetSlot Preset;
         public Slot Slot;
 
         [SerializeField]
@@ -27,9 +29,6 @@ namespace RPGTest.UI.Widgets
 
         private Equipment m_equipedItem;
         private Equipment m_previewItem;
-
-        [HideInInspector]
-        public EquipmentSlotSelectedHandler SlotSelected { get; set; }
 
         public void Awake()
         {
@@ -63,9 +62,9 @@ namespace RPGTest.UI.Widgets
             // Todo : replace content with equiped item
         }
 
-        public void onClick()
+        public void OnSlot_Selected()
         {
-            SlotSelected(Slot);
+
         }
 
         public void Enable(bool value)

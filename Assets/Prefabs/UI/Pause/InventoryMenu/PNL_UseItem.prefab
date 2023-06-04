@@ -482,6 +482,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dddead315c73334ba6f074ea1ba2adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ConfirmButton: {fileID: 0}
+  CancelButton: {fileID: 0}
   Header: {fileID: 4922730966484414902}
   PartyList: {fileID: 4494237170607341134}
   PartyMemberGo: {fileID: 6094004471297311980, guid: c1489e54f6772944fb4a81802645112c, type: 3}
@@ -1085,6 +1087,22 @@ PrefabInstance:
     - target: {fileID: 642815498512464240, guid: 81a0ab81cf5f30f40911dd897b262cc9, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 959086783503460770, guid: 81a0ab81cf5f30f40911dd897b262cc9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 959086783503460770, guid: 81a0ab81cf5f30f40911dd897b262cc9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 959086783503460770, guid: 81a0ab81cf5f30f40911dd897b262cc9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5163096134106923321}
+    - target: {fileID: 959086783503460770, guid: 81a0ab81cf5f30f40911dd897b262cc9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1044094765012539878, guid: 81a0ab81cf5f30f40911dd897b262cc9, type: 3}
       propertyPath: m_TargetGraphic

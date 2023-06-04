@@ -232,28 +232,9 @@ namespace RPGTest.Managers
 
             List<Item> removedEquipments;
             var partyMember = PartyManager.TryGetPartyMember("PC0001");
-            partyMember.TryEquip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
-            partyMember.TryEquip(Enums.Slot.RightHand1, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
-            partyMember.TryEquip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0003"), out removedEquipments);
-
-            /*
-            partyMember = PartyManager.TryGetPartyMember("PC0002");
-            partyMember.TryEquip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
-            partyMember.TryEquip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0002"), out removedEquipments);
-            */
-            /*
-            partyMember = PartyManager.TryGetPartyMember("PC0003");
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"));
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0002"));
-
-            partyMember = PartyManager.TryGetPartyMember("PC0004");
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"));
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0002"));
-
-            partyMember = PartyManager.TryGetPartyMember("PC0005");
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"));
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0002"));
-            */
+            partyMember.TryEquip(PresetSlot.First, Enums.Slot.LeftHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
+            partyMember.TryEquip(PresetSlot.First, Enums.Slot.RightHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
+            partyMember.TryEquip(PresetSlot.Second, Enums.Slot.LeftHand, ItemCollector.TryGetEquipment("E0003"), out removedEquipments);            
         }
 
         private void InitManagerProperties()

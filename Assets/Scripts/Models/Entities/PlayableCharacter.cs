@@ -92,6 +92,11 @@ namespace RPGTest.Models.Entity
             return value;
         }
 
+        public void ChangeEquipmentPreset()
+        {
+            this.EquipmentSlots.ChangePreset();
+        }
+
         public override Dictionary<Attribute, float> GetAttributes()
         {
             return GetAttributes(EquipmentSlots.CurrentPreset);
@@ -212,19 +217,14 @@ namespace RPGTest.Models.Entity
             BaseAttributes.Resistance += AttributesGrowth.Defense;
         }
 
-        public bool TryEquip(Slot slot, Equipment equipPiece, out List<Item> removedEquipments)
+        public bool TryEquip(PresetSlot preset, Slot slot, Equipment equipPiece, out List<Item> removedEquipments)
         {
-            if(!EquipmentSlots.TryEquip(slot, equipPiece, out removedEquipments))
-            {
-                Debug.Log("Wesh");
-            }
-            removedEquipments.WhereNotNull();
-            return EquipmentSlots.Equipment[slot] == equipPiece;
+            return EquipmentSlots.TryEquip(preset, slot, equipPiece, out removedEquipments);
         }
         
-        public bool TryUnequip(Slot slot, out List<Item> removedEquipments)
+        public bool TryUnequip(PresetSlot preset, Slot slot, out List<Item> removedEquipments)
         {
-            EquipmentSlots.TryUnequip(slot, out removedEquipments);
+            EquipmentSlots.TryUnequip(preset, slot, out removedEquipments);
             removedEquipments.WhereNotNull();
             return removedEquipments.Any();
         }

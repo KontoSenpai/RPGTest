@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RPGTest.Managers;
 using RPGTest.Models.Items;
 using TMPro;
@@ -103,6 +104,44 @@ namespace RPGTest.UI.Common
             InitializeInitialCost(item, displayCost);
         }
         #endregion
+
+        protected override void UpdateInputActions()
+        {
+            m_inputActions = new Dictionary<string, string[]>()
+            {
+                {
+                    "Update Quantity X 1",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Navigate.name  + ".vertical"
+                    }
+                },
+                {
+                    "Update Quantity X 10",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Navigate.name  + ".batch"
+                    }
+                },
+                {
+                    "Confirm",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Submit.name,
+                        "UI_" + m_playerInput.UI.LeftClick.name
+                    }
+                },
+                {
+                    "Cancel",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Cancel.name,
+                        "UI_" + m_playerInput.UI.RightClick.name,
+                    }
+                }
+            };
+            base.UpdateInputActions();
+        }
 
         #region EventHandlers
         public void OnSubmit_Performed()

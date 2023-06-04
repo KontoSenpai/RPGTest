@@ -291,7 +291,6 @@ GameObject:
   - component: {fileID: 3317514003300212177}
   - component: {fileID: 2401127402101811183}
   - component: {fileID: 4565866790392810794}
-  - component: {fileID: 7681802159136967040}
   m_Layer: 5
   m_Name: PNL_ItemList
   m_TagString: Untagged
@@ -401,20 +400,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7681802159136967040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4688445674511507893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31425ffe9c0d2c9439064cc64fd77a35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemGo: {fileID: 8785153798422103600, guid: 66a0bce3a00971141aa13f3230ba3360, type: 3}
-  ItemList: {fileID: 425176876240327884}
 --- !u!1 &4707260369420842705
 GameObject:
   m_ObjectHideFlags: 0

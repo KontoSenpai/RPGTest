@@ -1,6 +1,7 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Helpers;
 using RPGTest.Managers;
+using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using RPGTest.Modules.Battle.Action;
@@ -40,7 +41,11 @@ namespace RPGTest.UI.InventoryMenu
 
         //Equip Specific
         private PlayableCharacter m_owner; // character currently using selected piece of gear
-        private Slot m_slot; // where the piece of gear is equipped on current owner
+
+        private PresetSlot m_preset; // preset where the piece of gear is currently equipped on current owner
+        private Slot m_slot; // slot where the piece of gear is equipped on current owner
+
+        private PresetSlot m_selectedPreset; // which preset will be used for equipment
         private Slot m_selectedSlot; // where the selected piece of gear will be equipped
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
@@ -54,8 +59,6 @@ namespace RPGTest.UI.InventoryMenu
             base.Awake();
 
             m_playerInput.UI.Navigate.performed += OnNavigate_performed;
-
-            //m_playerInput.UI.Submit.performed += OnSubmit_performed;
 
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
             m_playerInput.UI.RightClick.performed += OnCancel_performed;
@@ -108,11 +111,10 @@ namespace RPGTest.UI.InventoryMenu
         /// Behaviour when closing the window
         /// Clear all lists and reset the state of the window
         /// </summary>
-        public void Close()
+        public override void Close()
         {
             Clear();
-            gameObject.SetActive(false);
-            DisableControls();
+            base.Close();
         }
 
         protected override void UpdateInputActions()
@@ -127,7 +129,7 @@ namespace RPGTest.UI.InventoryMenu
                     }
                 },
                 {
-                    "Validate Selection",
+                    "Confirm",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Submit.name,
@@ -135,7 +137,7 @@ namespace RPGTest.UI.InventoryMenu
                     }
                 },
                 {
-                    "Cancel Selection",
+                    "Cancel",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Cancel.name,
@@ -146,12 +148,7 @@ namespace RPGTest.UI.InventoryMenu
             base.UpdateInputActions();
         }
 
-        #region input events
-        private void OnSubmit_performed(InputAction.CallbackContext ctx)
-        {
-            UseItem(m_currentSelectedPartyMember);
-        }
-        
+        #region input events        
         private void OnNavigate_performed(InputAction.CallbackContext ctx)
         {
             var movement = ctx.ReadValue<Vector2>();
@@ -192,12 +189,12 @@ namespace RPGTest.UI.InventoryMenu
         {
             UseItem(member);
         }
-        
-        public void OnEquipAction_Performed(Slot slot)
+
+        private void OnEquipAction_Performed(PresetSlot preset, Slot slot)
         {
             var character = m_currentSelectedPartyMember.GetComponent<UI_PartyMember>().GetCharacter();
 
-            character.TryEquip(slot, (Equipment)m_item, out List<Item> changedItems);
+            character.TryEquip(preset, slot, (Equipment)m_item, out List<Item> changedItems);
             changedItems.Add(m_item);
             if (ItemInteractionPerformed != null)
             {
