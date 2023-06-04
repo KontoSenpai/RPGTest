@@ -6,6 +6,7 @@ using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using RPGTest.Modules.Battle.Action;
 using RPGTest.UI.Common;
+using RPGTest.UI.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -45,9 +46,6 @@ namespace RPGTest.UI.InventoryMenu
         private PresetSlot m_preset; // preset where the piece of gear is currently equipped on current owner
         private Slot m_slot; // slot where the piece of gear is equipped on current owner
 
-        private PresetSlot m_selectedPreset; // which preset will be used for equipment
-        private Slot m_selectedSlot; // where the selected piece of gear will be equipped
-
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
         private InventoryManager m_inventoryManager => FindObjectOfType<GameManager>().InventoryManager;
         private GameObject m_currentSelectedPartyMember => m_partyMembers[m_memberIndex];
@@ -59,7 +57,6 @@ namespace RPGTest.UI.InventoryMenu
             base.Awake();
 
             m_playerInput.UI.Navigate.performed += OnNavigate_performed;
-
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
             m_playerInput.UI.RightClick.performed += OnCancel_performed;
 
@@ -88,7 +85,7 @@ namespace RPGTest.UI.InventoryMenu
         /// <param name="item">Equipement to equip</param>
         /// <param name="owner">Character who is currently using the piece of equipment. Can be null</param>
         /// <param name="slot">Slot where the equipment is equipped on the current owner</param>
-        public void Open(Item item, PlayableCharacter owner, Slot slot)
+        public void Open(Item item, PlayableCharacter owner, PresetSlot preset, Slot slot)
         {
             Initialize(item);
 
@@ -99,9 +96,9 @@ namespace RPGTest.UI.InventoryMenu
             else
             {
                 m_owner = owner;
+                m_preset = preset;
                 m_slot = slot;
             }
-            RefreshEquipmentPanel();
 
             EnableControls();
             UpdateInputActions();
@@ -114,6 +111,7 @@ namespace RPGTest.UI.InventoryMenu
         public override void Close()
         {
             Clear();
+            EventSystemEvents.OnSelectionUpdated -= OnSelection_Updated;
             base.Close();
         }
 
@@ -148,27 +146,12 @@ namespace RPGTest.UI.InventoryMenu
             base.UpdateInputActions();
         }
 
-        #region input events        
+        #region input events      
         private void OnNavigate_performed(InputAction.CallbackContext ctx)
         {
-            var movement = ctx.ReadValue<Vector2>();
-            if (m_memberIndex == -1)
+            if (FindObjectOfType<EventSystem>().currentSelectedGameObject == null)
             {
-                m_memberIndex = 0;
-                m_partyMembers[m_memberIndex].GetComponent<Button>().Select();
-            } 
-            else if (movement.y > 0 && m_memberIndex > 0)
-            {
-                m_memberIndex -= 1;
-            }
-            else if (movement.y < 0 && m_memberIndex < m_partyMembers.Count - 1)
-            {
-                m_memberIndex += 1;
-            }
-
-            if (m_item.Type == ItemType.Equipment)
-            {
-                RefreshEquipmentPanel();
+                m_partyMembers.First().GetComponent<Button>().Select();
             }
         }
 
@@ -212,10 +195,24 @@ namespace RPGTest.UI.InventoryMenu
         /// Triggered everytime we perform a consumption that would trigger a change in the player state (HP/Mana/Status Effect)
         /// </summary>
         /// <param name="attribute"></param>
-        private void OnMemberPlayerWidget_Updated(Enums.Attribute attribute)
+        private void OnMemberPlayerWidget_Updated(Attribute attribute)
         {
             Refresh();
             ItemInteractionPerformed(MenuActionType.Use, new List<Item> { m_item });
+        }
+
+        private void OnSelection_Updated(GameObject currentSelection, GameObject previousSelection)
+        {
+            if (m_item.Type != ItemType.Equipment || currentSelection == null)
+            {
+                return;
+            }
+
+            if (currentSelection.TryGetComponent<UI_PartyMember>(out var compoment))
+            {
+                m_memberIndex = m_partyMembers.IndexOf(currentSelection);
+                RefreshEquipmentPanel(compoment.GetCharacter());
+            }
         }
         #endregion
 
@@ -231,6 +228,7 @@ namespace RPGTest.UI.InventoryMenu
             m_item = item;
 
             InitializeCharacterList();
+            EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
         }
 
         /// <summary>
@@ -239,7 +237,6 @@ namespace RPGTest.UI.InventoryMenu
         private void InitializeCharacterList()
         {
             m_partyMembers = new List<GameObject>();
-            m_memberIndex = 0;
 
             foreach (var member in m_partyManager.GetAllExistingPartyMembers())
             {
@@ -284,7 +281,6 @@ namespace RPGTest.UI.InventoryMenu
         /// </summary>
         private void Refresh()
         {
-            m_memberIndex = 0;
             foreach (var item in m_partyMembers)
             {
                 item.GetComponent<UI_PartyMember>().Refresh();
@@ -316,12 +312,12 @@ namespace RPGTest.UI.InventoryMenu
             }
 
             m_owner = null;
+            m_preset = PresetSlot.None;
             m_slot = Slot.None;
         }
 
-        private void RefreshEquipmentPanel()
+        private void RefreshEquipmentPanel(PlayableCharacter character)
         {
-            var character = m_partyMembers[m_memberIndex].GetComponent<UI_PartyMember>().GetCharacter();
             PanelEquipment.GetComponent<UI_EquipmentSlots>().Initialize(character, m_item as Equipment);
         }
 

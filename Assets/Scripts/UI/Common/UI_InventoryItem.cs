@@ -100,7 +100,7 @@ namespace RPGTest.UI.Common
 
         public PlayableCharacter GetOwner()
         {
-            return m_owners.Count > 1 ? m_owners[0] : null;
+            return m_owners.Count >= 1 ? m_owners[0] : null;
         }
 
         public PresetSlot GetPreset()

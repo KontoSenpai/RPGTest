@@ -9,6 +9,7 @@ using RPGTest.Enums;
 using System.Linq;
 using RPGTest.Models;
 using static RPGTest.UI.Common.UI_PartyMember;
+using UnityEngine.UI;
 
 namespace RPGTest.UI.Common
 {
@@ -32,6 +33,10 @@ namespace RPGTest.UI.Common
 
             m_playerInput = new Controls();
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
+            foreach (UI_EquipmentSlot slot in m_equipmentSlots)
+            {
+                slot.GetComponent<Button>().onClick.AddListener(() => OnSlotSelected(slot.Slot));
+            }
         }
 
         #region Public Methods
@@ -94,9 +99,9 @@ namespace RPGTest.UI.Common
             m_character = null;
         }
 
-        public void OnSlotSelected(int slot)
+        public void OnSlotSelected(Slot slot)
         {
-            EquipActionPerformed.Invoke(m_presetSlot, (Slot)slot);
+            EquipActionPerformed.Invoke(m_presetSlot, slot);
         }
         #endregion
 

@@ -116,7 +116,7 @@ namespace RPGTest.UI.Common
                 switch (item.Item.Type)
                 {
                     case ItemType.Equipment:
-                        //UpdateEquipmentInformation(item, m_items.Where(g => m_FindInstantiatedGameObjectForItemID(g, item.Id)), heldQuantity);
+                        UpdateEquipment(item);
                         focusList = true;
                         break;
                     case ItemType.Consumable:
@@ -161,8 +161,6 @@ namespace RPGTest.UI.Common
         {
             foreach (var itemDisplay in itemDisplays)
             {
-                Debug.Log($"Item : {itemDisplay.Item.Name}");
-                Debug.Log($"Total : {itemDisplay.Quantity}");
                 switch (itemDisplay.Item.Type)
                 {
                     case ItemType.Equipment:
@@ -202,7 +200,7 @@ namespace RPGTest.UI.Common
             {
                 // Refresh quantity of potential unequipped equipment.
                 var unequippedQuantity = GetTotalUnequippedQuantity(itemDisplay.Quantity, equippedItems);
-                Debug.Log($"Unequipped : {unequippedQuantity}");
+                var unequippedGuiItem = guiItems.Where((g) => g.GetOwner() == null).ToList();
                 if (guiItems.SingleOrDefault(g => g.GetOwner() == null) == null && unequippedQuantity > 0)
                 {
                     InstantiateItem(itemDisplay.Item, unequippedQuantity);
@@ -446,14 +444,11 @@ namespace RPGTest.UI.Common
 
         private void CreateGuiItemForEquipment(Item item, IEnumerable<UI_InventoryItem> guiItems, KeyValuePair<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<Slot>>> equippedItem)
         {
-            Debug.Log($"Create for owner : {equippedItem.Key.Name}");
             var charGuiItems = guiItems.Where(g => g.GetOwner() == equippedItem.Key);
             foreach(var presetSlots in equippedItem.Value)
             {
-                Debug.Log($"in preset : {presetSlots.Key}");
                 foreach (var slot in presetSlots.Value)
                 {
-                    Debug.Log($"In slot : {slot}");
                     if (!charGuiItems.Any((g) => g.GetPreset() == presetSlots.Key && g.GetSlot() == slot))
                     {
                         InstantiateEquipment(item, equippedItem.Key, presetSlots.Key, slot);

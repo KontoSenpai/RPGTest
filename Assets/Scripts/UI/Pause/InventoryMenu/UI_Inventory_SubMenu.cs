@@ -61,7 +61,7 @@ namespace RPGTest.UI.InventoryMenu
             m_playerInput.UI.Navigate.performed += ctx =>
             {
                 m_performTimeStamp = Time.time + 0.3f;
-                OnNavgate_Performed();
+                OnNavigate_performed();
             };
             m_playerInput.UI.Navigate.canceled += ctx =>
             {
@@ -103,7 +103,6 @@ namespace RPGTest.UI.InventoryMenu
         {
             EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
             base.CloseMenu();
-
         }
 
         public override void Initialize(bool refreshAll = true)
@@ -163,7 +162,7 @@ namespace RPGTest.UI.InventoryMenu
         }
 
         #region Input Events
-        private void OnNavgate_Performed()
+        private void OnNavigate_performed()
         {
             if (FindObjectOfType<EventSystem>().currentSelectedGameObject == null)
             {
@@ -272,7 +271,7 @@ namespace RPGTest.UI.InventoryMenu
                     break;
                 case MenuActionType.Equip:
                 case MenuActionType.Unequip:
-                    ItemList.UpdateItems(displayItems);
+                    closeUsageWindow = ItemList.UpdateItems(displayItems);
                     break;
                 case MenuActionType.Cancel:
                     ItemList.UpdateItems(displayItems);
@@ -328,7 +327,7 @@ namespace RPGTest.UI.InventoryMenu
                     ItemUsageWindow.Open(m_pendingItemSelection.Item);
                     break;
                 case MenuActionType.Equip:
-                    ItemUsageWindow.Open(m_pendingItemSelection.Item, m_pendingItemSelection.Owner, m_pendingItemSelection.Slot);
+                    ItemUsageWindow.Open(m_pendingItemSelection.Item, m_pendingItemSelection.Owner, m_pendingItemSelection.Preset, m_pendingItemSelection.Slot);
                     break;
                 case MenuActionType.Unequip:
                     m_pendingItemSelection.Owner.TryUnequip(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, out var removedEquipment);
