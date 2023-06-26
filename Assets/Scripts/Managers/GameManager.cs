@@ -60,7 +60,7 @@ namespace RPGTest.Managers
 
         public void CreateSaveFile(string fileName)
         {
-            SaveFileModel.CreateNew(fileName, PartyManager.GetAllPartyMembers(), InventoryManager.GetAllItems());
+            SaveFileModel.CreateNew(fileName, PartyManager.GetAllPartyMembers(), InventoryManager.GetItems());
         }
 
         public void LoadSaveFile(string fileName)
@@ -128,7 +128,7 @@ namespace RPGTest.Managers
             if (SaveFile != null)
             {
                 SaveFile.UpdatePlayerPosition(position, rotation);
-                SaveFile.UpdateInventory(InventoryManager.GetAllItems());
+                SaveFile.UpdateInventory(InventoryManager.GetItems());
             }
         }
 

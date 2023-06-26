@@ -184,7 +184,7 @@ namespace RPGTest.Controllers
         public void OpenMenu(InputAction.CallbackContext callbackContext)
         {
             var UIMenu = FindObjectOfType<UIManager>().GetUIComponent<UI_Menu>();
-            UIMenu.InitializeDefault();
+            UIMenu.OpenDefault();
         }
 
         public void DebugOperation(InputAction.CallbackContext callbackContext)

@@ -1,6 +1,4 @@
 ﻿using RPGTest.Helpers;
-using RPGTest.Inputs;
-using RPGTest.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,35 +10,31 @@ namespace RPGTest.UI
 {
     public class UI_Menu : UI_Base
     {
-        [SerializeField] private Button DefaultButton;
-        [SerializeField] private GameObject DefaultWidget;
-
         [SerializeField] private Button MapButton;
-        [SerializeField] private GameObject MapWidget;
-
-        private Controls m_playerInput;
+        [SerializeField] private UI_Pause_SubMenu MapSubMenu;
 
         [SerializeField] private UI_PauseButtonAnimatorController CategoryButtonController;
 
         [SerializeField] private Button[] MenuButtons;
-        [SerializeField] private GameObject[] MenuWidgets;
-        [SerializeField] private GameObject MenuFooter;
-
-        public bool IsSubMenuSelected = false;
+        [SerializeField] private UI_Pause_SubMenu[] SubMenus;
 
         //UI control
-        private int m_currentNavigationIndex = 0;
-        private int m_pendingNavigationIndex = 0;
+        private int m_currentNavigationIndex = -1;
 
-        public void Awake()
+        public override void Awake()
         {
-            m_playerInput = new Controls();
+            base.Awake();
             m_playerInput.UI.CycleMenus.performed += CycleMenus_performed;
-            m_playerInput.UI.CloseMenu.performed += ctx =>
+            foreach (var menu in SubMenus)
             {
-                DefaultButton.Select();
-                UIClosed(this, null);
-            };
+                if (menu != null)
+                {
+                    menu.Initialize();
+                    menu.SubMenuOpened += OpenSubMenu;
+                    menu.SubMenuClosed += ExitSubMenu;
+                    menu.MenuChanged += OnMenu_changed;
+                }
+            }
         }
 
         public void OnEnable()
@@ -50,15 +44,29 @@ namespace RPGTest.UI
 
         public void OnDisable()
         {
-            MenuWidgets.ForEach(x =>
+            SubMenus.ForEach(x =>
             {
-                x.GetComponent<UI_Pause_SubMenu>().Clear();
-                x.GetComponent<UI_Pause_SubMenu>().MenuChanged += OnMenu_changed;
+                x.Clear();
             });
             m_playerInput.Disable();
         }
 
         #region EventHandlers
+        /// <summary>
+        /// Handle event received on button category click.
+        /// </summary>
+        /// <param name="menuIndex">Index of the menu to open</param>
+        public void OnMenu_Selected(UI_Pause_SubMenu subMenu)
+        {
+            SelectSubMenu(Array.IndexOf(SubMenus, subMenu));
+        }
+
+        /// <summary>
+        /// Handle event sent by sub menus, that send a sub menu change
+        /// ie. Party Menu asking a redirection to Equipment/Skills
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnMenu_changed(object sender, MenuChangeEventArgs e)
         {
             SelectSubMenu(e.MenuIndex, e.Parameters);
@@ -84,112 +92,46 @@ namespace RPGTest.UI
                 SelectSubMenu(newIndex);
             }
         }
-        private void Navigate_performed(InputAction.CallbackContext ctx)
-        {
-            if(IsSubMenuSelected)
-            {
-                return;
-            }
-
-            var movement = ctx.ReadValue<Vector2>();
-            int newIndex = m_pendingNavigationIndex;
-            if (movement.x > 0 && m_pendingNavigationIndex < MenuButtons.Count() - 1)
-            {
-                newIndex++;
-            }
-            else if (movement.x < 0 && m_pendingNavigationIndex > 0)
-            {
-                newIndex--;
-            }
-
-            MenuButtons[newIndex].Select();
-
-            if (newIndex != m_pendingNavigationIndex)
-            {
-                m_pendingNavigationIndex = newIndex;
-            }
-        }
-
-        public void Submit_Performed(InputAction.CallbackContext ctx)
-        {
-            SelectSubMenu(m_pendingNavigationIndex);
-        }
-
-        public void Cancel_Performed(InputAction.CallbackContext ctx)
-        {
-            if(!IsSubMenuSelected)
-            {
-                UIClosed(this, null);
-            }
-        }
-
-        public void MouseMoved_Performed(InputAction.CallbackContext ctx)
-        {
-
-        }
         #endregion
 
-        public void InitializeDefault()
+        public void OpenDefault()
         {
-            Initialize(DefaultButton, DefaultWidget);
+            Open(0);
         }
 
-        public void InitializeMap()
+        public void OpenMap()
         {
-            Initialize(MapButton, MapWidget);
+            Open(Array.IndexOf(SubMenus, MapSubMenu));
         }
 
-        private void Initialize(Button button, GameObject widget)
+        private void Open(int menuIndex)
         {
             UIOpened(this, null);
-            foreach (var menu in MenuWidgets)
-            {
-                if(menu.GetComponent<UI_Pause_SubMenu>() != null)
-                {
-                    menu.GetComponent<UI_Pause_SubMenu>().Initialize();
-                    menu.GetComponent<UI_Pause_SubMenu>().SubMenuOpened += OpenSubMenu;
-                    menu.GetComponent<UI_Pause_SubMenu>().SubMenuClosed += ExitSubMenu;
-                    menu.GetComponent<UI_Pause_SubMenu>().MenuChanged += OnMenu_changed;
-                }
-            }
-            button.Select();
-            button.interactable = false;
-            SelectSubMenu(Array.IndexOf(MenuWidgets, widget));
+            MenuButtons[menuIndex].Select();
+            MenuButtons[menuIndex].interactable = false;
+            SelectSubMenu(menuIndex);
         }
 
-        #region ButtonEvents      
-        public void SelectSubMenu(int menuIndex, Dictionary<string, object> parameters = null)
+        private void SelectSubMenu(int menuIndex, Dictionary<string, object> parameters = null)
         {
-            m_currentNavigationIndex = menuIndex;
-            Array.ForEach(MenuWidgets, w => w.SetActive(Array.IndexOf(MenuWidgets, w) == m_currentNavigationIndex));
-            MenuButtons[m_currentNavigationIndex].Select();
-            Array.ForEach(MenuButtons, b => b.interactable = !(Array.IndexOf(MenuButtons, b) == m_currentNavigationIndex));
+            if (m_currentNavigationIndex != -1)
+            {
+                MenuButtons[m_currentNavigationIndex].interactable = true;
+                SubMenus[m_currentNavigationIndex].Close();
+            }
 
-            MenuWidgets[m_currentNavigationIndex].GetComponent<UI_Pause_SubMenu>().OpenMenu(parameters ?? new Dictionary<string, object>());
+            m_currentNavigationIndex = menuIndex;
+            MenuButtons[m_currentNavigationIndex].interactable = false;
+            SubMenus[m_currentNavigationIndex].Open(parameters ?? new Dictionary<string, object>());
         }
-        #endregion
 
         private void OpenSubMenu()
         {
-            m_playerInput.UI.Navigate.performed -= Navigate_performed;
-            m_playerInput.UI.Submit.performed -= Submit_Performed;
-            m_playerInput.UI.Cancel.performed -= Cancel_Performed;
-
-            MenuButtons[m_currentNavigationIndex].interactable = false;
-            IsSubMenuSelected = true;
         }
 
         private void ExitSubMenu()
         {
-            m_playerInput.UI.Navigate.performed += Navigate_performed;
-            m_playerInput.UI.Submit.performed += Submit_Performed;
-            m_playerInput.UI.Cancel.performed += Cancel_Performed;
-            
-            MenuButtons[m_currentNavigationIndex].interactable = true;
-            MenuButtons[m_currentNavigationIndex].Select();
-            IsSubMenuSelected = false;
-
-            m_pendingNavigationIndex = m_currentNavigationIndex;
+            UIClosed(this, null);
         }
     }
 }

@@ -13,7 +13,8 @@ namespace RPGTest.UI.Common
         Consumables,
         Materials,
         Valuable,
-        Key
+        Key,
+        None,
     }
 
     public class CategoryFilterSelected : EventArgs

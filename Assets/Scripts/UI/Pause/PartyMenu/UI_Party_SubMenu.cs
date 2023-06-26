@@ -145,27 +145,24 @@ namespace RPGTest.UI.PartyMenu
                 m_currentNavigationIndex = 0;
             }
 
-            if (IsSubMenuSelected)
+            if (movement.y > 0.4f)
             {
-                if (movement.y > 0.4f)
-                {
-                    NavigateUp();
-                }
-                else if (movement.y < -0.4f)
-                {
-                    NavigateDown();
-                }
-                else if (movement.x < -0.4f)
-                {
-                    NavigateLeft();
-                }
-                else if(movement.x > 0.04f)
-                {
-                    NavigateRight();
-                }
-                PartyMemberWidgets[m_currentNavigationIndex].GetComponent<Button>().Select();
-                RefreshDetailsPanel();
+                NavigateUp();
             }
+            else if (movement.y < -0.4f)
+            {
+                NavigateDown();
+            }
+            else if (movement.x < -0.4f)
+            {
+                NavigateLeft();
+            }
+            else if(movement.x > 0.04f)
+            {
+                NavigateRight();
+            }
+            PartyMemberWidgets[m_currentNavigationIndex].GetComponent<Button>().Select();
+            RefreshDetailsPanel();
         }
 
         // Cycle Presets
@@ -238,9 +235,9 @@ namespace RPGTest.UI.PartyMenu
         }
         #endregion
 
-        public override void OpenMenu(Dictionary<string, object> parameters)
+        public override void Open(Dictionary<string, object> parameters)
         {
-            base.OpenMenu(parameters);
+            base.Open(parameters);
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
 
             SubActionMenu.SetActive(false);

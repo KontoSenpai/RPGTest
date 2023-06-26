@@ -11,7 +11,6 @@ namespace RPGTest.UI.Common
         [SerializeField] protected GameObject ConfirmButton;
         [SerializeField] protected GameObject CancelButton;
 
-
         [HideInInspector]
         public EventHandler<EventArgs> DialogActionCancelled;
 
@@ -25,6 +24,7 @@ namespace RPGTest.UI.Common
         public virtual void Awake()
         {
             m_playerInput = new Controls();
+            m_playerInput.Disable();
         }
 
         public virtual void OnEnable()
@@ -42,6 +42,8 @@ namespace RPGTest.UI.Common
         /// </summary>
         public virtual void Open()
         {
+            if (gameObject.activeSelf == true) return;
+
             gameObject.SetActive(true);
             EnableControls();
         }
@@ -51,6 +53,8 @@ namespace RPGTest.UI.Common
         /// </summary>
         public virtual void Close()
         {
+            if (gameObject.activeSelf == false) return;
+            
             DisableControls();
             gameObject.SetActive(false);
         }

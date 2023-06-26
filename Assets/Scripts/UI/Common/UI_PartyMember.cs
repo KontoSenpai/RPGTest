@@ -7,6 +7,7 @@ using RPGTest.UI.Widgets;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RPGTest.UI.Common
 {
@@ -16,8 +17,12 @@ namespace RPGTest.UI.Common
     public class UI_PartyMember : AdvancedButton
     {
         [SerializeField] private GameObject ContentPanel;
+
         [SerializeField] private TextMeshProUGUI Name;
         [SerializeField] private TextMeshProUGUI LevelValue;
+
+        [SerializeField] private Image Portrait;
+
         [SerializeField] private GameObject Cover;
         [SerializeField] private UI_Stances_Widget StanceWidget;
 
@@ -41,6 +46,7 @@ namespace RPGTest.UI.Common
         private PlayableCharacter m_character;
         private Action m_secondaryAction;
 
+        #region Public Events
         public void Initialize(PlayableCharacter character)
         {
             m_character = character;
@@ -66,20 +72,40 @@ namespace RPGTest.UI.Common
 
         public void Refresh()
         {
-            ContentPanel.SetActive(true);
-            Name.text = m_character.Name;
-            LevelValue.text = m_character.Level.ToString();
-
-            HPBarWidget.UpdateValues(m_character.CurrentHP, m_character.BaseAttributes.MaxHP);
-            ManaBarWidget.UpdateValues(m_character.CurrentMP, m_character.BaseAttributes.MaxMP);
-            ExperienceBarWidget.UpdateValues(m_character.CurrentExperience, m_character.NextLevelExperience);
-
-            if (StanceWidget != null)
+            if (m_character == null)
             {
-                StanceWidget.ChangeStanceImage((int)m_character.Stance.GetCurrentStance());
+                Debug.LogWarning("null character");
+                Debug.Break();
             }
+            RefreshInternal(m_character, m_character.EquipmentSlots.CurrentPreset);
         }
 
+        public void Refresh(PlayableCharacter character, PresetSlot slot)
+        {
+            RefreshInternal(character, slot);
+        }
+
+        public void SetSecondarySelect(Action action)
+        {
+            m_secondaryAction = action;
+        }
+
+        public void ToggleCover()
+        {
+            Cover.SetActive(!Cover.activeSelf);
+        }
+
+        public void SelectSlot(Slot selectedSlot)
+        {
+            //EquipmentSlotSelected(this.gameObject, selectedSlot);
+        }
+
+        public void RefreshExperience()
+        {
+            ExperienceBarWidget.UpdateValues(m_character.CurrentExperience, m_character.NextLevelExperience);
+            LevelValue.text = m_character.Level.ToString();
+        }
+        #endregion
 
         #region Input Events
         // Select for swap
@@ -103,27 +129,40 @@ namespace RPGTest.UI.Common
         }
         #endregion
 
-
-
-        public void SetSecondarySelect(Action action)
+        #region Private Methods
+        private void RefreshInternal(PlayableCharacter character, PresetSlot slot)
         {
-            m_secondaryAction = action;
-        }
+            if (ContentPanel != null)
+                ContentPanel.SetActive(true);
+            
+            Name.text = character.Name;
+            LevelValue.text = character.Level.ToString();
 
-        public void ToggleCover()
-        {
-            Cover.SetActive(!Cover.activeSelf);
-        }
+            if (Portrait != null)
+            {
+                var portrait = ((Texture2D)Resources.Load($"Portraits/{character.Id}"));
+                if (portrait != null)
+                {
+                    Portrait.sprite = Sprite.Create(portrait, new Rect(0.0f, 0.0f, portrait.width, portrait.height), new Vector2(0.5f, 0.5f), 100.0f);
+                }
+                else
+                {
+                    Portrait.sprite = null;
+                }
+            }
 
-        public void SelectSlot(Slot selectedSlot)
-        {
-            //EquipmentSlotSelected(this.gameObject, selectedSlot);
-        }
+            if (HPBarWidget != null)
+                HPBarWidget.UpdateValues(character.CurrentHP, character.GetAttribute(slot, Enums.Attribute.MaxHP));
+            
+            if (ManaBarWidget != null)
+                ManaBarWidget.UpdateValues(character.CurrentMP, character.GetAttribute(slot, Enums.Attribute.MaxMP));
 
-        public void RefreshExperience()
-        {
-            ExperienceBarWidget.UpdateValues(m_character.CurrentExperience, m_character.NextLevelExperience);
-            LevelValue.text = m_character.Level.ToString();
+            if (ExperienceBarWidget != null)
+                ExperienceBarWidget.UpdateValues(character.CurrentExperience, character.NextLevelExperience);
+
+            if (StanceWidget != null)
+                StanceWidget.ChangeStanceImage((int)character.Stance.GetCurrentStance());
         }
+        #endregion
     }
 }

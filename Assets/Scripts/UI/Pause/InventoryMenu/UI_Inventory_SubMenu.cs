@@ -31,7 +31,6 @@ namespace RPGTest.UI.InventoryMenu
         [Separator("Action Confirmation Dialogs")]
         [SerializeField] private UI_ActionConfirmationDialog ActionConfirmationDialog;
 
-
         [Separator("Action Confirmation Dialogs")]
         [SerializeField] private UI_Item_Informations ItemInformationsPanel;
         [SerializeField] private UI_Dialog_ItemQuantity ItemQuantityDialog;
@@ -56,13 +55,16 @@ namespace RPGTest.UI.InventoryMenu
             base.Awake();
             m_playerInput.UI.Navigate.started += ctx =>
             {
-                    m_navigateStarted = true;
+                m_navigateStarted = true;
             };
             m_playerInput.UI.Navigate.performed += ctx =>
             {
                 m_performTimeStamp = Time.time + 0.3f;
                 OnNavigate_performed();
             };
+
+            m_playerInput.UI.SecondaryAction.performed += OnSecondaryAction_Performed;
+
             m_playerInput.UI.Navigate.canceled += ctx =>
             {
                 m_navigateStarted = false;
@@ -85,10 +87,11 @@ namespace RPGTest.UI.InventoryMenu
             ActionConfirmationDialog.ActionSelected += OnActionSelected_Confirmed;
         }
 
-        public override void OpenMenu(Dictionary<string, object> parameters)
+        public override void Open(Dictionary<string, object> parameters)
         {
-            base.OpenMenu(parameters);
-            ItemList.SelectDefault();
+            base.Open(parameters);
+
+            Initialize();
 
             if (ItemInformationsPanel != null)
             {    
@@ -99,17 +102,41 @@ namespace RPGTest.UI.InventoryMenu
             EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
         }
 
+        public override void Close()
+        {
+            if (ActionConfirmationDialog != null)
+            {
+                ActionConfirmationDialog.Close();
+            }
+            if (ItemUsageWindow != null)
+            {
+                ItemUsageWindow.Close();
+            }
+
+            ItemList.Clear();
+            base.Close();
+        }
+
         public override void CloseMenu()
         {
+            if (ActionConfirmationDialog != null)
+            {
+                ActionConfirmationDialog.Close();
+            }
+            if (ItemUsageWindow != null)
+            {
+                ItemUsageWindow.Close();
+            }
+
             EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
             base.CloseMenu();
         }
 
-        public override void Initialize(bool refreshAll = true)
+        private void Initialize()
         {
             var displayItems = new List<UIItemDisplay>();
 
-            foreach(var item in m_inventoryManager.GetAllItems())
+            foreach(var item in m_inventoryManager.GetItems())
             {
                 var itemModel = ItemCollector.TryGetItem(item.Key);
                 displayItems.Add(
@@ -120,6 +147,7 @@ namespace RPGTest.UI.InventoryMenu
                     });
             };
             ItemList.Initialize(displayItems, m_filterCategories);
+            ItemList.SelectDefault();
         }
 
         protected override void UpdateInputActions()
@@ -127,7 +155,7 @@ namespace RPGTest.UI.InventoryMenu
             m_inputActions = new Dictionary<string, string[]>()
             {
                 {
-                    "Select Item",
+                    "Select Slot",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Navigate.name  + ".vertical"
@@ -142,10 +170,17 @@ namespace RPGTest.UI.InventoryMenu
                     }
                 },
                 {
-                    "Cancel",
+                    "Exit",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Cancel.name
+                    }
+                },
+                {
+                    "Change Filter",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.SecondaryAction.name,
                     }
                 }
             };
@@ -156,7 +191,7 @@ namespace RPGTest.UI.InventoryMenu
         {
             if (item == null)
             {
-                item = ItemList.GetCurrentSelectedItem().GetItem();
+                item = ItemList.GetCurrentSelectedItem().Item;
             }
             ItemInformationsPanel.Refresh(item);
         }
@@ -170,6 +205,17 @@ namespace RPGTest.UI.InventoryMenu
             }
         }
 
+        private void OnSecondaryAction_Performed(InputAction.CallbackContext ctx)
+        {
+            ItemList.SetItemIndex();
+            ItemList.CycleFilters();
+            if(!ItemList.ReselectCurrentItem())
+            {
+                ItemList.SelectDefault();
+            }
+            // TO DO (maybe): Store item informations instead of index, to re-select same item after filter.
+        }
+
         protected override void OnCancel_performed(InputAction.CallbackContext ctx)
         {
             CancelCurrentAction();
@@ -177,7 +223,7 @@ namespace RPGTest.UI.InventoryMenu
 
         private void OnMouseRightClick_Performed(InputAction.CallbackContext ctx)
         {
-            CancelCurrentAction();
+            //CancelCurrentAction();
         }
 
         private void OnMouseMoved_Performed(InputAction.CallbackContext ctx)
@@ -198,9 +244,8 @@ namespace RPGTest.UI.InventoryMenu
                     Quantity = m_inventoryManager.GetHeldItemQuantity(m_pendingItemSelection.Item.Id)
                 }
             };
-            ItemList.UpdateItems(displayItems);
-
-            CloseItemQuantityDialog();
+            //ItemList.UpdateItems(displayItems);
+            Refocus();
         }
 
         /// <summary>
@@ -208,7 +253,7 @@ namespace RPGTest.UI.InventoryMenu
         /// </summary>
         private void OnItemQuantityDialogAction_Cancelled(object sender, EventArgs e)
         {
-            CloseItemQuantityDialog();
+            Refocus();
         }
 
         public void OnActionSelected_Confirmed(MenuActionType actionType)
@@ -230,7 +275,7 @@ namespace RPGTest.UI.InventoryMenu
         {
             if (currentSelection != null && currentSelection.TryGetComponent<UI_InventoryItem>(out var compoment))
             {
-                RefreshInformationPanel(compoment.GetItem());
+                RefreshInformationPanel(compoment.Item);
             }
         }
 
@@ -267,14 +312,14 @@ namespace RPGTest.UI.InventoryMenu
             switch (actionType)
             {
                 case MenuActionType.Use:
-                    closeUsageWindow = ItemList.UpdateItems(displayItems);
+                    //closeUsageWindow = ItemList.UpdateItems(displayItems);
                     break;
                 case MenuActionType.Equip:
                 case MenuActionType.Unequip:
-                    closeUsageWindow = ItemList.UpdateItems(displayItems);
+                    //closeUsageWindow = ItemList.UpdateItems(displayItems);
                     break;
                 case MenuActionType.Cancel:
-                    ItemList.UpdateItems(displayItems);
+                    //ItemList.UpdateItems(displayItems);
                     break;
             }
 
@@ -339,16 +384,16 @@ namespace RPGTest.UI.InventoryMenu
                         ItemQuantitySuperiorLimit.OWNED);
                     break;
                 case MenuActionType.Cancel:
-                    ItemList.ReselectCurrentItem();
+                    Refocus();
                     break;
             }
         }
 
-        private void CloseItemQuantityDialog()
+        private void Refocus()
         {
-            ItemQuantityDialog.Close();
             EnableControls();
             ItemList.ReselectCurrentItem();
+            UpdateInputActions();
         }
 
         private void CancelCurrentAction()

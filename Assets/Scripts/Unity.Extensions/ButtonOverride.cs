@@ -8,6 +8,7 @@ namespace Unity.Extensions.UI
 {
     /// <summary>
     /// A standard button that sends an event when clicked.
+    /// The override provides additional event firing, when getting selected and deselected
     /// </summary>
     [AddComponentMenu("UI/ButtonOverride", 30)]
     public class ButtonOverride : Button

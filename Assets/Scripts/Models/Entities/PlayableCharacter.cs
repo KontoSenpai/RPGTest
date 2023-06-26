@@ -86,20 +86,9 @@ namespace RPGTest.Models.Entity
             selectedActions(m_selectedActions);
         }
 
-        public override float GetAttribute(Attribute attribute)
-        {
-            GetAttributes().TryGetValue(attribute, out float value);
-            return value;
-        }
-
         public void ChangeEquipmentPreset()
         {
             this.EquipmentSlots.ChangePreset();
-        }
-
-        public override Dictionary<Attribute, float> GetAttributes()
-        {
-            return GetAttributes(EquipmentSlots.CurrentPreset);
         }
         #endregion
 
@@ -229,7 +218,34 @@ namespace RPGTest.Models.Entity
             return removedEquipments.Any();
         }
 
+        public override Dictionary<Attribute, float> GetAttributes()
+        {
+            return GetAttributesInternal(EquipmentSlots.CurrentPreset);
+        }
+
         public Dictionary<Attribute, float> GetAttributes(PresetSlot slot)
+        {
+            return GetAttributesInternal(slot);
+        }
+
+        public override float GetAttribute(Attribute attribute)
+        {
+            return GetAttributeInternal(EquipmentSlots.CurrentPreset, attribute);
+        }
+
+        public float GetAttribute(PresetSlot slot, Attribute attribute)
+        {
+            return GetAttributeInternal(slot, attribute);
+        }
+
+        public int GetExperienceToNextLevel(int level)
+        {
+            return m_GrowthTable.XPToNextLevel[level - 1];
+        }
+        #endregion
+
+        #region private methodes
+        private Dictionary<Attribute, float> GetAttributesInternal(PresetSlot slot)
         {
             var attributes = base.GetAttributes();
             var preset = EquipmentSlots.GetEquipmentPreset(slot);
@@ -243,13 +259,16 @@ namespace RPGTest.Models.Entity
             return attributes;
         }
 
-        public int GetExperienceToNextLevel(int level)
+        private float GetAttributeInternal(PresetSlot slot, Attribute attribute)
         {
-            return m_GrowthTable.XPToNextLevel[level - 1];
-        }
-        #endregion
+            if (GetAttributesInternal(slot).TryGetValue(attribute, out float value))
+            {
+                return value;
+            }
 
-        #region private methodes
+            return -1;
+        }
+
         private IEnumerator ActionChoice()
         {
             PlayerInputRequested(this, true);

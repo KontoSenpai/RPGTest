@@ -2,7 +2,6 @@
 using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Managers;
-using RPGTest.Models.Abilities;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using System.Collections.Generic;
@@ -414,7 +413,11 @@ namespace RPGTest.Modules.Battle.UI
         private void PopulateItems()
         {
             PopulateActionViewport(ActionType.Item,
-                FindObjectOfType<GameManager>().InventoryManager.GetConsumables().Select(c => (c.Id, true)),
+                FindObjectOfType<GameManager>()
+                    .InventoryManager
+                    .GetItemsOfType(ItemType.Consumable)
+                    .Keys.ToList()
+                    .Select(c => (c.Id, true)),
                 1);
         }
         #endregion

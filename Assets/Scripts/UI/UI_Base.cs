@@ -1,3 +1,4 @@
+using RPGTest.Inputs;
 using RPGTest.Managers;
 using System;
 using System.Collections;
@@ -11,7 +12,18 @@ namespace RPGTest.UI
         public EventHandler DevicedChanged { get; set; }
         public EventHandler UIClosed { get; set; }
 
+        protected Controls m_playerInput;
+
         protected InputDisplayManager InputManager => FindObjectOfType<InputDisplayManager>();
+
+        public virtual void Awake()
+        {
+            m_playerInput = new Controls();
+            m_playerInput.UI.CloseMenu.performed += ctx =>
+            {
+                UIClosed(this, null);
+            };
+        }
 
         public IEnumerator Fade(bool fadeIn, float step = 0.2f)
         {

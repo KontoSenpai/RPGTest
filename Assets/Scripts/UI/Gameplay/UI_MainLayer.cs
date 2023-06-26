@@ -1,5 +1,4 @@
 ﻿using RPGTest.Inputs;
-using RPGTest.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,9 +40,7 @@ namespace RPGTest.UI
             }
         }
 
-        protected Controls m_playerInput { get; set; }
-
-        public virtual void Awake()
+        public override void Awake()
         {
             m_playerInput = new Controls();
         }

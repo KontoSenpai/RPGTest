@@ -31,8 +31,6 @@ namespace RPGTest.UI
 
     public partial class UI_Pause_SubMenu : UI_Dialog
     {
-        public bool IsSubMenuSelected { get; set; }
-
         // Navigation helpers
         protected bool m_navigateStarted = false;
         protected float WaitTimeBetweenPerforms = 0.4f;
@@ -44,24 +42,20 @@ namespace RPGTest.UI
         
         public virtual void Clear() { }
 
-        public virtual void OpenMenu(Dictionary<string, object> parameters)
+        public virtual void Open(Dictionary<string, object> parameters)
         {
-            IsSubMenuSelected = true;
+            base.Open();
             SubMenuOpened();
         }
 
         public virtual void CloseMenu() 
         {
-            IsSubMenuSelected = false;
             SubMenuClosed();
         }
 
         protected virtual void OnCancel_performed(InputAction.CallbackContext obj)
         {
-            if(IsSubMenuSelected)
-            {
-                CloseMenu();
-            }
+            CloseMenu();
         }
 
         // Open another menu from a sub menu action

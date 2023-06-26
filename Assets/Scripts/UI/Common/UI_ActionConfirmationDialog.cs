@@ -23,7 +23,7 @@ namespace RPGTest.UI.Common
     {
         [Separator("Buttons")]
         [SerializeField] private GameObject ButtonGo;
-        private List<GameObject> ActionButtons;
+        private List<GameObject> ActionButtons = new List<GameObject>();
 
         [Separator("Layout")]
         [SerializeField] private GameObject LayoutContent;
@@ -38,7 +38,6 @@ namespace RPGTest.UI.Common
         {
             base.Awake();
             m_playerInput.UI.Cancel.performed += OnCancel_Performed;
-            ActionButtons = new List<GameObject>();
         }
 
         /// <summary>
@@ -61,8 +60,7 @@ namespace RPGTest.UI.Common
             ActionButtons.ForEach(b => Destroy(b));
             ActionButtons.Clear();
 
-            DisableControls();
-            gameObject.SetActive(false);
+            base.Close();
         }
         #endregion
 

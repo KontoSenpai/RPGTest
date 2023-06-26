@@ -147,6 +147,7 @@ namespace RPGTest.UI.Common
         public void OnSubmit_Performed()
         {
             DialogActionConfirmed(this, new ItemQuantitySelectedEventArgs(m_currentQuantity));
+            Close();
         }
 
         public void OnCancel_Performed()

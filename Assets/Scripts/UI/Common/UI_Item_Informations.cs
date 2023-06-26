@@ -19,7 +19,11 @@ namespace RPGTest.UI.Common
         [SerializeField] private Image ImgCurrency;
         [SerializeField] private TextMeshProUGUI Description;
 
+        public void Awake(){}
 
+        public virtual void OnEnable(){}
+
+        public virtual void OnDisable() {}
 
         public void SetVisible(bool visible)
         {

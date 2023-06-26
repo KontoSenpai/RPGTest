@@ -2,6 +2,7 @@
 using RPGTest.Models;
 using RPGTest.Models.Items;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RPGTest.Managers
@@ -14,9 +15,31 @@ namespace RPGTest.Managers
         private const int m_maxStack = 99;
         private const int m_maxMoneyAmount = 999999;
 
-        public Dictionary<string, int> GetAllItems()
+        /// <summary>
+        /// Return all items in the player inventory
+        /// </summary>
+        /// <returns>A dictionary of all items present in the inventory</returns>
+        public Dictionary<string, int> GetItems()
         {
             return m_items;
+        }
+
+        /// <summary>
+        /// Return all items of corresponding type from the player inventory
+        /// </summary>
+        /// <param name="itemType">Category of items to retrieve</param>
+        /// <returns>A dictionary of all items of correponding category in the inventory</returns>
+        public Dictionary<Item, int> GetItemsOfType(Enums.ItemType itemType)
+        {
+            Dictionary<Item, int> items = new Dictionary<Item, int>();
+            foreach (var item in m_items)
+            {
+                if (TryGetItem(item.Key, out Item i) && i.Type == itemType)
+                {
+                    items.Add(i, item.Value);
+                }
+            }
+            return items;
         }
 
         /// <summary>
@@ -78,20 +101,6 @@ namespace RPGTest.Managers
             }
             item = null;
             return false;
-        }
-
-        public List<Consumable> GetConsumables()
-        {
-            List<Consumable> consumables = new List<Consumable>();
-            foreach(var item in m_items)
-            {
-                if(TryGetItem(item.Key, out Item cons))
-                {
-                    if (cons.Type == Enums.ItemType.Consumable)
-                        consumables.Add((Consumable)cons);
-                }
-            }
-            return consumables;
         }
 
         /// <summary>

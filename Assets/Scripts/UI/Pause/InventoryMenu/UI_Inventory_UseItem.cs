@@ -33,7 +33,6 @@ namespace RPGTest.UI.InventoryMenu
         [HideInInspector]
         public delegate void ItemInteractionPerformedHandler(MenuActionType actionType, List<Item> items);
 
-
         private Item m_item;
 
         // Navigation
@@ -57,6 +56,9 @@ namespace RPGTest.UI.InventoryMenu
             base.Awake();
 
             m_playerInput.UI.Navigate.performed += OnNavigate_performed;
+
+            m_playerInput.UI.SecondaryAction.performed += OnSecondaryAction_performed;
+
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
             m_playerInput.UI.RightClick.performed += OnCancel_performed;
 
@@ -87,6 +89,7 @@ namespace RPGTest.UI.InventoryMenu
         /// <param name="slot">Slot where the equipment is equipped on the current owner</param>
         public void Open(Item item, PlayableCharacter owner, PresetSlot preset, Slot slot)
         {
+            base.Open();
             Initialize(item);
 
             if (owner == null)
@@ -120,7 +123,7 @@ namespace RPGTest.UI.InventoryMenu
             m_inputActions = new Dictionary<string, string[]>()
             {
                 {
-                    "Change Character",
+                    "Select Character",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Navigate.name  + ".vertical"
@@ -143,6 +146,18 @@ namespace RPGTest.UI.InventoryMenu
                     }
                 }
             };
+
+            switch (m_item.Type)
+            {
+                case ItemType.Equipment:
+                    m_inputActions.Add(
+                    "Change Preset",
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.SecondaryAction.name,
+                    });
+                    break;
+            }
             base.UpdateInputActions();
         }
 
@@ -152,6 +167,18 @@ namespace RPGTest.UI.InventoryMenu
             if (FindObjectOfType<EventSystem>().currentSelectedGameObject == null)
             {
                 m_partyMembers.First().GetComponent<Button>().Select();
+            }
+        }
+
+        private void OnSecondaryAction_performed(InputAction.CallbackContext ctx)
+        {
+            switch (m_item.Type) {
+                case ItemType.Equipment:
+                    PanelEquipment.ChangePreset();
+                    break;
+                default:
+                    Debug.LogError("Unsupported action for item type!");
+                    break;
             }
         }
 
@@ -224,7 +251,6 @@ namespace RPGTest.UI.InventoryMenu
         /// <param name="item"></param>
         private void Initialize(Item item)
         {
-            this.gameObject.SetActive(true);
             m_item = item;
 
             InitializeCharacterList();
@@ -267,13 +293,13 @@ namespace RPGTest.UI.InventoryMenu
         private void InitializeUse()
         {
             Header.text = "Use Item";
-            PanelEquipment.gameObject.SetActive(false);
+            PanelEquipment.Close();
         }
 
         private void InitializeEquip()
         {
             Header.text = "Equip Item";
-            PanelEquipment.gameObject.SetActive(true);
+            PanelEquipment.Open();
         }
 
         /// <summary>
@@ -318,7 +344,7 @@ namespace RPGTest.UI.InventoryMenu
 
         private void RefreshEquipmentPanel(PlayableCharacter character)
         {
-            PanelEquipment.GetComponent<UI_EquipmentSlots>().Initialize(character, m_item as Equipment);
+            PanelEquipment.Refresh(character, m_item as Equipment);
         }
 
         private GameObject CreateInstantiateItem(GameObject prefab)
@@ -354,7 +380,7 @@ namespace RPGTest.UI.InventoryMenu
                 case ItemType.Equipment:
                     DisableControls();
                     m_memberIndex = m_partyMembers.IndexOf(member);
-                    PanelEquipment.GetComponent<UI_EquipmentSlots>().Open();
+                    PanelEquipment.Select();
                     break;
             }
         }
