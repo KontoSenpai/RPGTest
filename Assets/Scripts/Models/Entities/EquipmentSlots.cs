@@ -131,7 +131,7 @@ namespace RPGTest.Models
 
         public Dictionary<Slot, Equipment> GetEquipmentPreset(PresetSlot slot)
         {
-            if (!Presets.TryGetValue(CurrentPreset, out var equipmentPreset))
+            if (!Presets.TryGetValue(slot, out var equipmentPreset))
             {
                 throw new Exception("Unable to retrieve weapon presets");
             }

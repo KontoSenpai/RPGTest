@@ -17,7 +17,7 @@ namespace RPGTest.UI.Utils
         {
             var objectList = objects.OrderBy(x => x.name).ToList();
 
-            for (int i = 0; i < objectList.Count - 1; i++)
+            for (int i = 0; i < objectList.Count; i++)
             {
                 objectList[i].transform.SetParent(list.transform);
                 objectList[i].transform.SetSiblingIndex(i);

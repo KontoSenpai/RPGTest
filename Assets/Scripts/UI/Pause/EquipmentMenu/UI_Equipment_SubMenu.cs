@@ -16,8 +16,6 @@ namespace RPGTest.UI
     {
         [SerializeField] private UI_Equipment_View EquipmentView;
 
-        [SerializeField] private UI_EquipmentList ItemList;
-
         [SerializeField] private UI_PartyMember CharacterInfo;
 
         [SerializeField] private UI_Party_Member_Stats CharacterStats;
@@ -122,15 +120,17 @@ namespace RPGTest.UI
 
         public override void Initialize(bool refreshAll = true)
         {
-            if (ItemList)
-            {
-                ItemList.Initialize(GetItemsToDisplay(), m_filterCategories);
-            }
+        }
+
+        public override void Close()
+        {
+            EventSystemEvents.OnSelectionUpdated -= OnSelection_Updated;
+            base.Close();
         }
 
         public override void CloseMenu()
         {
-            EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
+            EventSystemEvents.OnSelectionUpdated -= OnSelection_Updated;
             base.CloseMenu();
         }
 
@@ -196,22 +196,21 @@ namespace RPGTest.UI
 
         private void OnSelection_Updated(GameObject currentSelection, GameObject previousSelection)
         {
-            return;
             if (currentSelection != null && currentSelection.TryGetComponent<UI_InventoryItem>(out var component))
             {
                 switch (component.Slot)
                 {
                     case Enums.Slot.LeftHand:
                     case Enums.Slot.RightHand:
-                        ItemList.Filter(ItemFilterCategory.Weapons);
+                        //ItemList.Filter(ItemFilterCategory.Weapons);
                         break;
                     case Enums.Slot.Head:
                     case Enums.Slot.Body:
-                        ItemList.Filter(ItemFilterCategory.Armors);
+                        //ItemList.Filter(ItemFilterCategory.Armors);
                         break;
                     case Enums.Slot.Accessory1:
                     case Enums.Slot.Accessory2:
-                        ItemList.Filter(ItemFilterCategory.Accessories);
+                        //ItemList.Filter(ItemFilterCategory.Accessories);
                         break;
                     default:
                         Debug.LogError($"Unrecognized Slot type {component.Slot}");
@@ -293,11 +292,11 @@ namespace RPGTest.UI
 
         private void RefreshItemList()
         {
-            if (ItemList)
-            {
-                // TODO : re-do the refresh
-                //ItemList.UpdateItems(GetItemsToDisplay());
-            }
+            //if (ItemList)
+            //{
+            //    // TODO : re-do the refresh
+            //    //ItemList.UpdateItems(GetItemsToDisplay());
+            //}
         }
 
         private List<UIItemDisplay> GetItemsToDisplay()

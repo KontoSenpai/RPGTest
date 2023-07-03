@@ -29,15 +29,13 @@ namespace RPGTest.UI.Common
 
     public class UI_ItemCategoryFilter : MonoBehaviour
     {
+        [SerializeField] private ItemFilterCategory m_filter;
         [SerializeField] private TextMeshProUGUI m_name;
-        private ItemFilterCategory m_filter;
 
-        public void Initialize(ItemFilterCategory filter)
+        public void Awake()
         {
-            m_filter = filter;
-            m_name.text = filter.ToString();
+            m_name.text = m_filter.ToString();
         }
-
         public ItemFilterCategory GetFilter() 
         {
             return m_filter;

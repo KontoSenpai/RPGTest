@@ -1,5 +1,4 @@
 ﻿using RPGTest.Enums;
-using RPGTest.Managers;
 using RPGTest.Models.Items;
 using RPGTest.UI.Utils;
 using System;
@@ -22,22 +21,18 @@ namespace RPGTest.UI.Common
     /// </summary>
     public class UI_ItemList : MonoBehaviour
     {
+        [SerializeField] protected GameObject ItemList;
+
         [HideInInspector]
         public event EventHandler<ItemSelectionConfirmedEventArgs> ItemSelectionConfirmed;
 
-        [SerializeField] protected GameObject FilterGo;
-        [SerializeField] protected GameObject FilterList;
+        [HideInInspector]
+        public ItemSelectionChangedHandler ItemSelectionChanged { get; set; }
+        [HideInInspector]
+        public delegate void ItemSelectionChangedHandler(UI_InventoryItem item);
 
-        [SerializeField] protected UI_ItemList_ItemInstantiator ItemInstantiator;
-        [SerializeField] protected GameObject ItemList;
-
-        private InventoryManager m_inventoryManager => FindObjectOfType<GameManager>().InventoryManager;
-        private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
-
-        protected List<UI_ItemCategoryFilter> m_filters = new List<UI_ItemCategoryFilter>(); // List of available guiItemFilters
         private List<UI_InventoryItem> m_guiItems = new List<UI_InventoryItem>(); // List of available guiItems.
 
-        private ItemFilterCategory m_currentFilter = ItemFilterCategory.None; // Current item filter
         private int m_selectedItemIndex = 0; // Keep track of selected item index to reset selection on refocus after usage
 
         // Lambda to retrieve an Item GameObject from an item declaration
@@ -47,21 +42,6 @@ namespace RPGTest.UI.Common
         public void Awake() { }
         public virtual void OnEnable() { }
         public virtual void OnDisable() { }
-
-        public IEnumerable<UI_InventoryItem> GetItems()
-        {
-            return m_guiItems.Select(x => x.GetComponent<UI_InventoryItem>());
-        }
-
-        public UI_InventoryItem GetCurrentSelectedItem()
-        {
-            var go = FindObjectOfType<EventSystem>().currentSelectedGameObject;
-            if (go != null && go.TryGetComponent<UI_InventoryItem>(out var inventoryItem))
-            {
-                return inventoryItem;
-            }
-            return null;
-        }
 
         public void SelectDefault()
         {
@@ -87,116 +67,100 @@ namespace RPGTest.UI.Common
         }
 
         /// <summary>
-        /// Initialize the display information of each given gui item and filters.
-        /// Clears both items and filters list before affectin the new objects
+        /// Place all instantiated guiItems in the component list.
+        /// Then, 
         /// </summary>
-        /// <param name="items">Instantiated GUI items</param>
-        /// <param name="availableFilters">Available filters</param>
-        public virtual void Initialize(List<UIItemDisplay> itemDisplays, List<ItemFilterCategory> availableFilters)
+        /// <param name="items"></param>
+        public void Initialize(List<GameObject> items)
         {
-            InitializeItems(itemDisplays);
-            InitializeFilters(availableFilters);
+            EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
+            m_guiItems = items.Select((i) => i.GetComponent<UI_InventoryItem>()).ToList();
+
+            UI_List_Utils.RefreshHierarchy(ItemList, m_guiItems.Select((i) => i.gameObject));
+            UI_List_Utils.SetVerticalNavigation(m_guiItems.Select((i) => i.gameObject).ToList());
         }
 
-        public void Clear()
+        public void UpdateItems(List<GameObject> guiItems)
         {
-            m_guiItems.ForEach(x => Destroy(x.gameObject));
-            m_guiItems.Clear();
-            m_filters.ForEach((f) => Destroy(f.gameObject));
-            m_filters.Clear();
-        }
-
-        public void Filter(ItemFilterCategory filter)
-        {
-            if (m_currentFilter == filter) return;
-
-            FilterInternal(filter);
-        }
-
-        public void CycleFilters()
-        {
-            var index = Array.IndexOf(m_filters.ToArray(), m_filters.SingleOrDefault(f => f.GetFilter() == m_currentFilter));
-            if (index != -1 && index == m_filters.Count -1)
+            foreach(var item in guiItems)
             {
-                Filter(m_filters[0].GetFilter());
-            } else if (index != -1)
-            {
-                Filter(m_filters[index + 1].GetFilter());
+                var uiItem = item.GetComponent<UI_InventoryItem>();
+                if (uiItem.Quantity == -1)
+                {
+                    m_guiItems.Remove(uiItem);
+                    Destroy(uiItem);
+                } else
+                {
+                    m_guiItems.Add(uiItem);
+                }
             }
-        }
-
-        public void SetItemIndex()
-        {
-            var go = GetCurrentSelectedItem();
-
-            if (go != null)
-            {
-                m_selectedItemIndex = m_guiItems.IndexOf(go);
-            } else
-            {
-                m_selectedItemIndex = 0;
-            }
-        }
-        #endregion
-
-        #region events
-        public void OnItemSelection_Confirmed(object sender, ItemSelectionConfirmedEventArgs args)
-        {
-            SetIndexOfCurrentlySelectedItem(args);
-            ItemSelectionConfirmed.Invoke(this, args);
-        }
-        #endregion
-
-        #region private methods
-        /// <summary>
-        /// Populate the list with the provided item informations
-        /// </summary>
-        private void InitializeItems(List<UIItemDisplay> itemDisplays)
-        {
-            foreach (var itemDisplay in itemDisplays)
-            {
-                var guiItems = ItemInstantiator.InstantiateItem(itemDisplay);
-                m_guiItems.AddRange(guiItems.Select((i) => i.GetComponent<UI_InventoryItem>()));
-            }
-
-            m_guiItems.ForEach((i) => i.ItemSelectionConfirmed += ItemSelectionConfirmed);
 
             UI_List_Utils.RefreshHierarchy(ItemList, m_guiItems.Select((i) => i.gameObject));
             UI_List_Utils.SetVerticalNavigation(m_guiItems.Select((i) => i.gameObject).ToList());
         }
 
         /// <summary>
-        /// Populate the filter list with provided filter informations
+        /// Delete all items and empty the list containing them
         /// </summary>
-        /// <param name="filters"></param>
-        private void InitializeFilters(List<ItemFilterCategory> filters)
+        public void Clear()
         {
-            foreach (var filter in filters)
-            {
-                InstantiateFilter(filter);
-            }
-            FilterInternal(filters[0]);
+            m_guiItems.ForEach(x => Destroy(x.gameObject));
+            m_guiItems.Clear();
         }
 
-        private void FilterInternal(ItemFilterCategory filter)
+        public List<UI_InventoryItem> GetItems()
         {
-            m_currentFilter = filter;
-            foreach (var filterComponent in m_filters)
-            {
-                filterComponent.GetComponent<Button>().interactable = filterComponent.GetFilter() != m_currentFilter;
-            }
+            return m_guiItems;
+        }
 
+        public UI_InventoryItem GetCurrentSelectedItem()
+        {
+            var go = FindObjectOfType<EventSystem>().currentSelectedGameObject;
+            if (go != null && go.TryGetComponent<UI_InventoryItem>(out var inventoryItem))
+            {
+                return inventoryItem;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Will update visibility of all instantiated items in the list according to the given filter
+        /// </summary>
+        /// <param name="filter">Filter used to restrict which items should be visible</param>
+        public void ChangeItemsVisibility(ItemFilterCategory filter)
+        {
             var visibleItems = new List<GameObject>();
             foreach (var item in m_guiItems)
             {
-                if (SetItemVisibility(item, m_currentFilter))
+                if (SetItemVisibility(item, filter))
                 {
                     visibleItems.Add(item.gameObject);
                 }
             }
-            UI_List_Utils.SetVerticalNavigation(visibleItems);
+            if (visibleItems.Count > 0)
+            {
+                UI_List_Utils.SetVerticalNavigation(visibleItems);
+                visibleItems[0].GetComponent<Button>().Select();
+            }
         }
+        #endregion
 
+        #region events
+        /// <summary>
+        /// Handled from the UIEventSystem, whenever a different <see cref="Selectable"/> changes
+        /// </summary>
+        /// <param name="currentSelection"></param>
+        /// <param name="previousSelection"></param>
+        public void OnSelection_Updated(GameObject currentSelection, GameObject previousSelection)
+        {
+            if (m_guiItems.Any((i) => i.gameObject == currentSelection))
+            {
+                ItemSelectionChanged(currentSelection.GetComponent<UI_InventoryItem>());
+            }
+        }
+        #endregion
+
+        #region private methods
         /// <summary>
         /// Filter out which items should be visible depending on the selected filter
         /// </summary>
@@ -247,6 +211,9 @@ namespace RPGTest.UI.Common
                 case ItemFilterCategory.Materials:
                     guiItem.gameObject.SetActive(item.Type == ItemType.Material);
                     break;
+                case ItemFilterCategory.Valuable:
+                    // guiItem.gameObject.SetActive(item.Type == ItemType.Material);
+                    break;
                 case ItemFilterCategory.Key:
                     guiItem.gameObject.SetActive(item.Type == ItemType.Key);
                     break;
@@ -255,23 +222,6 @@ namespace RPGTest.UI.Common
             }
 
             return guiItem.gameObject.activeSelf;
-        }
-
-        private GameObject InstantiateFilter(ItemFilterCategory filter)
-        {
-            var guiFilter = Instantiate(FilterGo);
-            guiFilter.transform.SetParent(FilterList.transform);
-            guiFilter.name = filter.ToString();
-            guiFilter.transform.localScale = new Vector3(1, 1, 1);
-
-            var filterComponent = guiFilter.GetComponent<UI_ItemCategoryFilter>();
-            filterComponent.Initialize(filter);
-
-            filterComponent.gameObject.GetComponent<Button>().onClick.AddListener(() => Filter(filter));
-
-            m_filters.Add(filterComponent);
-
-            return guiFilter;
         }
         
         private void SetIndexOfCurrentlySelectedItem(ItemSelectionConfirmedEventArgs args)
@@ -299,17 +249,6 @@ namespace RPGTest.UI.Common
                 }
             }
             m_selectedItemIndex = 0;
-        }
-
-        /// <summary>
-        /// Destroy display item and remove it from the list.
-        /// </summary>
-        /// <param name="obj"></param>
-        protected void DestroyItem(UI_InventoryItem guiItem)
-        {
-            guiItem.ItemSelectionConfirmed -= OnItemSelection_Confirmed;
-            Destroy(guiItem.gameObject);
-            m_guiItems.Remove(guiItem);
         }
         #endregion
     }

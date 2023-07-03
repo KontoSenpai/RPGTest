@@ -817,22 +817,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ca6fec08e1f5440b679a15439509e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftClick:
-    m_PersistentCalls:
-      m_Calls: []
-  middleClick:
-    m_PersistentCalls:
-      m_Calls: []
-  rightClick:
-    m_PersistentCalls:
-      m_Calls: []
   Preset: 2
   Slot: 0
-  IsEquipped: {fileID: 0}
   ItemImage: {fileID: 381982664602921644}
   ItemTypeImage: {fileID: 5149003801118738583}
   ItemName: {fileID: 4812623140261372156}
   QuantityHeld: {fileID: 9055848741508200591}
+  EquippedPanel: {fileID: 0}
   Owner: {fileID: 0}
   DisplayQuantity: 0
   m_statsPanel: {fileID: 6870593601699803488}
@@ -849,7 +840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd60386cdb564324dbc45ec68cc1e876, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_inventoryItem: {fileID: 0}
+  m_inventoryItem: {fileID: 4592292176691794117}
   m_equipmentButton: {fileID: 2835009969367198062}
 --- !u!1 &5827927646276965461
 GameObject:

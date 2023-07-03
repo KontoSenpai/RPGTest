@@ -256,7 +256,6 @@ namespace RPGTest.UI.InventoryMenu
         {
             ItemList.ChangeItemsVisibility(filter);
         }
-        
         /// <summary>
         /// Raised when item selection changed in the connected ItemList
         /// </summary>

@@ -24,7 +24,7 @@ namespace RPGTest.UI.InventoryMenu
         [SerializeField] private GameObject PartyList;
         [SerializeField] private GameObject PartyMemberGo;
 
-        [SerializeField] private UI_EquipmentSlots PanelEquipment;
+        [SerializeField] private UI_EquipmentSet PanelEquipment;
 
         [HideInInspector]
         public CancelActionHandler ItemInteractionCancelled { get; set; }
@@ -74,6 +74,7 @@ namespace RPGTest.UI.InventoryMenu
         /// <param name="item">Consummable to use</param>
         public void Open(Item item)
         {
+            base.Open();
             Initialize(item);
             InitializeUse();
 
@@ -319,7 +320,7 @@ namespace RPGTest.UI.InventoryMenu
         /// </summary>
         private void Clear()
         {
-            PanelEquipment.GetComponent<UI_EquipmentSlots>().Clean();
+            PanelEquipment.GetComponent<UI_EquipmentSet>().Clean();
             PanelEquipment.gameObject.SetActive(false);
 
             if (m_partyMembers != null)

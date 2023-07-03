@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace RPGTest.UI.Common
 {
-    public class UI_EquipmentSlots : UI_Dialog
+    public class UI_EquipmentSet : UI_Dialog
     {
         [SerializeField]
         private Button FirstPreset;
@@ -20,6 +20,7 @@ namespace RPGTest.UI.Common
         private Button SecondPreset;
         [SerializeField]
         private UI_InventoryItem[] m_equipmentComponents;
+
         [HideInInspector]
         public CancelActionHandler EquipActionCancelled { get; set; }
         [HideInInspector]
@@ -40,7 +41,7 @@ namespace RPGTest.UI.Common
 
             foreach (var equipment in m_equipmentComponents)
             {
-                equipment.GetComponent<Button>().onClick.AddListener(() => OnSlotSelected(equipment.Slot));
+                equipment.ItemSelectionConfirmed += OnSlot_Selected;
             }
             FirstPreset.onClick.AddListener(() =>
             {
@@ -54,16 +55,28 @@ namespace RPGTest.UI.Common
             });
         }
 
+        /// <summary>
+        /// Makes the view visible.
+        /// Does NOT set the selection focus on it.
+        /// </summary>
         public override void Open()
         {
+            if (gameObject.activeSelf)
+                return;
+
             gameObject.SetActive(true);
-            m_playerInput.Disable();
+            DisableControls();
         }
 
+        /// <summary>
+        /// Makes the view invisible.
+        /// </summary>
         public override void Close()
         {
+            if (!gameObject.activeSelf) 
+                return;
             gameObject.SetActive(false);
-            m_playerInput.Disable();
+            DisableControls();
         }
 
         protected override void UpdateInputActions()
@@ -121,7 +134,8 @@ namespace RPGTest.UI.Common
 
         public void Select()
         {
-            m_playerInput.Enable();
+            EnableControls();
+            UpdateInputActions();
 
             m_equipmentComponents.FirstOrDefault(s => s.GetComponent<Button>().interactable).GetComponent<Button>().Select();
         }
@@ -157,12 +171,16 @@ namespace RPGTest.UI.Common
             }
         }
 
+        public void OnSlot_Selected(object sender, ItemSelectionConfirmedEventArgs args)
+        {
+            EquipActionPerformed.Invoke(m_presetSlot, args.Slot);
+        }
+
         public void OnSlotSelected(Slot slot)
         {
             EquipActionPerformed.Invoke(m_presetSlot, slot);
         }
         #endregion
-
 
         #region Input Events
         public void OnSecondaryAction_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
@@ -172,7 +190,7 @@ namespace RPGTest.UI.Common
 
         private void OnCancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
-            m_playerInput.Disable();
+            DisableControls();
             EquipActionCancelled();
         }
         #endregion
