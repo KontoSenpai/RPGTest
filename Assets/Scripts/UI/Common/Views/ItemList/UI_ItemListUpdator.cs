@@ -7,6 +7,12 @@ using UnityEngine;
 
 namespace RPGTest.UI.Common
 {
+    public class ItemUpdate
+    {
+        public Item Item { get; set; }
+        public int Quantity { get; set; }
+    }
+
     public partial class UI_ItemListUpdator : MonoBehaviour
     {
         [SerializeField] protected GameObject ItemGo;
@@ -27,12 +33,12 @@ namespace RPGTest.UI.Common
             return guiItems;
         }
 
-        public List<GameObject> UpdateItems(List<GameObject> guiItems, Dictionary<Item, int> items)
+        public List<GameObject> UpdateItems(List<GameObject> guiItems, List<ItemUpdate> itemUpdates)
         {
             List<GameObject> guiCDs = new List<GameObject>();
-            foreach (var item in items)
+            foreach (var itemUpdate in itemUpdates)
             {
-                guiCDs.AddRange(UpdateItem(guiItems, item.Key, item.Value));
+                guiCDs.AddRange(UpdateItem(guiItems, itemUpdate.Item, itemUpdate.Quantity));
             };
 
             return guiCDs;

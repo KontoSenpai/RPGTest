@@ -13,7 +13,7 @@ namespace RPGTest.UI.Utils
         /// </summary>
         /// <param name="list">GameObject to use as parent</param>
         /// <param name="objects">GameObjects to order alphabetically</param>
-        public static void RefreshHierarchy(GameObject list, IEnumerable<GameObject> objects)
+        public static List<GameObject> RefreshHierarchy(GameObject list, IEnumerable<GameObject> objects)
         {
             var objectList = objects.OrderBy(x => x.name).ToList();
 
@@ -23,6 +23,8 @@ namespace RPGTest.UI.Utils
                 objectList[i].transform.SetSiblingIndex(i);
                 objectList[i].transform.localScale = new Vector3(1, 1, 1);
             }
+
+            return objectList;
         }
 
         public static void SetVerticalNavigation(List<GameObject> objects)

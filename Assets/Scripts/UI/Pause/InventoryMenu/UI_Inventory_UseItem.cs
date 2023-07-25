@@ -64,7 +64,7 @@ namespace RPGTest.UI.InventoryMenu
 
             m_playerInput.UI.MouseMoved.performed += OnMouseMoved_performed;
 
-            PanelEquipment.EquipActionPerformed += OnEquipAction_Performed;
+            PanelEquipment.SlotConfirmed += OnEquipAction_Performed;
             PanelEquipment.EquipActionCancelled += OnEquipAction_Cancelled;
         }
 
@@ -345,7 +345,7 @@ namespace RPGTest.UI.InventoryMenu
 
         private void RefreshEquipmentPanel(PlayableCharacter character)
         {
-            PanelEquipment.Refresh(character, m_item as Equipment);
+            PanelEquipment.Initialize(character, m_item as Equipment);
         }
 
         private GameObject CreateInstantiateItem(GameObject prefab)

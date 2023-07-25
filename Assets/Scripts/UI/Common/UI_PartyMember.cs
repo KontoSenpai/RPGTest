@@ -51,7 +51,7 @@ namespace RPGTest.UI.Common
         {
             m_character = character;
             
-            if (Cover.activeSelf)
+            if (Cover != null && Cover.activeSelf)
             {
                 ToggleCover();
             }

@@ -231,7 +231,7 @@ namespace RPGTest.Managers
             
 
             List<Item> removedEquipments;
-            var partyMember = PartyManager.TryGetPartyMember("PC0001");
+            var partyMember = PartyManager.TryGetPartyMemberById("PC0001");
             partyMember.TryEquip(PresetSlot.First, Enums.Slot.LeftHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
             partyMember.TryEquip(PresetSlot.First, Enums.Slot.RightHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
             partyMember.TryEquip(PresetSlot.Second, Enums.Slot.LeftHand, ItemCollector.TryGetEquipment("E0003"), out removedEquipments);            

@@ -228,8 +228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConfirmButton: {fileID: 0}
   CancelButton: {fileID: 0}
-  FirstPreset: {fileID: 3258803536871331136}
-  SecondPreset: {fileID: 7784723252148021569}
+  PresetSelector: {fileID: 3621528955195875621}
   m_equipmentComponents:
   - {fileID: 1167508171035349209}
   - {fileID: 7162466287512514405}
@@ -1882,25 +1881,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6735649057721997709, guid: e330f1b81c0abcc4aa384e2c7802b746, type: 3}
   m_PrefabInstance: {fileID: 8208917254158547907}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3258803536871331136 stripped
+--- !u!114 &3621528955195875621 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6688538357824319107, guid: e330f1b81c0abcc4aa384e2c7802b746, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4875621423962135270, guid: e330f1b81c0abcc4aa384e2c7802b746, type: 3}
   m_PrefabInstance: {fileID: 8208917254158547907}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7784723252148021569 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2153576259021460098, guid: e330f1b81c0abcc4aa384e2c7802b746, type: 3}
-  m_PrefabInstance: {fileID: 8208917254158547907}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 3bfe73324ded6724080684030ee13545, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

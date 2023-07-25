@@ -1,12 +1,8 @@
 ﻿using MyBox;
-using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Managers;
-using RPGTest.Models;
-using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using RPGTest.UI.Common;
-using RPGTest.UI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +12,6 @@ using UnityEngine.InputSystem;
 
 namespace RPGTest.UI.InventoryMenu
 {
-    public class PendingItemSelection
-    {
-        public Item Item { get; set; }
-        public PlayableCharacter Owner { get; set; }
-        public PresetSlot Preset { get; set; }
-        public Slot Slot { get; set; }
-    }
-
     public class UI_Inventory_SubMenu : UI_Pause_SubMenu
     {
         [SerializeField] private UI_ItemList ItemList;
@@ -114,6 +102,7 @@ namespace RPGTest.UI.InventoryMenu
             }
 
             ItemList.Clear();
+            ItemList.Close();
             base.Close();
         }
 
@@ -213,14 +202,17 @@ namespace RPGTest.UI.InventoryMenu
         {
             m_inventoryManager.RemoveItem(m_pendingItemSelection.Item.Id, ((ItemQuantitySelectedEventArgs)e).Quantity);
 
-            var displayItems = new List<UIItemDisplay>() {
-                new UIItemDisplay
+            List<ItemUpdate> itemUpdates = new List<ItemUpdate>()
+            {
+                new ItemUpdate()
                 {
                     Item = m_pendingItemSelection.Item,
-                    Quantity = m_inventoryManager.GetHeldItemQuantity(m_pendingItemSelection.Item.Id)
+                    Quantity = m_inventoryManager.GetHeldItemQuantity(m_pendingItemSelection.Item.Id),
                 }
             };
-            //ItemList.UpdateItems(displayItems);
+
+            var guiCDs = ItemListUpdator.UpdateItems(ItemList.GetItems().Select((i) => i.gameObject).ToList(), itemUpdates);
+            ItemList.UpdateItems(guiCDs);
             Refocus();
         }
 
@@ -254,18 +246,18 @@ namespace RPGTest.UI.InventoryMenu
         /// <param name="filter">New Filter to control item visibility</param>
         public void OnFilter_Changed(ItemFilterCategory filter)
         {
-            ItemList.ChangeItemsVisibility(filter);
+            ItemList.ChangeItemsVisibility(filter, true);
         }
         
         /// <summary>
         /// Raised when item selection changed in the connected ItemList
         /// </summary>
         /// <param name="itemComponent"></param>
-        public void OnItemSelection_Changed(UI_InventoryItem itemComponent)
+        public void OnItemSelection_Changed(GameObject itemGui)
         {
-            if (ItemInformationsPanel != null)
+            if (ItemInformationsPanel != null && itemGui.HasComponent<UI_InventoryItem>())
             {
-                ItemInformationsPanel.Refresh(itemComponent.Item);
+                ItemInformationsPanel.Refresh(itemGui.GetComponent<UI_InventoryItem>().Item);
             }
         }
 
@@ -287,11 +279,14 @@ namespace RPGTest.UI.InventoryMenu
 
         public void OnItemAction_Performed(MenuActionType actionType, List<Item> items)
         {
-            Dictionary<Item, int> itemUpdates = new Dictionary<Item, int>();
+            List<ItemUpdate> itemUpdates = new List<ItemUpdate>();
             foreach(var item in items)
             {
-                m_inventoryManager.GetHeldItemQuantity(item.Id);
-                itemUpdates.Add(item, m_inventoryManager.GetHeldItemQuantity(item.Id));
+                itemUpdates.Add(new ItemUpdate()
+                {
+                    Item = item, 
+                    Quantity = m_inventoryManager.GetHeldItemQuantity(item.Id) 
+                });
             }
 
             bool closeUsageWindow = false;

@@ -28,6 +28,14 @@ namespace RPGTest.UI.Common
         public PlayableCharacter Owner { get; }
     }
 
+    public class PendingItemSelection
+    {
+        public Item Item { get; set; }
+        public PlayableCharacter Owner { get; set; }
+        public PresetSlot Preset { get; set; }
+        public Slot Slot { get; set; }
+    }
+
     public class UI_InventoryItem : MonoBehaviour
     {
         [HideInInspector]
@@ -100,15 +108,8 @@ namespace RPGTest.UI.Common
 
         public void UpdateHeldQuantity(int count)
         {
-            if (count > 0)
-            {
-                Quantity = count;
-                QuantityHeld.text = DisplayQuantity ? $"X {Quantity}" : String.Empty;
-            }
-            else
-            {
-                Quantity = -1;
-            }
+            Quantity = count > 0 ? count : -1;
+            QuantityHeld.text = DisplayQuantity ? $"X {Quantity}" : String.Empty;
         }
 
         public PlayableCharacter GetOwner()

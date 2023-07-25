@@ -9,24 +9,26 @@ using RPGTest.Models;
 using static RPGTest.UI.Common.UI_PartyMember;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using RPGTest.UI.Utils;
 
 namespace RPGTest.UI.Common
 {
     public class UI_EquipmentSet : UI_Dialog
     {
-        [SerializeField]
-        private Button FirstPreset;
-        [SerializeField]
-        private Button SecondPreset;
+        [SerializeField] private UI_PresetSlotSelector PresetSelector;
+
         [SerializeField]
         private UI_InventoryItem[] m_equipmentComponents;
 
         [HideInInspector]
         public CancelActionHandler EquipActionCancelled { get; set; }
+        
         [HideInInspector]
-        public EquipmentSlotSelectedHandler EquipActionPerformed { get; set; }
+        public EquipmentSlotSelectedHandler SlotSelected { get; set; }
 
-        private PresetSlot m_presetSlot;
+        [HideInInspector]
+        public EquipmentSlotSelectedHandler SlotConfirmed { get; set; }
+
         private PlayableCharacter m_character;
         private Equipment m_selectedItem;
 
@@ -43,16 +45,7 @@ namespace RPGTest.UI.Common
             {
                 equipment.ItemSelectionConfirmed += OnSlot_Selected;
             }
-            FirstPreset.onClick.AddListener(() =>
-            {
-                m_presetSlot = PresetSlot.First;
-                OnPresetChanged();
-            });
-            SecondPreset.onClick.AddListener(() =>
-            {
-                m_presetSlot = PresetSlot.Second;
-                OnPresetChanged();
-            });
+            PresetSelector.PresetSlotSelected += PresetSelector_PresetSlotSelected;
         }
 
         /// <summary>
@@ -75,6 +68,7 @@ namespace RPGTest.UI.Common
         {
             if (!gameObject.activeSelf) 
                 return;
+
             gameObject.SetActive(false);
             DisableControls();
         }
@@ -117,27 +111,55 @@ namespace RPGTest.UI.Common
             base.UpdateInputActions();
         }
 
+        /// <summary>
+        /// Initialize content of the Panel to reflect information of given character
+        /// </summary>
+        /// <param name="character">Character we need to refresh the display for</param>
+        public void Initialize(PlayableCharacter character)
+        {
+            m_character = character;
+            PresetSelector.Initialize();
+        }
 
         /// <summary>
-        /// Refresh content of the Panel to reflect information of given character
+        /// Initialize content of the Panel to reflect information of given character and previewItem
         /// </summary>
-        /// <param name="character"></param>
+        /// <param name="character">Character we need to refresh the display for</param>
         /// <param name="item"></param>
-        public void Refresh(PlayableCharacter character, Equipment item)
+        public void Initialize(PlayableCharacter character, Equipment item)
         {
             m_character = character;
             m_selectedItem = item;
-            m_presetSlot = PresetSlot.First;
 
-            OnPresetChanged();
+            PresetSelector.Initialize();
         }
 
-        public void Select()
+        public void Select(Slot pendingSlot = Slot.None)
         {
             EnableControls();
             UpdateInputActions();
 
-            m_equipmentComponents.FirstOrDefault(s => s.GetComponent<Button>().interactable).GetComponent<Button>().Select();
+            InitializeSlotsState();
+
+            EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
+
+            if (pendingSlot != Slot.None)
+            {
+                m_equipmentComponents.Single((c) => c.Slot == pendingSlot).GetComponent<Button>().Select();
+            }
+            else
+            {
+                m_equipmentComponents.FirstOrDefault(c => c.GetComponent<Button>().interactable).GetComponent<Button>().Select();
+            }
+        }
+
+        public void Deselect()
+        {
+            m_equipmentComponents.ForEach((c) => c.GetComponent<Button>().interactable = false);
+
+            EventSystemEvents.OnSelectionUpdated -= OnSelection_Updated;
+
+            DisableControls();
         }
 
         public void Clean()
@@ -147,38 +169,20 @@ namespace RPGTest.UI.Common
 
         public void ChangePreset()
         {
-            m_presetSlot = m_presetSlot == PresetSlot.First ? PresetSlot.Second : PresetSlot.First;
-            OnPresetChanged();
+            PresetSelector.ChangePreset();
         }
         #endregion
 
         #region Events
-
-        public void OnPresetChanged()
+        private void PresetSelector_PresetSlotSelected(object sender, PresetSlotSelectedEventArgs e)
         {
-            FirstPreset.interactable = m_presetSlot == PresetSlot.Second;
-            SecondPreset.interactable = m_presetSlot == PresetSlot.First;
-
-            RefreshEquipmentComponents();
-            InitializeSlotsState();
-            ExplicitNavigation();
-
-            if (m_playerInput.asset.enabled)
-            {
-                var equipmentSlot = m_equipmentComponents.FirstOrDefault(s => s.GetComponent<Button>().interactable);
-                equipmentSlot.GetComponent<Button>().Select();
-                equipmentSlot.GetComponent<UI_EquipmentPreview>().PreviewItem(true);
-            }
+            OnPresetChanged();
         }
 
         public void OnSlot_Selected(object sender, ItemSelectionConfirmedEventArgs args)
         {
-            EquipActionPerformed.Invoke(m_presetSlot, args.Slot);
-        }
-
-        public void OnSlotSelected(Slot slot)
-        {
-            EquipActionPerformed.Invoke(m_presetSlot, slot);
+            m_equipmentComponents.Single((c) => c.Slot == args.Slot).GetComponent<Button>().interactable = false;
+            SlotConfirmed.Invoke(PresetSelector.GetCurrentPreset(), args.Slot);
         }
         #endregion
 
@@ -193,12 +197,40 @@ namespace RPGTest.UI.Common
             DisableControls();
             EquipActionCancelled();
         }
+
+        /// <summary>
+        /// Handled from the UIEventSystem, whenever a different <see cref="Selectable"/> changes
+        /// </summary>
+        /// <param name="currentSelection"></param>
+        /// <param name="previousSelection"></param>
+        public void OnSelection_Updated(GameObject currentSelection, GameObject previousSelection)
+        {
+            if (currentSelection != null && m_equipmentComponents.Any((i) => i.gameObject == currentSelection))
+            {
+                var component = m_equipmentComponents.Single((c) => c.gameObject == currentSelection);
+                SlotSelected(PresetSelector.GetCurrentPreset(), component.Slot);
+            }
+        }
         #endregion
 
         #region Private Methods
+        private void OnPresetChanged()
+        {
+            RefreshEquipmentComponents();
+            InitializeSlotsState();
+            ExplicitNavigation();
+
+            if (m_playerInput.asset.enabled)
+            {
+                var equipmentSlot = m_equipmentComponents.FirstOrDefault(s => s.GetComponent<Button>().interactable);
+                equipmentSlot.GetComponent<Button>().Select();
+                equipmentSlot.GetComponent<UI_EquipmentPreview>().PreviewItem(true);
+            }
+        }
+
         private void RefreshEquipmentComponents()
         {
-            var equipmentSlots = m_character.EquipmentSlots.GetEquipmentPreset(m_presetSlot);
+            var equipmentSlots = m_character.EquipmentSlots.GetEquipmentPreset(PresetSelector.GetCurrentPreset());
             foreach (var component in m_equipmentComponents)
             {
                 component.Initialize(equipmentSlots[component.Slot], -1);
@@ -208,6 +240,12 @@ namespace RPGTest.UI.Common
 
         private void InitializeSlotsState()
         {
+            if (m_selectedItem == null)
+            {
+                m_equipmentComponents.ForEach((c) => c.GetComponent<Button>().interactable = true);
+                return;
+            }
+
             if (m_selectedItem.EquipmentType < EquipmentType.Helmet) // Weapons
             {
                 m_equipmentComponents.ForEach(s => s.GetComponent<UI_EquipmentPreview>().Enable(s.Slot < Slot.Head));

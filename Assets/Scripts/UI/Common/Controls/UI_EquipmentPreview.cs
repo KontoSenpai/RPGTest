@@ -8,6 +8,7 @@ namespace RPGTest.UI.Common
     {
         [SerializeField] private UI_InventoryItem m_inventoryItem;
         [SerializeField] private ButtonOverride m_equipmentButton;
+
         private Equipment m_previewItem;
 
         #region public Methods

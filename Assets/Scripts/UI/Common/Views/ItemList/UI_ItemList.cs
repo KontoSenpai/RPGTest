@@ -10,12 +10,6 @@ using UnityEngine.UI;
 
 namespace RPGTest.UI.Common
 {
-    public class UIItemDisplay
-    {
-        public Item Item { get; set; }
-        public int Quantity { get; set; }
-    }
-
     /// <summary>
     /// Component that manage the display of an item list.
     /// </summary>
@@ -24,19 +18,13 @@ namespace RPGTest.UI.Common
         [SerializeField] protected GameObject ItemList;
 
         [HideInInspector]
-        public event EventHandler<ItemSelectionConfirmedEventArgs> ItemSelectionConfirmed;
-
-        [HideInInspector]
         public ItemSelectionChangedHandler ItemSelectionChanged { get; set; }
         [HideInInspector]
-        public delegate void ItemSelectionChangedHandler(UI_InventoryItem item);
+        public delegate void ItemSelectionChangedHandler(GameObject guiItem);
 
         private List<UI_InventoryItem> m_guiItems = new List<UI_InventoryItem>(); // List of available guiItems.
 
         private int m_selectedItemIndex = 0; // Keep track of selected item index to reset selection on refocus after usage
-
-        // Lambda to retrieve an Item GameObject from an item declaration
-        private Func<UI_InventoryItem, string, bool> m_FindInstantiatedGameObjectForItemID = (itemComponent, id) => itemComponent.Item.Id == id;
 
         #region Public Methods
         public void Awake() { }
@@ -76,7 +64,7 @@ namespace RPGTest.UI.Common
             EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
             m_guiItems = items.Select((i) => i.GetComponent<UI_InventoryItem>()).ToList();
 
-            UI_List_Utils.RefreshHierarchy(ItemList, m_guiItems.Select((i) => i.gameObject));
+            m_guiItems = UI_List_Utils.RefreshHierarchy(ItemList, m_guiItems.Select((i) => i.gameObject)).Select((g) => g.GetComponent<UI_InventoryItem>()).ToList();
             UI_List_Utils.SetVerticalNavigation(m_guiItems.Select((i) => i.gameObject).ToList());
         }
 
@@ -88,14 +76,15 @@ namespace RPGTest.UI.Common
                 if (uiItem.Quantity == -1)
                 {
                     m_guiItems.Remove(uiItem);
-                    Destroy(uiItem);
+                    Destroy(uiItem.gameObject);
                 } else
                 {
+                    uiItem.gameObject.SetActive(true);
                     m_guiItems.Add(uiItem);
                 }
             }
 
-            UI_List_Utils.RefreshHierarchy(ItemList, m_guiItems.Select((i) => i.gameObject));
+            m_guiItems = UI_List_Utils.RefreshHierarchy(ItemList, m_guiItems.Select((i) => i.gameObject)).Select((g) => g.GetComponent<UI_InventoryItem>()).ToList();
             UI_List_Utils.SetVerticalNavigation(m_guiItems.Select((i) => i.gameObject).ToList());
         }
 
@@ -106,6 +95,11 @@ namespace RPGTest.UI.Common
         {
             m_guiItems.ForEach(x => Destroy(x.gameObject));
             m_guiItems.Clear();
+        }
+
+        public void Close()
+        {
+            EventSystemEvents.OnSelectionUpdated -= OnSelection_Updated;
         }
 
         public List<UI_InventoryItem> GetItems()
@@ -127,7 +121,8 @@ namespace RPGTest.UI.Common
         /// Will update visibility of all instantiated items in the list according to the given filter
         /// </summary>
         /// <param name="filter">Filter used to restrict which items should be visible</param>
-        public void ChangeItemsVisibility(ItemFilterCategory filter)
+        /// <param name="select">Auto select first element of the list after new filter</param>
+        public void ChangeItemsVisibility(ItemFilterCategory filter, bool select = false)
         {
             var visibleItems = new List<GameObject>();
             foreach (var item in m_guiItems)
@@ -137,11 +132,16 @@ namespace RPGTest.UI.Common
                     visibleItems.Add(item.gameObject);
                 }
             }
-            if (visibleItems.Count > 0)
+            if (select && visibleItems.Count > 0)
             {
                 UI_List_Utils.SetVerticalNavigation(visibleItems);
                 visibleItems[0].GetComponent<Button>().Select();
             }
+        }
+
+        public void ChangeItemsSelectability(bool isSelectable)
+        {
+            m_guiItems.ForEach((i) => i.GetComponent<Button>().interactable = isSelectable);
         }
         #endregion
 
@@ -153,9 +153,12 @@ namespace RPGTest.UI.Common
         /// <param name="previousSelection"></param>
         public void OnSelection_Updated(GameObject currentSelection, GameObject previousSelection)
         {
-            if (m_guiItems.Any((i) => i.gameObject == currentSelection))
+            if (currentSelection != null && m_guiItems.Any((i) => i.gameObject == currentSelection))
             {
-                ItemSelectionChanged(currentSelection.GetComponent<UI_InventoryItem>());
+                ItemSelectionChanged(currentSelection);
+            } else if (currentSelection == null)
+            {
+                ItemSelectionChanged(currentSelection);
             }
         }
         #endregion
@@ -182,6 +185,28 @@ namespace RPGTest.UI.Common
                     else
                     {
                         guiItem.gameObject.SetActive(((Equipment)item).EquipmentType < EquipmentType.Helmet);
+                    }
+                    break;
+                case ItemFilterCategory.Head:
+                    if (item.Type != ItemType.Equipment)
+                    {
+                        guiItem.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        var equipment = (Equipment)item;
+                        guiItem.gameObject.SetActive(equipment.EquipmentType >= EquipmentType.Helmet && equipment.EquipmentType <= EquipmentType.Hat);
+                    }
+                    break;
+                case ItemFilterCategory.Body:
+                    if (item.Type != ItemType.Equipment)
+                    {
+                        guiItem.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        var equipment = (Equipment)item;
+                        guiItem.gameObject.SetActive(equipment.EquipmentType >= EquipmentType.HeavyArmor && equipment.EquipmentType <= EquipmentType.LightArmor);
                     }
                     break;
                 case ItemFilterCategory.Armors:

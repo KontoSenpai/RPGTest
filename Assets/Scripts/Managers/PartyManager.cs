@@ -20,6 +20,15 @@ namespace RPGTest.Managers
         }
 
         /// <summary>
+        /// Gets all the party members, regardless of their existence
+        /// </summary>
+        /// <returns>All party members. Active and Inactive, null and not null</returns>
+        public List<PlayableCharacter> GetAllPartyMembers()
+        {
+            return m_partyMembers.ToList();
+        }
+
+        /// <summary>
         /// Gets the active party members
         /// </summary>
         /// <returns>First 3 memebrs of the member list</returns>
@@ -33,6 +42,19 @@ namespace RPGTest.Managers
             return characters;
         }
 
+        /// <summary>
+        /// Gets the first existing party member
+        /// </summary>
+        /// <returns>The first party member that is not null</returns>
+        public PlayableCharacter GetFirstExistingPartyMember()
+        {
+            return GetAllPartyMembers().First((c) => c != null);
+        }
+
+        /// <summary>
+        /// Gets all party members that are not null
+        /// </summary>
+        /// <returns>List of non null PlayableCharacters</returns>
         public List<PlayableCharacter> GetExistingActivePartyMembers()
         {
             return GetActivePartyMembers().Where(m => m != null).ToList();
@@ -47,27 +69,23 @@ namespace RPGTest.Managers
             return GetInactivePartyMembers().Where(m => m != null).ToList();
         }
 
-        /// <summary>
-        /// Gets the active party members
-        /// </summary>
-        /// <returns>All party members. Active and Inactive</returns>
-        public List<PlayableCharacter> GetAllPartyMembers()
-        {
-            return m_partyMembers.ToList();
-        }
-
         public PlayableCharacter GetGuestCharacter()
         {
             return null;
         }
 
-        public PlayableCharacter GetPartyMemberAtIndex(int index)
+        public bool TryGetPartyMemberAtIndex(int index, out PlayableCharacter character)
         {
-            if (index < m_partyMembers.Length)
-            {
-                return m_partyMembers[index];
-            }
-            return null;
+            character = null;
+            if (index < 0 || index >= m_partyMembers.Length) return false; 
+
+            character = m_partyMembers[index];
+            return character != null;
+        }
+
+        public PlayableCharacter TryGetPartyMemberById(string id)
+        {
+            return m_partyMembers.SingleOrDefault(m => m != null && m.Id == id);
         }
 
         public List<PlayableCharacter> GetAllExistingPartyMembers()
@@ -75,20 +93,57 @@ namespace RPGTest.Managers
             return GetAllPartyMembers().Where(m => m != null).ToList();
         }
 
+        public int GetIndexOfFirstExistingPartyMember()
+        {
+            return GetAllPartyMembers().FindIndex(0, c => c != null);
+        }
+
         public int GetIndexofLastExistingPartyMember()
         {
             return GetAllPartyMembers().FindLastIndex(c => c != null);
         }
 
-        public PlayableCharacter TryGetPartyMember(string id)
+        public int GetIndexOfPartyMember(PlayableCharacter c)
         {
-            return m_partyMembers.SingleOrDefault(m => m != null && m.Id == id);
+            return GetAllPartyMembers().IndexOf(c);
+        }
+
+        public int GetIndexOfFirstExistingCharacterFromIndex(int startingIndex, bool isIncreasing)
+        {
+            if (isIncreasing)
+            {
+                if (startingIndex < m_partyMembersArraySize)
+                {
+                    for (int i = startingIndex + 1; i < m_partyMembersArraySize; i++)
+                    {
+                        if (m_partyMembers[i] != null)
+                        {
+                            return i;
+                        }
+                    }
+                }
+                return GetIndexOfFirstExistingCharacterFromIndex(-1, isIncreasing);
+            }
+            else
+            {
+                if (startingIndex > 0)
+                {
+                    for (int i = startingIndex - 1; i >= 0; i--)
+                    {
+                        if (m_partyMembers[i] != null)
+                        {
+                            return i;
+                        }
+                    }
+                }
+                return GetIndexOfFirstExistingCharacterFromIndex(m_partyMembersArraySize, isIncreasing);
+            }
         }
 
         public bool TryAddPartyMember(string id)
         {
             var member = PlayableCharactersCollector.TryGetPlayableCharacter(id);
-            if(member != null && TryGetPartyMember(member.Id) == null)
+            if(member != null && TryGetPartyMemberById(member.Id) == null)
             {
                 for(int index = 0; index < m_partyMembers.Count(); index++)
                 {

@@ -8,6 +8,8 @@ namespace RPGTest.UI.Common
     {
         All,
         Weapons,
+        Head,
+        Body,
         Armors,
         Accessories,
         Consumables,

@@ -324,7 +324,7 @@ namespace RPGTest.UI.PartyMenu
         {
             var parameters = new Dictionary<string, object>()
             {
-                { "CharacterIndex", m_currentNavigationIndex },
+                { "CharacterIndex", PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_PartyMember>().GetCharacter().Id },
             };
             switch (index) {
                 case 1: // Equipment
@@ -506,7 +506,7 @@ namespace RPGTest.UI.PartyMenu
             var firstEmptyIndex = -1;
             for (int i = startIndex; i < m_partyManager.GetAllPartyMembers().Count; i++)
             {
-                var member = m_partyManager.GetPartyMemberAtIndex(i);
+                m_partyManager.TryGetPartyMemberAtIndex(i, out var member);
                 if (member == null && firstEmptyIndex == -1)
                 {
                     firstEmptyIndex = i;
