@@ -1,5 +1,4 @@
-﻿using MyBox;
-using RPGTest.Models;
+﻿using RPGTest.Models;
 using RPGTest.Interactibles;
 using RPGTest.Managers;
 using UnityEngine;
@@ -14,16 +13,13 @@ namespace RPGTest.Controllers
 
     public partial class PlayerController : MonoBehaviour
     {
-        [Separator("Debug")]
         [SerializeField] private bool IsDebug = false;
 
-        [Separator("Movement")]
         public float Speed = 5f;
         public float JumpHeight = 2f;
         public float DashDistance = 5f;
         public float WalkScale = 0.33f;
 
-        [Separator("Physics")]
         public float Gravity = -9.81f;
         public Vector3 Drag;
         [SerializeField] private float Height;
@@ -31,7 +27,6 @@ namespace RPGTest.Controllers
         [SerializeField] private float MaxAngle = 45;
         [SerializeField] private LayerMask GroundLayer;
 
-        [Separator("Controller")]
         private CharacterController m_controller;
         private Animator m_animator;
 

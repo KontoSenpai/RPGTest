@@ -290,6 +290,14 @@
             "id": "7d577ba8-58cc-459e-81b6-16173285772f",
             "actions": [
                 {
+                    "name": "CloseMenu",
+                    "type": "Button",
+                    "id": "da5324da-8f3e-4676-911c-439009c6dbdf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
                     "name": "Navigate",
                     "type": "Value",
                     "id": "ed6440b1-c187-4a66-beee-d2faad4ff1a0",
@@ -370,6 +378,14 @@
                     "interactions": "Press"
                 },
                 {
+                    "name": "Cycle",
+                    "type": "Button",
+                    "id": "005d4729-9b46-480d-b813-c6edd9ba5731",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
                     "name": "SecondaryAction",
                     "type": "Button",
                     "id": "3fa05128-5176-4ff6-885e-69d34ee84a69",
@@ -382,22 +398,6 @@
                     "type": "Value",
                     "id": "db4692a2-80e2-4d22-b1c0-162cd2fd9ae5",
                     "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "CloseMenu",
-                    "type": "Button",
-                    "id": "da5324da-8f3e-4676-911c-439009c6dbdf",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "Cycle",
-                    "type": "Button",
-                    "id": "005d4729-9b46-480d-b813-c6edd9ba5731",
-                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
                 }
@@ -582,7 +582,7 @@
                 {
                     "name": "negative",
                     "id": "f97d19bc-51c1-4ba9-820a-c926698e31eb",
-                    "path": "<Keyboard>/1",
+                    "path": "<Keyboard>/f1",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
@@ -593,7 +593,7 @@
                 {
                     "name": "positive",
                     "id": "a0caa3db-a222-489e-92d8-77b544b50cd8",
-                    "path": "<Keyboard>/2",
+                    "path": "<Keyboard>/f2",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
@@ -756,17 +756,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "a68f51d8-1a2e-47d0-8db8-0ce6edada3a1",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "CloseMenu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "Keyboard",
                     "id": "94849b27-6df8-435c-92b4-b892b15d0cc5",
                     "path": "1DAxis",
@@ -780,7 +769,7 @@
                 {
                     "name": "negative",
                     "id": "50580f74-1ec4-4f56-8d91-aabe6a27eb16",
-                    "path": "<Keyboard>/f1",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -791,13 +780,24 @@
                 {
                     "name": "positive",
                     "id": "d5d608c4-03ae-415b-8709-070b339aee09",
-                    "path": "<Keyboard>/f2",
+                    "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
                     "action": "Cycle",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "a68f51d8-1a2e-47d0-8db8-0ce6edada3a1",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "CloseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

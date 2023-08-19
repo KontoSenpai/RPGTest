@@ -181,6 +181,11 @@ namespace RPGTest.Models.Entity
             return true;
         }
 
+        public int GetExperienceToNextLevel(int level)
+        {
+            return m_GrowthTable.XPToNextLevel[level - 1];
+        }
+
         /// <summary>
         /// Performs a level up operation.
         /// All stats are getting increased
@@ -223,9 +228,9 @@ namespace RPGTest.Models.Entity
             return GetAttributesInternal(EquipmentSlots.CurrentPreset);
         }
 
-        public Dictionary<Attribute, float> GetAttributes(PresetSlot slot)
+        public Dictionary<Attribute, float> GetAttributes(PresetSlot preset)
         {
-            return GetAttributesInternal(slot);
+            return GetAttributesInternal(preset);
         }
 
         public override float GetAttribute(Attribute attribute)
@@ -238,9 +243,34 @@ namespace RPGTest.Models.Entity
             return GetAttributeInternal(slot, attribute);
         }
 
-        public int GetExperienceToNextLevel(int level)
+        public override Dictionary<Element, float> GetElementalResistances()
         {
-            return m_GrowthTable.XPToNextLevel[level - 1];
+            return GetElementalResistancesInternal(EquipmentSlots.CurrentPreset);
+        }
+
+        /// <summary>
+        /// Retrieve Elemental Resistances of character for given preset
+        /// </summary>
+        /// <param name="preset"></param>
+        /// <returns></returns>
+        public Dictionary<Element, float> GetElementalResistances(PresetSlot preset)
+        {
+            return GetElementalResistancesInternal(preset);
+        }
+
+        public override Dictionary<StatusEffect, float> GetStatusEffectResistances()
+        {
+            return GetStatusEffectResistances(EquipmentSlots.CurrentPreset);
+        }
+
+        /// <summary>
+        /// Retrieve Elemental Resistances of character for given preset
+        /// </summary>
+        /// <param name="preset"></param>
+        /// <returns></returns>
+        public Dictionary<StatusEffect, float> GetStatusEffectResistances(PresetSlot preset)
+        {
+            return GetStatusEffectResistancesInternal(preset);
         }
         #endregion
 
@@ -250,11 +280,10 @@ namespace RPGTest.Models.Entity
             var attributes = base.GetAttributes();
             var preset = EquipmentSlots.GetEquipmentPreset(slot);
 
-            attributes[Attribute.TotalAttack] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Attack).Value);
-            attributes[Attribute.TotalDefense] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Defense).Value);
-            attributes[Attribute.TotalMagic] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Magic).Value);
-            attributes[Attribute.TotalResistance] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Resistance).Value);
-            attributes[Attribute.TotalSpeed] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == Attribute.Speed).Value);
+            foreach(var attribute in attributes.Keys.ToList())
+            {
+                attributes[attribute] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == attribute).Value);
+            }
 
             return attributes;
         }
@@ -267,6 +296,32 @@ namespace RPGTest.Models.Entity
             }
 
             return -1;
+        }
+
+        private Dictionary<Element, float> GetElementalResistancesInternal(PresetSlot slot)
+        {
+            var elementalResitances = base.GetElementalResistances();
+            var preset = EquipmentSlots.GetEquipmentPreset(slot);
+
+            foreach (var elementalResitance in elementalResitances.Keys.ToList())
+            {
+                elementalResitances[elementalResitance] += preset.Where(e => e.Value != null).Sum(x => x.Value.Elements.SingleOrDefault(a => a.Key == elementalResitance).Value);
+            }
+
+            return elementalResitances;
+        }
+
+        private Dictionary<StatusEffect, float> GetStatusEffectResistancesInternal(PresetSlot slot)
+        {
+            var statusEffectResistances = base.GetStatusEffectResistances();
+            var preset = EquipmentSlots.GetEquipmentPreset(slot);
+
+            foreach (var statusEffectResistance in statusEffectResistances.Keys.ToList())
+            {
+                statusEffectResistances[statusEffectResistance] += preset.Where(e => e.Value != null).Sum(x => x.Value.StatusEffects.SingleOrDefault(a => a.Key == statusEffectResistance).Value);
+            }
+
+            return statusEffectResistances;
         }
 
         private IEnumerator ActionChoice()

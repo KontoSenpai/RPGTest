@@ -29,33 +29,50 @@ namespace RPGTest.UI
         public Dictionary<string, object> Parameters { get; }
     }
 
-    public partial class UI_Pause_SubMenu : UI_Dialog
+    public abstract class UI_Pause_SubMenu : UI_Dialog
     {
         // Navigation helpers
         protected bool m_navigateStarted = false;
         protected float WaitTimeBetweenPerforms = 0.4f;
         protected float m_performTimeStamp;
-
-        public virtual void Initialize(bool refreshAll = true)
-        {
-        }
         
         public virtual void Clear() { }
 
-        public virtual void Open(Dictionary<string, object> parameters)
+        /// <summary>
+        /// Execute once when the PauseMenu is opened
+        /// </summary>
+        public abstract void Initialize();
+
+        /// <summary>
+        /// Execute each time the subMenu is getting opened
+        /// </summary>
+        /// <param name="parameters"></param>
+        public virtual void OpenSubMenu(Dictionary<string, object> parameters)
         {
             base.Open();
             SubMenuOpened();
         }
 
-        public virtual void CloseMenu() 
+        /// <summary>
+        /// Execute each time the subMenu is getting closed
+        /// </summary>
+        public virtual void CloseSubMenu()
+        {
+            base.Close();
+        }
+
+        /// <summary>
+        /// Executed when a Cancel action has been used on the "root" level of a sub menu
+        /// Will clean and close the SubMenu
+        /// </summary>
+        public virtual void ExitPause() 
         {
             SubMenuClosed();
         }
 
         protected virtual void OnCancel_performed(InputAction.CallbackContext obj)
         {
-            CloseMenu();
+            ExitPause();
         }
 
         // Open another menu from a sub menu action

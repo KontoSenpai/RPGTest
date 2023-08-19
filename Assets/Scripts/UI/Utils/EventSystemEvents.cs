@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 
 namespace RPGTest.UI.Utils
 {
+    /// <summary>
+    /// Allows to capture events when a Selectable selection is updated
+    /// </summary>
     [RequireComponent(typeof(EventSystem))]
     public class EventSystemEvents : MonoBehaviour
     {

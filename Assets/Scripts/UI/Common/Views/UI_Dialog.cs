@@ -42,7 +42,8 @@ namespace RPGTest.UI.Common
         /// </summary>
         public virtual void Open()
         {
-            if (gameObject.activeSelf == true) return;
+            if (gameObject.activeSelf)
+                return;
 
             gameObject.SetActive(true);
             EnableControls();

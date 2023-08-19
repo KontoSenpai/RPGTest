@@ -1,5 +1,4 @@
-﻿using MyBox;
-using RPGTest.Enums;
+﻿using RPGTest.Enums;
 using RPGTest.Models.Items;
 using TMPro;
 using UnityEngine;
@@ -9,12 +8,10 @@ namespace RPGTest.UI.Common
 {
     public class UI_Item_Informations : MonoBehaviour
     {
-        [Separator("Base Information")]
         [SerializeField] private Image Image;
         [SerializeField] private TextMeshProUGUI Name;
         [SerializeField] private TextMeshProUGUI SubType;
 
-        [Separator("Detailled Information")]
         [SerializeField] private TextMeshProUGUI CurrencyValue;
         [SerializeField] private Image ImgCurrency;
         [SerializeField] private TextMeshProUGUI Description;

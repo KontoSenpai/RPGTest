@@ -63,8 +63,8 @@ namespace RPGTest.Modules.Battle.UI
                 ActiveMembers[i].SetActive(activeMembers[i] != null);
                 if(ActiveMembers[i].activeInHierarchy)
                 {
-                    var widgetScript = ActiveMembers[i].GetComponent<UI_PartyMember>();
-                    widgetScript.Initialize(activeMembers[i]);
+                    var widgetScript = ActiveMembers[i].GetComponent<UI_View_EntityInfos>();
+                    widgetScript.Initialize(activeMembers[i], activeMembers[i].EquipmentSlots.CurrentPreset);
                     activeMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
                 }
             }
@@ -75,8 +75,8 @@ namespace RPGTest.Modules.Battle.UI
                 InactiveMembers[i].SetActive(inactiveMembers[i] != null);
                 if (InactiveMembers[i].activeInHierarchy)
                 {
-                    var widgetScript = InactiveMembers[i].GetComponent<UI_PartyMember>();
-                    widgetScript.Initialize(inactiveMembers[i]);
+                    var widgetScript = InactiveMembers[i].GetComponent<UI_View_EntityInfos>();
+                    widgetScript.Initialize(inactiveMembers[i], inactiveMembers[i].EquipmentSlots.CurrentPreset);
                     inactiveMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
                 }
             }
@@ -153,7 +153,7 @@ namespace RPGTest.Modules.Battle.UI
             {
                 if (ActiveMembers[i].activeInHierarchy)
                 {
-                    activeMembers[i].PlayerExperienceChanged -= ActiveMembers[i].GetComponent<UI_PartyMember>().RefreshExperience;
+                    activeMembers[i].PlayerExperienceChanged -= ActiveMembers[i].GetComponent<UI_View_EntityInfos>().RefreshExperience;
                 }
             }
 
@@ -162,7 +162,7 @@ namespace RPGTest.Modules.Battle.UI
             {
                 if (InactiveMembers[i].activeInHierarchy)
                 {
-                    inactiveMembers[i].PlayerExperienceChanged -= InactiveMembers[i].GetComponent<UI_PartyMember>().RefreshExperience;
+                    inactiveMembers[i].PlayerExperienceChanged -= InactiveMembers[i].GetComponent<UI_View_EntityInfos>().RefreshExperience;
                 }
             }
 

@@ -1,5 +1,4 @@
-﻿using MyBox;
-using RPGTest.Models.Items;
+﻿using RPGTest.Models.Items;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +6,7 @@ namespace RPGTest.UI.Common
 {
     public class UI_EquipmentCategory : MonoBehaviour
     {
-        [Separator("Left Slot")]
         [SerializeField] private UI_InventoryItem LeftEquipmentComponent;
-        [Separator("Right Slot")]
         [SerializeField] private UI_InventoryItem RightEquipmentComponent;
 
         public void InitializeSelection()

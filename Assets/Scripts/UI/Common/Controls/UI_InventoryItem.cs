@@ -16,14 +16,18 @@ namespace RPGTest.UI.Common
 {
     public class ItemSelectionConfirmedEventArgs : EventArgs
     {
-        public ItemSelectionConfirmedEventArgs(Item item, Slot slot = Slot.None, PlayableCharacter owner = null)
+        public ItemSelectionConfirmedEventArgs(Item item, PresetSlot preset = PresetSlot.None, Slot slot = Slot.None, PlayableCharacter owner = null)
         {
             Item = item;
+
+            Preset = preset;
             Slot = slot;
             Owner = owner;
         }
 
         public Item Item { get; }
+
+        public PresetSlot Preset { get; }
         public Slot Slot { get; }
         public PlayableCharacter Owner { get; }
     }
@@ -31,9 +35,10 @@ namespace RPGTest.UI.Common
     public class PendingItemSelection
     {
         public Item Item { get; set; }
-        public PlayableCharacter Owner { get; set; }
+
         public PresetSlot Preset { get; set; }
         public Slot Slot { get; set; }
+        public PlayableCharacter Owner { get; set; }
     }
 
     public class UI_InventoryItem : MonoBehaviour
@@ -55,9 +60,8 @@ namespace RPGTest.UI.Common
         [SerializeField] protected Image ItemTypeImage;
         [SerializeField] protected TextMeshProUGUI ItemName;
         [SerializeField] protected TextMeshProUGUI QuantityHeld;
-        [SerializeField] private GameObject EquippedPanel;
 
-        [SerializeField] protected TextMeshProUGUI Owner;
+        [SerializeField] private UI_ItemOwner OwnersPanel;
 
         [SerializeField] private bool DisplayQuantity;
 
@@ -92,7 +96,7 @@ namespace RPGTest.UI.Common
             Preset = preset;
             Slot = slot;
 
-            InitializeInternal(item, 1, true);
+            InitializeInternal(item, 1);
         }
 
         /// <summary>
@@ -103,7 +107,7 @@ namespace RPGTest.UI.Common
         public void InitializeForOwners(Item item, List<PlayableCharacter> owners)
         {
             Owners = owners;
-            InitializeInternal(item, owners.Count, true);
+            InitializeInternal(item, owners.Count);
         }
 
         public void UpdateHeldQuantity(int count)
@@ -133,7 +137,7 @@ namespace RPGTest.UI.Common
             RefreshItemDisplayInformation(item ?? Item);
         }
 
-        public void RefreshItemDisplayInformation(Item item, bool equipped = false)
+        public void RefreshItemDisplayInformation(Item item)
         {
             Clean();
             if (item == null)
@@ -150,10 +154,9 @@ namespace RPGTest.UI.Common
             {
                 InitializeItemStats(item);
             }
-            if (EquippedPanel)
+            if (OwnersPanel != null)
             {
-                EquippedPanel.SetActive(equipped);
-                Owner.text = String.Join(" ", Owners.Select((o) => o.Name));
+                OwnersPanel.SetOwnerDisplay(Owners, Preset, Slot);
             }
         }
 
@@ -189,7 +192,7 @@ namespace RPGTest.UI.Common
         /// <summary>
         /// Set the value in all appropriate components
         /// </summary>
-        private void InitializeInternal(Item item, int quantity, bool equipped = false)
+        private void InitializeInternal(Item item, int quantity)
         {
             Item = item;
             UpdateHeldQuantity(quantity);
@@ -198,10 +201,10 @@ namespace RPGTest.UI.Common
             GetComponent<Button>().onClick.RemoveAllListeners();
             GetComponent<Button>().onClick.AddListener(() =>
             {
-                ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(Item, Slot, GetOwner()));
+                ItemSelectionConfirmed(this, new ItemSelectionConfirmedEventArgs(Item, Preset, Slot, GetOwner()));
             });
 
-            RefreshItemDisplayInformation(item, equipped);
+            RefreshItemDisplayInformation(item);
         }
 
         private void InitializeItemStats(Item item)

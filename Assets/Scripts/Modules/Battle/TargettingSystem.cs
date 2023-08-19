@@ -13,10 +13,10 @@ namespace RPGTest.Modules.Battle
 
         private List<TargetType> m_possibleTargetsTypes;
 
-        private List<Enemy> m_enemies;
         private List<PlayableCharacter> m_party;
+        private List<Enemy> m_enemies;
 
-        private PlayableCharacter m_requester;
+        private Entity m_requester;
 
         //Target navigation
         private bool m_targetEnemy = false;
@@ -28,7 +28,7 @@ namespace RPGTest.Modules.Battle
 
 
         public event TargetingValidatedHandler PlayerTargettingDone;
-        public delegate void TargetingValidatedHandler(PlayableCharacter requester, bool submit, List<Entity> targets);
+        public delegate void TargetingValidatedHandler(Entity requester, bool submit, List<Entity> targets);
 
 
         public void OnEnable() => m_playerInput.Enable();

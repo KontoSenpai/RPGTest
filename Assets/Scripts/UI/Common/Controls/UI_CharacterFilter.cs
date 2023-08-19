@@ -28,7 +28,7 @@ namespace RPGTest.UI.Common
 
             if (Portrait != null)
             {
-                var portrait = ((Texture2D)Resources.Load($"Portraits/{character.Id}"));
+                var portrait = (Texture2D)Resources.Load($"Portraits/{character.Id}");
                 if (portrait != null)
                 {
                     Portrait.sprite = Sprite.Create(portrait, new Rect(0.0f, 0.0f, portrait.width, portrait.height), new Vector2(0.5f, 0.5f), 100.0f);

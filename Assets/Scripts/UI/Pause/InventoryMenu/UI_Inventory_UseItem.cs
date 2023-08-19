@@ -203,7 +203,12 @@ namespace RPGTest.UI.InventoryMenu
 
         private void OnEquipAction_Performed(PresetSlot preset, Slot slot)
         {
-            var character = m_currentSelectedPartyMember.GetComponent<UI_PartyMember>().GetCharacter();
+            var character = m_currentSelectedPartyMember.GetComponent<UI_View_EntityInfos>().GetPlayableCharacter();
+
+            if (m_owner != null)
+            {
+                m_owner.TryUnequip(m_preset, m_slot, out var _);
+            }
 
             character.TryEquip(preset, slot, (Equipment)m_item, out List<Item> changedItems);
             changedItems.Add(m_item);
@@ -236,10 +241,10 @@ namespace RPGTest.UI.InventoryMenu
                 return;
             }
 
-            if (currentSelection.TryGetComponent<UI_PartyMember>(out var compoment))
+            if (currentSelection.TryGetComponent<UI_View_EntityInfos>(out var compoment))
             {
                 m_memberIndex = m_partyMembers.IndexOf(currentSelection);
-                RefreshEquipmentPanel(compoment.GetCharacter());
+                RefreshEquipmentPanel(compoment.GetPlayableCharacter());
             }
         }
         #endregion
@@ -268,10 +273,10 @@ namespace RPGTest.UI.InventoryMenu
             foreach (var member in m_partyManager.GetAllExistingPartyMembers())
             {
                 var uiMember = CreateInstantiateItem(PartyMemberGo);
-                var uiMemberScript = uiMember.GetComponent<UI_PartyMember>();
+                var uiMemberScript = uiMember.GetComponent<UI_View_EntityInfos>();
                 uiMember.transform.name = member.Name;
 
-                uiMemberScript.Initialize(member);
+                uiMemberScript.Initialize(member, m_preset);
                 uiMemberScript.MemberSelected += OnMember_Selected;
 
                 member.PlayerWidgetUpdated += OnMemberPlayerWidget_Updated;
@@ -310,7 +315,7 @@ namespace RPGTest.UI.InventoryMenu
         {
             foreach (var item in m_partyMembers)
             {
-                item.GetComponent<UI_PartyMember>().Refresh();
+                item.GetComponent<UI_View_EntityInfos>().Refresh();
             }
         }
 
@@ -327,7 +332,7 @@ namespace RPGTest.UI.InventoryMenu
             {
                 foreach (var item in m_partyMembers)
                 {
-                    item.GetComponent<UI_PartyMember>().MemberSelected -= OnMember_Selected;
+                    item.GetComponent<UI_View_EntityInfos>().MemberSelected -= OnMember_Selected;
                     Destroy(item);
                 }
                 m_partyMembers.Clear();
@@ -364,7 +369,7 @@ namespace RPGTest.UI.InventoryMenu
         
         private void UseItem(GameObject member)
         {
-            var character = member.GetComponent<UI_PartyMember>().GetCharacter();
+            var character = member.GetComponent<UI_View_EntityInfos>().GetEntity();
             switch (m_item.Type)
             {
                 case ItemType.Consumable:

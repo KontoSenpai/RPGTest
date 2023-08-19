@@ -18,6 +18,8 @@ namespace RPGTest.UI
         [SerializeField] private Button[] MenuButtons;
         [SerializeField] private UI_Pause_SubMenu[] SubMenus;
 
+        private int minusPos = -2252;
+
         //UI control
         private int m_currentNavigationIndex = -1;
 
@@ -29,7 +31,6 @@ namespace RPGTest.UI
             {
                 if (menu != null)
                 {
-                    menu.Initialize();
                     menu.SubMenuOpened += OpenSubMenu;
                     menu.SubMenuClosed += ExitSubMenu;
                     menu.MenuChanged += OnMenu_changed;
@@ -109,6 +110,12 @@ namespace RPGTest.UI
             UIOpened(this, null);
             MenuButtons[menuIndex].Select();
             MenuButtons[menuIndex].interactable = false;
+
+            foreach(var subMenu in SubMenus)
+            {
+                subMenu.Initialize();
+            }
+
             SelectSubMenu(menuIndex);
         }
 
@@ -117,12 +124,12 @@ namespace RPGTest.UI
             if (m_currentNavigationIndex != -1)
             {
                 MenuButtons[m_currentNavigationIndex].interactable = true;
-                SubMenus[m_currentNavigationIndex].Close();
+                SubMenus[m_currentNavigationIndex].CloseSubMenu();
             }
 
             m_currentNavigationIndex = menuIndex;
             MenuButtons[m_currentNavigationIndex].interactable = false;
-            SubMenus[m_currentNavigationIndex].Open(parameters ?? new Dictionary<string, object>());
+            SubMenus[m_currentNavigationIndex].OpenSubMenu(parameters ?? new Dictionary<string, object>());
         }
 
         private void OpenSubMenu()

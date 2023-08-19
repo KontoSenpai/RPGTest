@@ -1,5 +1,4 @@
-﻿using MyBox;
-using RPGTest.Helpers;
+﻿using RPGTest.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -21,11 +20,9 @@ namespace RPGTest.UI.Common
 
     public class UI_ActionConfirmationDialog : UI_Dialog
     {
-        [Separator("Buttons")]
         [SerializeField] private GameObject ButtonGo;
         private List<GameObject> ActionButtons = new List<GameObject>();
 
-        [Separator("Layout")]
         [SerializeField] private GameObject LayoutContent;
 
         [HideInInspector]

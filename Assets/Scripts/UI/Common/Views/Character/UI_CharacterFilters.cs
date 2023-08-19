@@ -1,7 +1,9 @@
-﻿using RPGTest.Managers;
+﻿using RPGTest.Inputs;
+using RPGTest.Managers;
 using RPGTest.Models.Entity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +14,9 @@ namespace RPGTest.UI.Common
         [SerializeField] private UI_CharacterFilter CharacterGo;
         [SerializeField] private GameObject CharacterContainer;
 
+        [SerializeField] private Image LeftCycle;
+        [SerializeField] private Image RightCycle;
+
         // Characters control
         private List<UI_CharacterFilter> m_charactersGui = new List<UI_CharacterFilter>();
         private int m_currentCharacterIndex = -1;
@@ -21,14 +26,25 @@ namespace RPGTest.UI.Common
         [HideInInspector]
         public event EventHandler<CharacterFilterSelectedEventArgs> CharacterFilterSelected;
 
-        public void Initialize(int characterIndex)
-        {
-            m_currentCharacterIndex = characterIndex;
-            foreach (var character in m_partyManager.GetAllPartyMembers())
-            {
-                if (character == null)
-                    continue;
+        // Input Control
+        private string m_actionName = "Cycle";
+        private Controls m_playerInput;
+        private InputDisplayManager m_inputManager => FindObjectOfType<InputDisplayManager>();
 
+        public void Awake()
+        {
+            m_playerInput = new Controls();
+        }
+
+        /// <summary>
+        /// Create a character filter for every existing party members.
+        /// Should be ran once per menu opening
+        /// </summary>
+        public void Initialize()
+        {
+            m_currentCharacterIndex = -1;
+            foreach (var character in m_partyManager.GetAllExistingPartyMembers())
+            {
                 var go = Instantiate(CharacterGo);
 
                 go.name = character.Id;
@@ -39,22 +55,40 @@ namespace RPGTest.UI.Common
                 go.GetComponent<UI_CharacterFilter>().CharacterFilterSelected += OnCharacter_Selected;
                 m_charactersGui.Add(go);
             }
+        }
 
+        /// <summary>
+        /// To call when the control gets opened
+        /// </summary>
+        /// <param name="characterIndex">Index of the character in the party list to default on</param>
+        public void Open(int characterIndex)
+        {
+            OnScheme_Changed(null, null);
+            m_inputManager.SchemeChanged += OnScheme_Changed;
+
+            m_currentCharacterIndex = characterIndex;
             if (m_partyManager.TryGetPartyMemberAtIndex(characterIndex, out var member))
             {
                 ChangeCharacterInternal(member);
-            } else
+            }
+            else
             {
                 ChangeCharacterInternal(m_partyManager.GetFirstExistingPartyMember());
             }
         }
 
-        public void Clear()
+        /// <summary>
+        /// To call when the control gets closed
+        /// </summary>
+        public void Close()
         {
-            m_charactersGui.ForEach((g) => Destroy(g.gameObject));
-            m_charactersGui.Clear();
+            m_inputManager.SchemeChanged -= OnScheme_Changed;
         }
 
+        /// <summary>
+        /// Retrieve character that is currently filtered
+        /// </summary>
+        /// <returns></returns>
         public PlayableCharacter GetCurrentCharacter()
         {
             if (m_partyManager.TryGetPartyMemberAtIndex(m_currentCharacterIndex, out var character)) {
@@ -80,7 +114,32 @@ namespace RPGTest.UI.Common
         {
             ChangeCharacterInternal(e.Character);
         }
+
+        private void OnScheme_Changed(object sender, EventArgs e)
+        {
+            var actionDisplays = m_inputManager.GetInputDisplays(new Dictionary<string, string[]>()
+            {
+                {
+                    m_actionName,
+                    new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Cycle.name
+                    }
+                },
+            });
+
+            var icons = actionDisplays.Single((a) => a.Description == m_actionName).Icons;
+
+            LeftCycle.sprite = Sprite.Create(icons[0][0], new Rect(0.0f, 0.0f, icons[0][0].width, icons[0][0].height), new Vector2(0.5f, 0.5f), 100.0f);
+            RightCycle.sprite = Sprite.Create(icons[0][1], new Rect(0.0f, 0.0f, icons[0][1].width, icons[0][1].height), new Vector2(0.5f, 0.5f), 100.0f);
+        }
         #endregion
+
+        private void Clear()
+        {
+            m_charactersGui.ForEach((g) => Destroy(g.gameObject));
+            m_charactersGui.Clear();
+        }
 
         private void ChangeCharacterInternal(PlayableCharacter character)
         {

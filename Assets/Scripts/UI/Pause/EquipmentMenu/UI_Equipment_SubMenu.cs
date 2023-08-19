@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using RPGTest.Models;
 using RPGTest.UI.Common;
-using RPGTest.UI.PartyMenu;
 using RPGTest.Enums;
+using RPGTest.Models.Items;
 
 namespace RPGTest.UI
 {
@@ -27,8 +27,7 @@ namespace RPGTest.UI
         [SerializeField] private UI_ItemListFilters ItemListFilters;
         [SerializeField] private UI_ItemListUpdator ItemListUpdator;
 
-        [SerializeField] private UI_PartyMember CharacterInfo;
-        [SerializeField] private UI_Party_Member_Stats CharacterStats;
+        [SerializeField] private UI_View_EntityContainer EntityComponentsContainer;
 
         //Items control
         private int m_currentNavigationIndex = 0;
@@ -115,35 +114,51 @@ namespace RPGTest.UI
             base.OnDisable();
         }
 
-        public override void Open(Dictionary<string, object> parameters)
+        public override void Initialize()
         {
-            base.Open(parameters);
+            CharacterFilters.Initialize();
+        }
 
-            var characterIndex = 0;
+        public override void OpenSubMenu(Dictionary<string, object> parameters)
+        {
+            base.OpenSubMenu(parameters);
+
+            var characterIndex = -1;
             if (parameters.TryGetValue("CharacterIndex", out var value) && m_partyManager.GetActivePartyMembers()[(int)value] != null)
             {
                 characterIndex = (int)value;
             }
-            Initialize(characterIndex);
+
+            var items = ItemListUpdator.InstantiateItems(m_inventoryManager.GetItems());
+            items.ForEach((i) =>
+            {
+                i.GetComponent<UI_InventoryItem>().ItemSelectionConfirmed += OnItemSelection_Confirmed;
+            });
+
+            ItemList.Initialize(items);
+            ItemListFilters.Initialize();
+
+            CharacterFilters.Open(characterIndex);
+
 
             UpdateInputActions();
         }
 
-        public override void Initialize(bool refreshAll = true)
+        public override void CloseSubMenu()
         {
+            ItemList.Clear();
+            CharacterFilters.Close();
+            EquipmentSet.Deselect();
+
+            base.CloseSubMenu();
         }
 
-        public override void Close()
+        public override void ExitPause()
         {
-            CharacterFilters.Clear();
             ItemList.Clear();
             EquipmentSet.Deselect();
-            base.Close();
-        }
 
-        public override void CloseMenu()
-        {
-            base.CloseMenu();
+            base.ExitPause();
         }
 
         protected override void UpdateInputActions()
@@ -263,10 +278,20 @@ namespace RPGTest.UI
 
         /// <summary>
         /// Handle item selection confirmation event from the <see cref="ItemList"/>
+        /// If the pending item selection have an owner, unequip from previous owner
         /// </summary>
         /// <param name="args"></param>
         public void OnItemSelection_Confirmed(object sender, ItemSelectionConfirmedEventArgs e)
         {
+            if (e.Owner != null)
+            {
+                e.Owner.TryUnequip(PresetSlot.First, e.Slot, out var _);
+            }
+            var character = CharacterFilters.GetCurrentCharacter();
+            character.TryEquip(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, (Equipment)e.Item, out var _);
+
+            EquipmentSet.Refresh();
+            EquipmentSet.Select(m_pendingItemSelection.Slot);
         }
 
         /// <summary>
@@ -290,7 +315,7 @@ namespace RPGTest.UI
             switch (m_currentActionStage)
             {
                 case ActionStage.SelectSlot:
-                    CloseMenu();
+                    ExitPause();
                     break;
                 case ActionStage.SelectItem:
                     ChangeStage(ActionStage.SelectSlot);
@@ -312,7 +337,7 @@ namespace RPGTest.UI
 
         private void SecondaryNavigate_Performed(Vector2 movement)
         {
-            if (Mathf.Abs(movement.x) > 0.4f)
+            if (m_currentActionStage == ActionStage.SelectSlot && Mathf.Abs(movement.x) > 0.4f)
             {
                 EquipmentSet.ChangePreset();
             }
@@ -339,28 +364,9 @@ namespace RPGTest.UI
             }
         }
 
-        /// <summary>
-        /// Initialize the Equipment menu for character at given index
-        /// </summary>
-        /// <param name="index">Index of the character in the party list</param>
-        private void Initialize(int index)
-        {
-            var items = ItemListUpdator.InstantiateItems(m_inventoryManager.GetItems());
-            items.ForEach((i) =>
-            {
-                i.GetComponent<UI_InventoryItem>().ItemSelectionConfirmed += OnItemSelection_Confirmed;
-            });
-
-            ItemList.Initialize(items);
-            ItemListFilters.Initialize();
-
-            CharacterFilters.Initialize(index);
-        }
-
         private void ChangeCharacter(PlayableCharacter character)
         {
-            CharacterInfo.Initialize(character);
-            CharacterStats.Refresh(character, PresetSlot.First);
+            EntityComponentsContainer.Initialize(character, PresetSlot.First);
             EquipmentSet.Initialize(character);
 
             ChangeStage(ActionStage.SelectSlot);

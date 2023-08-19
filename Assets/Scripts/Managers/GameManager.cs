@@ -1,5 +1,4 @@
-﻿using MyBox;
-using RPGTest.Collectors;
+﻿using RPGTest.Collectors;
 using RPGTest.Controllers;
 using RPGTest.Interactibles;
 using RPGTest.Models;
@@ -21,7 +20,6 @@ namespace RPGTest.Managers
         public GameObject PlayerController;
         public Camera MainCamera;
 
-        [Separator("Managers")]
         public UIManager UIManager;
         public PartyManager PartyManager;
         public InventoryManager InventoryManager;
@@ -165,7 +163,7 @@ namespace RPGTest.Managers
                 }
                 if (SaveFile.CurrentSceneState != null)
                 {
-                    var interactibles = FindObjectsOfType<GameObject>().Where(x => x.tag == "Interactible");
+                    var interactibles = FindObjectsOfType<GameObject>().Where(x => x.CompareTag("Interactible"));
                     foreach (var chestState in SaveFile.CurrentSceneState.ChestStates)
                     {
                         interactibles.SingleOrDefault(x => x.name == chestState.ChestId).GetComponent<InteractibleChest>().UpdateInventory(chestState.RemainingItems);

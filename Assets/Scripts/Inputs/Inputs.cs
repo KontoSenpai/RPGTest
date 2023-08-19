@@ -305,6 +305,14 @@ namespace RPGTest.Inputs
             ""id"": ""7d577ba8-58cc-459e-81b6-16173285772f"",
             ""actions"": [
                 {
+                    ""name"": ""CloseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""da5324da-8f3e-4676-911c-439009c6dbdf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
                     ""name"": ""Navigate"",
                     ""type"": ""Value"",
                     ""id"": ""ed6440b1-c187-4a66-beee-d2faad4ff1a0"",
@@ -385,6 +393,14 @@ namespace RPGTest.Inputs
                     ""interactions"": ""Press""
                 },
                 {
+                    ""name"": ""Cycle"",
+                    ""type"": ""Button"",
+                    ""id"": ""005d4729-9b46-480d-b813-c6edd9ba5731"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
                     ""name"": ""SecondaryAction"",
                     ""type"": ""Button"",
                     ""id"": ""3fa05128-5176-4ff6-885e-69d34ee84a69"",
@@ -397,22 +413,6 @@ namespace RPGTest.Inputs
                     ""type"": ""Value"",
                     ""id"": ""db4692a2-80e2-4d22-b1c0-162cd2fd9ae5"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""CloseMenu"",
-                    ""type"": ""Button"",
-                    ""id"": ""da5324da-8f3e-4676-911c-439009c6dbdf"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""Cycle"",
-                    ""type"": ""Button"",
-                    ""id"": ""005d4729-9b46-480d-b813-c6edd9ba5731"",
-                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
                 }
@@ -597,7 +597,7 @@ namespace RPGTest.Inputs
                 {
                     ""name"": ""negative"",
                     ""id"": ""f97d19bc-51c1-4ba9-820a-c926698e31eb"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""path"": ""<Keyboard>/f1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
@@ -608,7 +608,7 @@ namespace RPGTest.Inputs
                 {
                     ""name"": ""positive"",
                     ""id"": ""a0caa3db-a222-489e-92d8-77b544b50cd8"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""path"": ""<Keyboard>/f2"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
@@ -771,17 +771,6 @@ namespace RPGTest.Inputs
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""a68f51d8-1a2e-47d0-8db8-0ce6edada3a1"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""CloseMenu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""Keyboard"",
                     ""id"": ""94849b27-6df8-435c-92b4-b892b15d0cc5"",
                     ""path"": ""1DAxis"",
@@ -795,7 +784,7 @@ namespace RPGTest.Inputs
                 {
                     ""name"": ""negative"",
                     ""id"": ""50580f74-1ec4-4f56-8d91-aabe6a27eb16"",
-                    ""path"": ""<Keyboard>/f1"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -806,13 +795,24 @@ namespace RPGTest.Inputs
                 {
                     ""name"": ""positive"",
                     ""id"": ""d5d608c4-03ae-415b-8709-070b339aee09"",
-                    ""path"": ""<Keyboard>/f2"",
+                    ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
                     ""action"": ""Cycle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a68f51d8-1a2e-47d0-8db8-0ce6edada3a1"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""CloseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -869,6 +869,7 @@ namespace RPGTest.Inputs
             m_Player_Debug = m_Player.FindAction("Debug", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+            m_UI_CloseMenu = m_UI.FindAction("CloseMenu", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
             m_UI_SecondaryNavigate = m_UI.FindAction("SecondaryNavigate", throwIfNotFound: true);
             m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
@@ -879,10 +880,9 @@ namespace RPGTest.Inputs
             m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_CycleMenus = m_UI.FindAction("CycleMenus", throwIfNotFound: true);
+            m_UI_Cycle = m_UI.FindAction("Cycle", throwIfNotFound: true);
             m_UI_SecondaryAction = m_UI.FindAction("SecondaryAction", throwIfNotFound: true);
             m_UI_MouseMoved = m_UI.FindAction("MouseMoved", throwIfNotFound: true);
-            m_UI_CloseMenu = m_UI.FindAction("CloseMenu", throwIfNotFound: true);
-            m_UI_Cycle = m_UI.FindAction("Cycle", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1013,6 +1013,7 @@ namespace RPGTest.Inputs
         // UI
         private readonly InputActionMap m_UI;
         private IUIActions m_UIActionsCallbackInterface;
+        private readonly InputAction m_UI_CloseMenu;
         private readonly InputAction m_UI_Navigate;
         private readonly InputAction m_UI_SecondaryNavigate;
         private readonly InputAction m_UI_Submit;
@@ -1023,14 +1024,14 @@ namespace RPGTest.Inputs
         private readonly InputAction m_UI_MiddleClick;
         private readonly InputAction m_UI_RightClick;
         private readonly InputAction m_UI_CycleMenus;
+        private readonly InputAction m_UI_Cycle;
         private readonly InputAction m_UI_SecondaryAction;
         private readonly InputAction m_UI_MouseMoved;
-        private readonly InputAction m_UI_CloseMenu;
-        private readonly InputAction m_UI_Cycle;
         public struct UIActions
         {
             private @Controls m_Wrapper;
             public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @CloseMenu => m_Wrapper.m_UI_CloseMenu;
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
             public InputAction @SecondaryNavigate => m_Wrapper.m_UI_SecondaryNavigate;
             public InputAction @Submit => m_Wrapper.m_UI_Submit;
@@ -1041,10 +1042,9 @@ namespace RPGTest.Inputs
             public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
             public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
             public InputAction @CycleMenus => m_Wrapper.m_UI_CycleMenus;
+            public InputAction @Cycle => m_Wrapper.m_UI_Cycle;
             public InputAction @SecondaryAction => m_Wrapper.m_UI_SecondaryAction;
             public InputAction @MouseMoved => m_Wrapper.m_UI_MouseMoved;
-            public InputAction @CloseMenu => m_Wrapper.m_UI_CloseMenu;
-            public InputAction @Cycle => m_Wrapper.m_UI_Cycle;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1054,6 +1054,9 @@ namespace RPGTest.Inputs
             {
                 if (m_Wrapper.m_UIActionsCallbackInterface != null)
                 {
+                    @CloseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
+                    @CloseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
+                    @CloseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
                     @Navigate.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
                     @Navigate.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
                     @Navigate.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
@@ -1084,22 +1087,22 @@ namespace RPGTest.Inputs
                     @CycleMenus.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
+                    @Cycle.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCycle;
+                    @Cycle.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCycle;
+                    @Cycle.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCycle;
                     @SecondaryAction.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
                     @SecondaryAction.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
                     @SecondaryAction.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
                     @MouseMoved.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
                     @MouseMoved.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
                     @MouseMoved.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
-                    @CloseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
-                    @CloseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
-                    @CloseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
-                    @Cycle.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCycle;
-                    @Cycle.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCycle;
-                    @Cycle.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCycle;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
                 {
+                    @CloseMenu.started += instance.OnCloseMenu;
+                    @CloseMenu.performed += instance.OnCloseMenu;
+                    @CloseMenu.canceled += instance.OnCloseMenu;
                     @Navigate.started += instance.OnNavigate;
                     @Navigate.performed += instance.OnNavigate;
                     @Navigate.canceled += instance.OnNavigate;
@@ -1130,18 +1133,15 @@ namespace RPGTest.Inputs
                     @CycleMenus.started += instance.OnCycleMenus;
                     @CycleMenus.performed += instance.OnCycleMenus;
                     @CycleMenus.canceled += instance.OnCycleMenus;
+                    @Cycle.started += instance.OnCycle;
+                    @Cycle.performed += instance.OnCycle;
+                    @Cycle.canceled += instance.OnCycle;
                     @SecondaryAction.started += instance.OnSecondaryAction;
                     @SecondaryAction.performed += instance.OnSecondaryAction;
                     @SecondaryAction.canceled += instance.OnSecondaryAction;
                     @MouseMoved.started += instance.OnMouseMoved;
                     @MouseMoved.performed += instance.OnMouseMoved;
                     @MouseMoved.canceled += instance.OnMouseMoved;
-                    @CloseMenu.started += instance.OnCloseMenu;
-                    @CloseMenu.performed += instance.OnCloseMenu;
-                    @CloseMenu.canceled += instance.OnCloseMenu;
-                    @Cycle.started += instance.OnCycle;
-                    @Cycle.performed += instance.OnCycle;
-                    @Cycle.canceled += instance.OnCycle;
                 }
             }
         }
@@ -1185,6 +1185,7 @@ namespace RPGTest.Inputs
         }
         public interface IUIActions
         {
+            void OnCloseMenu(InputAction.CallbackContext context);
             void OnNavigate(InputAction.CallbackContext context);
             void OnSecondaryNavigate(InputAction.CallbackContext context);
             void OnSubmit(InputAction.CallbackContext context);
@@ -1195,10 +1196,9 @@ namespace RPGTest.Inputs
             void OnMiddleClick(InputAction.CallbackContext context);
             void OnRightClick(InputAction.CallbackContext context);
             void OnCycleMenus(InputAction.CallbackContext context);
+            void OnCycle(InputAction.CallbackContext context);
             void OnSecondaryAction(InputAction.CallbackContext context);
             void OnMouseMoved(InputAction.CallbackContext context);
-            void OnCloseMenu(InputAction.CallbackContext context);
-            void OnCycle(InputAction.CallbackContext context);
         }
     }
 }

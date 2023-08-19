@@ -4,6 +4,7 @@ using RPGTest.UI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,7 +16,9 @@ namespace RPGTest.UI.Common
     /// </summary>
     public class UI_ItemList : MonoBehaviour
     {
-        [SerializeField] protected GameObject ItemList;
+        [SerializeField] protected ScrollRect ItemList;
+        [SerializeField] protected UI_ViewportBehavior ViewportBehaviour;
+        [SerializeField] protected TextMeshProUGUI NoItemsDisplay;
 
         [HideInInspector]
         public ItemSelectionChangedHandler ItemSelectionChanged { get; set; }
@@ -64,7 +67,7 @@ namespace RPGTest.UI.Common
             EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
             m_guiItems = items.Select((i) => i.GetComponent<UI_InventoryItem>()).ToList();
 
-            m_guiItems = UI_List_Utils.RefreshHierarchy(ItemList, m_guiItems.Select((i) => i.gameObject)).Select((g) => g.GetComponent<UI_InventoryItem>()).ToList();
+            m_guiItems = UI_List_Utils.RefreshHierarchy(ItemList.content.gameObject, m_guiItems.Select((i) => i.gameObject)).Select((g) => g.GetComponent<UI_InventoryItem>()).ToList();
             UI_List_Utils.SetVerticalNavigation(m_guiItems.Select((i) => i.gameObject).ToList());
         }
 
@@ -84,7 +87,7 @@ namespace RPGTest.UI.Common
                 }
             }
 
-            m_guiItems = UI_List_Utils.RefreshHierarchy(ItemList, m_guiItems.Select((i) => i.gameObject)).Select((g) => g.GetComponent<UI_InventoryItem>()).ToList();
+            m_guiItems = UI_List_Utils.RefreshHierarchy(ItemList.content.gameObject, m_guiItems.Select((i) => i.gameObject)).Select((g) => g.GetComponent<UI_InventoryItem>()).ToList();
             UI_List_Utils.SetVerticalNavigation(m_guiItems.Select((i) => i.gameObject).ToList());
         }
 
@@ -137,6 +140,7 @@ namespace RPGTest.UI.Common
                 UI_List_Utils.SetVerticalNavigation(visibleItems);
                 visibleItems[0].GetComponent<Button>().Select();
             }
+            ViewportBehaviour.InitializeStepAmount(visibleItems.Count > 0 ? visibleItems[0] : null, visibleItems.Count);
         }
 
         public void ChangeItemsSelectability(bool isSelectable)
@@ -153,10 +157,12 @@ namespace RPGTest.UI.Common
         /// <param name="previousSelection"></param>
         public void OnSelection_Updated(GameObject currentSelection, GameObject previousSelection)
         {
-            if (currentSelection != null && m_guiItems.Any((i) => i.gameObject == currentSelection))
+            if (currentSelection != null && currentSelection.transform.parent == ItemList.content)
             {
                 ItemSelectionChanged(currentSelection);
-            } else if (currentSelection == null)
+                ViewportBehaviour.ScrollToSelection(currentSelection, previousSelection);
+            }
+            else if (currentSelection == null)
             {
                 ItemSelectionChanged(currentSelection);
             }

@@ -59,9 +59,9 @@ namespace RPGTest.Models.Entity
 
         public Dictionary<Buff, int> StatChangeResistance { get; set; } = new Dictionary<Buff, int>();
 
-        public Dictionary<StatusEffect, int> StatusEffectResistance { get; set; } = new Dictionary<StatusEffect, int>();
+        public StatusEffectsResistances StatusEffectResistances { get; set; }
 
-        public Dictionary<Element, int> ElementResistance { get; set; } = new Dictionary<Element, int>();
+        public ElementalResistances ElementalResistances { get; set; }
 
         public virtual Range PowerRange { get; set; } = new Range() { Min = 0.75f, Max = 1.25f };
         #endregion
@@ -193,35 +193,68 @@ namespace RPGTest.Models.Entity
 
             attributes.Add(Attribute.TotalAttack, 
                 Mathf.Ceil(attributes[Attribute.Attack] *
-                GetHighestBuff(Attribute.Attack) /
-                GetHighestDebuff(Attribute.Attack))
+                GetHighestAttributeBuff(Attribute.Attack) /
+                GetHighestAttributeDebuff(Attribute.Attack))
             );
             attributes.Add(Attribute.TotalDefense,
                 Mathf.Ceil(attributes[Attribute.Defense] *
-                GetHighestBuff(Attribute.Defense) /
-                GetHighestDebuff(Attribute.Defense))
+                GetHighestAttributeBuff(Attribute.Defense) /
+                GetHighestAttributeDebuff(Attribute.Defense))
             );
             attributes.Add(Attribute.TotalMagic, 
                 Mathf.Ceil(attributes[Attribute.Magic] *
-                GetHighestBuff(Attribute.Magic) /
-                GetHighestDebuff(Attribute.Magic))
+                GetHighestAttributeBuff(Attribute.Magic) /
+                GetHighestAttributeDebuff(Attribute.Magic))
             );
             attributes.Add(Attribute.TotalResistance,
                 Mathf.Ceil(attributes[Attribute.Resistance] *
-                GetHighestBuff(Attribute.Resistance) /
-                GetHighestDebuff(Attribute.Resistance))
+                GetHighestAttributeBuff(Attribute.Resistance) /
+                GetHighestAttributeDebuff(Attribute.Resistance))
             );
             attributes.Add(Attribute.TotalSpeed,
                 Mathf.Ceil(attributes[Attribute.Speed] *
-                GetHighestBuff(Attribute.Speed) /
-                GetHighestDebuff(Attribute.Speed))
+                GetHighestAttributeBuff(Attribute.Speed) /
+                GetHighestAttributeDebuff(Attribute.Speed))
             );
             attributes.Add(Attribute.TotalHit,
-                attributes[Attribute.Hit] * 
-                GetHighestBuff(Attribute.Hit)
+                attributes[Attribute.Hit] *
+                GetHighestAttributeBuff(Attribute.Hit)
             );
             return attributes;
         }
+
+        public virtual Dictionary<Element, float> GetElementalResistances()
+        {
+            Dictionary<Element, float> elementalResistances = new Dictionary<Element, float>();
+
+            elementalResistances.Add(Element.Fire, ElementalResistances.Fire + GetHighestElementalResistanceBuff(Element.Fire) - GetHighestElementalResistanceDebuff(Element.Fire));
+            elementalResistances.Add(Element.Ice, ElementalResistances.Ice + GetHighestElementalResistanceBuff(Element.Ice) - GetHighestElementalResistanceDebuff(Element.Ice));
+            elementalResistances.Add(Element.Water, ElementalResistances.Water + GetHighestElementalResistanceBuff(Element.Water) - GetHighestElementalResistanceDebuff(Element.Water));
+            elementalResistances.Add(Element.Lightning, ElementalResistances.Lightning + GetHighestElementalResistanceBuff(Element.Lightning) - GetHighestElementalResistanceDebuff(Element.Lightning));
+            elementalResistances.Add(Element.Wind, ElementalResistances.Wind + GetHighestElementalResistanceBuff(Element.Wind) - GetHighestElementalResistanceDebuff(Element.Wind));
+            elementalResistances.Add(Element.Earth, ElementalResistances.Earth + GetHighestElementalResistanceBuff(Element.Earth) - GetHighestElementalResistanceDebuff(Element.Earth));
+            elementalResistances.Add(Element.Light, ElementalResistances.Light + GetHighestElementalResistanceBuff(Element.Light) - GetHighestElementalResistanceDebuff(Element.Light));
+            elementalResistances.Add(Element.Dark, ElementalResistances.Dark + GetHighestElementalResistanceBuff(Element.Dark) - GetHighestElementalResistanceDebuff(Element.Dark));
+
+            return elementalResistances;
+        }
+
+        public virtual Dictionary<StatusEffect, float> GetStatusEffectResistances()
+        {
+            Dictionary<StatusEffect, float> statuEffectResistances = new Dictionary<StatusEffect, float>();
+
+            statuEffectResistances.Add(StatusEffect.Blind, StatusEffectResistances.Blind + GetHighestStatusEffectResistanceBuff(StatusEffect.Blind) - GetHighestStatusEffectResistanceBuff(StatusEffect.Blind));
+            statuEffectResistances.Add(StatusEffect.Bleed, StatusEffectResistances.Bleed + GetHighestStatusEffectResistanceBuff(StatusEffect.Bleed) - GetHighestStatusEffectResistanceBuff(StatusEffect.Bleed));
+            statuEffectResistances.Add(StatusEffect.Poison, StatusEffectResistances.Poison + GetHighestStatusEffectResistanceBuff(StatusEffect.Poison) - GetHighestStatusEffectResistanceBuff(StatusEffect.Poison));
+            statuEffectResistances.Add(StatusEffect.Paralysis, StatusEffectResistances.Paralysis + GetHighestStatusEffectResistanceBuff(StatusEffect.Paralysis) - GetHighestStatusEffectResistanceBuff(StatusEffect.Paralysis));
+            statuEffectResistances.Add(StatusEffect.Silence, StatusEffectResistances.Silence + GetHighestStatusEffectResistanceBuff(StatusEffect.Silence) - GetHighestStatusEffectResistanceBuff(StatusEffect.Silence));
+            statuEffectResistances.Add(StatusEffect.Confusion, StatusEffectResistances.Confusion + GetHighestStatusEffectResistanceBuff(StatusEffect.Confusion) - GetHighestStatusEffectResistanceBuff(StatusEffect.Confusion));
+            statuEffectResistances.Add(StatusEffect.Freeze, StatusEffectResistances.Freeze + GetHighestStatusEffectResistanceBuff(StatusEffect.Freeze) - GetHighestStatusEffectResistanceBuff(StatusEffect.Freeze));
+            statuEffectResistances.Add(StatusEffect.Slow, StatusEffectResistances.Slow + GetHighestStatusEffectResistanceBuff(StatusEffect.Slow) - GetHighestStatusEffectResistanceBuff(StatusEffect.Slow));
+
+            return statuEffectResistances;
+        }
+
 
         #region Modifications
         /// <summary>

@@ -5,8 +5,7 @@ using RPGTest.Models.Items;
 using RPGTest.Models.Entity;
 using RPGTest.Enums;
 using System.Linq;
-using RPGTest.Models;
-using static RPGTest.UI.Common.UI_PartyMember;
+using static RPGTest.UI.Common.UI_View_EntityInfos;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using RPGTest.UI.Utils;
@@ -32,13 +31,14 @@ namespace RPGTest.UI.Common
         private PlayableCharacter m_character;
         private Equipment m_selectedItem;
 
+        private bool m_enableInputs;
+
         #region Public Methods
         public override void Awake()
         {
             base.Awake();
 
             m_playerInput.UI.SecondaryAction.performed += OnSecondaryAction_performed;
-
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
 
             foreach (var equipment in m_equipmentComponents)
@@ -48,29 +48,14 @@ namespace RPGTest.UI.Common
             PresetSelector.PresetSlotSelected += PresetSelector_PresetSlotSelected;
         }
 
-        /// <summary>
-        /// Makes the view visible.
-        /// Does NOT set the selection focus on it.
-        /// </summary>
         public override void Open()
         {
-            if (gameObject.activeSelf)
-                return;
-
-            gameObject.SetActive(true);
-            DisableControls();
+            base.Open();
         }
 
-        /// <summary>
-        /// Makes the view invisible.
-        /// </summary>
         public override void Close()
         {
-            if (!gameObject.activeSelf) 
-                return;
-
-            gameObject.SetActive(false);
-            DisableControls();
+            base.Close();
         }
 
         protected override void UpdateInputActions()
@@ -119,6 +104,9 @@ namespace RPGTest.UI.Common
         {
             m_character = character;
             PresetSelector.Initialize();
+
+            m_playerInput.UI.SecondaryAction.performed -= OnSecondaryAction_performed;
+            m_playerInput.UI.Cancel.performed -= OnCancel_performed;
         }
 
         /// <summary>
@@ -132,6 +120,14 @@ namespace RPGTest.UI.Common
             m_selectedItem = item;
 
             PresetSelector.Initialize();
+        }
+
+        /// <summary>
+        /// Refresh slots for currently selected character
+        /// </summary>
+        public void Refresh()
+        {
+            RefreshEquipmentComponents();
         }
 
         public void Select(Slot pendingSlot = Slot.None)
@@ -195,7 +191,10 @@ namespace RPGTest.UI.Common
         private void OnCancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
             DisableControls();
-            EquipActionCancelled();
+            if (m_selectedItem != null)
+            {
+                EquipActionCancelled();
+            }
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace TestsEditor.Battle
     }
     public class BattleFixture
     {
-        public PlayableCharacter Character { get; set; }
+        public Entity Character { get; set; }
         public Enemy Enemy { get; set; }
 
         public Ability[] Abilities { get; set; } =

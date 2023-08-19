@@ -1,5 +1,4 @@
-﻿using MyBox;
-using RPGTest.Enums;
+﻿using RPGTest.Enums;
 using RPGTest.Managers;
 using RPGTest.Models.Items;
 using RPGTest.UI.Common;
@@ -20,10 +19,8 @@ namespace RPGTest.UI.InventoryMenu
 
         [SerializeField] private UI_Item_Informations ItemInformationsPanel;
 
-        [Separator("Action Confirmation Dialogs")]
         [SerializeField] private UI_ActionConfirmationDialog ActionConfirmationDialog;
 
-        [Separator("Action Dialogs")]
         [SerializeField] private UI_Inventory_UseItem ItemUsageWindow;
         [SerializeField] private UI_Dialog_ItemQuantity ItemQuantityDialog;
 
@@ -81,16 +78,21 @@ namespace RPGTest.UI.InventoryMenu
             ActionConfirmationDialog.ActionSelected += OnActionSelected_Confirmed;
         }
 
-        public override void Open(Dictionary<string, object> parameters)
+        public override void Initialize()
         {
-            base.Open(parameters);
 
-            Initialize();
+        }
+
+        public override void OpenSubMenu(Dictionary<string, object> parameters)
+        {
+            base.OpenSubMenu(parameters);
+
+            InitializeInternal();
 
             UpdateInputActions();
         }
 
-        public override void Close()
+        public override void CloseSubMenu()
         {
             if (ActionConfirmationDialog != null)
             {
@@ -103,10 +105,10 @@ namespace RPGTest.UI.InventoryMenu
 
             ItemList.Clear();
             ItemList.Close();
-            base.Close();
+            base.CloseSubMenu();
         }
 
-        public override void CloseMenu()
+        public override void ExitPause()
         {
             if (ActionConfirmationDialog != null)
             {
@@ -117,7 +119,7 @@ namespace RPGTest.UI.InventoryMenu
                 ItemUsageWindow.Close();
             }
 
-            base.CloseMenu();
+            base.ExitPause();
         }
 
         protected override void UpdateInputActions()
@@ -255,9 +257,9 @@ namespace RPGTest.UI.InventoryMenu
         /// <param name="itemComponent"></param>
         public void OnItemSelection_Changed(GameObject itemGui)
         {
-            if (ItemInformationsPanel != null && itemGui.HasComponent<UI_InventoryItem>())
+            if (ItemInformationsPanel != null && itemGui.TryGetComponent<UI_InventoryItem>(out var component))
             {
-                ItemInformationsPanel.Refresh(itemGui.GetComponent<UI_InventoryItem>().Item);
+                ItemInformationsPanel.Refresh(component.Item);
             }
         }
 
@@ -271,8 +273,10 @@ namespace RPGTest.UI.InventoryMenu
             m_pendingItemSelection = new PendingItemSelection()
             {
                 Item = e.Item,
-                Owner = e.Owner,
+
+                Preset = e.Preset,
                 Slot = e.Slot,
+                Owner = e.Owner,
             };
             SelectItem();
         }
@@ -327,7 +331,7 @@ namespace RPGTest.UI.InventoryMenu
         #endregion
 
         #region Private Methods
-        private void Initialize()
+        private void InitializeInternal()
         {
             var items = ItemListUpdator.InstantiateItems(m_inventoryManager.GetItems());
             items.ForEach((i) =>
@@ -402,7 +406,7 @@ namespace RPGTest.UI.InventoryMenu
 
         private void CancelCurrentAction()
         {
-            CloseMenu();
+            ExitPause();
         }
         #endregion
     }

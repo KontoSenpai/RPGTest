@@ -98,7 +98,7 @@ namespace RPGTest.Modules.Battle.Action
         /// <param name="allies">Allies present on the battlefield</param>
         /// <param name="enemies">Enemis present on the battlefield</param>
         /// <returns>Desired targets</returns>
-        private List<Entity> GetTargets(TargetType targetType, List<PlayableCharacter> allies = null, List<Enemy> enemies = null)
+        private List<Entity> GetTargets(TargetType targetType, List<Entity> allies = null, List<Enemy> enemies = null)
         {
             var targets = new List<Entity>();
             switch (targetType)
