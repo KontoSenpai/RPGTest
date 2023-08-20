@@ -11,6 +11,12 @@ namespace RPGTest.UI.Common
     {
         public Item Item { get; set; }
         public int Quantity { get; set; }
+
+        public ItemUpdate(Item item, int quantity)
+        {
+            Item = item;
+            Quantity = quantity;
+        }
     }
 
     public partial class UI_ItemListUpdator : MonoBehaviour

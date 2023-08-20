@@ -20,6 +20,8 @@ namespace RPGTest.UI.Common
         public override void Initialize(PlayableCharacter character, PresetSlot preset)
         {
             base.Initialize(character, preset);
+
+            Refresh(character.EquipmentSlots, preset);
         }
 
         public void InitializeSelection()

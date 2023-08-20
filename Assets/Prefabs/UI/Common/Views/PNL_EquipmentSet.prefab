@@ -226,8 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9066da94061e7409ba939643d6796b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConfirmButton: {fileID: 0}
-  CancelButton: {fileID: 0}
+  ShouldUpdateInputDisplay: 0
   PresetSelector: {fileID: 3621528955195875621}
   m_equipmentComponents:
   - {fileID: 1167508171035349209}

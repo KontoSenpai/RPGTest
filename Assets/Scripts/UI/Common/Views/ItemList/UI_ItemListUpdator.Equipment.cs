@@ -51,10 +51,12 @@ namespace RPGTest.UI.Common
 
             var equipmentGuiItems = guiItems
                 .Where((i) => i.GetComponent<UI_InventoryItem>().Item.Id == item.Id)
-                .Select((i) => i.GetComponent<UI_InventoryItem>());
+                .Select((i) => i.GetComponent<UI_InventoryItem>())
+                .ToList();
 
             var unequippedQuantity = GetTotalUnequippedQuantity(quantity, equippedItems);
             var unequippedGuiItem = equipmentGuiItems.SingleOrDefault((g) => g.GetOwner() == null);
+            var equippedGuiItems = equipmentGuiItems.Where((g) => g.GetOwner() != null);
 
             if (unequippedGuiItem != null) // Update existing unequipped guiItem
             {
@@ -233,12 +235,18 @@ namespace RPGTest.UI.Common
                     throw new Exception("Unexpected Error");
                 }
 
+                var deleted = true;
                 foreach (var presetSlots in equippedSlots)
                 {
                     if (equipmentGuiItem.Preset == presetSlots.Key && presetSlots.Value.Contains(equipmentGuiItem.Slot))
                     {
-                        return false;
+                        deleted = false;
+                        break;
                     }
+                }
+                if (deleted)
+                {
+                    deletedGuiItems.Add(equipmentGuiItem.gameObject);
                 }
             }
 

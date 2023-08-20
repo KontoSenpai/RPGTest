@@ -206,11 +206,7 @@ namespace RPGTest.UI.InventoryMenu
 
             List<ItemUpdate> itemUpdates = new List<ItemUpdate>()
             {
-                new ItemUpdate()
-                {
-                    Item = m_pendingItemSelection.Item,
-                    Quantity = m_inventoryManager.GetHeldItemQuantity(m_pendingItemSelection.Item.Id),
-                }
+                new ItemUpdate(m_pendingItemSelection.Item, m_inventoryManager.GetHeldItemQuantity(m_pendingItemSelection.Item.Id)),
             };
 
             var guiCDs = ItemListUpdator.UpdateItems(ItemList.GetItems().Select((i) => i.gameObject).ToList(), itemUpdates);
@@ -286,11 +282,7 @@ namespace RPGTest.UI.InventoryMenu
             List<ItemUpdate> itemUpdates = new List<ItemUpdate>();
             foreach(var item in items)
             {
-                itemUpdates.Add(new ItemUpdate()
-                {
-                    Item = item, 
-                    Quantity = m_inventoryManager.GetHeldItemQuantity(item.Id) 
-                });
+                itemUpdates.Add(new ItemUpdate(item, m_inventoryManager.GetHeldItemQuantity(item.Id)));
             }
 
             bool closeUsageWindow = false;

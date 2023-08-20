@@ -8,6 +8,7 @@ using RPGTest.Models;
 using RPGTest.UI.Common;
 using RPGTest.Enums;
 using RPGTest.Models.Items;
+using System.Linq;
 
 namespace RPGTest.UI
 {
@@ -82,7 +83,7 @@ namespace RPGTest.UI
             };
             m_playerInput.UI.SecondaryAction.performed += ctx =>
             {
-                //SecondaryAction_Performed();
+                OnSecondaryAction_Performed(ctx);
             };
             m_playerInput.UI.MouseMoved.performed += ctx =>
             {
@@ -230,6 +231,12 @@ namespace RPGTest.UI
                 default:
                     throw new System.Exception($"Unhandled slot type {slot}");
             }
+
+            m_pendingItemSelection = new PendingItemSelection()
+            {
+                Preset = preset,
+                Slot = slot,
+            };
         }
 
         private void OnEquipmentSlot_Confirmed(PresetSlot preset, Slot slot)
@@ -285,13 +292,25 @@ namespace RPGTest.UI
         {
             if (e.Owner != null)
             {
-                e.Owner.TryUnequip(PresetSlot.First, e.Slot, out var _);
+                e.Owner.TryUnequip(m_pendingItemSelection.Preset, e.Slot, out var _);
             }
+
             var character = CharacterFilters.GetCurrentCharacter();
-            character.TryEquip(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, (Equipment)e.Item, out var _);
+            character.TryEquip(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, (Equipment)e.Item, out var removedEquipments);
 
             EquipmentSet.Refresh();
-            EquipmentSet.Select(m_pendingItemSelection.Slot);
+
+            var itemUpdates = new List<ItemUpdate>();
+            itemUpdates.Add(new ItemUpdate(e.Item, m_inventoryManager.GetHeldItemQuantity(e.Item.Id)));
+            foreach (var removedItem in removedEquipments)
+            {
+                itemUpdates.Add(new ItemUpdate(removedItem, m_inventoryManager.GetHeldItemQuantity(removedItem.Id)));
+            }
+
+            var items = ItemListUpdator.UpdateItems(ItemList.GetItems().Select((i) => i.gameObject).ToList(), itemUpdates);
+            ItemList.UpdateItems(items);
+
+            ChangeStage(ActionStage.SelectSlot);
         }
 
         /// <summary>
@@ -321,6 +340,37 @@ namespace RPGTest.UI
                     ChangeStage(ActionStage.SelectSlot);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Sec
+        /// </summary>
+        /// <param name="ctx"></param>
+        protected void OnSecondaryAction_Performed(InputAction.CallbackContext ctx)
+        {
+            if (m_currentActionStage != ActionStage.SelectSlot)
+            {
+                return;
+            }
+
+            var character = CharacterFilters.GetCurrentCharacter();
+
+            character.TryUnequip(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, out var removedEquipments);
+
+            if (!removedEquipments.Any())
+            {
+                return;
+            }
+
+            var itemUpdates = new List<ItemUpdate>();
+            foreach (var removedItem in removedEquipments)
+            {
+                itemUpdates.Add(new ItemUpdate(removedItem, m_inventoryManager.GetHeldItemQuantity(removedItem.Id)));
+            }
+
+            EquipmentSet.Refresh();
+            var items = ItemListUpdator.UpdateItems(ItemList.GetItems().Select((i) => i.gameObject).ToList(), itemUpdates);
+            ItemList.UpdateItems(items);
         }
 
         private void MouseMoved_Performed()

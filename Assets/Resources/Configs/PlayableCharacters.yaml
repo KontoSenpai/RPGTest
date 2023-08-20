@@ -1,34 +1,32 @@
 # NPCs.yaml
 PlayableCharacters:
-    - Id                   : PC0001
-      Name                 : Jon
-      Surname              : Doe
-      Level                : 1
-      DefaultAttack        : A0001
-      Abilities            :
+    - Id                      : PC0001
+      Name                    : Jon
+      Surname                 : Doe
+      Level                   : 1
+      DefaultAttack           : A0001
+      Abilities               :
         - AW0001
         - AW0002
         - AP0001
-      BaseAttributes       :
-        MaxHP           : 30
-        MaxMP           : 0
-        MaxStamina      : 10
-        Attack          : 8
-        Defense         : 7
-        Magic           : 3
-        Resistance      : 4
-        Speed           : 8
-      AttributesGrowth     :
-        MaxHP           : 12
-        MaxMP           : 0
-        MaxStamina      : 5
-        Attack          : 3
-        Defense         : 2
-        Magic           : 1
-        Resistance      : 1
-        Speed           : 1
-      ElementalResistances :
-        Fire               : 0.0
+      BaseAttributes          :
+        MaxHP                 : 30
+        MaxMP                 : 0
+        MaxStamina            : 10
+        Attack                : 8
+        Defense               : 7
+        Magic                 : 3
+        Resistance            : 4
+        Speed                 : 8
+      AttributesGrowth        :
+        MaxHP                 : 12
+        MaxMP                 : 0
+        MaxStamina            : 5
+        Attack                : 3
+        Defense               : 2
+        Magic                 : 1
+        Resistance            : 1
+        Speed                 : 1
     
     - Id                : PC0002
       Name              : Kehra

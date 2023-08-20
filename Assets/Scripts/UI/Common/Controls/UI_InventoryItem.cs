@@ -6,7 +6,6 @@ using RPGTest.Models.Items;
 using RPGTest.UI.Widgets;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -140,6 +139,12 @@ namespace RPGTest.UI.Common
         public void RefreshItemDisplayInformation(Item item)
         {
             Clean();
+
+            if (OwnersPanel != null)
+            {
+                OwnersPanel.SetOwnerDisplay(Owners, Preset, Slot);
+            }
+
             if (item == null)
             {
                 return;
@@ -153,10 +158,6 @@ namespace RPGTest.UI.Common
             if (m_statsPanel && m_statsPanel.activeSelf)
             {
                 InitializeItemStats(item);
-            }
-            if (OwnersPanel != null)
-            {
-                OwnersPanel.SetOwnerDisplay(Owners, Preset, Slot);
             }
         }
 

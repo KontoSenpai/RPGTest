@@ -12,7 +12,7 @@ using RPGTest.UI.Utils;
 
 namespace RPGTest.UI.Common
 {
-    public class UI_EquipmentSet : UI_Dialog
+    public class UI_EquipmentSet : UI_View
     {
         [SerializeField] private UI_PresetSlotSelector PresetSelector;
 
@@ -31,8 +31,6 @@ namespace RPGTest.UI.Common
         private PlayableCharacter m_character;
         private Equipment m_selectedItem;
 
-        private bool m_enableInputs;
-
         #region Public Methods
         public override void Awake()
         {
@@ -46,16 +44,6 @@ namespace RPGTest.UI.Common
                 equipment.ItemSelectionConfirmed += OnSlot_Selected;
             }
             PresetSelector.PresetSlotSelected += PresetSelector_PresetSlotSelected;
-        }
-
-        public override void Open()
-        {
-            base.Open();
-        }
-
-        public override void Close()
-        {
-            base.Close();
         }
 
         protected override void UpdateInputActions()

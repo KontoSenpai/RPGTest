@@ -1,12 +1,9 @@
-﻿using RPGTest.Inputs;
-using RPGTest.Managers;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 namespace RPGTest.UI.Common
 {
-    public abstract class UI_Dialog : MonoBehaviour
+    public abstract class UI_Dialog : UI_View
     {
         [SerializeField] protected GameObject ConfirmButton;
         [SerializeField] protected GameObject CancelButton;
@@ -17,75 +14,9 @@ namespace RPGTest.UI.Common
         [HideInInspector]
         public EventHandler<EventArgs> DialogActionConfirmed;
 
-        protected Dictionary<string, string[]> m_inputActions = new Dictionary<string, string[]>();
-        protected Controls m_playerInput;
-        protected InputDisplayManager InputManager => FindObjectOfType<InputDisplayManager>();
-
-        public virtual void Awake()
+        public override void Awake()
         {
-            m_playerInput = new Controls();
-            m_playerInput.Disable();
-        }
-
-        public virtual void OnEnable()
-        {
-            m_playerInput.Enable();
-        }
-
-        public virtual void OnDisable()
-        {
-            m_playerInput.Disable();
-        }
-
-        /// <summary>
-        /// Open the dialog and enable user inputs
-        /// </summary>
-        public virtual void Open()
-        {
-            if (gameObject.activeSelf)
-                return;
-
-            gameObject.SetActive(true);
-            EnableControls();
-        }
-
-        /// <summary>
-        /// Close the dialog and disable user inputs
-        /// </summary>
-        public virtual void Close()
-        {
-            if (gameObject.activeSelf == false) return;
-            
-            DisableControls();
-            gameObject.SetActive(false);
-        }
-
-        protected void EnableControls()
-        {
-            InputManager.SchemeChanged += OnScheme_Changed;
-            m_playerInput.Enable();
-            UpdateInputDisplay();
-        }
-
-        protected void DisableControls()
-        {
-            InputManager.SchemeChanged -= OnScheme_Changed;
-            m_playerInput.Disable();
-        }
-
-        protected virtual void UpdateInputActions()
-        {
-            UpdateInputDisplay();
-        }
-
-        protected virtual void UpdateInputDisplay()
-        {
-            FindObjectOfType<UI_Controls_Display>(false).Refresh(InputManager.GetInputDisplays(m_inputActions));
-        }
-
-        protected void OnScheme_Changed(object sender, EventArgs e)
-        {
-            UpdateInputDisplay();
+            base.Awake();
         }
     }
 }

@@ -59,9 +59,9 @@ namespace RPGTest.Models.Entity
 
         public Dictionary<Buff, int> StatChangeResistance { get; set; } = new Dictionary<Buff, int>();
 
-        public StatusEffectsResistances StatusEffectResistances { get; set; }
+        public StatusEffectsResistances StatusEffectResistances { get; set; } = new StatusEffectsResistances();
 
-        public ElementalResistances ElementalResistances { get; set; }
+        public ElementalResistances ElementalResistances { get; set; } = new ElementalResistances();
 
         public virtual Range PowerRange { get; set; } = new Range() { Min = 0.75f, Max = 1.25f };
         #endregion
