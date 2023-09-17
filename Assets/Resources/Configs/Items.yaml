@@ -114,6 +114,8 @@ Equipments:
       Attributes            :
         Attack              : 15            
         Speed               : -2
+      Tags                  :
+        - TWO_HANDED
 
     - Id                    : E0005
       ITEM_TYPE             : Equipment
@@ -146,21 +148,32 @@ Equipments:
         Defense             : 20
         resistance          : 30
       ElementalResistances  :
-        Fire                : .20
-        Ice                 : -.20
+        Fire                : 20
+        Ice                 : -20
         
-    - Id                    : E0008
-      ITEM_TYPE             : Equipment
-      EQUIPMENT_TYPE        : Accessory
-      Name                  : Ribbon
-      Description           : enchanted string
-      Value                 : 100
-      Attributes            :
-        Defense             : 5
-        resistance          : 5
+    - Id                          : E0008
+      ITEM_TYPE                   : Equipment
+      EQUIPMENT_TYPE              : Accessory
+      Name                        : Ribbon
+      Description                 : enchanted string
+      Value                       : 100
+      Attributes                  :
+        Defense                   : 5
+        Resistance                : 5
       StatusEffectResistances     :
-        Poison              : 999
-        Paralysis           : 999
+        Poison                    : 999
+        Paralysis                 : 999
+        
+    - Id                          : E0009
+      ITEM_TYPE                   : Equipment
+      EQUIPMENT_TYPE              : Accessory
+      Name                        : Power ring
+      Description                 : a ring improving its wearer strength
+      Value                       : 100
+      Attributes                  :
+        Attack                    : 2
+      Effects                     :
+        - EP0001.1
   
 KeyItems:
     - Id                    : K0001

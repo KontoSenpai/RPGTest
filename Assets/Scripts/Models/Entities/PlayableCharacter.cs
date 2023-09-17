@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Attribute = RPGTest.Enums.Attribute;
+using RPGTest.Models.Effects;
 
 namespace RPGTest.Models.Entity
 {
@@ -264,12 +265,74 @@ namespace RPGTest.Models.Entity
         {
             var attributes = base.GetAttributes();
 
+            // Retrieve equipment passive effects
+            var passiveEffects = new List<Effect>();
+            foreach (var equipment in equipmentSlots.Where(e => e.Value != null))
+            {
+                foreach (var effectID in equipment.Value.Effects)
+                {
+                    var effect = EffectsCollector.TryGetEffect(effectID);
+                    if (effect.Type == EffectType.Passive && effect.AreConditionsRespected(this) && effect.Potency.Attribute != Attribute.None)
+                    {
+                        passiveEffects.Add(EffectsCollector.TryGetEffect(effectID));
+                    }
+                }
+            }
+
+            // Retrieve weapon attributes
+            var weaponAttributes = new Dictionary<Attribute, float>();
+            foreach(var equipment in equipmentSlots.Where(e => e.Value != null && e.Value.IsWeapon))
+            {
+                foreach (var attribute in equipment.Value.Attributes)
+                {
+                    // adjust value if equipmentBuff
+                    var finalValue = GetEquipmentAttributeValue(attribute.Key, attribute.Value, passiveEffects);
+
+                    if (!weaponAttributes.ContainsKey(attribute.Key))
+                    {
+                        weaponAttributes.Add(attribute.Key, finalValue);
+                    } 
+                    else
+                    {
+                        weaponAttributes[attribute.Key] += finalValue;
+                    }
+                }
+            }
+
+            // retrieve remaining attributes
+            var equipmentAttributes = new Dictionary<Attribute, float>();
+            foreach (var equipment in equipmentSlots.Where(e => e.Value != null && !e.Value.IsWeapon))
+            {
+                foreach (var attribute in equipment.Value.Attributes)
+                {
+                    if (!weaponAttributes.ContainsKey(attribute.Key))
+                    {
+                        weaponAttributes.Add(attribute.Key, attribute.Value);
+                    }
+                    else
+                    {
+                        weaponAttributes[attribute.Key] += attribute.Value;
+                    }
+                }
+            }
+
             foreach (var attribute in attributes.Keys.ToList())
             {
-                attributes[attribute] += equipmentSlots.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == attribute).Value);
+                attributes[attribute] += weaponAttributes.SingleOrDefault(e => e.Key == attribute).Value + equipmentAttributes.SingleOrDefault(e => e.Key == attribute).Value;
             }
 
             return attributes;
+        }
+
+        private float GetEquipmentAttributeValue(Attribute attribute, float value, List<Effect> passives)
+        {
+            switch (attribute)
+            {
+                case Attribute.Attack:
+                    return Mathf.Ceil(value * passives.Where(p => p.Potency.Attribute == Attribute.EquipmentAttack).Sum(p => p.Potency.Potency / 100));
+            }
+
+            return value;
         }
         #endregion
 

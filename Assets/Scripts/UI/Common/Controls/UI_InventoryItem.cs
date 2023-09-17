@@ -225,7 +225,7 @@ namespace RPGTest.UI.Common
                     foreach (KeyValuePair<Attribute, int> attribute in equipment.Attributes)
                     {
                         GameObject instantiatedObject = Instantiate(m_statGo);
-                        instantiatedObject.GetComponent<UI_Control_Attribute>().Refresh(attribute.Value, true);
+                        instantiatedObject.GetComponent<UI_Control_Attribute>().Initialize(attribute.Key, attribute.Value, true);
                         instantiatedObject.transform.SetParent(m_statsPanel.transform);
                         instantiatedObject.transform.localScale = new Vector3(1, 1, 1);
                         m_instantiatedStatGo.Add(instantiatedObject);

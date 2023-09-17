@@ -1,4 +1,5 @@
 ﻿using RPGTest.Enums;
+using RPGTest.Helpers;
 using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
@@ -8,6 +9,9 @@ namespace RPGTest.UI.Common
 {
     public class UI_View_EntityAttributes : UI_View_BaseEntityComponent
     {
+
+        IEnumerable<UI_Control_Attribute> m_attributes => GetComponentsInChildren<UI_Control_Attribute>();
+
         public void Clear()
         {
             var components = GetComponentsInChildren<UI_Control_Attribute>();
@@ -20,7 +24,7 @@ namespace RPGTest.UI.Common
         public override void Initialize(Entity entity)
         {
             m_entity = entity;
-            RefreshInternal(m_entity.GetAttributes());
+            InitializeInternal(m_entity.GetAttributes());
         }
 
         public override void Initialize(PlayableCharacter character, PresetSlot preset)
@@ -28,37 +32,44 @@ namespace RPGTest.UI.Common
             m_character = character;
             m_preset = preset;
 
-            RefreshInternal(m_character.GetAttributes(preset));
+            InitializeInternal(m_character.GetAttributes(preset));
         }
 
         public override void Refresh()
         {
-            RefreshInternal(m_entity.GetAttributes());
+            InitializeInternal(m_entity.GetAttributes());
         }
 
         public override void Refresh(PresetSlot preset)
         {
-            throw new System.NotImplementedException();
+            InitializeInternal(m_character.GetAttributes(preset));
         }
 
         public override void Preview(PresetSlot preset, Slot slot, Equipment equipment)
         {
-            // throw new System.NotImplementedException();
+            if (!m_character.EquipmentSlots.GetEquipmentPreset(preset).TryCopy(out var tempEquipments))
+            {
+                return;
+            }
+
+            tempEquipments[slot] = equipment;
+
+            PreviewInternal(m_character.GetAttributes(tempEquipments));
         }
 
         public override void Unpreview()
         {
-            // throw new System.NotImplementedException();
+            m_attributes.ForEach(a => a.Unpreview());
         }
 
-        private void RefreshInternal(Dictionary<Attribute, float> attributes)
+        private void InitializeInternal(Dictionary<Attribute, float> attributes)
         {
-            var components = GetComponentsInChildren<UI_Control_Attribute>();
-            foreach (var component in components)
-            {
-                component.Clean();
-                component.Refresh((int)attributes[component.Attribute]);
-            }
+            m_attributes.ForEach(a => a.Initialize((int)attributes[a.Attribute]));
+        }
+
+        private void PreviewInternal(Dictionary<Attribute, float> attributes)
+        {
+            m_attributes.ForEach(a => a.Preview((int)attributes[a.Attribute]));
         }
     }
 }

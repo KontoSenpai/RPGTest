@@ -165,6 +165,18 @@ Effects:
         - 0.25
         - 0.25
         - 0.5
+
+# Passive Effects
+    # Double Hand
+    - Id                : EP0001.1
+      Label             : Increases Weapon Attack value by ${Potency}%
+      Type              : Passive
+      Potency           :
+        Attribute       : EquipmentAttack
+        Potency         : 10
+      Conditions      :
+        TwoHanded     : true
+
         
 # Monster Effects
     # Bite

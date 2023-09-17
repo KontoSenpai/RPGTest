@@ -48,10 +48,10 @@ namespace RPGTest.Models.Entity
             switch (attribute) {
                 case Enums.Attribute.Attack:
                 case Enums.Attribute.Defense:
-                    return entity.GetAttribute(Enums.Attribute.TotalDefense);
+                    return entity.GetAttribute(Enums.Attribute.Defense);
                 case Enums.Attribute.Magic:
                 case Enums.Attribute.Resistance:
-                    return entity.GetAttribute(Enums.Attribute.TotalResistance);
+                    return entity.GetAttribute(Enums.Attribute.Resistance);
             }
             return 0.0f;
         }
@@ -61,13 +61,13 @@ namespace RPGTest.Models.Entity
             switch (attribute)
             {
                 case Enums.Attribute.Attack:
-                    return entity.GetAttribute(Enums.Attribute.TotalAttack);
+                    return entity.GetAttribute(Enums.Attribute.Attack);
                 case Enums.Attribute.Defense:
-                    return entity.GetAttribute(Enums.Attribute.TotalDefense);
+                    return entity.GetAttribute(Enums.Attribute.Defense);
                 case Enums.Attribute.Magic:
-                    return entity.GetAttribute(Enums.Attribute.TotalMagic);
+                    return entity.GetAttribute(Enums.Attribute.Magic);
                 case Enums.Attribute.Resistance:
-                    return entity.GetAttribute(Enums.Attribute.TotalResistance);
+                    return entity.GetAttribute(Enums.Attribute.Resistance);
                 default:
                     Debug.LogError("Unsupported attribute");
                     return 0.0f;

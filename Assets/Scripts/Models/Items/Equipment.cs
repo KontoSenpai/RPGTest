@@ -26,6 +26,10 @@ namespace RPGTest.Models.Items
         // Status Effect resistances granted by piece of equipmewnt
         public Dictionary<StatusEffect, float> StatusEffectResistances { get; set; } = new Dictionary<StatusEffect, float>() { { StatusEffect.None, 0.0f } };
 
+        public List<string> Effects { get; set; } = new List<string>();
+
+        public List<string> Tags { get; set; }
+
         public virtual Range PowerRange { get; set; }
 
         public bool IsWeapon => ((int)EquipmentType).InRange(0,7);

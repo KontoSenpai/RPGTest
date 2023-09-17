@@ -39,7 +39,7 @@ namespace RPGTest.UI.Common
         {
             SetValue(value);
 
-            var diff = (value - m_value) * 100;
+            var diff = value - m_value;
 
             PreviewText.gameObject.SetActive(diff != 0);
             if (diff == 0)
@@ -63,12 +63,15 @@ namespace RPGTest.UI.Common
             if (value > 1.0f)
             {
                 Value.text = "100 %";
-            } 
+            }
+            else if (value < -1.0f)
+            {
+                Value.text = "-100 %";
+            }
             else
             {
                 Value.text = value * 100 + "%";
             }
-
         }
     }
 }

@@ -141,7 +141,6 @@ namespace RPGTest.UI
 
             CharacterFilters.Open(characterIndex);
 
-
             UpdateInputActions();
         }
 
@@ -281,7 +280,7 @@ namespace RPGTest.UI
         /// <param name="itemComponent"></param>
         public void OnItemSelection_Changed(GameObject itemComponent)
         {
-            if (itemComponent.TryGetComponent<UI_InventoryItem>(out var component))
+            if (itemComponent != null && itemComponent.TryGetComponent<UI_InventoryItem>(out var component))
             {
                 EntityComponentsContainer.Preview(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, (Equipment)component.Item);
             }
@@ -313,6 +312,8 @@ namespace RPGTest.UI
 
             var items = ItemListUpdator.UpdateItems(ItemList.GetItems().Select((i) => i.gameObject).ToList(), itemUpdates);
             ItemList.UpdateItems(items);
+
+            EntityComponentsContainer.Refresh(m_pendingItemSelection.Preset);
 
             ChangeStage(ActionStage.SelectSlot);
         }
@@ -375,6 +376,8 @@ namespace RPGTest.UI
             EquipmentSet.Refresh();
             var items = ItemListUpdator.UpdateItems(ItemList.GetItems().Select((i) => i.gameObject).ToList(), itemUpdates);
             ItemList.UpdateItems(items);
+
+            EntityComponentsContainer.Refresh(m_pendingItemSelection.Preset);
         }
 
         private void MouseMoved_Performed()

@@ -88,7 +88,7 @@ namespace RPGTest.Models.Entity
 
         public virtual bool FillATB()
         {
-            m_currentATB += GetAttribute(Attribute.TotalSpeed);
+            m_currentATB += GetAttribute(Attribute.Speed);
             return m_currentATB >= m_maxATB;
         }
 
@@ -163,64 +163,45 @@ namespace RPGTest.Models.Entity
 
         public virtual Dictionary<Attribute, float> GetAttributes()
         {
-            Dictionary<Attribute, float> attributes = new Dictionary<Attribute, float>();
+            var hpPercentage = CurrentHP / BaseAttributes.MaxHP;
+            var mpPercentage = BaseAttributes.MaxMP > 0 ? CurrentMP / BaseAttributes.MaxMP : 1.0f;
+            var staminaPercentage = CurrentStamina / BaseAttributes.MaxStamina;
 
-            // Base Attributes
-            attributes.Add(Attribute.HP, CurrentHP);
-            attributes.Add(Attribute.MaxHP, BaseAttributes.MaxHP);
+            Dictionary<Attribute, float> attributes = new Dictionary<Attribute, float>
+            {
+                // Computed Attributes
+                { Attribute.HPPercentage, CurrentHP / BaseAttributes.MaxHP },
+                { Attribute.MPPercentage, BaseAttributes.MaxMP > 0 ? CurrentMP / BaseAttributes.MaxMP : 1.0f },
+                { Attribute.StaminaPercentage, CurrentStamina / BaseAttributes.MaxStamina },
 
-            attributes.Add(Attribute.MP, CurrentMP);
-            attributes.Add(Attribute.MaxMP, BaseAttributes.MaxMP);
+                // Base Attributes
+                { Attribute.MaxHP, GetAttributeValue(Attribute.MaxHP, BaseAttributes.MaxHP ) },
+                { Attribute.MaxMP,  GetAttributeValue(Attribute.MaxMP, BaseAttributes.MaxMP ) },
+                { Attribute.MaxStamina, GetAttributeValue(Attribute.MaxStamina, BaseAttributes.MaxStamina ) },
 
-            attributes.Add(Attribute.Stamina, CurrentStamina);
-            attributes.Add(Attribute.MaxStamina, BaseAttributes.MaxStamina);
+                { Attribute.Attack, GetAttributeValue(Attribute.Attack, BaseAttributes.Attack) },
+                { Attribute.Defense, GetAttributeValue(Attribute.Defense, BaseAttributes.Defense) },
 
-            attributes.Add(Attribute.Attack, BaseAttributes.Attack);
-            attributes.Add(Attribute.Defense, BaseAttributes.Defense);
+                { Attribute.Magic, GetAttributeValue(Attribute.Magic, BaseAttributes.Magic) },
+                { Attribute.Resistance, GetAttributeValue(Attribute.Resistance, BaseAttributes.Resistance) },
 
-            attributes.Add(Attribute.Magic, BaseAttributes.Magic);
-            attributes.Add(Attribute.Resistance, BaseAttributes.Resistance);
+                { Attribute.Speed, GetAttributeValue(Attribute.Speed, BaseAttributes.Speed) },
 
-            attributes.Add(Attribute.Speed, BaseAttributes.Speed);
+                { Attribute.Hit, GetAttributeValue(Attribute.Hit, BaseAttributes.Hit) },
 
-            attributes.Add(Attribute.Hit, BaseAttributes.Hit);
-            //attributes.Add(Attribute.Block);
+                { Attribute.Block, GetAttributeValue(Attribute.Block, 0.1f) },
+            };
 
-            // Computed Attributes
-            attributes.Add(Attribute.HPPercentage, (float)CurrentHP / (float)BaseAttributes.MaxHP);
-            attributes.Add(Attribute.MPPercentage, BaseAttributes.MaxMP > 0 ? (float)CurrentMP / BaseAttributes.MaxMP : 1.0f);
-            attributes.Add(Attribute.StaminaPercentage, (float)CurrentStamina / BaseAttributes.MaxStamina);
+            attributes.Add(Attribute.HP, attributes[Attribute.MaxHP] * hpPercentage);
+            attributes.Add(Attribute.MP, attributes[Attribute.MaxMP] * mpPercentage);
+            attributes.Add(Attribute.Stamina, attributes[Attribute.MaxStamina] * staminaPercentage);
 
-            attributes.Add(Attribute.TotalAttack, 
-                Mathf.Ceil(attributes[Attribute.Attack] *
-                GetHighestAttributeBuff(Attribute.Attack) /
-                GetHighestAttributeDebuff(Attribute.Attack))
-            );
-            attributes.Add(Attribute.TotalDefense,
-                Mathf.Ceil(attributes[Attribute.Defense] *
-                GetHighestAttributeBuff(Attribute.Defense) /
-                GetHighestAttributeDebuff(Attribute.Defense))
-            );
-            attributes.Add(Attribute.TotalMagic, 
-                Mathf.Ceil(attributes[Attribute.Magic] *
-                GetHighestAttributeBuff(Attribute.Magic) /
-                GetHighestAttributeDebuff(Attribute.Magic))
-            );
-            attributes.Add(Attribute.TotalResistance,
-                Mathf.Ceil(attributes[Attribute.Resistance] *
-                GetHighestAttributeBuff(Attribute.Resistance) /
-                GetHighestAttributeDebuff(Attribute.Resistance))
-            );
-            attributes.Add(Attribute.TotalSpeed,
-                Mathf.Ceil(attributes[Attribute.Speed] *
-                GetHighestAttributeBuff(Attribute.Speed) /
-                GetHighestAttributeDebuff(Attribute.Speed))
-            );
-            attributes.Add(Attribute.TotalHit,
-                attributes[Attribute.Hit] *
-                GetHighestAttributeBuff(Attribute.Hit)
-            );
             return attributes;
+        }
+
+        private float GetAttributeValue(Attribute attribute, float baseValue)
+        {
+            return Mathf.Ceil(baseValue * GetHighestAttributeBuff(attribute) / GetHighestAttributeDebuff(attribute));
         }
 
         public virtual Dictionary<Element, float> GetElementalResistances()

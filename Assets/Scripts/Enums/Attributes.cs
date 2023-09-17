@@ -15,11 +15,6 @@ namespace RPGTest.Enums
         Stamina,
         [Description("Max STM")]
         MaxStamina,
-        //Base stats
-        BaseAttack,
-        BaseDefense,
-        BaseMagic,
-        BaseResistance,
         [Description("ATK")]
         Attack,
         [Description("DEF")]
@@ -33,27 +28,18 @@ namespace RPGTest.Enums
         MPPercentage,
         StaminaPercentage,
 
-        [Description("ATK")]
-        TotalAttack,
-        [Description("DEF")]
-        TotalDefense,
-        [Description("MAG")]
-        TotalMagic,
-        [Description("RES")]
-        TotalResistance,
-        TotalSpeed,
-        TotalBlock,
-        TotalAccuracy,
-
         [Description("SPD")]
         Speed,
         [Description("BLC")]
         Block,
         [Description("ACC")]
         Accuracy,
-
         Hit,
-        TotalHit
+
+        EquipmentAttack,
+        EquipmentDefense,
+        EquipmentMagic,
+        EquipmentResistance,
     }
 
     public enum Aptitude

@@ -65,9 +65,19 @@ namespace RPGTest.UI.Common
             throw new System.NotImplementedException();
         }
 
-        public override void Refresh(PresetSlot slot)
+        public override void Refresh(PresetSlot preset)
         {
-            throw new System.NotImplementedException();
+            switch (ResistanceType)
+            {
+                case UI_ResistanceType.Elements:
+                    InitializeInternal(m_character.GetElementalResistances(preset));
+                    break;
+                case UI_ResistanceType.StatusEffects:
+                    InitializeInternal(m_character.GetStatusEffectResistances(preset));
+                    break;
+                default:
+                    throw new System.Exception("Unsupported resistance type");
+            }
         }
 
         public override void Preview(PresetSlot preset, Slot slot, Equipment equipment)

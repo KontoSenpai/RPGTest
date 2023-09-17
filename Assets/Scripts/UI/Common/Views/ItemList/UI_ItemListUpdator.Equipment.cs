@@ -68,7 +68,7 @@ namespace RPGTest.UI.Common
             }
             else if (unequippedGuiItem == null && unequippedQuantity > 0) // Create guiItem
             {
-                guiItems.Add(InstantiateUnequippedEquipment(item, unequippedQuantity));
+                guiCDs.Add(InstantiateUnequippedEquipment(item, unequippedQuantity));
             }
 
             // Check for equipped equipments that require a new gui item

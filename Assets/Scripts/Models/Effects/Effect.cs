@@ -49,6 +49,17 @@ namespace RPGTest.Models.Effects
         public int Duration { get; set; } = 0;
     }
 
+    public class EffectCondition
+    {
+        public KeyValuePair<Attribute, float> AttributeThreshold { get; set; }
+
+        public bool? TwoHanded { get; set; } = null;
+
+        public List<StatusEffect> StatusEffects { get; set; }
+
+        public List<EquipmentType> EquipmentTypes { get; set; }
+    }
+
     public partial class Effect : IdObject
     {
         public string Label { get; set; }
@@ -68,6 +79,8 @@ namespace RPGTest.Models.Effects
         public List<float> HitPower { get; set; } = new List<float> { 1 };
 
         public Range PowerRange { get; set; } = new Range();
+
+        public EffectCondition Conditions { get; set; } = new EffectCondition();
 
         /// <summary>
         /// Determine if the given attributes are valid for any potential modifications
