@@ -29,14 +29,17 @@ namespace RPGTest.Enums
         [Description("RES")]
         Resistance,
 
-
         HPPercentage,
         MPPercentage,
         StaminaPercentage,
 
+        [Description("ATK")]
         TotalAttack,
+        [Description("DEF")]
         TotalDefense,
+        [Description("MAG")]
         TotalMagic,
+        [Description("RES")]
         TotalResistance,
         TotalSpeed,
         TotalBlock,

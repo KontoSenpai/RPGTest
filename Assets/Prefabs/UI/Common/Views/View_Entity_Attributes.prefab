@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 21.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -280,7 +280,6 @@ GameObject:
   - component: {fileID: 7768680249105334602}
   - component: {fileID: 7075874375669730322}
   - component: {fileID: 2332688143563100031}
-  - component: {fileID: 3913848870819363384}
   m_Layer: 5
   m_Name: PNL_Duo ATK/DEF
   m_TagString: Untagged
@@ -302,7 +301,7 @@ RectTransform:
   - {fileID: 5058711611533059568}
   - {fileID: 143095798548788058}
   m_Father: {fileID: 9050238145864537408}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -363,20 +362,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &3913848870819363384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 675954979007072357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 241a75b6d86d7d449946edac6887d82d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Stats1: {fileID: 8643582206471662566}
-  Stats2: {fileID: 3475771273952034124}
 --- !u!1 &1115238493028274997
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,6 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c31a8f6864641418cec6630b3db7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attribute: 21
   StatName: {fileID: 1331139861504259035}
   StatValue: {fileID: 3194016972639961556}
   PositiveColor: {r: 0.052405916, g: 0.5283019, b: 0, a: 1}
@@ -819,8 +805,8 @@ RectTransform:
   m_Children:
   - {fileID: 3375284755142338442}
   - {fileID: 6088445249786707769}
-  - {fileID: 2252888219282279711}
   - {fileID: 8017194399015163578}
+  - {fileID: 2252888219282279711}
   m_Father: {fileID: 1440742968587088608}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1072,6 +1058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c31a8f6864641418cec6630b3db7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attribute: 4
   StatName: {fileID: 2588900022592837966}
   StatValue: {fileID: 2145925638785166145}
   PositiveColor: {r: 0.052405916, g: 0.5283019, b: 0, a: 1}
@@ -1348,6 +1335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c31a8f6864641418cec6630b3db7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attribute: 18
   StatName: {fileID: 2715803765879750356}
   StatValue: {fileID: 1988968190284844251}
   PositiveColor: {r: 0.052405916, g: 0.5283019, b: 0, a: 1}
@@ -1490,7 +1478,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
+  m_fontSize: 28.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2026,6 +2014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c31a8f6864641418cec6630b3db7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attribute: 6
   StatName: {fileID: 4033781573291549725}
   StatValue: {fileID: 707236515962148370}
   PositiveColor: {r: 0.052405916, g: 0.5283019, b: 0, a: 1}
@@ -2222,7 +2211,6 @@ GameObject:
   - component: {fileID: 3051828425125032058}
   - component: {fileID: 2569072756470938914}
   - component: {fileID: 7046725835228200527}
-  - component: {fileID: 8630419168333679368}
   m_Layer: 5
   m_Name: PNL_Duo HP/MP
   m_TagString: Untagged
@@ -2305,20 +2293,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &8630419168333679368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5257065494780819797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 241a75b6d86d7d449946edac6887d82d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Stats1: {fileID: 3918567592127716054}
-  Stats2: {fileID: 8190301426584046716}
 --- !u!1 &5687975746384617989
 GameObject:
   m_ObjectHideFlags: 0
@@ -2545,7 +2519,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 20.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2679,6 +2653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c31a8f6864641418cec6630b3db7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attribute: 20
   StatName: {fileID: 6174838682044425585}
   StatValue: {fileID: 7753837594446501758}
   PositiveColor: {r: 0.052405916, g: 0.5283019, b: 0, a: 1}
@@ -2742,9 +2717,9 @@ GameObject:
   - component: {fileID: 3474299757313838606}
   - component: {fileID: 4495620665207492451}
   - component: {fileID: 2526580764183342142}
-  - component: {fileID: 2400577920052234264}
+  - component: {fileID: 3337573953752658904}
   m_Layer: 5
-  m_Name: View_Attributes
+  m_Name: View_Entity_Attributes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2769,7 +2744,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 240, y: 285}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7401656100003993450
 CanvasRenderer:
@@ -2855,7 +2830,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &2400577920052234264
+--- !u!114 &3337573953752658904
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2868,11 +2843,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Header: {fileID: 2674759144878118290}
-  ShowHeader: 1
-  HpMpDualWidget: {fileID: 8630419168333679368}
-  StaminaWidget: {fileID: 7331451047572959535}
-  AtkDefDualWidget: {fileID: 5067076237562159517}
-  MagResDualWidget: {fileID: 3913848870819363384}
+  ShowHeader: 0
 --- !u!1 &7652976870535281738
 GameObject:
   m_ObjectHideFlags: 0
@@ -2965,6 +2936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c31a8f6864641418cec6630b3db7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attribute: 19
   StatName: {fileID: 7095490021169670270}
   StatValue: {fileID: 6652515601878178417}
   PositiveColor: {r: 0.052405916, g: 0.5283019, b: 0, a: 1}
@@ -3107,6 +3079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c31a8f6864641418cec6630b3db7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attribute: 2
   StatName: {fileID: 7216413039810973668}
   StatValue: {fileID: 6489577428732280299}
   PositiveColor: {r: 0.052405916, g: 0.5283019, b: 0, a: 1}
@@ -3249,7 +3222,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 21.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3303,7 +3276,6 @@ GameObject:
   - component: {fileID: 2003806841497393903}
   - component: {fileID: 1311559537683208119}
   - component: {fileID: 5791147208232359130}
-  - component: {fileID: 5067076237562159517}
   m_Layer: 5
   m_Name: PNL_Duo MAG/RES
   m_TagString: Untagged
@@ -3325,7 +3297,7 @@ RectTransform:
   - {fileID: 3906082516693761621}
   - {fileID: 8213852055491487999}
   m_Father: {fileID: 9050238145864537408}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3386,20 +3358,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &5067076237562159517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8746112843254387648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 241a75b6d86d7d449946edac6887d82d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Stats1: {fileID: 573428344596869187}
-  Stats2: {fileID: 4628994242643863273}
 --- !u!1 &9081441603043898693
 GameObject:
   m_ObjectHideFlags: 0
