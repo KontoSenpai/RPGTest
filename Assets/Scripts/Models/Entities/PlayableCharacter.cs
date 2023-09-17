@@ -54,7 +54,6 @@ namespace RPGTest.Models.Entity
         public event ExperienceChangedHandler PlayerExperienceChanged;
         public delegate void ExperienceChangedHandler();
 
-        #region public methods
         #region overrides
         public override bool FillATB()
         {
@@ -223,107 +222,201 @@ namespace RPGTest.Models.Entity
             return removedEquipments.Any();
         }
 
+        #region Attributes
+        /// <summary>
+        /// Returns attribute values for current preset slot
+        /// </summary>
+        /// <returns>Values for each attributes</returns>
         public override Dictionary<Attribute, float> GetAttributes()
         {
-            return GetAttributesInternal(EquipmentSlots.CurrentPreset);
+            return GetAttributes(EquipmentSlots.CurrentPreset);
         }
 
+        /// <summary>
+        /// Returns attribute values for given preset
+        /// </summary>
+        /// <param name="preset">Preset Slot to use for equipment values</param>
+        /// <returns>Values for each attributes</returns>
         public Dictionary<Attribute, float> GetAttributes(PresetSlot preset)
         {
-            return GetAttributesInternal(preset);
-        }
+            var equipmentPreset = EquipmentSlots.GetEquipmentPreset(preset);
 
-        public override float GetAttribute(Attribute attribute)
-        {
-            return GetAttributeInternal(EquipmentSlots.CurrentPreset, attribute);
-        }
-
-        public float GetAttribute(PresetSlot slot, Attribute attribute)
-        {
-            return GetAttributeInternal(slot, attribute);
-        }
-
-        public override Dictionary<Element, float> GetElementalResistances()
-        {
-            return GetElementalResistancesInternal(EquipmentSlots.CurrentPreset);
+            return GetAttributes(equipmentPreset);
         }
 
         /// <summary>
-        /// Retrieve Elemental Resistances of character for given preset
+        /// Returns attribute values for given equipments presets
         /// </summary>
-        /// <param name="preset"></param>
-        /// <returns></returns>
-        public Dictionary<Element, float> GetElementalResistances(PresetSlot preset)
+        /// <param name="equipmentPreset">Map of equipment</param>
+        /// <param name="attribute">Attribute to retrieve the value of</param>
+        /// <returns>Value of desired attribute</returns>
+        public Dictionary<Attribute, float> GetAttributes(Dictionary<Slot, Equipment> equipmentPreset)
         {
-            return GetElementalResistancesInternal(preset);
-        }
-
-        public override Dictionary<StatusEffect, float> GetStatusEffectResistances()
-        {
-            return GetStatusEffectResistances(EquipmentSlots.CurrentPreset);
+            return GetAttributesInternal(equipmentPreset);
         }
 
         /// <summary>
-        /// Retrieve Elemental Resistances of character for given preset
+        /// Returns the value for all attributes of character with given equipment slots
         /// </summary>
-        /// <param name="preset"></param>
-        /// <returns></returns>
-        public Dictionary<StatusEffect, float> GetStatusEffectResistances(PresetSlot preset)
-        {
-            return GetStatusEffectResistancesInternal(preset);
-        }
-        #endregion
-
-        #region private methodes
-        private Dictionary<Attribute, float> GetAttributesInternal(PresetSlot slot)
+        /// <param name="equipmentPreset">Map of equipment</param>
+        /// <returns>Dicionary of attributes and values</returns>
+        private Dictionary<Attribute, float> GetAttributesInternal(Dictionary<Slot, Equipment> equipmentSlots)
         {
             var attributes = base.GetAttributes();
-            var preset = EquipmentSlots.GetEquipmentPreset(slot);
 
-            foreach(var attribute in attributes.Keys.ToList())
+            foreach (var attribute in attributes.Keys.ToList())
             {
-                attributes[attribute] += preset.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == attribute).Value);
+                attributes[attribute] += equipmentSlots.Where(e => e.Value != null).Sum(x => x.Value.Attributes.SingleOrDefault(a => a.Key == attribute).Value);
             }
 
             return attributes;
         }
+        #endregion
 
-        private float GetAttributeInternal(PresetSlot slot, Attribute attribute)
+        #region Attribute
+        /// <summary>
+        /// Retrieve the value of a specific attribute using current preset slot
+        /// </summary>
+        /// <param name="attribute">Attribute to retrieve the value of</param>
+        /// <returns>Value of desired attribute</returns>
+        public override float GetAttribute(Attribute attribute)
         {
-            if (GetAttributesInternal(slot).TryGetValue(attribute, out float value))
+            return GetAttribute(EquipmentSlots.CurrentPreset, attribute);
+        }
+
+        /// <summary>
+        /// Retrieve the value of a specific attribute for given preset
+        /// </summary>
+        /// <param name="preset">Preset Slot to use for equipment value</param>
+        /// <param name="attribute">Attribute to retrieve the value of</param>
+        /// <returns>Value of desired attribute</returns>
+        public float GetAttribute(PresetSlot preset, Attribute attribute)
+        {
+            var equipmentPreset = EquipmentSlots.GetEquipmentPreset(preset);
+
+            return GetAttribute(equipmentPreset, attribute);
+        }
+
+        /// <summary>
+        /// Retrieve the value of a specific attribute for given equipments presets
+        /// </summary>
+        /// <param name="equipmentPreset">Map of equipment</param>
+        /// <param name="attribute">Attribute to retrieve the value of</param>
+        /// <returns>Value of desired attribute</returns>
+        public float GetAttribute(Dictionary<Slot, Equipment> equipmentPreset, Attribute attribute)
+        {
+            return GetAttributeInternal(equipmentPreset, attribute);
+        }
+
+        /// <summary>
+        /// Returns the value for given attribute of character with given equipment slots
+        /// </summary>
+        /// <param name="equipmentPreset">Map of equipment</param>
+        /// <param name="attribute">Attribute to retrieve the value of</param>
+        /// <returns>The value of the attribute, -1 if it doesn't exists</returns>
+        private float GetAttributeInternal(Dictionary<Slot, Equipment> equipmentSlots, Attribute attribute)
+        {
+            if (GetAttributesInternal(equipmentSlots).TryGetValue(attribute, out float value))
             {
                 return value;
             }
 
             return -1;
         }
+        #endregion
 
-        private Dictionary<Element, float> GetElementalResistancesInternal(PresetSlot slot)
+        #region Elemental Resistances
+        /// <summary>
+        /// Retrieve the elemental resistance values for current preset slot
+        /// </summary>
+        /// <returns></returns>
+        public override Dictionary<Element, float> GetElementalResistances()
+        {
+            return GetElementalResistances(EquipmentSlots.CurrentPreset);
+        }
+
+        /// <summary>
+        /// Retrieve Elemental Resistances for given preset
+        /// </summary>
+        /// <param name="preset">Preset Slot to use for equipment value</param>
+        /// <returns></returns>
+        public Dictionary<Element, float> GetElementalResistances(PresetSlot preset)
+        {
+            var equipmentPreset = EquipmentSlots.GetEquipmentPreset(preset);
+
+            return GetElementalResistancesInternal(equipmentPreset);
+        }
+
+        /// <summary>
+        /// Retrieve Elemental Resistances of character for equipment preset
+        /// </summary>
+        /// <param name="equipmentPreset">Map of equipment</param>
+        /// <returns></returns>
+        public Dictionary<Element, float> GetElementalResistances(Dictionary<Slot, Equipment> equipmentPreset)
+        {
+            return GetElementalResistancesInternal(equipmentPreset);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="equipmentPreset">Map of equipment</param>
+        /// <returns></returns>
+        private Dictionary<Element, float> GetElementalResistancesInternal(Dictionary<Slot, Equipment> equipmentSlots)
         {
             var elementalResitances = base.GetElementalResistances();
-            var preset = EquipmentSlots.GetEquipmentPreset(slot);
 
             foreach (var elementalResitance in elementalResitances.Keys.ToList())
             {
-                elementalResitances[elementalResitance] += preset.Where(e => e.Value != null).Sum(x => x.Value.Elements.SingleOrDefault(a => a.Key == elementalResitance).Value);
+                elementalResitances[elementalResitance] += equipmentSlots.Where(e => e.Value != null).Sum(x => x.Value.ElementalResistances.SingleOrDefault(a => a.Key == elementalResitance).Value);
             }
 
             return elementalResitances;
         }
+        #endregion
 
-        private Dictionary<StatusEffect, float> GetStatusEffectResistancesInternal(PresetSlot slot)
+        #region Status Effect Resistances
+        public override Dictionary<StatusEffect, float> GetStatusEffectResistances()
+        {
+            return GetStatusEffectResistances(EquipmentSlots.CurrentPreset);
+        }
+
+        /// <summary>
+        /// Retrieve Status Resistances for given preset
+        /// </summary>
+        /// <param name="preset"></param>
+        /// <returns></returns>
+        public Dictionary<StatusEffect, float> GetStatusEffectResistances(PresetSlot preset)
+        {
+            var equipmentPreset = EquipmentSlots.GetEquipmentPreset(preset);
+
+            return GetStatusEffectResistances(equipmentPreset);
+        }
+
+        /// <summary>
+        /// Retrieve Elemental Resistances of character for equipment preset
+        /// </summary>
+        /// <param name="preset"></param>
+        /// <returns></returns>
+        public Dictionary<StatusEffect, float> GetStatusEffectResistances(Dictionary<Slot, Equipment> equipmentPreset)
+        {
+            return GetStatusEffectResistancesInternal(equipmentPreset);
+        }
+
+        private Dictionary<StatusEffect, float> GetStatusEffectResistancesInternal(Dictionary<Slot, Equipment> equipmentSlots)
         {
             var statusEffectResistances = base.GetStatusEffectResistances();
-            var preset = EquipmentSlots.GetEquipmentPreset(slot);
 
             foreach (var statusEffectResistance in statusEffectResistances.Keys.ToList())
             {
-                statusEffectResistances[statusEffectResistance] += preset.Where(e => e.Value != null).Sum(x => x.Value.StatusEffects.SingleOrDefault(a => a.Key == statusEffectResistance).Value);
+                statusEffectResistances[statusEffectResistance] += equipmentSlots.Where(e => e.Value != null).Sum(x => x.Value.StatusEffectResistances.SingleOrDefault(a => a.Key == statusEffectResistance).Value);
             }
 
             return statusEffectResistances;
         }
+        #endregion
 
+        #region private methodes
         private IEnumerator ActionChoice()
         {
             PlayerInputRequested(this, true);

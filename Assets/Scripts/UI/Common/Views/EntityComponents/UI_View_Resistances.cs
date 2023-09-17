@@ -1,7 +1,9 @@
 ﻿using RPGTest.Enums;
+using RPGTest.Helpers;
 using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -59,11 +61,6 @@ namespace RPGTest.UI.Common
             }
         }
 
-        public void Preview(Equipment equipment, PresetSlot preset, Slot slot)
-        {
-
-        }
-
         public override void Refresh()
         {
             throw new System.NotImplementedException();
@@ -72,6 +69,33 @@ namespace RPGTest.UI.Common
         public override void Refresh(PresetSlot slot)
         {
             throw new System.NotImplementedException();
+        }
+
+        public override void Preview(PresetSlot preset, Slot slot, Equipment equipment)
+        {
+            if (!m_character.EquipmentSlots.GetEquipmentPreset(preset).TryCopy(out var tempEquipments))
+            {
+                return;
+            }
+
+            tempEquipments[slot] = equipment;
+
+            switch (ResistanceType)
+            {
+                case UI_ResistanceType.Elements:
+                    PreviewInternal(m_character.GetElementalResistances(tempEquipments));
+                    break;
+                case UI_ResistanceType.StatusEffects:
+                    PreviewInternal(m_character.GetStatusEffectResistances(tempEquipments));
+                    break;
+                default:
+                    throw new System.Exception("Unsupported resistance type");
+            }
+        }
+
+        public override void Unpreview()
+        {
+            m_resistances.ForEach(r => r.Unpreview());
         }
 
         private void InitializeInternal(Dictionary<Element, float> elementalResistances)
@@ -94,6 +118,30 @@ namespace RPGTest.UI.Common
                 if (resistance != null)
                 {
                     resistance.Initialize(statusEffectResistance.Value);
+                }
+            }
+        }
+
+        private void PreviewInternal(Dictionary<Element, float> elementalResistances)
+        {
+            foreach (var elementalResistance in elementalResistances)
+            {
+                var resistance = m_resistances.SingleOrDefault((r) => r.Element == elementalResistance.Key);
+                if (resistance != null)
+                {
+                    resistance.Preview(elementalResistance.Value);
+                }
+            }
+        }
+
+        private void PreviewInternal(Dictionary<StatusEffect, float> statusEffectResistances)
+        {
+            foreach (var statusEffectResistance in statusEffectResistances)
+            {
+                var resistance = m_resistances.SingleOrDefault((r) => r.Status == statusEffectResistance.Key);
+                if (resistance != null)
+                {
+                    resistance.Preview(statusEffectResistance.Value);
                 }
             }
         }

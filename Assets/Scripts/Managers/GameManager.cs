@@ -50,7 +50,7 @@ namespace RPGTest.Managers
 
         public void NewGame(string sceneName, string sceneExit)
         {
-            InitParty();
+            InitializeSaveFile();
             CreateSaveFile("FILE01");
             InitManagerProperties();
             StartCoroutine(ChangeScene(sceneName, sceneExit));
@@ -150,7 +150,7 @@ namespace RPGTest.Managers
         {
             if(SaveFile == null)
             {
-                InitParty();
+                InitializeSaveFile();
             }
             else
             {
@@ -211,15 +211,20 @@ namespace RPGTest.Managers
         /// <summary>
         /// Create the basic party and inventory informations
         /// </summary>
-        private void InitParty()
+        private void InitializeSaveFile()
         {
+            // Add consummables
             InventoryManager.TryAddItem("C0001", 5);
             InventoryManager.TryAddItem("C0002", 4);
 
+            // Add Equipments
             InventoryManager.TryAddItem("E0001", 4);
             InventoryManager.TryAddItem("E0002", 2);
             InventoryManager.TryAddItem("E0003", 2);
+            InventoryManager.TryAddItem("E0007", 1);
+            InventoryManager.TryAddItem("E0008", 1);
 
+            // Add Party members
             PartyManager.TryAddPartyMember("PC0001");
             PartyManager.TryAddPartyMember("PC0002");
             
@@ -227,7 +232,7 @@ namespace RPGTest.Managers
             PartyManager.TryAddPartyMember("PC0004");
             PartyManager.TryAddPartyMember("PC0005");
             
-
+            // Equip equipments
             List<Item> removedEquipments;
             var partyMember = PartyManager.TryGetPartyMemberById("PC0001");
             partyMember.TryEquip(PresetSlot.First, Enums.Slot.LeftHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);

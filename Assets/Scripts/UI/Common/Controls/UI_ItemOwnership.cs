@@ -17,21 +17,43 @@ namespace RPGTest.UI.Common
         None
     }
 
-    public class UI_ItemOwner : MonoBehaviour
+    public class UI_ItemOwnership : MonoBehaviour
     {
         public OwnerDisplayType OwnerDisplayType = OwnerDisplayType.None;
+        public bool DisplayQuantity;
 
+        [SerializeField] private GameObject EquippedPanel;
         [SerializeField] private GameObject IconsList;
         [SerializeField] private GameObject IconGo;
         private List<GameObject> m_instantiatedIcons; // TODO
 
+        [SerializeField] protected TextMeshProUGUI QuantityHeld;
+
         [SerializeField] private TextMeshProUGUI Text;
 
-        public void SetOwnerDisplay(List <PlayableCharacter> owners, PresetSlot preset, Slot slot)
+        public void SetHeldQuantity(bool haveOwners, int quantity)
         {
-            if (owners.Count == 0)
+            if (DisplayQuantity)
             {
-                gameObject.SetActive(false);
+                QuantityHeld.text = $"X {quantity}";
+            }
+            else if (OwnerDisplayType == OwnerDisplayType.Detailled && !haveOwners)
+            {
+                QuantityHeld.text = $"X {quantity}";
+            }
+            else
+            {
+                QuantityHeld.text = string.Empty;
+            }
+        }
+
+        public void SetOwnershipDisplay(List <PlayableCharacter> owners, PresetSlot preset, Slot slot)
+        {
+            EquippedPanel.SetActive(owners.Any());
+            if (!owners.Any())
+            {
+                IconsList.SetActive(false);
+                Text.gameObject.SetActive(false);
                 return;
             }
 

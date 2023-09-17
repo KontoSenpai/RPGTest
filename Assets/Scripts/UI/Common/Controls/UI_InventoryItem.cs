@@ -6,6 +6,7 @@ using RPGTest.Models.Items;
 using RPGTest.UI.Widgets;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,7 +61,7 @@ namespace RPGTest.UI.Common
         [SerializeField] protected TextMeshProUGUI ItemName;
         [SerializeField] protected TextMeshProUGUI QuantityHeld;
 
-        [SerializeField] private UI_ItemOwner OwnersPanel;
+        [SerializeField] private UI_ItemOwnership OwnersPanel;
 
         [SerializeField] private bool DisplayQuantity;
 
@@ -112,7 +113,10 @@ namespace RPGTest.UI.Common
         public void UpdateHeldQuantity(int count)
         {
             Quantity = count > 0 ? count : -1;
-            QuantityHeld.text = DisplayQuantity ? $"X {Quantity}" : String.Empty;
+            if (OwnersPanel != null)
+            {
+                OwnersPanel.SetHeldQuantity(Owners.Any(), Quantity);
+            }
         }
 
         public PlayableCharacter GetOwner()
@@ -142,7 +146,7 @@ namespace RPGTest.UI.Common
 
             if (OwnersPanel != null)
             {
-                OwnersPanel.SetOwnerDisplay(Owners, Preset, Slot);
+                OwnersPanel.SetOwnershipDisplay(Owners, Preset, Slot);
             }
 
             if (item == null)

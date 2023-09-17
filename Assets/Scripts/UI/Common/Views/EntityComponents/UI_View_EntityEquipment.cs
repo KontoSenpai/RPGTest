@@ -1,6 +1,7 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Models;
 using RPGTest.Models.Entity;
+using RPGTest.Models.Items;
 using UnityEngine;
 
 namespace RPGTest.UI.Common
@@ -48,6 +49,16 @@ namespace RPGTest.UI.Common
         }
 
         public override void Refresh(PresetSlot preset)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Preview(PresetSlot preset, Slot slot, Equipment equipment)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Unpreview()
         {
             throw new System.NotImplementedException();
         }

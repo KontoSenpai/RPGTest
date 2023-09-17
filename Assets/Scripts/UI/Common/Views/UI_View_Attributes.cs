@@ -2,6 +2,7 @@
 using RPGTest.Helpers;
 using RPGTest.Models;
 using RPGTest.Models.Entity;
+using RPGTest.Models.Items;
 using RPGTest.UI.Widgets;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,6 +47,16 @@ namespace RPGTest.UI.Common
         public override void Refresh(PresetSlot preset)
         {
             throw new System.NotImplementedException();
+        }
+
+        public override void Preview(PresetSlot preset, Slot slot, Equipment equipment)
+        {
+            // throw new System.NotImplementedException();
+        }
+
+        public override void Unpreview()
+        {
+            // throw new System.NotImplementedException();
         }
 
         private void RefreshInternal(Dictionary<Attribute, float> attributes)

@@ -281,6 +281,10 @@ namespace RPGTest.UI
         /// <param name="itemComponent"></param>
         public void OnItemSelection_Changed(GameObject itemComponent)
         {
+            if (itemComponent.TryGetComponent<UI_InventoryItem>(out var component))
+            {
+                EntityComponentsContainer.Preview(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, (Equipment)component.Item);
+            }
         }
 
         /// <summary>
@@ -404,6 +408,7 @@ namespace RPGTest.UI
                 FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
                 ItemList.ChangeItemsSelectability(false);
                 EquipmentSet.Select(m_pendingItemSelection?.Slot ?? Slot.None);
+                EntityComponentsContainer.Unpreview();
             }
             else if (stage == ActionStage.SelectItem)
             {

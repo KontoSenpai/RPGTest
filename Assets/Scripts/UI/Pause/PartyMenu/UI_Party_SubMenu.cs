@@ -194,7 +194,7 @@ namespace RPGTest.UI.PartyMenu
             {
                 // TODO preset refresh
                 PresetSlotSelector.ChangePreset();
-                EntityComponentContainer.Refresh(m_currentCharacter, PresetSlotSelector.GetCurrentPreset());
+                EntityComponentContainer.Refresh(PresetSlotSelector.GetCurrentPreset());
             }
         }
 

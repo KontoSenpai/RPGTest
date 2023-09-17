@@ -125,7 +125,7 @@ Equipments:
         Attack              : 5
         Magic               : 5 
 
-    - Id                    : E0025
+    - Id                    : E0006
       ITEM_TYPE             : Equipment
       EQUIPMENT_TYPE        : Short_Sword
       Name                  : Flaming blade
@@ -135,6 +135,32 @@ Equipments:
         Attack              : 35
       Elements              :
         Fire                : 100
+    
+    - Id                    : E0007
+      ITEM_TYPE             : Equipment
+      EQUIPMENT_TYPE        : HeavyArmor
+      Name                  : Elemental Armor
+      Description           : Armor forged using elemental ether to increase its magic resistance
+      Value                 : 100
+      Attributes            :
+        Defense             : 20
+        resistance          : 30
+      ElementalResistances  :
+        Fire                : .20
+        Ice                 : -.20
+        
+    - Id                    : E0008
+      ITEM_TYPE             : Equipment
+      EQUIPMENT_TYPE        : Accessory
+      Name                  : Ribbon
+      Description           : enchanted string
+      Value                 : 100
+      Attributes            :
+        Defense             : 5
+        resistance          : 5
+      StatusEffectResistances     :
+        Poison              : 999
+        Paralysis           : 999
   
 KeyItems:
     - Id                    : K0001

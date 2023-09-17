@@ -1,5 +1,7 @@
-﻿using RPGTest.Models;
+﻿using RPGTest.Enums;
+using RPGTest.Models;
 using RPGTest.Models.Entity;
+using RPGTest.Models.Items;
 using UnityEngine;
 
 namespace RPGTest.UI.Common
@@ -37,13 +39,30 @@ namespace RPGTest.UI.Common
             }
         }
 
-        public void Refresh(Entity entity, PresetSlot slot)
+        public void Refresh(PresetSlot preset)
         {
-            var character = (PlayableCharacter)entity;
             var components = GetComponentsInChildren<UI_View_BaseEntityComponent>();
             foreach (var component in components)
             {
-                component.Refresh(slot);
+                component.Refresh(preset);
+            }
+        }
+
+        public void Preview(PresetSlot preset, Slot slot, Equipment equipment)
+        {
+            var components = GetComponentsInChildren<UI_View_BaseEntityComponent>();
+            foreach (var component in components)
+            {
+                component.Preview(preset, slot, equipment);
+            }
+        }
+
+        public void Unpreview()
+        {
+            var components = GetComponentsInChildren<UI_View_BaseEntityComponent>();
+            foreach (var component in components)
+            {
+                component.Unpreview();
             }
         }
     }

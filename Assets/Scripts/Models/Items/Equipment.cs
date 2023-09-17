@@ -18,13 +18,13 @@ namespace RPGTest.Models.Items
         public Dictionary<Element, float> Elements { get; set; } = new Dictionary<Element, float>() { { Element.None, 0.0f } };
 
         // Elemental resistances granted by piece of equipment
-        public Dictionary<Element, float> ElementResistances { get; set; } = new Dictionary<Element, float>() { { Element.None, 0.0f } };
+        public Dictionary<Element, float> ElementalResistances { get; set; } = new Dictionary<Element, float>() { { Element.None, 0.0f } };
 
         // Status Effects inflicted with physical attacks or abilities
         public Dictionary<StatusEffect, float> StatusEffects { get; set; } = new Dictionary<StatusEffect, float>() { { StatusEffect.None, 0.0f } };
 
         // Status Effect resistances granted by piece of equipmewnt
-        public Dictionary<StatusEffect, float> StatusResistances { get; set; } = new Dictionary<StatusEffect, float>() { { StatusEffect.None, 0.0f } };
+        public Dictionary<StatusEffect, float> StatusEffectResistances { get; set; } = new Dictionary<StatusEffect, float>() { { StatusEffect.None, 0.0f } };
 
         public virtual Range PowerRange { get; set; }
 

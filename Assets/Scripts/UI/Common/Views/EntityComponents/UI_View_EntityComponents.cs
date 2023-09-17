@@ -1,5 +1,7 @@
-﻿using RPGTest.Models;
+﻿using RPGTest.Enums;
+using RPGTest.Models;
 using RPGTest.Models.Entity;
+using RPGTest.Models.Items;
 using UnityEngine;
 
 namespace RPGTest.UI.Common
@@ -38,5 +40,9 @@ namespace RPGTest.UI.Common
         public abstract void Refresh();
 
         public abstract void Refresh(PresetSlot preset);
+
+        public abstract void Preview(PresetSlot preset, Slot slot, Equipment equipment);
+
+        public abstract void Unpreview();
     }
 }
