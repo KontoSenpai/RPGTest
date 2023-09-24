@@ -1,34 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using RPGTest.Helpers;
 using RPGTest.Models.Items;
 using RPGTest.Models.Entity;
 using RPGTest.Enums;
-using System.Linq;
-using static RPGTest.UI.Common.UI_View_EntityInfos;
 using UnityEngine.UI;
-using System.Collections.Generic;
 using RPGTest.UI.Utils;
+using RPGTest.Inputs;
+using UnityEngine.InputSystem;
+using RPGTest.Models;
 
 namespace RPGTest.UI.Common
 {
     public class UI_EquipmentSet : UI_View
     {
-        [SerializeField] private UI_PresetSlotSelector PresetSelector;
+        public UI_PresetSlotSelector PresetSelector;
+
+        [HideInInspector]
+        public Slot Slot { private set; get; }
+
+        [HideInInspector]
+        public PresetSlot Preset => PresetSelector.GetCurrentPreset();
+
+        [HideInInspector]
+        public CancelActionHandler EquipActionCancelled { get; set; }
+
+        [HideInInspector]
+        public SlotSelectionHandler SlotSelected { get; set; }
+
+        [HideInInspector]
+        public SlotSelectionHandler SlotConfirmed { get; set; }
+
+        [HideInInspector]
+        public ItemsSelectionHandler ItemUnequipped { get; set; }
 
         [SerializeField]
         private UI_InventoryItem[] m_equipmentComponents;
 
-        [HideInInspector]
-        public CancelActionHandler EquipActionCancelled { get; set; }
-        
-        [HideInInspector]
-        public EquipmentSlotSelectedHandler SlotSelected { get; set; }
-
-        [HideInInspector]
-        public EquipmentSlotSelectedHandler SlotConfirmed { get; set; }
+        [SerializeField]
+        private bool EnableSecondaryAction;
 
         private PlayableCharacter m_character;
+
+
         private Equipment m_selectedItem;
 
         #region Public Methods
@@ -36,8 +52,12 @@ namespace RPGTest.UI.Common
         {
             base.Awake();
 
-            m_playerInput.UI.SecondaryAction.performed += OnSecondaryAction_performed;
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
+            m_playerInput.UI.SecondaryNavigate.performed += OnSecondaryNavigate_performed;
+            m_playerInput.UI.SecondaryAction.performed += ctx =>
+            {
+                OnSecondaryAction_performed(ctx);
+            };
 
             foreach (var equipment in m_equipmentComponents)
             {
@@ -46,41 +66,47 @@ namespace RPGTest.UI.Common
             PresetSelector.PresetSlotSelected += PresetSelector_PresetSlotSelected;
         }
 
-        protected override void UpdateInputActions()
+        public override Dictionary<string, string[]> GetInputDisplay(Controls playerInput = null)
         {
+            var controls = playerInput ?? m_playerInput;
             m_inputActions = new Dictionary<string, string[]>()
             {
                 {
                     "Select Slot",
                     new string[]
                     {
-                        "UI_" + m_playerInput.UI.Navigate.name
+                        "UI_" + controls.UI.Navigate.name
                     }
                 },
                 {
                     "Confirm",
                     new string[]
                     {
-                        "UI_" + m_playerInput.UI.Submit.name,
-                        "UI_" + m_playerInput.UI.LeftClick.name
+                        "UI_" + controls.UI.Submit.name,
+                        "UI_" + controls.UI.LeftClick.name,
                     }
                 },
                 {
-                    "Cancel",
+                    "Remove Equipment",
                     new string[]
                     {
-                        "UI_" + m_playerInput.UI.Cancel.name,
-                        "UI_" + m_playerInput.UI.RightClick.name,
+                        "UI_" + controls.UI.SecondaryAction.name,
                     }
                 },
                 {
                     "Change Preset",
                     new string[]
                     {
-                        "UI_" + m_playerInput.UI.SecondaryAction.name,
+                        "UI_" + controls.UI.SecondaryNavigate.name,
                     }
                 }
             };
+
+            return m_inputActions;
+        }
+
+        protected override void UpdateInputActions()
+        {
             base.UpdateInputActions();
         }
 
@@ -120,8 +146,7 @@ namespace RPGTest.UI.Common
 
         public void Select(Slot pendingSlot = Slot.None)
         {
-            EnableControls();
-            UpdateInputActions();
+            base.Select();
 
             InitializeSlotsState();
 
@@ -137,13 +162,12 @@ namespace RPGTest.UI.Common
             }
         }
 
-        public void Deselect()
+        public override void Deselect()
         {
+            base.Deselect();
             m_equipmentComponents.ForEach((c) => c.GetComponent<Button>().interactable = false);
 
             EventSystemEvents.OnSelectionUpdated -= OnSelection_Updated;
-
-            DisableControls();
         }
 
         public void Clean()
@@ -168,22 +192,6 @@ namespace RPGTest.UI.Common
             m_equipmentComponents.Single((c) => c.Slot == args.Slot).GetComponent<Button>().interactable = false;
             SlotConfirmed.Invoke(PresetSelector.GetCurrentPreset(), args.Slot);
         }
-        #endregion
-
-        #region Input Events
-        public void OnSecondaryAction_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-        {
-            ChangePreset();
-        }
-
-        private void OnCancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-        {
-            DisableControls();
-            if (m_selectedItem != null)
-            {
-                EquipActionCancelled();
-            }
-        }
 
         /// <summary>
         /// Handled from the UIEventSystem, whenever a different <see cref="Selectable"/> changes
@@ -195,7 +203,52 @@ namespace RPGTest.UI.Common
             if (currentSelection != null && m_equipmentComponents.Any((i) => i.gameObject == currentSelection))
             {
                 var component = m_equipmentComponents.Single((c) => c.gameObject == currentSelection);
-                SlotSelected(PresetSelector.GetCurrentPreset(), component.Slot);
+                if (Slot != component.Slot)
+                {
+                    Slot = component.Slot;
+                    SlotSelected(Preset, Slot);
+                }
+            }
+        }
+        #endregion
+
+        #region Input Events
+        /// <summary>
+        /// Secondary action = unequip item
+        /// </summary>
+        /// <param name="ctx"></param>
+        protected void OnSecondaryAction_performed(InputAction.CallbackContext ctx)
+        {
+            if (!EnableSecondaryAction)
+            {
+                return;
+            }
+
+            m_character.TryUnequip(PresetSelector.GetCurrentPreset(), Slot, out var removedEquipments);
+
+            if (!removedEquipments.Any())
+            {
+                return;
+            }
+
+            Refresh();
+            ItemUnequipped(removedEquipments);
+        }
+
+        private void OnCancel_performed(InputAction.CallbackContext ctx)
+        {
+            DisableControls();
+            if (m_selectedItem != null)
+            {
+                EquipActionCancelled();
+            }
+        }
+
+        private void OnSecondaryNavigate_performed(InputAction.CallbackContext ctx)
+        {
+            if (ctx.ReadValue<Vector2>().magnitude > 0.4f)
+            {
+                ChangePreset();
             }
         }
         #endregion

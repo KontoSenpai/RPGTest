@@ -47,7 +47,10 @@ namespace RPGTest.UI.Common
                 return;
             }
 
-            PreviewText.text = $"{(diff > 0 ? '↑' : '↓' )} {diff}";
+            if (Mathf.Abs(diff) > 1.0f)
+            {
+                PreviewText.text = $"{(diff > 0 ? '↑' : '↓')} %";
+            }
             PreviewText.color = diff > 0 ? Color.green : Color.red;
         }
 
@@ -70,7 +73,7 @@ namespace RPGTest.UI.Common
             }
             else
             {
-                Value.text = value * 100 + "%";
+                Value.text = $"{value * 100}%";
             }
         }
     }

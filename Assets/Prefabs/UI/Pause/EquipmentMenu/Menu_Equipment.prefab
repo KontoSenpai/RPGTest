@@ -685,6 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc9431e95e60c2f42a2f5e4cbd903800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShouldUpdateInputDisplay: 1
   CharacterGo: {fileID: 8105995004448776032, guid: bb9da8af1515fd5448c11b1c14f00705, type: 3}
   CharacterContainer: {fileID: 6160025549247372351}
   LeftCycle: {fileID: 7572352775889832128}
@@ -3090,6 +3091,10 @@ PrefabInstance:
     - target: {fileID: 55831357272334301, guid: 81a0ab81cf5f30f40911dd897b262cc9, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 535572164441314641, guid: 81a0ab81cf5f30f40911dd897b262cc9, type: 3}
+      propertyPath: EnableSecondaryAction
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 695014553880178609, guid: 81a0ab81cf5f30f40911dd897b262cc9, type: 3}
       propertyPath: m_AnchorMax.y

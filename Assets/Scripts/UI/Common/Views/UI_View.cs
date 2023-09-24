@@ -3,6 +3,7 @@ using RPGTest.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace RPGTest.UI.Common
 {
@@ -31,6 +32,22 @@ namespace RPGTest.UI.Common
         }
 
         /// <summary>
+        /// Sets the focus on the view and enable input actions
+        /// </summary>
+        public virtual void Select()
+        {
+            EnableControls();
+        }
+
+        /// <summary>
+        /// Remove focus from the view and disable input actions
+        /// </summary>
+        public virtual void Deselect()
+        {
+            DisableControls();
+        }
+
+        /// <summary>
         /// Open the dialog and enable user inputs
         /// </summary>
         public virtual void Open()
@@ -55,25 +72,30 @@ namespace RPGTest.UI.Common
 
         protected void EnableControls()
         {
+            InputManager.SchemeChanged += OnScheme_Changed;
+            m_playerInput.Enable();
+
             if (!ShouldUpdateInputDisplay)
             {
                 return;
             }
-
-            InputManager.SchemeChanged += OnScheme_Changed;
-            m_playerInput.Enable();
             UpdateInputDisplay();
         }
 
         protected void DisableControls()
         {
-            if (!ShouldUpdateInputDisplay)
-            {
-                return;
-            }
-
             InputManager.SchemeChanged -= OnScheme_Changed;
             m_playerInput.Disable();
+        }
+
+        /// <summary>
+        /// Get all input actions permitted by current view
+        /// </summary>
+        /// <param name="playerInput">input controls, to use in case the view input gets requested before it gets awakened</param>
+        /// <returns>List of inputs defined for the view</returns>
+        public virtual Dictionary<string, string[]> GetInputDisplay(Controls playerInput = null)
+        {
+            return new Dictionary<string, string[]>();
         }
 
         protected virtual void UpdateInputActions()

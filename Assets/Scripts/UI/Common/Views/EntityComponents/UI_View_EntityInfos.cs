@@ -35,11 +35,6 @@ namespace RPGTest.UI.Common
         [HideInInspector]
         public delegate void MemberSelectedHandler(UIActionSelection selection, GameObject item);
 
-        [HideInInspector]
-        public EquipmentSlotSelectedHandler EquipmentSlotSelected { get; set; }
-        [HideInInspector]
-        public delegate void EquipmentSlotSelectedHandler(PresetSlot preset, Slot slot);
-
         public bool TwoStepSelect = false;
 
         private Entity m_entity;

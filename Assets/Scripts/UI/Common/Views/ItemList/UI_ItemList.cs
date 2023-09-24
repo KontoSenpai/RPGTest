@@ -1,4 +1,5 @@
 ﻿using RPGTest.Enums;
+using RPGTest.Inputs;
 using RPGTest.Models.Items;
 using RPGTest.UI.Utils;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace RPGTest.UI.Common
@@ -14,7 +16,7 @@ namespace RPGTest.UI.Common
     /// <summary>
     /// Component that manage the display of an item list.
     /// </summary>
-    public class UI_ItemList : MonoBehaviour
+    public class UI_ItemList : UI_View
     {
         [SerializeField] protected ScrollRect ItemList;
         [SerializeField] protected UI_ViewportBehavior ViewportBehaviour;
@@ -55,6 +57,31 @@ namespace RPGTest.UI.Common
             m_guiItems[m_selectedItemIndex].GetComponent<Button>().Select();
             //FindObjectOfType<EventSystem>().SetSelectedGameObject(m_items[m_selectedItemIndex].gameObject);
             return true;
+        }
+
+        public override Dictionary<string, string[]> GetInputDisplay(Controls playerInput = null)
+        {
+            var controls = playerInput ?? m_playerInput;
+            m_inputActions = new Dictionary<string, string[]>()
+            {
+                {
+                    "Select Item",
+                    new string[]
+                    {
+                        "UI_" + controls.UI.Cycle.name
+                    }
+                },
+                {
+                    "Confirm",
+                    new string[]
+                    {
+                        "UI_" + controls.UI.Submit.name,
+                        "UI_" + controls.UI.LeftClick.name,
+                    }
+                },
+            };
+
+            return m_inputActions;
         }
 
         /// <summary>

@@ -305,13 +305,13 @@ namespace RPGTest.Models.Entity
             {
                 foreach (var attribute in equipment.Value.Attributes)
                 {
-                    if (!weaponAttributes.ContainsKey(attribute.Key))
+                    if (!equipmentAttributes.ContainsKey(attribute.Key))
                     {
-                        weaponAttributes.Add(attribute.Key, attribute.Value);
+                        equipmentAttributes.Add(attribute.Key, attribute.Value);
                     }
                     else
                     {
-                        weaponAttributes[attribute.Key] += attribute.Value;
+                        equipmentAttributes[attribute.Key] += attribute.Value;
                     }
                 }
             }
@@ -329,7 +329,7 @@ namespace RPGTest.Models.Entity
             switch (attribute)
             {
                 case Attribute.Attack:
-                    return Mathf.Ceil(value * passives.Where(p => p.Potency.Attribute == Attribute.EquipmentAttack).Sum(p => p.Potency.Potency / 100));
+                    return Mathf.Ceil(value * 1.0f + passives.Where(p => p.Potency.Attribute == Attribute.EquipmentAttack).Sum(p => p.Potency.Potency / 100));
             }
 
             return value;

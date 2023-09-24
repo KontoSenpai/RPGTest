@@ -1,9 +1,5 @@
-﻿using RPGTest.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using RPGTest.Models;
 using UnityEngine;
 using UnityEngine.UI;
 

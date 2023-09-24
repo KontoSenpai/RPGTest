@@ -148,8 +148,8 @@ Equipments:
         Defense             : 20
         resistance          : 30
       ElementalResistances  :
-        Fire                : 20
-        Ice                 : -20
+        Fire                : .2
+        Ice                 : -.2
         
     - Id                          : E0008
       ITEM_TYPE                   : Equipment
@@ -161,8 +161,8 @@ Equipments:
         Defense                   : 5
         Resistance                : 5
       StatusEffectResistances     :
-        Poison                    : 999
-        Paralysis                 : 999
+        Poison                    : 10
+        Paralysis                 : 10
         
     - Id                          : E0009
       ITEM_TYPE                   : Equipment

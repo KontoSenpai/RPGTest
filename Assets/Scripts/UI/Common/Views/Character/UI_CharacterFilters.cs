@@ -5,11 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace RPGTest.UI.Common
 {
-    public class UI_CharacterFilters : MonoBehaviour
+    public class UI_CharacterFilters : UI_View
     {
         [SerializeField] private UI_CharacterFilter CharacterGo;
         [SerializeField] private GameObject CharacterContainer;
@@ -28,12 +29,32 @@ namespace RPGTest.UI.Common
 
         // Input Control
         private string m_actionName = "Cycle";
-        private Controls m_playerInput;
         private InputDisplayManager m_inputManager => FindObjectOfType<InputDisplayManager>();
 
-        public void Awake()
+        public override void Awake()
         {
-            m_playerInput = new Controls();
+            base.Awake();
+            m_playerInput.UI.Cycle.started += ctx =>
+            {
+                Cycle_Performed(ctx);
+            };
+        }
+
+        public override Dictionary<string, string[]> GetInputDisplay(Controls playerInput = null)
+        {
+            var controls = playerInput ?? m_playerInput;
+            //m_inputActions = new Dictionary<string, string[]>()
+            //{
+            //    {
+            //        "Change Character",
+            //        new string[]
+            //        {
+            //            "UI_" + controls.UI.Cycle.name
+            //        }
+            //    }
+            //};
+
+            return m_inputActions;
         }
 
         /// <summary>
@@ -80,8 +101,9 @@ namespace RPGTest.UI.Common
         /// <summary>
         /// To call when the control gets closed
         /// </summary>
-        public void Close()
+        public override void Close()
         {
+            base.Close();
             m_inputManager.SchemeChanged -= OnScheme_Changed;
         }
 
@@ -108,6 +130,14 @@ namespace RPGTest.UI.Common
                 ChangeCharacterInternal(character);
             }
         }
+
+        #region input events
+        private void Cycle_Performed(InputAction.CallbackContext ctx)
+        {
+            var movement = ctx.ReadValue<float>();
+            ChangeCharacter(movement > 0);
+        }
+        #endregion
 
         #region Event
         private void OnCharacter_Selected(object sender, CharacterFilterSelectedEventArgs e)
