@@ -30,33 +30,19 @@ namespace RPGTest.UI
 
         [SerializeField] private UI_View_EntityContainer EntityComponentsContainer;
 
-        //Items control
-        private int m_currentNavigationIndex = 0;
-        private bool m_actionInProgress = false;
+        [SerializeField] private UI_View_EffectTooltip TooltipsView;
+        private GameObject m_currentSelection = null;
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
         private InventoryManager m_inventoryManager => FindObjectOfType<GameManager>().InventoryManager;
 
         private ActionStage m_currentActionStage = ActionStage.SelectSlot;
 
-        private List<PlayableCharacter> m_characters => m_partyManager.GetAllPartyMembers();
-        // Categories to display in the ItemList
-        private List<ItemFilterCategory> m_filterCategories = new List<ItemFilterCategory>()
-        {
-            ItemFilterCategory.Weapons,
-            ItemFilterCategory.Armors,
-            ItemFilterCategory.Accessories,
-        };
-
-        private PendingItemSelection m_pendingItemSelection;
-
         public override void Awake()
         {
             base.Awake();
-            m_playerInput.UI.Cancel.performed += ctx =>
-            {
-                OnCancel_performed(ctx);
-            };
+            m_playerInput.UI.Cancel.performed += OnCancel_performed;
+            m_playerInput.UI.InfoToggle.performed += OnInfoToggle_performed;
 
             CharacterFilters.CharacterFilterSelected += OnCharacter_Selected;
 
@@ -83,6 +69,7 @@ namespace RPGTest.UI
 
         public override void Initialize()
         {
+            // Populate the list of available characters
             CharacterFilters.Initialize();
         }
 
@@ -96,6 +83,7 @@ namespace RPGTest.UI
                 characterIndex = (int)value;
             }
 
+            // Populate the item list with pieces of equipments in the inventory
             var items = ItemListUpdator.InstantiateItems(m_inventoryManager.GetItems());
             items.ForEach((i) =>
             {
@@ -106,25 +94,23 @@ namespace RPGTest.UI
             ItemListFilters.Initialize();
 
             CharacterFilters.Open(characterIndex);
-
             UpdateInputActions();
         }
 
         public override void CloseSubMenu()
         {
             ItemList.Clear();
-            CharacterFilters.Close();
             EquipmentSet.Deselect();
+            TooltipsView.gameObject.SetActive(false);
 
             base.CloseSubMenu();
         }
 
-        public override void ExitPause()
+        public override void Clear()
         {
+            CharacterFilters.Clear();
             ItemList.Clear();
             EquipmentSet.Deselect();
-
-            base.ExitPause();
         }
 
         protected override void UpdateInputActions()
@@ -167,9 +153,13 @@ namespace RPGTest.UI
         }
 
         #region Event
-        private void OnEquipmentSlot_Selected(PresetSlot preset, Slot slot)
+        private void OnEquipmentSlot_Selected(GameObject gameObject)
         {
-            switch(slot)
+            if(!gameObject.TryGetComponent<UI_InventoryItem>(out var component)) {
+                return;
+            }
+
+            switch(component.Slot)
             {
                 case Slot.LeftHand:
                 case Slot.RightHand:
@@ -186,24 +176,19 @@ namespace RPGTest.UI
                     ItemListFilters.Filter(ItemFilterCategory.Accessories);
                     break;
                 default:
-                    throw new System.Exception($"Unhandled slot type {slot}");
+                    throw new System.Exception($"Unhandled slot type {component.Slot}");
             }
 
-            m_pendingItemSelection = new PendingItemSelection()
+            m_currentSelection = gameObject;
+            if (TooltipsView.gameObject.activeSelf)
             {
-                Preset = preset,
-                Slot = slot,
-            };
+                TooltipsView.MoveToGameObject(this.gameObject,m_currentSelection);
+                UpdateTooltipContent(component.Item);
+            }
         }
 
         private void OnEquipmentSlot_Confirmed(PresetSlot preset, Slot slot)
         {
-            m_pendingItemSelection = new PendingItemSelection()
-            {
-                Preset = preset,
-                Slot = slot,
-            };
-
             ChangeStage(ActionStage.SelectItem);
         }
 
@@ -235,11 +220,18 @@ namespace RPGTest.UI
         /// Handle item selection changes from the connect <see cref="ItemList"/>
         /// </summary>
         /// <param name="itemComponent"></param>
-        public void OnItemSelection_Changed(GameObject itemComponent)
+        public void OnItemSelection_Changed(GameObject gameObject)
         {
-            if (itemComponent != null && itemComponent.TryGetComponent<UI_InventoryItem>(out var component))
+            if (gameObject != null && gameObject.TryGetComponent<UI_InventoryItem>(out var component))
             {
-                EntityComponentsContainer.Preview(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, (Equipment)component.Item);
+                EntityComponentsContainer.Preview(EquipmentSet.Preset, EquipmentSet.Slot, (Equipment)component.Item);
+
+                m_currentSelection = gameObject;
+                if (TooltipsView.gameObject.activeSelf)
+                {
+                    TooltipsView.MoveToGameObject(this.gameObject,m_currentSelection);
+                    UpdateTooltipContent(component.Item);
+                }
             }
         }
 
@@ -252,11 +244,11 @@ namespace RPGTest.UI
         {
             if (e.Owner != null)
             {
-                e.Owner.TryUnequip(m_pendingItemSelection.Preset, e.Slot, out var _);
+                e.Owner.TryUnequip(EquipmentSet.Preset, e.Slot, out var _);
             }
 
             var character = CharacterFilters.GetCurrentCharacter();
-            character.TryEquip(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, (Equipment)e.Item, out var removedEquipments);
+            character.TryEquip(EquipmentSet.Preset, EquipmentSet.Slot, (Equipment)e.Item, out var removedEquipments);
 
             EquipmentSet.Refresh();
 
@@ -273,7 +265,7 @@ namespace RPGTest.UI
             var items = ItemListUpdator.UpdateItems(ItemList.GetItems().Select((i) => i.gameObject).ToList(), itemUpdates);
             ItemList.UpdateItems(items);
 
-            EntityComponentsContainer.Refresh(m_pendingItemSelection.Preset);
+            EntityComponentsContainer.Refresh(EquipmentSet.Preset);
 
             ChangeStage(ActionStage.SelectSlot);
         }
@@ -289,6 +281,7 @@ namespace RPGTest.UI
         
         private void OnCharacter_Selected(object sender, CharacterFilterSelectedEventArgs e)
         {
+            TooltipsView.gameObject.SetActive(false);
             ChangeCharacter(e.Character);
         }
         #endregion
@@ -306,6 +299,32 @@ namespace RPGTest.UI
                     break;
             }
         }
+
+        private void OnInfoToggle_performed(InputAction.CallbackContext ctx)
+        {
+            Item item = null;
+            switch (m_currentActionStage)
+            {
+                case ActionStage.SelectSlot:
+                    item = EquipmentSet.GetEquipment();
+                    break;
+                case ActionStage.SelectItem:
+                    item = ItemList.GetCurrentSelectedItem()?.Item;
+                    break;
+            }
+
+            if (item == null) return;
+            
+            if (TooltipsView.gameObject.activeSelf)
+            {
+                TooltipsView.Close();
+                return;
+            }
+
+            TooltipsView.Open();
+            TooltipsView.MoveToGameObject(this.gameObject, m_currentSelection);
+            UpdateTooltipContent(item);
+        }
         #endregion
 
         #region Private Methods
@@ -318,7 +337,7 @@ namespace RPGTest.UI
                 FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
                 ItemList.ChangeItemsSelectability(false);
                 CharacterFilters.Select();
-                EquipmentSet.Select(m_pendingItemSelection?.Slot ?? Slot.None);
+                EquipmentSet.Select(EquipmentSet?.Slot ?? Slot.None);
                 EntityComponentsContainer.Unpreview();
             }
             else if (stage == ActionStage.SelectItem)
@@ -339,6 +358,25 @@ namespace RPGTest.UI
             EquipmentSet.Initialize(character);
 
             ChangeStage(ActionStage.SelectSlot);
+        }
+
+        private void UpdateTooltipContent(Item item)
+        {
+            if (item == null)
+            {
+                TooltipsView.Clear();
+                return;
+            }
+
+            switch (item.Type)
+            {
+                case ItemType.Equipment:
+                    TooltipsView.Initialize(((Equipment)item).Attributes.Keys, ((Equipment)item).Effects);
+                    break;
+                case ItemType.Consumable:
+                    TooltipsView.Initialize(new List<Attribute>(), ((Consumable)item).Effects.Select(e => e.Id));
+                    break;
+            }
         }
         #endregion
     }

@@ -28,7 +28,7 @@ namespace RPGTest.UI.Common
         public CancelActionHandler EquipActionCancelled { get; set; }
 
         [HideInInspector]
-        public SlotSelectionHandler SlotSelected { get; set; }
+        public ItemSelectionHandler SlotSelected { get; set; }
 
         [HideInInspector]
         public SlotSelectionHandler SlotConfirmed { get; set; }
@@ -43,7 +43,6 @@ namespace RPGTest.UI.Common
         private bool EnableSecondaryAction;
 
         private PlayableCharacter m_character;
-
 
         private Equipment m_selectedItem;
 
@@ -179,6 +178,13 @@ namespace RPGTest.UI.Common
         {
             PresetSelector.ChangePreset();
         }
+
+        public Equipment GetEquipment()
+        {
+            var equipmentSlots = m_character.EquipmentSlots.GetEquipmentPreset(PresetSelector.GetCurrentPreset());
+
+            return equipmentSlots[Slot];
+        }
         #endregion
 
         #region Events
@@ -206,8 +212,8 @@ namespace RPGTest.UI.Common
                 if (Slot != component.Slot)
                 {
                     Slot = component.Slot;
-                    SlotSelected(Preset, Slot);
                 }
+                SlotSelected(component.gameObject);
             }
         }
         #endregion

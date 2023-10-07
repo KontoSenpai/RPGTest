@@ -400,6 +400,14 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "InfoToggle",
+                    "type": "Button",
+                    "id": "c79cb561-6eb1-49f5-a504-c9de70eb220a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -796,6 +804,28 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "CloseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46fb94ee-fd1d-450f-98b2-9d9d9215ea76",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "InfoToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2cf2c6ca-b28a-4f6b-9b51-f76ae0be9284",
+                    "path": "<DualShockGamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PS",
+                    "action": "InfoToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

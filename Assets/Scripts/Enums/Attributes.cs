@@ -7,32 +7,49 @@ namespace RPGTest.Enums
         None,
         //stats
         HP,
-        [Description("Max HP")]
+        [Name("Max HP")]
+        [Description("Toto")]
         MaxHP,
         MP,
-        [Description("Max MP")]
+        [Name("Max MP")]
+        [Description("Reserve of mana, resource used to cast magic")]
         MaxMP,
         Stamina,
-        [Description("Max STM")]
+        [Name("Max STM")]
+        [Description("Reserve of stamina, resource used to perform physical abilities")]
         MaxStamina,
-        [Description("ATK")]
+        [Name("Attack")]
+        [ShortName("ATK")]
+        [Description("Value used to calculate damage dealt by physical attacks")]
         Attack,
-        [Description("DEF")]
+        [Name("Defense")]
+        [ShortName("DEF")]
+        [Description("Value used to calculate damage dealt by magical attacks")]
         Defense,
-        [Description("MAG")]
+        [Name("Magic")]
+        [ShortName("MAG")]
+        [Description("Value used to reduce damage received by physical attacks")]
         Magic,
-        [Description("RES")]
+        [Name("Resistance")]
+        [ShortName("RES")]
+        [Description("Value used to reduce damage received by magical attacks")]
         Resistance,
 
         HPPercentage,
         MPPercentage,
         StaminaPercentage,
 
-        [Description("SPD")]
+        [Name("Speed")]
+        [ShortName("SPD")]
+        [Description("Value used to determine how fast entity performs action")]
         Speed,
-        [Description("BLC")]
+        [Name("Block")]
+        [ShortName("BLK")]
+        [Description("Chance to block incoming attack and reduce damage taken")]
         Block,
-        [Description("ACC")]
+        [Name("Accuracy")]
+        [ShortName("ACC")]
+        [Description("Chance to hit target")]
         Accuracy,
         Hit,
 

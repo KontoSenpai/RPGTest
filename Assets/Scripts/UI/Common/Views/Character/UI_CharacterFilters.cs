@@ -99,6 +99,15 @@ namespace RPGTest.UI.Common
         }
 
         /// <summary>
+        /// Delete all items and empty the list containing them
+        /// </summary>
+        public void Clear()
+        {
+            m_charactersGui.ForEach(x => Destroy(x.gameObject));
+            m_charactersGui.Clear();
+        }
+
+        /// <summary>
         /// To call when the control gets closed
         /// </summary>
         public override void Close()
@@ -164,12 +173,6 @@ namespace RPGTest.UI.Common
             RightCycle.sprite = Sprite.Create(icons[0][1], new Rect(0.0f, 0.0f, icons[0][1].width, icons[0][1].height), new Vector2(0.5f, 0.5f), 100.0f);
         }
         #endregion
-
-        private void Clear()
-        {
-            m_charactersGui.ForEach((g) => Destroy(g.gameObject));
-            m_charactersGui.Clear();
-        }
 
         private void ChangeCharacterInternal(PlayableCharacter character)
         {

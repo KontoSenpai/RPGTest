@@ -20,11 +20,12 @@ namespace RPGTest.UI.Common
 
         public void Start()
         {
-            StatName.text = Attribute.GetDescription();
+            StatName.text = Attribute.GetShortName();
         }
 
         public void Initialize(Attribute attribute, int value, bool displaySymbol = false)
         {
+            StatName.text = attribute.GetShortName();
             m_value = value;
 
             SetValue(m_value);

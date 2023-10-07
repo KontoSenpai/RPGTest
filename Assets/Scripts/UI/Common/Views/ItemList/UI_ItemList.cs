@@ -1,4 +1,5 @@
 ﻿using RPGTest.Enums;
+using RPGTest.Helpers;
 using RPGTest.Inputs;
 using RPGTest.Models.Items;
 using RPGTest.UI.Utils;
@@ -23,9 +24,7 @@ namespace RPGTest.UI.Common
         [SerializeField] protected TextMeshProUGUI NoItemsDisplay;
 
         [HideInInspector]
-        public ItemSelectionChangedHandler ItemSelectionChanged { get; set; }
-        [HideInInspector]
-        public delegate void ItemSelectionChangedHandler(GameObject guiItem);
+        public ItemSelectionHandler ItemSelectionChanged { get; set; }
 
         private List<UI_InventoryItem> m_guiItems = new List<UI_InventoryItem>(); // List of available guiItems.
 

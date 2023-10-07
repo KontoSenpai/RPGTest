@@ -138,6 +138,10 @@ namespace RPGTest.UI
 
         private void ExitSubMenu()
         {
+            foreach (var subMenu in SubMenus)
+            {
+                subMenu.Clear();
+            }
             UIClosed(this, null);
         }
     }

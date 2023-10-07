@@ -415,6 +415,14 @@ namespace RPGTest.Inputs
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""InfoToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""c79cb561-6eb1-49f5-a504-c9de70eb220a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -813,6 +821,28 @@ namespace RPGTest.Inputs
                     ""action"": ""CloseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46fb94ee-fd1d-450f-98b2-9d9d9215ea76"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""InfoToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2cf2c6ca-b28a-4f6b-9b51-f76ae0be9284"",
+                    ""path"": ""<DualShockGamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""InfoToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -883,6 +913,7 @@ namespace RPGTest.Inputs
             m_UI_Cycle = m_UI.FindAction("Cycle", throwIfNotFound: true);
             m_UI_SecondaryAction = m_UI.FindAction("SecondaryAction", throwIfNotFound: true);
             m_UI_MouseMoved = m_UI.FindAction("MouseMoved", throwIfNotFound: true);
+            m_UI_InfoToggle = m_UI.FindAction("InfoToggle", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1027,6 +1058,7 @@ namespace RPGTest.Inputs
         private readonly InputAction m_UI_Cycle;
         private readonly InputAction m_UI_SecondaryAction;
         private readonly InputAction m_UI_MouseMoved;
+        private readonly InputAction m_UI_InfoToggle;
         public struct UIActions
         {
             private @Controls m_Wrapper;
@@ -1045,6 +1077,7 @@ namespace RPGTest.Inputs
             public InputAction @Cycle => m_Wrapper.m_UI_Cycle;
             public InputAction @SecondaryAction => m_Wrapper.m_UI_SecondaryAction;
             public InputAction @MouseMoved => m_Wrapper.m_UI_MouseMoved;
+            public InputAction @InfoToggle => m_Wrapper.m_UI_InfoToggle;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1096,6 +1129,9 @@ namespace RPGTest.Inputs
                     @MouseMoved.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
                     @MouseMoved.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
                     @MouseMoved.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
+                    @InfoToggle.started -= m_Wrapper.m_UIActionsCallbackInterface.OnInfoToggle;
+                    @InfoToggle.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnInfoToggle;
+                    @InfoToggle.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnInfoToggle;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
@@ -1142,6 +1178,9 @@ namespace RPGTest.Inputs
                     @MouseMoved.started += instance.OnMouseMoved;
                     @MouseMoved.performed += instance.OnMouseMoved;
                     @MouseMoved.canceled += instance.OnMouseMoved;
+                    @InfoToggle.started += instance.OnInfoToggle;
+                    @InfoToggle.performed += instance.OnInfoToggle;
+                    @InfoToggle.canceled += instance.OnInfoToggle;
                 }
             }
         }
@@ -1199,6 +1238,7 @@ namespace RPGTest.Inputs
             void OnCycle(InputAction.CallbackContext context);
             void OnSecondaryAction(InputAction.CallbackContext context);
             void OnMouseMoved(InputAction.CallbackContext context);
+            void OnInfoToggle(InputAction.CallbackContext context);
         }
     }
 }
