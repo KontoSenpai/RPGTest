@@ -85,6 +85,8 @@ Equipments:
       Value                 : 100      
       Attributes            : 
         Attack              : 10
+      Effects               :
+        - EP0001.1
 
     - Id                    : E0002
       ITEM_TYPE             : Equipment

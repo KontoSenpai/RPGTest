@@ -252,7 +252,7 @@ MonoBehaviour:
   StatValue: {fileID: 2202794882739005495}
   PreviewText: {fileID: 7003945488234276399}
   PositiveColor: {r: 0.052405916, g: 0.5283019, b: 0, a: 1}
-  NegativeColor: {r: 0.7264151, g: 0.0034264945, b: 0.0034264945, a: 0}
+  NegativeColor: {r: 0.7264151, g: 0.0034264945, b: 0.0034264945, a: 1}
 --- !u!114 &811286891526414093
 MonoBehaviour:
   m_ObjectHideFlags: 0
