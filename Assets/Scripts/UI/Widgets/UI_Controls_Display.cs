@@ -10,7 +10,7 @@ namespace RPGTest.UI
         [SerializeField]
         private GameObject HintWidgetObject;
 
-        private List<GameObject> HintWidgets { get; set; }
+        private List<GameObject> HintWidgets { get; set; } = new List<GameObject>();
 
         public void Awake()
         {

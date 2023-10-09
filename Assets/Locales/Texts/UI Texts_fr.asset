@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI Texts_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: bb72a75ba71c3b44ab7c7a55e5724ce6, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5756371288046960666
+  m_TableData:
+  - m_Id: 5363014909952
+    m_Localized: Personnage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6278363037696
+    m_Localized: Nouvelle Partie
+    m_Metadata:
+      m_Items:
+      - rid: 5756371288046960666
+  - m_Id: 7322690207744
+    m_Localized: PAIN PERDU
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5756371288046960666
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0040591526000000004099cbb5050000
