@@ -1,52 +1,88 @@
-﻿using RPGTest.Inputs;
+﻿using RPGTest.UI.Common;
+using RPGTest.Managers;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace RPGTest.UI
 {
-    public partial class UI_Pause_SubMenu : MonoBehaviour
+    public class HintEventArgs : EventArgs
     {
-        public bool IsSubMenuSelected { get; set; }
-        protected Controls m_playerInput;
-        
-        public virtual void Awake()
+        public HintEventArgs(List<InputDisplay> inputDisplays)
         {
-            m_playerInput = new Controls();
+            InputDisplays = inputDisplays;
         }
 
-        public virtual void OnEnable() => m_playerInput.Enable();
-        public virtual void OnDisable() => m_playerInput.Disable();
+        public List<InputDisplay> InputDisplays { get; }
+    }
 
-        public virtual void Initialize(bool refreshAll = true) { }
+    public class MenuChangeEventArgs: EventArgs
+    {
+        public MenuChangeEventArgs(int menuIndex, Dictionary<string, object> parameters)
+        {
+            MenuIndex = menuIndex;
+            Parameters = parameters;
+        }
+
+        public int MenuIndex{ get; }
+        public Dictionary<string, object> Parameters { get; }
+    }
+
+    public abstract class UI_Pause_SubMenu : UI_Dialog
+    {
+        // Navigation helpers
+        protected bool m_navigateStarted = false;
+        protected float WaitTimeBetweenPerforms = 0.4f;
+        protected float m_performTimeStamp;
         
         public virtual void Clear() { }
 
-        public virtual void OpenMenu()
+        /// <summary>
+        /// Execute once when the PauseMenu is opened
+        /// </summary>
+        public abstract void Initialize();
+
+        /// <summary>
+        /// Execute each time the subMenu is getting opened
+        /// </summary>
+        /// <param name="parameters"></param>
+        public virtual void OpenSubMenu(Dictionary<string, object> parameters)
         {
-            IsSubMenuSelected = true;
+            base.Open();
             SubMenuOpened();
         }
 
-        public virtual void CloseMenu() 
+        /// <summary>
+        /// Execute each time the subMenu is getting closed
+        /// </summary>
+        public virtual void CloseSubMenu()
         {
-            IsSubMenuSelected = false;
+            base.Close();
+        }
+
+        /// <summary>
+        /// Executed when a Cancel action has been used on the "root" level of a sub menu
+        /// Will clean and close the SubMenu
+        /// </summary>
+        public virtual void ExitPause() 
+        {
             SubMenuClosed();
         }
 
-        protected virtual void Cancel_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        protected virtual void OnCancel_performed(InputAction.CallbackContext obj)
         {
-            if(IsSubMenuSelected)
-            {
-                CloseMenu();
-            }
+            ExitPause();
         }
 
+        // Open another menu from a sub menu action
+        protected void ChangeMenu(int index, Dictionary<string, object> parameters)
+        {
+            MenuChanged.Invoke(this, new MenuChangeEventArgs(index, parameters));
+        }
 
+        [HideInInspector]
+        public event EventHandler<MenuChangeEventArgs> MenuChanged;
         [HideInInspector]
         public MenuChangedHandler SubMenuOpened { get; set; }
         [HideInInspector]

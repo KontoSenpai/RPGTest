@@ -1,6 +1,6 @@
-﻿using MyBox;
-using RPGTest.Collectors;
+﻿using RPGTest.Collectors;
 using RPGTest.Controllers;
+using RPGTest.Enums;
 using RPGTest.Interactibles;
 using RPGTest.Models;
 using RPGTest.Models.Items;
@@ -21,7 +21,6 @@ namespace RPGTest.Managers
         public GameObject PlayerController;
         public Camera MainCamera;
 
-        [Separator("Managers")]
         public UIManager UIManager;
         public PartyManager PartyManager;
         public InventoryManager InventoryManager;
@@ -33,7 +32,6 @@ namespace RPGTest.Managers
         private static Vector3 PlayerRotation = new Vector3();
 
         private SaveFileModel SaveFile => SaveFileModel.Instance;
-
         #endregion
 
         public void Start()
@@ -52,7 +50,7 @@ namespace RPGTest.Managers
 
         public void NewGame(string sceneName, string sceneExit)
         {
-            InitParty();
+            InitializeSaveFile();
             CreateSaveFile("FILE01");
             InitManagerProperties();
             StartCoroutine(ChangeScene(sceneName, sceneExit));
@@ -60,7 +58,7 @@ namespace RPGTest.Managers
 
         public void CreateSaveFile(string fileName)
         {
-            SaveFileModel.CreateNew(fileName, PartyManager.GetAllPartyMembers(), InventoryManager.GetAllItems());
+            SaveFileModel.CreateNew(fileName, PartyManager.GetAllPartyMembers(), InventoryManager.GetItems());
         }
 
         public void LoadSaveFile(string fileName)
@@ -128,7 +126,7 @@ namespace RPGTest.Managers
             if (SaveFile != null)
             {
                 SaveFile.UpdatePlayerPosition(position, rotation);
-                SaveFile.UpdateInventory(InventoryManager.GetAllItems());
+                SaveFile.UpdateInventory(InventoryManager.GetItems());
             }
         }
 
@@ -152,7 +150,7 @@ namespace RPGTest.Managers
         {
             if(SaveFile == null)
             {
-                InitParty();
+                InitializeSaveFile();
             }
             else
             {
@@ -165,7 +163,7 @@ namespace RPGTest.Managers
                 }
                 if (SaveFile.CurrentSceneState != null)
                 {
-                    var interactibles = FindObjectsOfType<GameObject>().Where(x => x.tag == "Interactible");
+                    var interactibles = FindObjectsOfType<GameObject>().Where(x => x.CompareTag("Interactible"));
                     foreach (var chestState in SaveFile.CurrentSceneState.ChestStates)
                     {
                         interactibles.SingleOrDefault(x => x.name == chestState.ChestId).GetComponent<InteractibleChest>().UpdateInventory(chestState.RemainingItems);
@@ -213,15 +211,20 @@ namespace RPGTest.Managers
         /// <summary>
         /// Create the basic party and inventory informations
         /// </summary>
-        private void InitParty()
+        private void InitializeSaveFile()
         {
+            // Add consummables
             InventoryManager.TryAddItem("C0001", 5);
             InventoryManager.TryAddItem("C0002", 4);
 
+            // Add Equipments
             InventoryManager.TryAddItem("E0001", 4);
             InventoryManager.TryAddItem("E0002", 2);
             InventoryManager.TryAddItem("E0003", 2);
+            InventoryManager.TryAddItem("E0007", 1);
+            InventoryManager.TryAddItem("E0008", 1);
 
+            // Add Party members
             PartyManager.TryAddPartyMember("PC0001");
             PartyManager.TryAddPartyMember("PC0002");
             
@@ -229,31 +232,12 @@ namespace RPGTest.Managers
             PartyManager.TryAddPartyMember("PC0004");
             PartyManager.TryAddPartyMember("PC0005");
             
-
+            // Equip equipments
             List<Item> removedEquipments;
-            var partyMember = PartyManager.TryGetPartyMember("PC0001");
-            partyMember.TryEquip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
-            partyMember.TryEquip(Enums.Slot.RightHand1, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
-            partyMember.TryEquip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0003"), out removedEquipments);
-
-            /*
-            partyMember = PartyManager.TryGetPartyMember("PC0002");
-            partyMember.TryEquip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
-            partyMember.TryEquip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0002"), out removedEquipments);
-            */
-            /*
-            partyMember = PartyManager.TryGetPartyMember("PC0003");
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"));
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0002"));
-
-            partyMember = PartyManager.TryGetPartyMember("PC0004");
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"));
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0002"));
-
-            partyMember = PartyManager.TryGetPartyMember("PC0005");
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand1, ItemCollector.TryGetEquipment("E0001"));
-            partyMember.EquipmentSlots.Equip(Enums.Slot.LeftHand2, ItemCollector.TryGetEquipment("E0002"));
-            */
+            var partyMember = PartyManager.TryGetPartyMemberById("PC0001");
+            partyMember.TryEquip(PresetSlot.First, Enums.Slot.LeftHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
+            partyMember.TryEquip(PresetSlot.First, Enums.Slot.RightHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
+            partyMember.TryEquip(PresetSlot.Second, Enums.Slot.LeftHand, ItemCollector.TryGetEquipment("E0003"), out removedEquipments);            
         }
 
         private void InitManagerProperties()

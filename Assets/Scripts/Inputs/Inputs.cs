@@ -95,7 +95,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -106,7 +106,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -117,7 +117,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -128,7 +128,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -150,7 +150,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": ""ScaleVector2(x=0.1,y=0.08)"",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""PC"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -172,7 +172,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -194,7 +194,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""PC"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -227,7 +227,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""PC"",
                     ""action"": ""OpenMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -249,7 +249,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""PC"",
                     ""action"": ""Debug"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -257,10 +257,21 @@ namespace RPGTest.Inputs
                 {
                     ""name"": """",
                     ""id"": ""ee52713a-01ac-4ac3-921d-33cbdc77a180"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""path"": ""<XInputController>/rightStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""XBox"",
+                    ""action"": ""Debug"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e5365227-ffe3-442a-a574-458f7d32de85"",
+                    ""path"": ""<DualShockGamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
                     ""action"": ""Debug"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -271,7 +282,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -294,6 +305,14 @@ namespace RPGTest.Inputs
             ""id"": ""7d577ba8-58cc-459e-81b6-16173285772f"",
             ""actions"": [
                 {
+                    ""name"": ""CloseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""da5324da-8f3e-4676-911c-439009c6dbdf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
                     ""name"": ""Navigate"",
                     ""type"": ""Value"",
                     ""id"": ""ed6440b1-c187-4a66-beee-d2faad4ff1a0"",
@@ -302,7 +321,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Secondary Navigate"",
+                    ""name"": ""SecondaryNavigate"",
                     ""type"": ""Value"",
                     ""id"": ""0f43e7e5-377b-4bc0-982b-3804666550c1"",
                     ""expectedControlType"": ""Vector2"",
@@ -334,7 +353,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Click"",
+                    ""name"": ""LeftClick"",
                     ""type"": ""PassThrough"",
                     ""id"": ""a90eba87-47d0-4d07-991c-1758973591a3"",
                     ""expectedControlType"": ""Button"",
@@ -374,9 +393,33 @@ namespace RPGTest.Inputs
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""SubAction1"",
+                    ""name"": ""Cycle"",
+                    ""type"": ""Button"",
+                    ""id"": ""005d4729-9b46-480d-b813-c6edd9ba5731"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""SecondaryAction"",
                     ""type"": ""Button"",
                     ""id"": ""3fa05128-5176-4ff6-885e-69d34ee84a69"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""MouseMoved"",
+                    ""type"": ""Value"",
+                    ""id"": ""db4692a2-80e2-4d22-b1c0-162cd2fd9ae5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""InfoToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""c79cb561-6eb1-49f5-a504-c9de70eb220a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -400,7 +443,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -411,7 +454,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -422,7 +465,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -433,7 +476,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -466,7 +509,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""PC"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -510,7 +553,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""Point"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -532,8 +575,8 @@ namespace RPGTest.Inputs
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Click"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
+                    ""action"": ""LeftClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -541,9 +584,9 @@ namespace RPGTest.Inputs
                     ""name"": """",
                     ""id"": ""270d2680-5ac9-4f54-9c96-0b4051fae698"",
                     ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -562,10 +605,10 @@ namespace RPGTest.Inputs
                 {
                     ""name"": ""negative"",
                     ""id"": ""f97d19bc-51c1-4ba9-820a-c926698e31eb"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""path"": ""<Keyboard>/f1"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""PC"",
                     ""action"": ""CycleMenus"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -573,10 +616,10 @@ namespace RPGTest.Inputs
                 {
                     ""name"": ""positive"",
                     ""id"": ""a0caa3db-a222-489e-92d8-77b544b50cd8"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""path"": ""<Keyboard>/f2"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""PC"",
                     ""action"": ""CycleMenus"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -598,7 +641,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""XBox"",
                     ""action"": ""CycleMenus"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -609,7 +652,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""XBox"",
                     ""action"": ""CycleMenus"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -617,11 +660,11 @@ namespace RPGTest.Inputs
                 {
                     ""name"": """",
                     ""id"": ""d24622ed-6c53-445c-9047-3f8e934c2bc8"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""SubAction1"",
+                    ""groups"": ""PC"",
+                    ""action"": ""SecondaryAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -632,7 +675,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS"",
-                    ""action"": ""SubAction1"",
+                    ""action"": ""SecondaryAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -642,7 +685,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""PC"",
                     ""action"": ""ScrollWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -653,7 +696,7 @@ namespace RPGTest.Inputs
                     ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""PC"",
                     ""action"": ""MiddleClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -665,7 +708,7 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Secondary Navigate"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -675,8 +718,8 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Secondary Navigate"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -686,8 +729,8 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Secondary Navigate"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -697,8 +740,8 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Secondary Navigate"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -708,8 +751,8 @@ namespace RPGTest.Inputs
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse;Keyboard"",
-                    ""action"": ""Secondary Navigate"",
+                    ""groups"": ""Keyboard&Mouse;PC"",
+                    ""action"": ""SecondaryNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -720,7 +763,84 @@ namespace RPGTest.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS"",
-                    ""action"": ""Secondary Navigate"",
+                    ""action"": ""SecondaryNavigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef8eab9f-ee00-4c00-8cb6-cd6760a7a232"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""MouseMoved"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""94849b27-6df8-435c-92b4-b892b15d0cc5"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""50580f74-1ec4-4f56-8d91-aabe6a27eb16"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""d5d608c4-03ae-415b-8709-070b339aee09"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Cycle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a68f51d8-1a2e-47d0-8db8-0ce6edada3a1"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""CloseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46fb94ee-fd1d-450f-98b2-9d9d9215ea76"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""InfoToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2cf2c6ca-b28a-4f6b-9b51-f76ae0be9284"",
+                    ""path"": ""<DualShockGamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""InfoToggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -729,8 +849,8 @@ namespace RPGTest.Inputs
     ],
     ""controlSchemes"": [
         {
-            ""name"": ""Keyboard"",
-            ""bindingGroup"": ""Keyboard"",
+            ""name"": ""PC"",
+            ""bindingGroup"": ""PC"",
             ""devices"": [
                 {
                     ""devicePath"": ""<Keyboard>"",
@@ -745,11 +865,11 @@ namespace RPGTest.Inputs
             ]
         },
         {
-            ""name"": ""Gamepad"",
-            ""bindingGroup"": ""Gamepad"",
+            ""name"": ""XBox"",
+            ""bindingGroup"": ""XBox"",
             ""devices"": [
                 {
-                    ""devicePath"": ""<Gamepad>"",
+                    ""devicePath"": ""<XInputController>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -779,17 +899,21 @@ namespace RPGTest.Inputs
             m_Player_Debug = m_Player.FindAction("Debug", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+            m_UI_CloseMenu = m_UI.FindAction("CloseMenu", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
-            m_UI_SecondaryNavigate = m_UI.FindAction("Secondary Navigate", throwIfNotFound: true);
+            m_UI_SecondaryNavigate = m_UI.FindAction("SecondaryNavigate", throwIfNotFound: true);
             m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
             m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
             m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
-            m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
+            m_UI_LeftClick = m_UI.FindAction("LeftClick", throwIfNotFound: true);
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
             m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_CycleMenus = m_UI.FindAction("CycleMenus", throwIfNotFound: true);
-            m_UI_SubAction1 = m_UI.FindAction("SubAction1", throwIfNotFound: true);
+            m_UI_Cycle = m_UI.FindAction("Cycle", throwIfNotFound: true);
+            m_UI_SecondaryAction = m_UI.FindAction("SecondaryAction", throwIfNotFound: true);
+            m_UI_MouseMoved = m_UI.FindAction("MouseMoved", throwIfNotFound: true);
+            m_UI_InfoToggle = m_UI.FindAction("InfoToggle", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -920,32 +1044,40 @@ namespace RPGTest.Inputs
         // UI
         private readonly InputActionMap m_UI;
         private IUIActions m_UIActionsCallbackInterface;
+        private readonly InputAction m_UI_CloseMenu;
         private readonly InputAction m_UI_Navigate;
         private readonly InputAction m_UI_SecondaryNavigate;
         private readonly InputAction m_UI_Submit;
         private readonly InputAction m_UI_Cancel;
         private readonly InputAction m_UI_Point;
-        private readonly InputAction m_UI_Click;
+        private readonly InputAction m_UI_LeftClick;
         private readonly InputAction m_UI_ScrollWheel;
         private readonly InputAction m_UI_MiddleClick;
         private readonly InputAction m_UI_RightClick;
         private readonly InputAction m_UI_CycleMenus;
-        private readonly InputAction m_UI_SubAction1;
+        private readonly InputAction m_UI_Cycle;
+        private readonly InputAction m_UI_SecondaryAction;
+        private readonly InputAction m_UI_MouseMoved;
+        private readonly InputAction m_UI_InfoToggle;
         public struct UIActions
         {
             private @Controls m_Wrapper;
             public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @CloseMenu => m_Wrapper.m_UI_CloseMenu;
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
             public InputAction @SecondaryNavigate => m_Wrapper.m_UI_SecondaryNavigate;
             public InputAction @Submit => m_Wrapper.m_UI_Submit;
             public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
             public InputAction @Point => m_Wrapper.m_UI_Point;
-            public InputAction @Click => m_Wrapper.m_UI_Click;
+            public InputAction @LeftClick => m_Wrapper.m_UI_LeftClick;
             public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
             public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
             public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
             public InputAction @CycleMenus => m_Wrapper.m_UI_CycleMenus;
-            public InputAction @SubAction1 => m_Wrapper.m_UI_SubAction1;
+            public InputAction @Cycle => m_Wrapper.m_UI_Cycle;
+            public InputAction @SecondaryAction => m_Wrapper.m_UI_SecondaryAction;
+            public InputAction @MouseMoved => m_Wrapper.m_UI_MouseMoved;
+            public InputAction @InfoToggle => m_Wrapper.m_UI_InfoToggle;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -955,6 +1087,9 @@ namespace RPGTest.Inputs
             {
                 if (m_Wrapper.m_UIActionsCallbackInterface != null)
                 {
+                    @CloseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
+                    @CloseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
+                    @CloseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCloseMenu;
                     @Navigate.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
                     @Navigate.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
                     @Navigate.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigate;
@@ -970,9 +1105,9 @@ namespace RPGTest.Inputs
                     @Point.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
                     @Point.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
                     @Point.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
-                    @Click.started -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
-                    @Click.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
-                    @Click.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                    @LeftClick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnLeftClick;
+                    @LeftClick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnLeftClick;
+                    @LeftClick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnLeftClick;
                     @ScrollWheel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
                     @ScrollWheel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
                     @ScrollWheel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
@@ -985,13 +1120,25 @@ namespace RPGTest.Inputs
                     @CycleMenus.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
                     @CycleMenus.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCycleMenus;
-                    @SubAction1.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
-                    @SubAction1.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
-                    @SubAction1.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSubAction1;
+                    @Cycle.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCycle;
+                    @Cycle.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCycle;
+                    @Cycle.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCycle;
+                    @SecondaryAction.started -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
+                    @SecondaryAction.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
+                    @SecondaryAction.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnSecondaryAction;
+                    @MouseMoved.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
+                    @MouseMoved.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
+                    @MouseMoved.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseMoved;
+                    @InfoToggle.started -= m_Wrapper.m_UIActionsCallbackInterface.OnInfoToggle;
+                    @InfoToggle.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnInfoToggle;
+                    @InfoToggle.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnInfoToggle;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
                 {
+                    @CloseMenu.started += instance.OnCloseMenu;
+                    @CloseMenu.performed += instance.OnCloseMenu;
+                    @CloseMenu.canceled += instance.OnCloseMenu;
                     @Navigate.started += instance.OnNavigate;
                     @Navigate.performed += instance.OnNavigate;
                     @Navigate.canceled += instance.OnNavigate;
@@ -1007,9 +1154,9 @@ namespace RPGTest.Inputs
                     @Point.started += instance.OnPoint;
                     @Point.performed += instance.OnPoint;
                     @Point.canceled += instance.OnPoint;
-                    @Click.started += instance.OnClick;
-                    @Click.performed += instance.OnClick;
-                    @Click.canceled += instance.OnClick;
+                    @LeftClick.started += instance.OnLeftClick;
+                    @LeftClick.performed += instance.OnLeftClick;
+                    @LeftClick.canceled += instance.OnLeftClick;
                     @ScrollWheel.started += instance.OnScrollWheel;
                     @ScrollWheel.performed += instance.OnScrollWheel;
                     @ScrollWheel.canceled += instance.OnScrollWheel;
@@ -1022,29 +1169,38 @@ namespace RPGTest.Inputs
                     @CycleMenus.started += instance.OnCycleMenus;
                     @CycleMenus.performed += instance.OnCycleMenus;
                     @CycleMenus.canceled += instance.OnCycleMenus;
-                    @SubAction1.started += instance.OnSubAction1;
-                    @SubAction1.performed += instance.OnSubAction1;
-                    @SubAction1.canceled += instance.OnSubAction1;
+                    @Cycle.started += instance.OnCycle;
+                    @Cycle.performed += instance.OnCycle;
+                    @Cycle.canceled += instance.OnCycle;
+                    @SecondaryAction.started += instance.OnSecondaryAction;
+                    @SecondaryAction.performed += instance.OnSecondaryAction;
+                    @SecondaryAction.canceled += instance.OnSecondaryAction;
+                    @MouseMoved.started += instance.OnMouseMoved;
+                    @MouseMoved.performed += instance.OnMouseMoved;
+                    @MouseMoved.canceled += instance.OnMouseMoved;
+                    @InfoToggle.started += instance.OnInfoToggle;
+                    @InfoToggle.performed += instance.OnInfoToggle;
+                    @InfoToggle.canceled += instance.OnInfoToggle;
                 }
             }
         }
         public UIActions @UI => new UIActions(this);
-        private int m_KeyboardSchemeIndex = -1;
-        public InputControlScheme KeyboardScheme
+        private int m_PCSchemeIndex = -1;
+        public InputControlScheme PCScheme
         {
             get
             {
-                if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
-                return asset.controlSchemes[m_KeyboardSchemeIndex];
+                if (m_PCSchemeIndex == -1) m_PCSchemeIndex = asset.FindControlSchemeIndex("PC");
+                return asset.controlSchemes[m_PCSchemeIndex];
             }
         }
-        private int m_GamepadSchemeIndex = -1;
-        public InputControlScheme GamepadScheme
+        private int m_XBoxSchemeIndex = -1;
+        public InputControlScheme XBoxScheme
         {
             get
             {
-                if (m_GamepadSchemeIndex == -1) m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
-                return asset.controlSchemes[m_GamepadSchemeIndex];
+                if (m_XBoxSchemeIndex == -1) m_XBoxSchemeIndex = asset.FindControlSchemeIndex("XBox");
+                return asset.controlSchemes[m_XBoxSchemeIndex];
             }
         }
         private int m_PSSchemeIndex = -1;
@@ -1068,17 +1224,21 @@ namespace RPGTest.Inputs
         }
         public interface IUIActions
         {
+            void OnCloseMenu(InputAction.CallbackContext context);
             void OnNavigate(InputAction.CallbackContext context);
             void OnSecondaryNavigate(InputAction.CallbackContext context);
             void OnSubmit(InputAction.CallbackContext context);
             void OnCancel(InputAction.CallbackContext context);
             void OnPoint(InputAction.CallbackContext context);
-            void OnClick(InputAction.CallbackContext context);
+            void OnLeftClick(InputAction.CallbackContext context);
             void OnScrollWheel(InputAction.CallbackContext context);
             void OnMiddleClick(InputAction.CallbackContext context);
             void OnRightClick(InputAction.CallbackContext context);
             void OnCycleMenus(InputAction.CallbackContext context);
-            void OnSubAction1(InputAction.CallbackContext context);
+            void OnCycle(InputAction.CallbackContext context);
+            void OnSecondaryAction(InputAction.CallbackContext context);
+            void OnMouseMoved(InputAction.CallbackContext context);
+            void OnInfoToggle(InputAction.CallbackContext context);
         }
     }
 }

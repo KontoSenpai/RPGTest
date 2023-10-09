@@ -17,7 +17,7 @@ namespace RPGTest.Managers
         public delegate void MenuChangedHandler(bool inMenu);
 
         public void Start()
-        {            
+        {
             foreach(var script in UIScripts)
             {
                 script.UIOpened += OnUIOpened;
@@ -31,6 +31,7 @@ namespace RPGTest.Managers
             return (T) Convert.ChangeType(uiScript, typeof(T));
         }
 
+        #region
         public void OnUIOpened(object sender, EventArgs e)
         {
             UIScripts.ForEach(x => x.gameObject.SetActive((UI_Base)sender == x));
@@ -43,5 +44,6 @@ namespace RPGTest.Managers
             UIScripts[0].gameObject.SetActive(true);
             MenuChanged(false);
         }
+        #endregion
     }
 }

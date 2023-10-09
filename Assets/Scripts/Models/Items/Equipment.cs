@@ -1,5 +1,4 @@
-﻿using MyBox;
-using RPGTest.Helpers;
+﻿using RPGTest.Helpers;
 using RPGTest.Enums;
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
@@ -15,7 +14,21 @@ namespace RPGTest.Models.Items
 
         public bool TwoHanded { get; set; } = false;
 
-        public Dictionary<Element, int> Elements { get; set; } = new Dictionary<Element, int>() { { Element.None, 100 } };
+        // Elements used when using physical attacks or abilities
+        public Dictionary<Element, float> Elements { get; set; } = new Dictionary<Element, float>() { { Element.None, 0.0f } };
+
+        // Elemental resistances granted by piece of equipment
+        public Dictionary<Element, float> ElementalResistances { get; set; } = new Dictionary<Element, float>() { { Element.None, 0.0f } };
+
+        // Status Effects inflicted with physical attacks or abilities
+        public Dictionary<StatusEffect, float> StatusEffects { get; set; } = new Dictionary<StatusEffect, float>() { { StatusEffect.None, 0.0f } };
+
+        // Status Effect resistances granted by piece of equipmewnt
+        public Dictionary<StatusEffect, float> StatusEffectResistances { get; set; } = new Dictionary<StatusEffect, float>() { { StatusEffect.None, 0.0f } };
+
+        public List<string> Effects { get; set; } = new List<string>();
+
+        public List<string> Tags { get; set; }
 
         public virtual Range PowerRange { get; set; }
 

@@ -59,9 +59,9 @@ namespace RPGTest.Models.Entity
 
         public Dictionary<Buff, int> StatChangeResistance { get; set; } = new Dictionary<Buff, int>();
 
-        public Dictionary<StatusEffect, int> StatusEffectResistance { get; set; } = new Dictionary<StatusEffect, int>();
+        public StatusEffectsResistances StatusEffectResistances { get; set; } = new StatusEffectsResistances();
 
-        public Dictionary<Element, int> ElementResistance { get; set; } = new Dictionary<Element, int>();
+        public ElementalResistances ElementalResistances { get; set; } = new ElementalResistances();
 
         public virtual Range PowerRange { get; set; } = new Range() { Min = 0.75f, Max = 1.25f };
         #endregion
@@ -88,7 +88,7 @@ namespace RPGTest.Models.Entity
 
         public virtual bool FillATB()
         {
-            m_currentATB += GetAttribute(Attribute.TotalSpeed);
+            m_currentATB += GetAttribute(Attribute.Speed);
             return m_currentATB >= m_maxATB;
         }
 
@@ -163,65 +163,79 @@ namespace RPGTest.Models.Entity
 
         public virtual Dictionary<Attribute, float> GetAttributes()
         {
-            Dictionary<Attribute, float> attributes = new Dictionary<Attribute, float>();
+            var hpPercentage = CurrentHP / BaseAttributes.MaxHP;
+            var mpPercentage = BaseAttributes.MaxMP > 0 ? CurrentMP / BaseAttributes.MaxMP : 1.0f;
+            var staminaPercentage = CurrentStamina / BaseAttributes.MaxStamina;
 
-            // Base Attributes
-            attributes.Add(Attribute.HP, CurrentHP);
-            attributes.Add(Attribute.MaxHP, BaseAttributes.MaxHP);
+            Dictionary<Attribute, float> attributes = new Dictionary<Attribute, float>
+            {
+                // Computed Attributes
+                { Attribute.HPPercentage, CurrentHP / BaseAttributes.MaxHP },
+                { Attribute.MPPercentage, BaseAttributes.MaxMP > 0 ? CurrentMP / BaseAttributes.MaxMP : 1.0f },
+                { Attribute.StaminaPercentage, CurrentStamina / BaseAttributes.MaxStamina },
 
-            attributes.Add(Attribute.MP, CurrentMP);
-            attributes.Add(Attribute.MaxMP, BaseAttributes.MaxMP);
+                // Base Attributes
+                { Attribute.MaxHP, GetAttributeValue(Attribute.MaxHP, BaseAttributes.MaxHP ) },
+                { Attribute.MaxMP,  GetAttributeValue(Attribute.MaxMP, BaseAttributes.MaxMP ) },
+                { Attribute.MaxStamina, GetAttributeValue(Attribute.MaxStamina, BaseAttributes.MaxStamina ) },
 
-            attributes.Add(Attribute.Stamina, CurrentStamina);
-            attributes.Add(Attribute.MaxStamina, BaseAttributes.MaxStamina);
+                { Attribute.Attack, GetAttributeValue(Attribute.Attack, BaseAttributes.Attack) },
+                { Attribute.Defense, GetAttributeValue(Attribute.Defense, BaseAttributes.Defense) },
 
-            attributes.Add(Attribute.Attack, BaseAttributes.Attack);
-            attributes.Add(Attribute.Defense, BaseAttributes.Defense);
+                { Attribute.Magic, GetAttributeValue(Attribute.Magic, BaseAttributes.Magic) },
+                { Attribute.Resistance, GetAttributeValue(Attribute.Resistance, BaseAttributes.Resistance) },
 
-            attributes.Add(Attribute.Magic, BaseAttributes.Magic);
-            attributes.Add(Attribute.Resistance, BaseAttributes.Resistance);
+                { Attribute.Speed, GetAttributeValue(Attribute.Speed, BaseAttributes.Speed) },
 
-            attributes.Add(Attribute.Speed, BaseAttributes.Speed);
+                { Attribute.Hit, GetAttributeValue(Attribute.Hit, BaseAttributes.Hit) },
 
-            attributes.Add(Attribute.Hit, BaseAttributes.Hit);
-            //attributes.Add(Attribute.Block);
+                { Attribute.Block, GetAttributeValue(Attribute.Block, 0.1f) },
+            };
 
-            // Computed Attributes
-            attributes.Add(Attribute.HPPercentage, (float)CurrentHP / (float)BaseAttributes.MaxHP);
-            attributes.Add(Attribute.MPPercentage, BaseAttributes.MaxMP > 0 ? (float)CurrentMP / BaseAttributes.MaxMP : 1.0f);
-            attributes.Add(Attribute.StaminaPercentage, (float)CurrentStamina / BaseAttributes.MaxStamina);
+            attributes.Add(Attribute.HP, attributes[Attribute.MaxHP] * hpPercentage);
+            attributes.Add(Attribute.MP, attributes[Attribute.MaxMP] * mpPercentage);
+            attributes.Add(Attribute.Stamina, attributes[Attribute.MaxStamina] * staminaPercentage);
 
-            attributes.Add(Attribute.TotalAttack, 
-                Mathf.Ceil(attributes[Attribute.Attack] *
-                GetHighestBuff(Attribute.Attack) /
-                GetHighestDebuff(Attribute.Attack))
-            );
-            attributes.Add(Attribute.TotalDefense,
-                Mathf.Ceil(attributes[Attribute.Defense] *
-                GetHighestBuff(Attribute.Defense) /
-                GetHighestDebuff(Attribute.Defense))
-            );
-            attributes.Add(Attribute.TotalMagic, 
-                Mathf.Ceil(attributes[Attribute.Magic] *
-                GetHighestBuff(Attribute.Magic) /
-                GetHighestDebuff(Attribute.Magic))
-            );
-            attributes.Add(Attribute.TotalResistance,
-                Mathf.Ceil(attributes[Attribute.Resistance] *
-                GetHighestBuff(Attribute.Resistance) /
-                GetHighestDebuff(Attribute.Resistance))
-            );
-            attributes.Add(Attribute.TotalSpeed,
-                Mathf.Ceil(attributes[Attribute.Speed] *
-                GetHighestBuff(Attribute.Speed) /
-                GetHighestDebuff(Attribute.Speed))
-            );
-            attributes.Add(Attribute.TotalHit,
-                attributes[Attribute.Hit] * 
-                GetHighestBuff(Attribute.Hit)
-            );
             return attributes;
         }
+
+        private float GetAttributeValue(Attribute attribute, float baseValue)
+        {
+            return Mathf.Ceil(baseValue * GetHighestAttributeBuff(attribute) / GetHighestAttributeDebuff(attribute));
+        }
+
+        public virtual Dictionary<Element, float> GetElementalResistances()
+        {
+            Dictionary<Element, float> elementalResistances = new Dictionary<Element, float>();
+
+            elementalResistances.Add(Element.Fire, ElementalResistances.Fire + GetHighestElementalResistanceBuff(Element.Fire) - GetHighestElementalResistanceDebuff(Element.Fire));
+            elementalResistances.Add(Element.Ice, ElementalResistances.Ice + GetHighestElementalResistanceBuff(Element.Ice) - GetHighestElementalResistanceDebuff(Element.Ice));
+            elementalResistances.Add(Element.Water, ElementalResistances.Water + GetHighestElementalResistanceBuff(Element.Water) - GetHighestElementalResistanceDebuff(Element.Water));
+            elementalResistances.Add(Element.Lightning, ElementalResistances.Lightning + GetHighestElementalResistanceBuff(Element.Lightning) - GetHighestElementalResistanceDebuff(Element.Lightning));
+            elementalResistances.Add(Element.Wind, ElementalResistances.Wind + GetHighestElementalResistanceBuff(Element.Wind) - GetHighestElementalResistanceDebuff(Element.Wind));
+            elementalResistances.Add(Element.Earth, ElementalResistances.Earth + GetHighestElementalResistanceBuff(Element.Earth) - GetHighestElementalResistanceDebuff(Element.Earth));
+            elementalResistances.Add(Element.Light, ElementalResistances.Light + GetHighestElementalResistanceBuff(Element.Light) - GetHighestElementalResistanceDebuff(Element.Light));
+            elementalResistances.Add(Element.Dark, ElementalResistances.Dark + GetHighestElementalResistanceBuff(Element.Dark) - GetHighestElementalResistanceDebuff(Element.Dark));
+
+            return elementalResistances;
+        }
+
+        public virtual Dictionary<StatusEffect, float> GetStatusEffectResistances()
+        {
+            Dictionary<StatusEffect, float> statuEffectResistances = new Dictionary<StatusEffect, float>();
+
+            statuEffectResistances.Add(StatusEffect.Blind, StatusEffectResistances.Blind + GetHighestStatusEffectResistanceBuff(StatusEffect.Blind) - GetHighestStatusEffectResistanceBuff(StatusEffect.Blind));
+            statuEffectResistances.Add(StatusEffect.Bleed, StatusEffectResistances.Bleed + GetHighestStatusEffectResistanceBuff(StatusEffect.Bleed) - GetHighestStatusEffectResistanceBuff(StatusEffect.Bleed));
+            statuEffectResistances.Add(StatusEffect.Poison, StatusEffectResistances.Poison + GetHighestStatusEffectResistanceBuff(StatusEffect.Poison) - GetHighestStatusEffectResistanceBuff(StatusEffect.Poison));
+            statuEffectResistances.Add(StatusEffect.Paralysis, StatusEffectResistances.Paralysis + GetHighestStatusEffectResistanceBuff(StatusEffect.Paralysis) - GetHighestStatusEffectResistanceBuff(StatusEffect.Paralysis));
+            statuEffectResistances.Add(StatusEffect.Silence, StatusEffectResistances.Silence + GetHighestStatusEffectResistanceBuff(StatusEffect.Silence) - GetHighestStatusEffectResistanceBuff(StatusEffect.Silence));
+            statuEffectResistances.Add(StatusEffect.Confusion, StatusEffectResistances.Confusion + GetHighestStatusEffectResistanceBuff(StatusEffect.Confusion) - GetHighestStatusEffectResistanceBuff(StatusEffect.Confusion));
+            statuEffectResistances.Add(StatusEffect.Freeze, StatusEffectResistances.Freeze + GetHighestStatusEffectResistanceBuff(StatusEffect.Freeze) - GetHighestStatusEffectResistanceBuff(StatusEffect.Freeze));
+            statuEffectResistances.Add(StatusEffect.Slow, StatusEffectResistances.Slow + GetHighestStatusEffectResistanceBuff(StatusEffect.Slow) - GetHighestStatusEffectResistanceBuff(StatusEffect.Slow));
+
+            return statuEffectResistances;
+        }
+
 
         #region Modifications
         /// <summary>

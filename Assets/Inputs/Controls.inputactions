@@ -80,7 +80,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -91,7 +91,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -102,7 +102,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -113,7 +113,7 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -135,7 +135,7 @@
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "ScaleVector2(x=0.1,y=0.08)",
-                    "groups": "Keyboard",
+                    "groups": "PC",
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -157,7 +157,7 @@
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -179,7 +179,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "Press",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "PC",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -212,7 +212,7 @@
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "PC",
                     "action": "OpenMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -234,7 +234,7 @@
                     "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "PC",
                     "action": "Debug",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -242,10 +242,21 @@
                 {
                     "name": "",
                     "id": "ee52713a-01ac-4ac3-921d-33cbdc77a180",
-                    "path": "<Gamepad>/rightStickPress",
+                    "path": "<XInputController>/rightStickPress",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "XBox",
+                    "action": "Debug",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e5365227-ffe3-442a-a574-458f7d32de85",
+                    "path": "<DualShockGamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PS",
                     "action": "Debug",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -256,7 +267,7 @@
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -279,6 +290,14 @@
             "id": "7d577ba8-58cc-459e-81b6-16173285772f",
             "actions": [
                 {
+                    "name": "CloseMenu",
+                    "type": "Button",
+                    "id": "da5324da-8f3e-4676-911c-439009c6dbdf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
                     "name": "Navigate",
                     "type": "Value",
                     "id": "ed6440b1-c187-4a66-beee-d2faad4ff1a0",
@@ -287,7 +306,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Secondary Navigate",
+                    "name": "SecondaryNavigate",
                     "type": "Value",
                     "id": "0f43e7e5-377b-4bc0-982b-3804666550c1",
                     "expectedControlType": "Vector2",
@@ -319,7 +338,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Click",
+                    "name": "LeftClick",
                     "type": "PassThrough",
                     "id": "a90eba87-47d0-4d07-991c-1758973591a3",
                     "expectedControlType": "Button",
@@ -359,9 +378,33 @@
                     "interactions": "Press"
                 },
                 {
-                    "name": "SubAction1",
+                    "name": "Cycle",
+                    "type": "Button",
+                    "id": "005d4729-9b46-480d-b813-c6edd9ba5731",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "SecondaryAction",
                     "type": "Button",
                     "id": "3fa05128-5176-4ff6-885e-69d34ee84a69",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "MouseMoved",
+                    "type": "Value",
+                    "id": "db4692a2-80e2-4d22-b1c0-162cd2fd9ae5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "InfoToggle",
+                    "type": "Button",
+                    "id": "c79cb561-6eb1-49f5-a504-c9de70eb220a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
@@ -385,7 +428,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -396,7 +439,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -407,7 +450,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -418,7 +461,7 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -451,7 +494,7 @@
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "PC",
                     "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -495,7 +538,7 @@
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -517,8 +560,8 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Click",
+                    "groups": "Keyboard&Mouse;PC",
+                    "action": "LeftClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -526,9 +569,9 @@
                     "name": "",
                     "id": "270d2680-5ac9-4f54-9c96-0b4051fae698",
                     "path": "<Mouse>/rightButton",
-                    "interactions": "",
+                    "interactions": "Press(behavior=1)",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;PC",
                     "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -547,10 +590,10 @@
                 {
                     "name": "negative",
                     "id": "f97d19bc-51c1-4ba9-820a-c926698e31eb",
-                    "path": "<Keyboard>/1",
+                    "path": "<Keyboard>/f1",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "PC",
                     "action": "CycleMenus",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -558,10 +601,10 @@
                 {
                     "name": "positive",
                     "id": "a0caa3db-a222-489e-92d8-77b544b50cd8",
-                    "path": "<Keyboard>/2",
+                    "path": "<Keyboard>/f2",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "PC",
                     "action": "CycleMenus",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -583,7 +626,7 @@
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "XBox",
                     "action": "CycleMenus",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -594,7 +637,7 @@
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "XBox",
                     "action": "CycleMenus",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -602,11 +645,11 @@
                 {
                     "name": "",
                     "id": "d24622ed-6c53-445c-9047-3f8e934c2bc8",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
-                    "action": "SubAction1",
+                    "groups": "PC",
+                    "action": "SecondaryAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -617,7 +660,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PS",
-                    "action": "SubAction1",
+                    "action": "SecondaryAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -627,7 +670,7 @@
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "PC",
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -638,7 +681,7 @@
                     "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "PC",
                     "action": "MiddleClick",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -650,7 +693,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Secondary Navigate",
+                    "action": "SecondaryNavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -660,8 +703,8 @@
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Secondary Navigate",
+                    "groups": "Keyboard&Mouse;PC",
+                    "action": "SecondaryNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -671,8 +714,8 @@
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Secondary Navigate",
+                    "groups": "Keyboard&Mouse;PC",
+                    "action": "SecondaryNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -682,8 +725,8 @@
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Secondary Navigate",
+                    "groups": "Keyboard&Mouse;PC",
+                    "action": "SecondaryNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -693,8 +736,8 @@
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Secondary Navigate",
+                    "groups": "Keyboard&Mouse;PC",
+                    "action": "SecondaryNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -705,7 +748,84 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PS",
-                    "action": "Secondary Navigate",
+                    "action": "SecondaryNavigate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ef8eab9f-ee00-4c00-8cb6-cd6760a7a232",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "MouseMoved",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "94849b27-6df8-435c-92b4-b892b15d0cc5",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cycle",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "50580f74-1ec4-4f56-8d91-aabe6a27eb16",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cycle",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d5d608c4-03ae-415b-8709-070b339aee09",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Cycle",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "a68f51d8-1a2e-47d0-8db8-0ce6edada3a1",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "CloseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46fb94ee-fd1d-450f-98b2-9d9d9215ea76",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "InfoToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2cf2c6ca-b28a-4f6b-9b51-f76ae0be9284",
+                    "path": "<DualShockGamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PS",
+                    "action": "InfoToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -714,8 +834,8 @@
     ],
     "controlSchemes": [
         {
-            "name": "Keyboard",
-            "bindingGroup": "Keyboard",
+            "name": "PC",
+            "bindingGroup": "PC",
             "devices": [
                 {
                     "devicePath": "<Keyboard>",
@@ -730,11 +850,11 @@
             ]
         },
         {
-            "name": "Gamepad",
-            "bindingGroup": "Gamepad",
+            "name": "XBox",
+            "bindingGroup": "XBox",
             "devices": [
                 {
-                    "devicePath": "<Gamepad>",
+                    "devicePath": "<XInputController>",
                     "isOptional": false,
                     "isOR": false
                 }

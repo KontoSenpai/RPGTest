@@ -6,7 +6,7 @@
         Fire,
         Ice,
         Earth,
-        Thunder,
+        Lightning,
         Water,
         Wind,
         Light,

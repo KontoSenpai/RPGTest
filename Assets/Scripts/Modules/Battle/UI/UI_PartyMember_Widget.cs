@@ -63,7 +63,7 @@ namespace RPGTest.Modules.Battle.UI
             }
         }
 
-        public PlayableCharacter GetPlayableCharacter()
+        public Entity GetPlayableCharacter()
         {
             return m_playableCharacter;
         }

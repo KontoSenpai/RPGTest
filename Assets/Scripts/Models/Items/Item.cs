@@ -4,6 +4,7 @@ using YamlDotNet.Serialization;
 
 namespace RPGTest.Models.Items
 {
+
     public class Item : IdObject
     {
         [YamlMember(Alias = "ITEM_TYPE")]

@@ -1,12 +1,16 @@
 ﻿using RPGTest.Enums;
-using System;
+using RPGTest.Models;
+using RPGTest.Models.Items;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
 namespace RPGTest.Helpers
 {
     public delegate void CancelActionHandler();
-    public delegate void EquipmentSlotSelectedHandler(Slot slot);
+
+    public delegate void ItemsSelectionHandler(List<Item> items);
+
+    public delegate void SlotSelectionHandler(PresetSlot preset, Slot slot);
+
+    public delegate void ItemSelectionHandler(GameObject guiItem);
 }

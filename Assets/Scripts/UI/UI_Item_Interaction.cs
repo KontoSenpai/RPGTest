@@ -16,7 +16,6 @@ namespace RPGTest.UI
         Sell
     }
 
-
     public class UI_Item_Interaction : MonoBehaviour
     {
         public Button OkButton;

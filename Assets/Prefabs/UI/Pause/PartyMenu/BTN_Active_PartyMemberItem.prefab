@@ -372,8 +372,8 @@ GameObject:
   - component: {fileID: 8572252082812754554}
   - component: {fileID: 7761436969818917987}
   - component: {fileID: 3327669007347369721}
-  - component: {fileID: 5186169309849609374}
   - component: {fileID: 3153016979778107895}
+  - component: {fileID: 6149600524725248682}
   m_Layer: 5
   m_Name: BTN_Active_PartyMemberItem
   m_TagString: Untagged
@@ -484,9 +484,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5186169309849609374}
-        m_TargetAssemblyTypeName: RPGTest.UI.UI_Member_Widget, RPGTest.Core
-        m_MethodName: Select
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: RPGTest.UI.Common.UI_PartyMember, RPGTest.Core
+        m_MethodName: PrimaryAction_Selected
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -496,27 +496,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &5186169309849609374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8231780523326353367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 531f6071b1bf12a40b851ee405d87a75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ContentPanel: {fileID: 9183580897659023279}
-  Name: {fileID: 849549015509309890}
-  LevelValue: {fileID: 6574375487212439467}
-  Cover: {fileID: 1111710318197085562}
-  StanceWidget: {fileID: 3680510228950502467}
-  HPBarWidget: {fileID: 8658739975973379926}
-  ManaBarWidget: {fileID: 8817180870189266596}
-  ExperienceBarWidget: {fileID: 6414128087037820526}
-  TwoStepSelect: 1
 --- !u!114 &3153016979778107895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,6 +516,37 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &6149600524725248682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8231780523326353367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ec8947caf05314fadf09e42ce1e822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftClick:
+    m_PersistentCalls:
+      m_Calls: []
+  middleClick:
+    m_PersistentCalls:
+      m_Calls: []
+  rightClick:
+    m_PersistentCalls:
+      m_Calls: []
+  ContentPanel: {fileID: 9183580897659023279}
+  Name: {fileID: 849549015509309890}
+  LevelValue: {fileID: 6574375487212439467}
+  Portrait: {fileID: 5289211726410728820}
+  Cover: {fileID: 1111710318197085562}
+  StanceWidget: {fileID: 3680510228950502467}
+  HPBarWidget: {fileID: 8658739975973379926}
+  ManaBarWidget: {fileID: 8817180870189266596}
+  ExperienceBarWidget: {fileID: 6414128087037820526}
+  TwoStepSelect: 0
 --- !u!1 &9183580897659023279
 GameObject:
   m_ObjectHideFlags: 0

@@ -85,7 +85,7 @@ namespace RPGTest.Modules.Battle.UI
         /// Called on battle exit
         /// </summary>
         /// <param name="playableCharacter">Entity to whom the widget was connected to</param>
-        public void DisableEvents(PlayableCharacter playableCharacter)
+        public void DisableEvents(Entity playableCharacter)
         {
             playableCharacter.BuffsRefreshed -= OnBuffsRefreshed;
         }

@@ -7,15 +7,14 @@ using Attribute = RPGTest.Enums.Attribute;
 
 namespace RPGTest.Models.Entity
 {
-
     public abstract partial class Entity : IdObject
     {
-        public virtual float GetHighestBuff(Attribute attribute)
+        public virtual float GetHighestAttributeBuff(Attribute attribute)
         {
             return GetHighestStatChange(attribute, EffectType.Buff);
         }
 
-        public virtual float GetHighestDebuff(Attribute attribute)
+        public virtual float GetHighestAttributeDebuff(Attribute attribute)
         {
             return GetHighestStatChange(attribute, EffectType.Debuff);
         }
@@ -32,6 +31,56 @@ namespace RPGTest.Models.Entity
                 return 1 + change.Potency.Potency;
             }
             return 1.0f;
+        }
+
+        public virtual float GetHighestElementalResistanceBuff(Element element)
+        {
+            return GetHighestElementalResistanceChange(element, EffectType.Buff);
+        }
+
+        public virtual float GetHighestElementalResistanceDebuff(Element element)
+        {
+            return GetHighestElementalResistanceChange(element, EffectType.Debuff);
+        }
+
+        private float GetHighestElementalResistanceChange(Element element, EffectType type)
+        {
+            var effects = EffectsCollector.TryGetEffects(Buffs.Select((b) => b.Id).ToList());
+            var change = effects.FindAll(e => e.Potency.Element == element && e.Type == type)
+                .OrderByDescending(e => e.Potency.Potency)
+                .FirstOrDefault();
+
+            if (change != null)
+            {
+                return change.Potency.Potency;
+            }
+
+            return 0.0f;
+        }
+
+        public virtual float GetHighestStatusEffectResistanceBuff(StatusEffect statusEffect)
+        {
+            return GetHighestStatusEffectResistanceChange(statusEffect, EffectType.Buff);
+        }
+
+        public virtual float GetHighestStatusEffectResistanceDebuff(StatusEffect statusEffect)
+        {
+            return GetHighestStatusEffectResistanceChange(statusEffect, EffectType.Debuff);
+        }
+
+        private float GetHighestStatusEffectResistanceChange(StatusEffect statusEffect, EffectType type)
+        {
+            var effects = EffectsCollector.TryGetEffects(Buffs.Select((b) => b.Id).ToList());
+            var change = effects.FindAll(e => e.Potency.StatusEffect == statusEffect && e.Type == type)
+                .OrderByDescending(e => e.Potency.Potency)
+                .FirstOrDefault();
+
+            if (change != null)
+            {
+                return change.Potency.Potency;
+            }
+
+            return 0.0f;
         }
 
         private List<Buff> GetBuffs(EffectType type)
@@ -79,7 +128,6 @@ namespace RPGTest.Models.Entity
                 Buffs.RemoveAll(b => 
                 {
                     var effect = EffectsCollector.TryGetEffect(b.Id);
-                    Debug.Log(effect.Id);
                     return effect.Potency.Attribute == attribute && b.RemovalType == removalType;
                 });
             }

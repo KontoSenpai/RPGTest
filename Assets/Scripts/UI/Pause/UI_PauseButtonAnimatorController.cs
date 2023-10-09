@@ -1,6 +1,4 @@
-﻿using RPGTest.Inputs;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using UnityEngine;
 
 namespace RPGTest.UI
 {
@@ -8,31 +6,6 @@ namespace RPGTest.UI
     {
         public int MaxIndex;
         public int Index = 0;
-
-        private Controls m_playerInput;
-
-        public void Awake()
-        {
-            m_playerInput = new Controls();
-            m_playerInput.UI.Navigate.performed += Navigate_performed;
-        }
-
-        private void Navigate_performed(InputAction.CallbackContext obj)
-        {
-            var value = obj.ReadValue<Vector2>();
-            int variation = 0;
-
-            if(value.x > 0)
-            {
-                variation = Mathf.CeilToInt(Index + value.x);
-            }
-            else
-            {
-                variation = Mathf.FloorToInt(Index + value.x);
-            }
-
-            ChangeIndex(variation);
-        }
 
         public void ChangeIndex(int variation)
         {
@@ -49,8 +22,5 @@ namespace RPGTest.UI
                 Index = variation;
             }
         }
-
-        public void OnEnable() => m_playerInput.Enable();
-        public void OnDisable() => m_playerInput.Disable();
     }
 }

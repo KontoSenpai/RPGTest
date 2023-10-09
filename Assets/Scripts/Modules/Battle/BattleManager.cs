@@ -120,7 +120,7 @@ namespace RPGTest.Modules.Battle
             {
                 Destroy(enemy.BattleModel);
             }
-            foreach (PlayableCharacter partyMember in m_party)
+            foreach (Entity partyMember in m_party)
             {
                 Destroy(partyMember.BattleModel);
             }

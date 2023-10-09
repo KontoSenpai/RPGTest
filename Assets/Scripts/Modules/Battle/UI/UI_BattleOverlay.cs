@@ -82,8 +82,6 @@ namespace RPGTest.Modules.Battle.UI
             script.SetActionName(actionName);
         }
 
-
-
         public void Initialize(List<PlayableCharacter> party)
         {
             m_party = party;

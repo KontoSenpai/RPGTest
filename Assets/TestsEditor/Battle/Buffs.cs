@@ -17,7 +17,7 @@ namespace TestsEditor.Battle
             var toto = new MockEntityAction(Character, ActionType.Ability, ability, new List<Entity> { Character });
                        
             //Character.AddBuff(buffAttack);
-            Assert.IsNotNull(Character.GetHighestBuff(RPGTest.Enums.Attribute.Attack));
+            Assert.IsNotNull(Character.GetHighestAttributeBuff(RPGTest.Enums.Attribute.Attack));
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace TestsEditor.Battle
             //Character.AddBuff(buffAttack);
             //Character.AddBuff(buffAttack2);
 
-            var value = Character.GetHighestBuff(RPGTest.Enums.Attribute.Attack);
+            var value = Character.GetHighestAttributeBuff(RPGTest.Enums.Attribute.Attack);
 
             Assert.AreEqual(2f, value);
         }

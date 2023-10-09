@@ -36,7 +36,7 @@ namespace RPGTest.UI.Widgets
             return (int)Mathf.Ceil(m_currentValue);
         }
 
-        public bool UpdateValues(int current, int max)
+        public bool UpdateValues(float current, float max)
         {
             m_currentValue = current;
             m_maxValue = max;

@@ -15,7 +15,7 @@ namespace RPGTest.Modules.Battle.UI
 
         private List<GameObject> m_allWidgets = new List<GameObject>();
 
-        public void Initialize(PlayableCharacter playableCharacter)
+        public void Initialize(Entity playableCharacter)
         {
             playableCharacter.BuffsRefreshed += OnBuffsRefreshed;
         }
@@ -63,7 +63,7 @@ namespace RPGTest.Modules.Battle.UI
         /// Called on battle exit
         /// </summary>
         /// <param name="playableCharacter">Entity to whom the widget was connected to</param>
-        public void DisableEvents(PlayableCharacter playableCharacter)
+        public void DisableEvents(Entity playableCharacter)
         {
             playableCharacter.BuffsRefreshed -= OnBuffsRefreshed;
         }

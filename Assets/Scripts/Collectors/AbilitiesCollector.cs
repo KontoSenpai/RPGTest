@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Linq;
 using RPGTest.Models.Abilities;
 using RPGTest.Models.Banks;
 using UnityEngine;

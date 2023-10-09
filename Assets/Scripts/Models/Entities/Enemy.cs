@@ -1,4 +1,4 @@
-﻿using RPGTest.Assets.Scripts.Models.Items;
+﻿using RPGTest.Models.Items;
 using RPGTest.Enums;
 using RPGTest.Modules.Battle;
 using RPGTest.Modules.Battle.Action;
@@ -45,11 +45,13 @@ namespace RPGTest.Models.Entity
 
             BaseAttributes = model.BaseAttributes;
 
-            StatusEffectResistance = model.StatusEffectResistance;
+            ElementalResistances = model.ElementalResistances;
+
+            StatusEffectResistances = model.StatusEffectResistances;
 
             StatusEffects = model.StatusEffects;
 
-            ElementResistance = model.ElementResistance;
+            ElementalResistances = model.ElementalResistances;
 
             GoldBounty = model.GoldBounty;
 
@@ -58,7 +60,7 @@ namespace RPGTest.Models.Entity
             LootTable = model.LootTable;
         }
 
-        public override IEnumerator SelectAction(BattleManager manager, List<PlayableCharacter> playerParty, List<Enemy> enemyParty, System.Action<ActionSequence> selectedActions)
+        public override IEnumerator SelectAction(BattleManager manager, List<PlayableCharacter> playerParty, List<Enemy> enemyParty, Action<ActionSequence> selectedActions)
         {
             var hpPercentage = CurrentHP / BaseAttributes.MaxHP;
             List<TempAbility> tempAbilities = new List<TempAbility>();

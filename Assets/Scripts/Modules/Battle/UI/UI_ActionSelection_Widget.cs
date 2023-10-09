@@ -2,7 +2,6 @@
 using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Managers;
-using RPGTest.Models.Abilities;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using System.Collections.Generic;
@@ -213,7 +212,7 @@ namespace RPGTest.Modules.Battle.UI
             }
         }
 
-        public void ValidateTargetInformation(PlayableCharacter sender, bool submit, List<Entity> targets = null)
+        public void ValidateTargetInformation(Entity sender, bool submit, List<Entity> targets = null)
         {
             if (sender != m_playableCharacter)
                 return;
@@ -366,7 +365,7 @@ namespace RPGTest.Modules.Battle.UI
                 case MenuType.Abilities:
                 case MenuType.Items:
                     HandleItemsNavigation(m_instantiatedButtons, variation);
-                    ActionsViewport.GetComponent<UI_ViewportBehavior>().StepChange(variation);
+                    //ActionsViewport.GetComponent<UI_ViewportBehavior>().StepChange(variation);
                     break;
             }
         }
@@ -414,7 +413,11 @@ namespace RPGTest.Modules.Battle.UI
         private void PopulateItems()
         {
             PopulateActionViewport(ActionType.Item,
-                FindObjectOfType<GameManager>().InventoryManager.GetConsumables().Select(c => (c.Id, true)),
+                FindObjectOfType<GameManager>()
+                    .InventoryManager
+                    .GetItemsOfType(ItemType.Consumable)
+                    .Keys.ToList()
+                    .Select(c => (c.Id, true)),
                 1);
         }
         #endregion
@@ -441,7 +444,6 @@ namespace RPGTest.Modules.Battle.UI
             }
 
             ActionsViewport.SetActive(true);
-            ActionsViewport.GetComponent<UI_ViewportBehavior>().Initialize(m_instantiatedButtons.Count, coeff);
         }
 
         private void DepopulateActionViewport()

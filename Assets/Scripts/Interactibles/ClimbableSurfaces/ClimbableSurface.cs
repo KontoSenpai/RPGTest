@@ -1,4 +1,3 @@
-using MyBox;
 using RPGTest.Controllers;
 using RPGTest.Helpers;
 using UnityEngine;
@@ -26,25 +25,22 @@ namespace RPGTest.Interactibles
     {
         public SurfaceType SurfaceType;
 
-        [Separator("Debug")]
         public bool IsDebug;
         public DebugType DebugType;
         public BoxCollider MainCollider;
-        [Separator("Top checks")]
+
         public BoxCollider TopCollider;
         public float MaxDistanceFromTop = 1.5f;
         public LayerMask LayersToHitForTopCheck;
-        [Separator("Bottom checks")]
+
         public BoxCollider BottomCollider;
         public float MaxDistanceFromFloor = 1.5f;
         public LayerMask LayersToHitForBottomCheck;
 
-        [Separator("Connection")]
         public GameObject BottomConnection;
         public GameObject TopConnection;
         public GameObject LeftConnection;
         public GameObject RightConnection;
-
 
         private float timerWait = 3.0f;
         private float lastWait;

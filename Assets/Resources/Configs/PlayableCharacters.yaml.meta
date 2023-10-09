@@ -1,7 +1,9 @@
 fileFormatVersion: 2
 guid: 12bfb874f7e051b4c8c442863e3581c5
+labels:
+- Core
 TextScriptImporter:
   externalObjects: {}
   userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+  assetBundleName: configs
+  assetBundleVariant: configs

@@ -1,34 +1,32 @@
-# NPCs.yaml
+# PlayableCharacters.yaml
 PlayableCharacters:
-    - Id                : PC0001
-      Name              : Jon
-      Surname           : Doe
-      Level             : 1
-      DefaultAttack       : A0001
-      Abilities         :
+    - Id                      : PC0001
+      Name                    : Jon
+      Surname                 : Doe
+      Level                   : 1
+      DefaultAttack           : A0001
+      Abilities               :
         - AW0001
         - AW0002
-        - AW0004
         - AP0001
-        - AP0003
-      BaseAttributes    :
-        MaxHP           : 30
-        MaxMP           : 0
-        MaxStamina      : 10
-        Attack          : 8
-        Defense         : 7
-        Magic           : 3
-        Resistance      : 4
-        Speed           : 5
-      AttributesGrowth  :
-        MaxHP           : 12
-        MaxMP           : 0
-        MaxStamina      : 5
-        Attack          : 3
-        Defense         : 2
-        Magic           : 1
-        Resistance      : 1
-        Speed           : 1
+      BaseAttributes          :
+        MaxHP                 : 30
+        MaxMP                 : 0
+        MaxStamina            : 10
+        Attack                : 8
+        Defense               : 7
+        Magic                 : 3
+        Resistance            : 4
+        Speed                 : 8
+      AttributesGrowth        :
+        MaxHP                 : 12
+        MaxMP                 : 0
+        MaxStamina            : 5
+        Attack                : 3
+        Defense               : 2
+        Magic                 : 1
+        Resistance            : 1
+        Speed                 : 1
     
     - Id                : PC0002
       Name              : Kehra
@@ -46,7 +44,7 @@ PlayableCharacters:
         Defense         : 4
         Magic           : 12
         Resistance      : 9
-        Speed           : 4
+        Speed           : 10
       AttributesGrowth  :
         MaxHP           : 8
         MaxMP           : 11
@@ -65,7 +63,6 @@ PlayableCharacters:
       Abilities         :
         - AM0001
         - AM0002
-        - AP0002
       BaseAttributes    :
         MaxHP           : 24
         MaxMP           : 12
@@ -74,7 +71,7 @@ PlayableCharacters:
         Defense         : 9
         Magic           : 12
         Resistance      : 9
-        Speed           : 4
+        Speed           : 6
       AttributesGrowth  :
         MaxHP           : 8
         MaxMP           : 11
@@ -118,7 +115,7 @@ PlayableCharacters:
       Level             : 1
       DefaultAttack     : A0001
       Abilities         :
-        - AM0001
+        - AM0002
         - AM0002
       BaseAttributes    :
         MaxHP           : 24
@@ -137,4 +134,4 @@ PlayableCharacters:
         Defense         : 1
         Magic           : 4
         Resistance      : 3
-        Speed           : 1
+        Speed           : 1 
