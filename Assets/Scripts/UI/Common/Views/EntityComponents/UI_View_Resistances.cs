@@ -20,9 +20,9 @@ namespace RPGTest.UI.Common
     {
         [SerializeField] private UI_ResistanceType ResistanceType;
 
-        private List<UI_Control_Resistance> m_resistances
+        private List<UI_Control_StatPillResistance> m_resistances
         {
-            get { return this.GetComponentsInChildren<UI_Control_Resistance>().ToList(); }
+            get { return this.GetComponentsInChildren<UI_Control_StatPillResistance>().ToList(); }
         }
 
         public override void Initialize(Entity entity)
@@ -114,7 +114,7 @@ namespace RPGTest.UI.Common
                 var resistance = m_resistances.SingleOrDefault((r) => r.Element == elementalResistance.Key);
                 if (resistance != null)
                 {
-                    resistance.Initialize(elementalResistance.Value);
+                    resistance.Initialize(Mathf.FloorToInt(elementalResistance.Value * 100));
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace RPGTest.UI.Common
                 var resistance = m_resistances.SingleOrDefault((r) => r.Status == statusEffectResistance.Key);
                 if (resistance != null)
                 {
-                    resistance.Initialize(statusEffectResistance.Value);
+                    resistance.Initialize(Mathf.FloorToInt(statusEffectResistance.Value * 100));
                 }
             }
         }
@@ -138,7 +138,7 @@ namespace RPGTest.UI.Common
                 var resistance = m_resistances.SingleOrDefault((r) => r.Element == elementalResistance.Key);
                 if (resistance != null)
                 {
-                    resistance.Preview(elementalResistance.Value);
+                    resistance.Preview(Mathf.FloorToInt(elementalResistance.Value * 100));
                 }
             }
         }
@@ -150,7 +150,7 @@ namespace RPGTest.UI.Common
                 var resistance = m_resistances.SingleOrDefault((r) => r.Status == statusEffectResistance.Key);
                 if (resistance != null)
                 {
-                    resistance.Preview(statusEffectResistance.Value);
+                    resistance.Preview(Mathf.FloorToInt(statusEffectResistance.Value * 100));
                 }
             }
         }

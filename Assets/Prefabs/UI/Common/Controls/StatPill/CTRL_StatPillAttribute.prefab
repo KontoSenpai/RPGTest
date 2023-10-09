@@ -166,11 +166,11 @@ GameObject:
   - component: {fileID: 4845870076665807132}
   - component: {fileID: 3706263823491565496}
   - component: {fileID: 965155442520938411}
-  - component: {fileID: 8286612839111544586}
   - component: {fileID: 811286891526414093}
   - component: {fileID: 2271375844346391312}
+  - component: {fileID: 9018703539297741098}
   m_Layer: 5
-  m_Name: CTRL_Attribute
+  m_Name: CTRL_StatPillAttribute
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235,24 +235,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8286612839111544586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2951907371238854156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3c31a8f6864641418cec6630b3db7f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Attribute: 0
-  StatName: {fileID: 2358658476682517048}
-  StatValue: {fileID: 2202794882739005495}
-  PreviewText: {fileID: 7003945488234276399}
-  PositiveColor: {r: 0.052405916, g: 0.5283019, b: 0, a: 1}
-  NegativeColor: {r: 0.7264151, g: 0.0034264945, b: 0.0034264945, a: 1}
 --- !u!114 &811286891526414093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,6 +281,25 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &9018703539297741098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2951907371238854156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff2c3b6e1d17645a19eb8d289cf93a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PercentageValue: 0
+  Name: {fileID: 2358658476682517048}
+  Value: {fileID: 2202794882739005495}
+  PreviewText: {fileID: 7003945488234276399}
+  PositiveColor: {r: 0.11619746, g: 0.5283019, b: 0, a: 1}
+  NegativeColor: {r: 0.735849, g: 0, b: 0, a: 1}
+  Attribute: 2
 --- !u!1 &4222609578684883097
 GameObject:
   m_ObjectHideFlags: 0

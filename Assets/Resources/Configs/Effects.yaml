@@ -105,6 +105,7 @@ Effects:
 # Talent Effects
     # Rallying Cry
     - Id                : ET0001.1
+      Name              : L000001
       Label             : Increases Defense by ${Potency}%
       Icon              : D
       Type              : Buff
@@ -169,6 +170,7 @@ Effects:
 # Passive Effects
     # Double Hand
     - Id                : EP0001.1
+      Name              : L0000001
       Label             : Increases Weapon Attack value by ${Potency}%
       Type              : Passive
       Potency           :
@@ -176,8 +178,7 @@ Effects:
         Potency         : 10
       Conditions      :
         TwoHanded     : true
-
-        
+      
 # Monster Effects
     # Bite
     - Id                : EMST0001

@@ -671,7 +671,9 @@ MonoBehaviour:
   OwnersPanel: {fileID: 47808289800275448}
   DisplayQuantity: 0
   m_statsPanel: {fileID: 6870593601699803488}
-  m_statGo: {fileID: 2951907371238854156, guid: 82c049f54f0a31c4aa2ef68493b7e409, type: 3}
+  m_attributePillGo: {fileID: 2951907371238854156, guid: 82c049f54f0a31c4aa2ef68493b7e409, type: 3}
+  m_resistancePillGo: {fileID: 2951907371238854156, guid: ecd7e4915870b5d49bc28e91df902886, type: 3}
+  m_effectPillGo: {fileID: 2951907371238854156, guid: 5c8ac00fbd62afa409856dd89673011d, type: 3}
 --- !u!114 &1952697790235344442
 MonoBehaviour:
   m_ObjectHideFlags: 0

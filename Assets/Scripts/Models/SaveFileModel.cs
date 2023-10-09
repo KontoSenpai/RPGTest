@@ -1,4 +1,5 @@
-﻿using RPGTest.Models.Entity;
+﻿using RPGTest.Enums;
+using RPGTest.Models.Entity;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace RPGTest.Models
         private static string SaveFilePath = @"D:\{0}.save";
 
         public string FileName { get; set; }
+
+        public Language Language { get; set; } = Language.EN;
             
         public List<PlayableCharacter> Characters { get; set; }
 

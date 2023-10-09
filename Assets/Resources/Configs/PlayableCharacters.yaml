@@ -1,4 +1,4 @@
-# NPCs.yaml
+# PlayableCharacters.yaml
 PlayableCharacters:
     - Id                      : PC0001
       Name                    : Jon

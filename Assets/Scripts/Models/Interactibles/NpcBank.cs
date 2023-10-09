@@ -5,7 +5,6 @@ namespace RPGTest.Models.Interactibles
 {
     public class NpcBank
     {
-
         [YamlIgnore]
         public List<Npc> Npcs
         {

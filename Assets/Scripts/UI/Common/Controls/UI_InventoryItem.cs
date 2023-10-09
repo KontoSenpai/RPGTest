@@ -1,9 +1,9 @@
-﻿using RPGTest.Enums;
+﻿using RPGTest.Collectors;
+using RPGTest.Enums;
 using RPGTest.Helpers;
 using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
-using RPGTest.UI.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,10 +67,15 @@ namespace RPGTest.UI.Common
 
         [SerializeField]
         private GameObject m_statsPanel;
-        [SerializeField]
-        private GameObject m_statGo;
 
-        private List<GameObject> m_instantiatedStatGo = new List<GameObject>();
+        [SerializeField]
+        private GameObject m_attributePillGo;
+
+        [SerializeField]
+        private GameObject m_resistancePillGo;
+
+        [SerializeField]
+        private GameObject m_effectPillGo;
 
         #region public Methods
         /// <summary>
@@ -170,7 +175,7 @@ namespace RPGTest.UI.Common
         /// </summary>
         public void Clean()
         {
-            ItemName.text = String.Empty;
+            ItemName.text = string.Empty;
             if (ItemImage != null)
             {
                 ItemImage.enabled = false;
@@ -180,8 +185,9 @@ namespace RPGTest.UI.Common
                 ItemTypeImage.gameObject.transform.parent.gameObject.SetActive(false);
             }
 
-            m_instantiatedStatGo.ForEach((g) => Destroy(g));
-            m_instantiatedStatGo.Clear();
+            var pills = GetComponentsInChildren<UI_Control_StatPill>();
+
+            pills.ForEach((g) => Destroy(g.gameObject));
         }
         #endregion
 
@@ -224,11 +230,28 @@ namespace RPGTest.UI.Common
                     var equipment = (Equipment)item;
                     foreach (KeyValuePair<Attribute, int> attribute in equipment.Attributes)
                     {
-                        GameObject instantiatedObject = Instantiate(m_statGo);
-                        instantiatedObject.GetComponent<UI_Control_Attribute>().Initialize(attribute.Key, attribute.Value, true);
+                        GameObject instantiatedObject = Instantiate(m_attributePillGo);
+                        instantiatedObject.GetComponent<UI_Control_StatPillAttribute>().Initialize(attribute.Key, attribute.Value, true);
                         instantiatedObject.transform.SetParent(m_statsPanel.transform);
                         instantiatedObject.transform.localScale = new Vector3(1, 1, 1);
-                        m_instantiatedStatGo.Add(instantiatedObject);
+                    }
+                    foreach (KeyValuePair<Element, float> element in equipment.ElementalResistances)
+                    {
+                        if (element.Key == Element.None)
+                        {
+                            continue;
+                        }
+                        GameObject instantiatedObject = Instantiate(m_resistancePillGo);
+                        instantiatedObject.GetComponent<UI_Control_StatPillResistance>().Initialize(element.Key, Mathf.FloorToInt(element.Value * 100));
+                        instantiatedObject.transform.SetParent(m_statsPanel.transform);
+                        instantiatedObject.transform.localScale = new Vector3(1, 1, 1);
+                    }
+                    foreach (string effect in equipment.Effects)
+                    {
+                        GameObject instantiatedObject = Instantiate(m_effectPillGo);
+                        instantiatedObject.GetComponent<UI_Control_StatPillEffect>().Initialize(EffectsCollector.TryGetEffect(effect));
+                        instantiatedObject.transform.SetParent(m_statsPanel.transform);
+                        instantiatedObject.transform.localScale = new Vector3(1, 1, 1);
                     }
                     break;
             }

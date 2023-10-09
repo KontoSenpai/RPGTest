@@ -1,5 +1,6 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Controllers;
+using RPGTest.Enums;
 using RPGTest.Interactibles;
 using RPGTest.Models;
 using RPGTest.Models.Items;
@@ -31,7 +32,6 @@ namespace RPGTest.Managers
         private static Vector3 PlayerRotation = new Vector3();
 
         private SaveFileModel SaveFile => SaveFileModel.Instance;
-
         #endregion
 
         public void Start()

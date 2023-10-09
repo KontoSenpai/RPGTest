@@ -1,0 +1,7 @@
+# Localizations.yaml
+
+Lines:
+    - Id                : L0000001
+      LocalizedValues   :
+        EN              : Firm Grip
+        FR              : Poigne Forte

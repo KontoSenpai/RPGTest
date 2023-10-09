@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5809657972309719290}
   - component: {fileID: 2339664069087501059}
   m_Layer: 5
-  m_Name: View_Resistances
+  m_Name: View_Entity_Resistances
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -532,6 +532,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2273516940423248344, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -615,6 +623,10 @@ PrefabInstance:
     - target: {fileID: 7147270274175129495, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Name
       value: CTRL_ElementalResistance_Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227527355995049297, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9062579134590266305, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Pivot.x
@@ -742,6 +754,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2273516940423248344, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -825,6 +845,10 @@ PrefabInstance:
     - target: {fileID: 7147270274175129495, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Name
       value: CTRL_ElementalResistance_Ice
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227527355995049297, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9062579134590266305, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Pivot.x
@@ -952,6 +976,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2273516940423248344, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1035,6 +1067,10 @@ PrefabInstance:
     - target: {fileID: 7147270274175129495, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Name
       value: CTRL_ElementalResistance_Darkness
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227527355995049297, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9062579134590266305, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Pivot.x
@@ -1162,6 +1198,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2273516940423248344, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1201,6 +1245,10 @@ PrefabInstance:
     - target: {fileID: 7147270274175129495, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Name
       value: CTRL_ElementalResistance_Thunder
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227527355995049297, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9062579134590266305, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Pivot.x
@@ -1328,6 +1376,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2273516940423248344, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1411,6 +1467,10 @@ PrefabInstance:
     - target: {fileID: 7147270274175129495, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Name
       value: CTRL_ElementalResistance_Earth
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227527355995049297, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9062579134590266305, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Pivot.x
@@ -1539,6 +1599,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1569,6 +1633,10 @@ PrefabInstance:
     - target: {fileID: 7147270274175129495, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Name
       value: CTRL_ElementalResistance_Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227527355995049297, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9062579134590266305, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Pivot.x
@@ -1696,6 +1764,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2273516940423248344, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1779,6 +1855,10 @@ PrefabInstance:
     - target: {fileID: 7147270274175129495, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Name
       value: CTRL_ElementalResistance_Water
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227527355995049297, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9062579134590266305, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Pivot.x
@@ -1906,6 +1986,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1902293860045479656, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2273516940423248344, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1989,6 +2077,10 @@ PrefabInstance:
     - target: {fileID: 7147270274175129495, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Name
       value: CTRL_ElementalResistance_Wind
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227527355995049297, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9062579134590266305, guid: 9bb6dc69cd3d7f14893b2dc5d47d4710, type: 3}
       propertyPath: m_Pivot.x

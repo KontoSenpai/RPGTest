@@ -10,11 +10,11 @@ namespace RPGTest.UI.Common
     public class UI_View_EntityAttributes : UI_View_BaseEntityComponent
     {
 
-        IEnumerable<UI_Control_Attribute> m_attributes => GetComponentsInChildren<UI_Control_Attribute>();
+        IEnumerable<UI_Control_StatPillAttribute> m_attributes => GetComponentsInChildren<UI_Control_StatPillAttribute>();
 
         public void Clear()
         {
-            var components = GetComponentsInChildren<UI_Control_Attribute>();
+            var components = GetComponentsInChildren<UI_Control_StatPillAttribute>();
             foreach(var component in components)
             {
                 component.Clean();

@@ -1,4 +1,4 @@
-﻿using RPGTest.Assets.Scripts.Models.Items;
+﻿using RPGTest.Models.Items;
 using RPGTest.Enums;
 using RPGTest.Modules.Battle;
 using RPGTest.Modules.Battle.Action;
