@@ -43,6 +43,13 @@ namespace RPGTest.UI.Common
             Accessories.SetInteractable(Interactable);
         }
 
+        public override void Clear()
+        {
+            Weapon.Clean();
+            Armor.Clean();
+            Accessories.Clean();
+        }
+
         public override void Refresh()
         {
             throw new System.NotImplementedException();

@@ -23,13 +23,56 @@ MonoBehaviour:
     m_Localized: Character
     m_Metadata:
       m_Items: []
-  - m_Id: 6278363037696
+  - m_Id: 169988205395968
+    m_Localized: Load Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 167776947355648
     m_Localized: New Game
     m_Metadata:
-      m_Items:
-      - rid: 5756371288046960665
-  - m_Id: 7322690207744
-    m_Localized: TOAST
+      m_Items: []
+  - m_Id: 170956322062336
+    m_Localized: Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 171312401694720
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 195794298290176
+    m_Localized: Accessory 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 196239104229376
+    m_Localized: Accessory 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 197057245167616
+    m_Localized: Left Hand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 198443311644672
+    m_Localized: Right Hand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 200376583798784
+    m_Localized: Head
+    m_Metadata:
+      m_Items: []
+  - m_Id: 200507265728512
+    m_Localized: Body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 201203381780480
+    m_Localized: Equipment
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7462116807753728
+    m_Localized: Elemental Resistances
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7461739454611456
+    m_Localized: Status Resistances
     m_Metadata:
       m_Items: []
   references:

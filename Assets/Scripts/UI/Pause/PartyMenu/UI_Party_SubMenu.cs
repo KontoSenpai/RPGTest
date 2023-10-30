@@ -1,6 +1,5 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Managers;
-using RPGTest.Models.Entity;
 using RPGTest.UI.Common;
 using System;
 using System.Collections.Generic;
@@ -16,28 +15,20 @@ namespace RPGTest.UI.PartyMenu
 {
     public class UI_Party_SubMenu : UI_Pause_SubMenu
     {
-        [SerializeField] private GameObject[] PartyMemberWidgets;
-        [SerializeField] private GameObject GuestMemberWidget;
+        [SerializeField] private UI_PartyList PartyList;
+
+        [SerializeField] private UI_View_EntityContainer EntityComponentsContainer;
 
         [SerializeField] private GameObject SubActionMenu;
 
         [SerializeField] private UI_PresetSlotSelector PresetSlotSelector;
-        [SerializeField] private UI_View_EntityContainer EntityComponentContainer;
 
         [SerializeField] private TextMeshProUGUI Money;
         [SerializeField] private TextMeshProUGUI Location;
 
-        //private int m_actualActiveMemberCount => ActivePartyMembersList.Where(m => m.GetComponent<UI_Member_Widget>().GetCharacter() != null).Count() -1;
-        //private int m_actualInactiveMemberCount => InactivePartyMembersList.Where(m => m.GetComponent<UI_Member_Widget>().GetCharacter() != null).Count();
-      
-        //Items control
-        private int m_currentNavigationIndex = 0;
-        private int m_inactiveMembersPerRow = 4;
-        private int m_activePartyMemberCount => m_partyManager.GetActivePartyThreshold();
-        private int m_maxRegularNavigationIndex => m_partyManager.GetIndexofLastExistingPartyMember() < PartyMemberWidgets.Count() ? m_partyManager.GetIndexofLastExistingPartyMember() : PartyMemberWidgets.Count() - 1;
+        private UI_View_EntityContainer EntityComponentContainer => FindObjectOfType<UI_View_EntityContainer>();
 
         // Swap controls
-        private GameObject m_selectedCharacterGo = null;
         private bool m_swapInProgress = false;
 
         // SubMenu controls
@@ -45,66 +36,41 @@ namespace RPGTest.UI.PartyMenu
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
 
-        // TODO : get rid of that, use the event system
-        private PlayableCharacter m_currentCharacter => PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_View_EntityInfos>().GetPlayableCharacter();
-
         private int m_inventoryMenuIndex = 1; // todo : need to keep that const elsewhere
         private int m_skillsMenuIndex = 2; // todo: same as line above
+
+        private GameObject m_currentCharacter;
+        private GameObject m_selectedCharacter;
 
         public override void Awake()
         {
             base.Awake();
-            m_playerInput.UI.Navigate.started += ctx => { 
-                m_navigateStarted = true;
-            };
-            m_playerInput.UI.Navigate.performed += ctx => 
-            {
-                if (m_ActionMenuOpened) return;
-                m_performTimeStamp = Time.time + 0.3f;
-                Navigate_Performed(ctx.ReadValue<Vector2>());
-            };
-            m_playerInput.UI.SecondaryNavigate.performed += ctx =>
-            {
-                SecondaryNavigate_Performed(ctx.ReadValue<Vector2>());
-            };
-            m_playerInput.UI.Navigate.canceled += ctx => { 
-                m_navigateStarted = false;
-            };
-            m_playerInput.UI.Submit.performed += ctx =>
-            {
-                Submit_Performed();
-            };
-            m_playerInput.UI.SecondaryAction.performed += ctx =>
-            {
-                SecondaryAction_Performed();
-            };
-            m_playerInput.UI.MouseMoved.performed += ctx =>
-            {
-                MouseMoved_Performed();
-            };
-            m_playerInput.UI.RightClick.performed += ctx =>
-            {
-                MouseRightClick_Performed();
-            };
+
+            PartyList.SecondaryActionPerformed += OnSecondaryAction_performed;
         }
 
         public override void OnEnable()
         {
             base.OnEnable();
-            m_playerInput.Player.Debug.performed += Debug_performed;
+
+            PartyList.CharacterSelectionChanged += OnCharacterSelection_changed;
+            PartyList.CharacterSelectionConfirmed += OnCharacterSelection_confirmed;
         }
 
         public override void OnDisable()
         {
             base.OnDisable();
-            m_playerInput.Player.Debug.performed -= Debug_performed;
+
+            PartyList.CharacterSelectionChanged -= OnCharacterSelection_changed;
+            PartyList.CharacterSelectionConfirmed -= OnCharacterSelection_confirmed;
         }
 
         public override void Initialize()
         {
-            UpdateCharacterControls();
             Money.text = FindObjectOfType<InventoryManager>().Money.ToString();
             Location.text = SceneManager.GetActiveScene().name;
+
+            PartyList.Initialize(m_partyManager.GetActivePartyMembers(), m_partyManager.GetInactivePartyMembers(), m_partyManager.GetGuestCharacter());
         }
 
         public override void OpenSubMenu(Dictionary<string, object> parameters)
@@ -113,78 +79,24 @@ namespace RPGTest.UI.PartyMenu
             m_playerInput.UI.Cancel.performed += OnCancel_performed;
 
             SubActionMenu.SetActive(false);
-            PartyMemberWidgets.First(w => w.GetComponent<UI_View_EntityInfos>().GetEntity() != null).GetComponent<Button>().Select();
-            m_currentNavigationIndex = 0;
-            InitializeEntityInformations();
+            PartyList.Select();
             UpdateInputActions();
+        }
+
+        public override void CloseSubMenu()
+        {
+            base.CloseSubMenu();
         }
 
         public void Start()
         {
-            foreach(var widget in PartyMemberWidgets)
-            {
-                var widgetScript = widget.GetComponent<UI_View_EntityInfos>();
-                widgetScript.MemberSelected += OnMember_Selected;
-                widgetScript.SetSecondarySelect(() => widgetScript.ToggleCover());
-            }
-        }
-
-        public void Update()
-        {
-            if (m_navigateStarted && (Time.time - m_performTimeStamp) >= WaitTimeBetweenPerforms)
-            {
-                m_performTimeStamp = Time.time;
-                Navigate_Performed(m_playerInput.UI.Navigate.ReadValue<Vector2>());
-            }
         }
 
         #region Input Events
-        // Select character
-        private void Submit_Performed()
-        {
-            if (m_currentNavigationIndex == -1) return;
-            PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_View_EntityInfos>().ToggleCover();
-            SwapCharacterPositions(PartyMemberWidgets[m_currentNavigationIndex]);
-        }
-
-        // Open Action Menus 
-        private void SecondaryAction_Performed()
-        {
-            OpenCharacterActionsMenu(PartyMemberWidgets[m_currentNavigationIndex]);
-        }
-
         // Cancel current action (swap or sub menu)
         protected override void OnCancel_performed(InputAction.CallbackContext obj)
         {
             CancelCurrentAction();
-        }
-
-        // Change character
-        private void Navigate_Performed(Vector2 movement)
-        {
-            if (m_currentNavigationIndex == -1)
-            {
-                m_currentNavigationIndex = 0;
-            }
-
-            if (movement.y > 0.4f)
-            {
-                NavigateUp();
-            }
-            else if (movement.y < -0.4f)
-            {
-                NavigateDown();
-            }
-            else if (movement.x < -0.4f)
-            {
-                NavigateLeft();
-            }
-            else if(movement.x > 0.04f)
-            {
-                NavigateRight();
-            }
-            PartyMemberWidgets[m_currentNavigationIndex].GetComponent<Button>().Select();
-            RefreshEntityComponentContainer();
         }
 
         // Cycle Presets
@@ -202,7 +114,6 @@ namespace RPGTest.UI.PartyMenu
         private void MouseMoved_Performed()
         {
             FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
-            m_currentNavigationIndex = -1;
         }
 
         public void MouseRightClick_Performed()
@@ -238,12 +149,41 @@ namespace RPGTest.UI.PartyMenu
 
         #region Event Handlers 
         /// <summary>
+        /// Handle event raised from the PartyList component.
+        /// Opens a menu to select actions
+        /// </summary>
+        private void OnSecondaryAction_performed(object sender, EventArgs e)
+        {
+            OpenCharacterActionsMenu(m_currentCharacter);
+        }
+
+        /// <summary>
+        /// Handle events raised from the PartyList character selection change
+        /// </summary>
+        /// <param name="characterGo"></param>
+        private void OnCharacterSelection_changed(GameObject selectedCharacter)
+        {
+            if (selectedCharacter != null && selectedCharacter.TryGetComponent<UI_View_EntityInfos>(out var component))
+            {
+                if (component.GetPlayableCharacter() == null)
+                {
+                    EntityComponentsContainer.Clear();
+                }
+                else
+                {
+                    EntityComponentsContainer.Initialize(component.GetPlayableCharacter(), component.GetPresetSlot());
+                }
+
+            }
+        }
+
+        /// <summary>
         /// Trigged by an Event sent with a Button press on a party member gameObject.
         /// </summary>
         /// <param name="selectedItem">Selected party member</param>
-        private void OnMember_Selected(UIActionSelection selection, GameObject selectedCharacter)
+        private void OnCharacterSelection_confirmed(GameObject selectedCharacter, UIActionSelection selection)
         {
-            switch(selection)
+            switch (selection)
             {
                 case UIActionSelection.Primary:
                     SwapCharacterPositions(selectedCharacter);
@@ -324,7 +264,7 @@ namespace RPGTest.UI.PartyMenu
         {
             var parameters = new Dictionary<string, object>()
             {
-                { "CharacterIndex", PartyMemberWidgets[m_currentNavigationIndex].GetComponent<UI_View_EntityInfos>().GetEntity().Id },
+                { "CharacterIndex", m_currentCharacter.GetComponent<UI_View_EntityInfos>().GetEntity().Id },
             };
             switch (index) {
                 case 1: // Equipment
@@ -339,126 +279,26 @@ namespace RPGTest.UI.PartyMenu
         }
 
         #region Private Methods
-        private void NavigateDown()
-        {
-            int maxIndex = m_swapInProgress ? GetLastPossibleIndex() : m_maxRegularNavigationIndex;
-            if (m_currentNavigationIndex < m_activePartyMemberCount)
-            {
-                m_currentNavigationIndex += 1;
-            }
-            else if (m_currentNavigationIndex >= m_activePartyMemberCount)
-            {
-                if(m_currentNavigationIndex - m_activePartyMemberCount < m_inactiveMembersPerRow)
-                {
-                    if( m_currentNavigationIndex + m_inactiveMembersPerRow > maxIndex)
-                    {
-                        m_currentNavigationIndex = maxIndex;
-                    }
-                    else
-                    {
-                        m_currentNavigationIndex += m_inactiveMembersPerRow;
-                    }
-                }
-            }
-        }
-
-        private void NavigateUp()
-        {
-            // In the active members list
-            if (m_currentNavigationIndex < m_activePartyMemberCount && m_currentNavigationIndex > 0)
-            {
-                m_currentNavigationIndex -= 1;
-            }
-            else if(m_currentNavigationIndex >= m_activePartyMemberCount && m_currentNavigationIndex - m_activePartyMemberCount < m_inactiveMembersPerRow)
-            {
-                m_currentNavigationIndex = m_activePartyMemberCount - 1;
-            }
-            else if(m_currentNavigationIndex >= m_activePartyMemberCount + m_inactiveMembersPerRow)
-            {
-                m_currentNavigationIndex -= m_inactiveMembersPerRow;
-            }
-        }
-
-        private void NavigateLeft()
-        {
-            int remainder = (m_currentNavigationIndex - m_activePartyMemberCount) % m_inactiveMembersPerRow;
-
-            if (m_currentNavigationIndex > m_activePartyMemberCount && remainder != 0)
-            {
-                m_currentNavigationIndex -= 1;
-            }
-        }
-
-        private void NavigateRight()
-        {
-            int maxIndex = m_swapInProgress ? GetLastPossibleIndex() : m_maxRegularNavigationIndex;
-            if (m_currentNavigationIndex >= m_activePartyMemberCount
-                && m_currentNavigationIndex < maxIndex
-                && m_currentNavigationIndex - m_activePartyMemberCount != m_inactiveMembersPerRow - 1)
-            {
-                m_currentNavigationIndex += 1;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void UpdateCharacterControls()
-        {
-            var characters = m_partyManager.GetAllPartyMembers();
-            if (PartyMemberWidgets.Count() != characters.Count)
-            {
-                Debug.LogError($"Missmatch! widgets : {PartyMemberWidgets.Count()} != characters : {characters.Count}");
-                return;
-            }
-
-            for (int index = 0; index < characters.Count; index++)
-            {
-                Entity character = characters[index];
-                PartyMemberWidgets[index].GetComponent<UI_View_EntityInfos>().Initialize(character, Models.PresetSlot.First);
-            }
-
-            GuestMemberWidget.GetComponent<UI_View_EntityInfos>().Initialize(m_partyManager.GetGuestCharacter(), Models.PresetSlot.First);
-        }
-
-        private void Refresh()
-        {
-            UpdateCharacterControls();
-        }
-
-        public void InitializeEntityInformations()
-        {
-            EntityComponentContainer.Initialize(m_currentCharacter, PresetSlotSelector.GetCurrentPreset());
-        }
-
-        private void RefreshEntityComponentContainer()
-        {
-            if (EntityComponentContainer != null)
-            {
-                // TODO : preset
-                // EntityInfosView.Refresh(m_currentCharacter);
-            }
-        }
-
         private void SwapCharacterPositions(GameObject selectedCharacter)
         {
             if (!m_swapInProgress)
             {
-                m_selectedCharacterGo = selectedCharacter;
+                m_selectedCharacter = selectedCharacter;
+                selectedCharacter.GetComponent<UI_View_EntityInfos>().ToggleCover();
                 m_swapInProgress = true;
             }
             else
             {
-                var initialIndex = Array.FindIndex(PartyMemberWidgets, widget => widget == m_selectedCharacterGo);
-                var otherIndex = Array.FindIndex(PartyMemberWidgets, widget => widget == selectedCharacter);
-                
-                if (initialIndex != otherIndex)
+                var char1 = PartyList.GetControlIndex(m_selectedCharacter);
+                var char2 = PartyList.GetControlIndex(selectedCharacter);
+                if (char1 != char2)
                 {
-                    m_partyManager.PerformSwap(initialIndex, otherIndex);
-                    FindAndFixHoles(m_activePartyMemberCount);
-
-                    Refresh();
-                    RefreshEntityComponentContainer();
+                    m_partyManager.SwapCharactersPosition(char1, char2);
+                    PartyList.Initialize(m_partyManager.GetActivePartyMembers(), m_partyManager.GetInactivePartyMembers(), m_partyManager.GetGuestCharacter());
+                }
+                else
+                {
+                    m_selectedCharacter.GetComponent<UI_View_EntityInfos>().ToggleCover();
                 }
                 m_swapInProgress = false;
             }
@@ -466,7 +306,7 @@ namespace RPGTest.UI.PartyMenu
 
         private void OpenCharacterActionsMenu(GameObject selectedCharacter)
         {
-            m_ActionMenuOpened = true;
+            PartyList.Deselect();
             SubActionMenu.SetActive(true);
             var position = selectedCharacter.transform.position;
             position.x += 250;
@@ -477,8 +317,7 @@ namespace RPGTest.UI.PartyMenu
 
         private void CancelSwapInProgress()
         {
-            m_selectedCharacterGo.GetComponent<UI_View_EntityInfos>().ToggleCover();
-            m_selectedCharacterGo = null;
+            m_currentCharacter.GetComponent<UI_View_EntityInfos>().ToggleCover();
             m_swapInProgress = false;
         }
 
@@ -494,37 +333,6 @@ namespace RPGTest.UI.PartyMenu
             }
             {
                 ExitPause();
-            }
-        }
-
-        // Retrieve the first empty index.
-        private int GetLastPossibleIndex()
-        {
-            var index = m_partyManager.GetIndexofLastExistingPartyMember();
-            if (index < PartyMemberWidgets.Length - 1)
-            {
-                index++;
-                return index;
-            }
-            return index;
-        }
-
-        // Fix any potential holes between 2 members after a swap
-        private void FindAndFixHoles(int startIndex)
-        {
-            var firstEmptyIndex = -1;
-            for (int i = startIndex; i < m_partyManager.GetAllPartyMembers().Count; i++)
-            {
-                m_partyManager.TryGetPartyMemberAtIndex(i, out var member);
-                if (member == null && firstEmptyIndex == -1)
-                {
-                    firstEmptyIndex = i;
-                } else if(member != null && firstEmptyIndex != -1)
-                {
-                    m_partyManager.PerformSwap(firstEmptyIndex, i);
-                    i = firstEmptyIndex++;
-                    firstEmptyIndex = -1;
-                }
             }
         }
         #endregion

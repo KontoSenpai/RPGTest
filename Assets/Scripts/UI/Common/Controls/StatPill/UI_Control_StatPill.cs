@@ -58,7 +58,7 @@ namespace RPGTest.UI.Common
 
         protected void SetValue(int value)
         {
-            Value.text = value.ToString();
+            Value.text = $"{value.ToString()} {(PercentageValue ? "%" : string.Empty)}";
         }
     }
 }

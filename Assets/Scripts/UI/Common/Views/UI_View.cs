@@ -84,8 +84,15 @@ namespace RPGTest.UI.Common
 
         protected void DisableControls()
         {
-            InputManager.SchemeChanged -= OnScheme_Changed;
-            m_playerInput.Disable();
+            if (InputManager)
+            {
+                InputManager.SchemeChanged -= OnScheme_Changed;
+            }
+
+            if (m_playerInput != null)
+            {
+                m_playerInput.Disable();
+            }
         }
 
         /// <summary>

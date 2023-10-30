@@ -37,6 +37,8 @@ namespace RPGTest.UI.Common
             }
         }
 
+        public abstract void Clear();
+
         public abstract void Refresh();
 
         public abstract void Refresh(PresetSlot preset);

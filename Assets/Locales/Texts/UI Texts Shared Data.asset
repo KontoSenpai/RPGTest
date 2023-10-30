@@ -19,12 +19,56 @@ MonoBehaviour:
     m_Key: Menu_Equipment/Canvas (Environment)/Menu_Equipment/PNL_Main/View_EntityComponentsContainer/View_Entity_Infos/PNL_Header/TXT_Header
     m_Metadata:
       m_Items: []
-  - m_Id: 6278363037696
-    m_Key: MainMenu/UI/UI_MainMenu/PNL_Main/BTN_NewGame/TXT_ButtonText
+  - m_Id: 167776947355648
+    m_Key: button-new-game
     m_Metadata:
       m_Items: []
-  - m_Id: 7322690207744
-    m_Key: MainMenu/UI/UI_MainMenu/Text (TMP)
+  - m_Id: 169988205395968
+    m_Key: button-load-game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 170956322062336
+    m_Key: button-exit-game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 171312401694720
+    m_Key: button-settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 195794298290176
+    m_Key: label-accessory-2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 196239104229376
+    m_Key: label-accesorry-1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 197057245167616
+    m_Key: label-left-hand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 198443311644672
+    m_Key: label-right-hand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 200376583798784
+    m_Key: label-head
+    m_Metadata:
+      m_Items: []
+  - m_Id: 200507265728512
+    m_Key: label-body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 201203381780480
+    m_Key: label-equipment
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7461739454611456
+    m_Key: label-ailment-resistance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7462116807753728
+    m_Key: label-elemental-resistance
     m_Metadata:
       m_Items: []
   m_Metadata:

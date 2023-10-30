@@ -53,7 +53,10 @@ namespace RPGTest.UI
 
         public virtual void OnDisable()
         {
-            InputManager.SchemeChanged -= onScheme_Changed;
+            if(InputManager)
+            {
+                InputManager.SchemeChanged -= onScheme_Changed;
+            }
         }
 
         #region events

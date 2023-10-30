@@ -12,15 +12,6 @@ namespace RPGTest.UI.Common
 
         IEnumerable<UI_Control_StatPillAttribute> m_attributes => GetComponentsInChildren<UI_Control_StatPillAttribute>();
 
-        public void Clear()
-        {
-            var components = GetComponentsInChildren<UI_Control_StatPillAttribute>();
-            foreach(var component in components)
-            {
-                component.Clean();
-            }
-        }
-
         public override void Initialize(Entity entity)
         {
             m_entity = entity;
@@ -33,6 +24,15 @@ namespace RPGTest.UI.Common
             m_preset = preset;
 
             InitializeInternal(m_character.GetAttributes(preset));
+        }
+
+        public override void Clear()
+        {
+            var components = GetComponentsInChildren<UI_Control_StatPillAttribute>();
+            foreach (var component in components)
+            {
+                component.Clean();
+            }
         }
 
         public override void Refresh()

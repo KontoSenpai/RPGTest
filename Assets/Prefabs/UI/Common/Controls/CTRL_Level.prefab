@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5984476311783278080}
   - component: {fileID: 3156363199768238400}
   m_Layer: 5
-  m_Name: UI_Widget_Level
+  m_Name: CTRL_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

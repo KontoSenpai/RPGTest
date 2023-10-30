@@ -59,11 +59,9 @@ namespace RPGTest.UI.Common
         [SerializeField] protected Image ItemImage;
         [SerializeField] protected Image ItemTypeImage;
         [SerializeField] protected TextMeshProUGUI ItemName;
-        [SerializeField] protected TextMeshProUGUI QuantityHeld;
 
-        [SerializeField] private UI_ItemOwnership OwnersPanel;
-
-        [SerializeField] private bool DisplayQuantity;
+        [SerializeField] private bool DisplaySlot;
+        [SerializeField] private GameObject SlotInformations;
 
         [SerializeField]
         private GameObject m_statsPanel;
@@ -118,10 +116,7 @@ namespace RPGTest.UI.Common
         public void UpdateHeldQuantity(int count)
         {
             Quantity = count > 0 ? count : -1;
-            if (OwnersPanel != null)
-            {
-                OwnersPanel.SetHeldQuantity(Owners.Any(), Quantity);
-            }
+            UpdateHeldQuantityInternal();
         }
 
         public PlayableCharacter GetOwner()
@@ -149,10 +144,7 @@ namespace RPGTest.UI.Common
         {
             Clean();
 
-            if (OwnersPanel != null)
-            {
-                OwnersPanel.SetOwnershipDisplay(Owners, Preset, Slot);
-            }
+            SetOwnershipDisplayInternal();
 
             if (item == null)
             {
@@ -254,6 +246,24 @@ namespace RPGTest.UI.Common
                         instantiatedObject.transform.localScale = new Vector3(1, 1, 1);
                     }
                     break;
+            }
+        }
+
+        private void UpdateHeldQuantityInternal()
+        {
+            var ownershipComponent = GetComponentInChildren<UI_ItemOwnership>();
+            if (ownershipComponent != null)
+            {
+                ownershipComponent.SetHeldQuantity(Owners.Any(), Quantity);
+            }
+        }
+
+        private void SetOwnershipDisplayInternal()
+        {
+            var ownershipComponent = GetComponentInChildren<UI_ItemOwnership>();
+            if (ownershipComponent != null)
+            {
+                ownershipComponent.SetOwnershipDisplay(Owners, Preset, Slot);
             }
         }
         #endregion
