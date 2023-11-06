@@ -160,7 +160,7 @@ namespace RPGTest.Managers
         public void SwapCharactersPosition(int index1, int index2)
         {
             PerformSwap(index1, index2);
-            FindAndFixHoles();
+            FindAndFixHoles(m_activePartyThreshold);
         }
 
         public void PerformSwap(int id1, int id2)
@@ -174,9 +174,8 @@ namespace RPGTest.Managers
 
         // Fix any potential holes between 2 members after a swap
         // TODO : prevent inactive to fill holes in primary, and vice-versa
-        private void FindAndFixHoles()
+        private void FindAndFixHoles(int startIndex)
         {
-            var startIndex = 0;
             var firstEmptyIndex = -1;
             for (int i = startIndex; i < m_partyMembers.ToList().Count; i++)
             {

@@ -2,13 +2,44 @@
 using RPGTest.Managers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace RPGTest.UI.Common
 {
     public class UI_View : MonoBehaviour
     {
+        [Category("Floating Position")]
+        [SerializeField]
+        private Canvas ReferenceCanvas;
+
+        [Category("Floating Position")]
+        [SerializeField]
+        private Vector2 UpperAnchorMax = new Vector2(.0f, 1.0f);
+        [Category("Floating Position")]
+        [SerializeField]
+        private Vector2 UpperAnchorMin = new Vector2(.0f, 1.0f);
+        [Category("Floating Position")]
+        [SerializeField]
+        private Vector2 UpperPivot = new Vector2(.0f, 1.0f);
+
+        [Category("Floating Position")]
+        [SerializeField]
+        private Vector2 LowerAnchorMax = new Vector2();
+        [Category("Floating Position")]
+        [SerializeField]
+        private Vector2 LowerAnchorMin = new Vector2();
+        [Category("Floating Position")]
+        [SerializeField]
+        private Vector2 LowerPivot = new Vector2(.0f, 0.0f);
+
+        [Category("Floating Position")]
+        [SerializeField]
+        private float OffsetX = 0;
+        [Category("Floating Position")]
+        [SerializeField]
+        private float OffsetY = 0;
+
         public bool ShouldUpdateInputDisplay = true;
 
         protected Dictionary<string, string[]> m_inputActions = new Dictionary<string, string[]>();
@@ -68,6 +99,37 @@ namespace RPGTest.UI.Common
 
             DisableControls();
             gameObject.SetActive(false);
+        }
+
+        public void MoveToGameObject(GameObject referenceGameObject)
+        {
+            if (ReferenceCanvas == null)
+            {
+                return;
+            }
+
+            var referenceTransform = referenceGameObject.GetComponent<RectTransform>();
+            var transform = GetComponent<RectTransform>();
+
+            var canvasPosition = ReferenceCanvas.GetComponent<RectTransform>().InverseTransformPoint(referenceTransform.position);
+
+            if (canvasPosition.y < 0)
+            {
+                transform.anchorMax = LowerAnchorMax;
+                transform.anchorMin = LowerAnchorMin;
+                transform.pivot = LowerPivot;
+            }
+            else
+            {
+                transform.anchorMax = UpperAnchorMax;
+                transform.anchorMin = UpperAnchorMin;
+                transform.pivot = UpperPivot;
+            }
+
+            canvasPosition.x += OffsetX;
+            canvasPosition.y += OffsetY;
+
+            transform.anchoredPosition = canvasPosition;
         }
 
         protected void EnableControls()

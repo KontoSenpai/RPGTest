@@ -1,5 +1,6 @@
 using RPGTest.Enums;
 using RPGTest.Helpers;
+using RPGTest.Inputs;
 using RPGTest.Models.Entity;
 using RPGTest.UI.Utils;
 using System;
@@ -37,7 +38,6 @@ namespace RPGTest.UI.Common
         public override void Awake()
         {
             base.Awake();
-            m_playerInput.UI.SecondaryAction.performed += SecondaryAction_performed;
 
             foreach (var control in GetControls().ToList())
             {
@@ -61,7 +61,70 @@ namespace RPGTest.UI.Common
         {
             base.Select();
 
+            m_playerInput.UI.SecondaryAction.performed += SecondaryAction_performed;
             m_activeCharactersControls.First(c => c.gameObject.activeSelf).GetComponent<Button>().Select();
+        }
+
+        public void Select(GameObject control)
+        {
+            if (!this.isActiveAndEnabled) {
+                return;
+            }
+
+            base.Select();
+            m_playerInput.UI.SecondaryAction.performed += SecondaryAction_performed;
+
+            GameObject matchingControl = null;
+            if (control != null && control.TryGetComponent(out UI_View_EntityInfos component))
+            {
+                var id = component.GetPlayableCharacter()?.Id ?? string.Empty;
+                matchingControl = GetComponentsInChildren<UI_View_EntityInfos>()
+                    .FirstOrDefault(c => c.GetPlayableCharacter() != null && c.GetPlayableCharacter().Id == id)?.gameObject;
+            }
+            
+
+            if (matchingControl == null) {
+                matchingControl = m_activeCharactersControls.First(c => c.gameObject.activeSelf).gameObject;
+            }
+
+            matchingControl.GetComponent<Button>().Select();
+        }
+
+        public void DisableSecondaryAction()
+        {
+            m_playerInput.UI.SecondaryAction.performed -= SecondaryAction_performed;
+        }
+
+        public override void Deselect()
+        {
+            base.Deselect();
+
+            DisableSecondaryAction();
+        }
+
+        public override Dictionary<string, string[]> GetInputDisplay(Controls playerInput = null)
+        {
+            var controls = playerInput ?? m_playerInput;
+            m_inputActions = new Dictionary<string, string[]>()
+            {
+                {
+                    "Select Character",
+                    new string[]
+                    {
+                        "UI_" + controls.UI.Navigate.name
+                    }
+                },
+                {
+                    "Confirm",
+                    new string[]
+                    {
+                        "UI_" + controls.UI.Submit.name,
+                        "UI_" + controls.UI.LeftClick.name,
+                    }
+                },
+            };
+
+            return m_inputActions;
         }
 
         /// <summary>
@@ -134,6 +197,14 @@ namespace RPGTest.UI.Common
                 ))
             {
                 CharacterSelectionChanged(currentSelection);
+
+                if (currentSelection.GetComponent<UI_View_EntityInfos>().GetPlayableCharacter() == null)
+                {
+                    DisableSecondaryAction();
+                } else
+                {
+                    m_playerInput.UI.SecondaryAction.performed += SecondaryAction_performed;
+                }
             }
         }
 

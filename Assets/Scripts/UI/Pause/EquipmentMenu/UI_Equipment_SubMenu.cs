@@ -10,7 +10,7 @@ using RPGTest.Enums;
 using RPGTest.Models.Items;
 using System.Linq;
 
-namespace RPGTest.UI
+namespace RPGTest.UI.EquipmentMenu
 {
     public enum ActionStage
     {
@@ -18,6 +18,7 @@ namespace RPGTest.UI
         SelectItem,
 
     }
+
     public class UI_Equipment_SubMenu : UI_Pause_SubMenu
     {
         [SerializeField] private UI_CharacterFilters CharacterFilters;
@@ -78,9 +79,10 @@ namespace RPGTest.UI
             base.OpenSubMenu(parameters);
 
             var characterIndex = -1;
-            if (parameters.TryGetValue("CharacterIndex", out var value) && m_partyManager.GetActivePartyMembers()[(int)value] != null)
+            if (parameters.TryGetValue("CharacterId", out var value) )
             {
-                characterIndex = (int)value;
+                var character = m_partyManager.TryGetPartyMemberById((string)value);
+                characterIndex = character != null ? m_partyManager.GetIndexOfPartyMember(character) : -1;
             }
 
             // Populate the item list with pieces of equipments in the inventory
@@ -182,7 +184,7 @@ namespace RPGTest.UI
             m_currentSelection = gameObject;
             if (TooltipsView.gameObject.activeSelf)
             {
-                TooltipsView.MoveToGameObject(this.gameObject,m_currentSelection);
+                TooltipsView.MoveToGameObject(m_currentSelection);
                 UpdateTooltipContent(component.Item);
             }
         }
@@ -229,7 +231,7 @@ namespace RPGTest.UI
                 m_currentSelection = gameObject;
                 if (TooltipsView.gameObject.activeSelf)
                 {
-                    TooltipsView.MoveToGameObject(this.gameObject,m_currentSelection);
+                    TooltipsView.MoveToGameObject(m_currentSelection);
                     UpdateTooltipContent(component.Item);
                 }
             }
@@ -322,7 +324,7 @@ namespace RPGTest.UI
             }
 
             TooltipsView.Open();
-            TooltipsView.MoveToGameObject(this.gameObject, m_currentSelection);
+            TooltipsView.MoveToGameObject(m_currentSelection);
             UpdateTooltipContent(item);
         }
         #endregion

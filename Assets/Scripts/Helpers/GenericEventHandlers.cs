@@ -1,6 +1,8 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Models;
+using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,4 +17,8 @@ namespace RPGTest.Helpers
     public delegate void GameObjectSelectionHandler(GameObject guiItem);
 
     public delegate void GameObjectActionSelectionHandler(GameObject guiItem, UIActionSelection actionSelection);
+
+    public delegate void CharacterEnumActionSelectionHandler(PlayableCharacter character, Enum enumAction);
+
+    public delegate void EnumActionSelectionHandler(Enum enumAction);
 }
