@@ -10,7 +10,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace RPGTest.UI.PartyMenu
 {
@@ -127,7 +126,7 @@ namespace RPGTest.UI.PartyMenu
                         m_inputActions.Add(input.Key, input.Value);
                     }
 
-                    m_inputActions.Add("Exit Menu",
+                    m_inputActions.Add("Exit",
                     new string[]
                     {
                         "UI_" + m_playerInput.UI.Cancel.name,
@@ -139,8 +138,18 @@ namespace RPGTest.UI.PartyMenu
                         m_inputActions.Add(input.Key, input.Value);
                     }
 
-                    m_inputActions.Add("Cancel Swap",
+                    m_inputActions.Add("Cancel",
                     new string[]
+                    {
+                        "UI_" + m_playerInput.UI.Cancel.name,
+                    });
+                    break;
+                case ActionStage.SelectSecondaryAction:
+                    foreach (var input in SubActionSelectionDialog.GetInputDisplay(m_playerInput))
+                    {
+                        m_inputActions.Add(input.Key, input.Value);
+                    }
+                    m_inputActions.Add("Cancel", new string[]
                     {
                         "UI_" + m_playerInput.UI.Cancel.name,
                     });
@@ -273,7 +282,8 @@ namespace RPGTest.UI.PartyMenu
 
         private void SubActionSelectionDialog_EnumActionSelected(PlayableCharacter character, Enum enumAction)
         {
-            switch(enumAction)
+            var char1 = PartyList.GetControlIndex(m_currentCharacter);
+            switch (enumAction)
             {
                 case SubActionChoices.NavigateEquipment:
                     NavigateToOtherMenu(character, m_inventoryMenuIndex);
@@ -282,8 +292,12 @@ namespace RPGTest.UI.PartyMenu
                     NavigateToOtherMenu(character, m_skillsMenuIndex);
                     break;
                 case SubActionChoices.AddToParty:
+                    m_partyManager.SwapCharactersPosition(char1, m_partyManager.GetIndexOfFirstEmptyActiveSlot());
+                    ChangeStage(ActionStage.SelectSlot);
                     break;
                 case SubActionChoices.RemoveFromParty:
+                    m_partyManager.SwapCharactersPosition(char1, m_partyManager.GetIndexOfFirstEmptyInactiveSlot());
+                    ChangeStage(ActionStage.SelectSlot);
                     break;
             }
         }
@@ -303,6 +317,7 @@ namespace RPGTest.UI.PartyMenu
                 case ActionStage.SelectSwap:
                     m_selectedCharacter.GetComponent<UI_View_EntityInfos>().ToggleCover();
                     PartyList.DisableSecondaryAction();
+                    PartyList.RefreshNavigation(m_partyManager.GetExistingActivePartyMembers().Count > 1);
                     break;
                 case ActionStage.SelectSecondaryAction:
                     PartyList.Deselect();
@@ -334,7 +349,23 @@ namespace RPGTest.UI.PartyMenu
         private void OpenCharacterActionsMenu(GameObject selectedCharacter)
         {
             ChangeStage(ActionStage.SelectSecondaryAction);
-            SubActionSelectionDialog.Initialize(selectedCharacter, new List<Enum> { SubActionChoices.NavigateEquipment, SubActionChoices.NavigateSkills });
+            var actions = new List<Enum> { SubActionChoices.NavigateEquipment, SubActionChoices.NavigateSkills };
+
+            var character = selectedCharacter.GetComponent<UI_View_EntityInfos>().GetPlayableCharacter();
+
+            if (character != null
+                && m_partyManager.GetActivePartyMembers().Any(c => c != null && c.Id == character.Id)
+                && m_partyManager.GetExistingActivePartyMembers().Count > 1)
+            {
+                actions.Add(SubActionChoices.RemoveFromParty);
+            } else if (character != null
+                && m_partyManager.GetInactivePartyMembers().Any(c => c != null && c.Id == character.Id)
+                && m_partyManager.GetExistingActivePartyMembers().Count < m_partyManager.GetActivePartyThreshold())
+            {
+                actions.Add(SubActionChoices.AddToParty);
+            }
+            
+            SubActionSelectionDialog.Initialize(selectedCharacter, actions);
         }
 
         private void CancelCurrentAction()

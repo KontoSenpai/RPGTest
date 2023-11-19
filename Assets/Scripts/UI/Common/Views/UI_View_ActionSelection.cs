@@ -1,4 +1,5 @@
 using RPGTest.Helpers;
+using RPGTest.Inputs;
 using RPGTest.Models.Entity;
 using RPGTest.UI.Utils;
 using System;
@@ -72,6 +73,32 @@ namespace RPGTest.UI.Common
                 gameObject.SetActive(false);
                 Destroy(gameObject);
             }
+        }
+
+
+        public override Dictionary<string, string[]> GetInputDisplay(Controls playerInput = null)
+        {
+            var controls = playerInput ?? m_playerInput;
+            m_inputActions = new Dictionary<string, string[]>()
+            {
+                {
+                    "Select Action",
+                    new string[]
+                    {
+                        "UI_" + controls.UI.Navigate.name + ".vertical"
+                    }
+                },
+                {
+                    "Confirm",
+                    new string[]
+                    {
+                        "UI_" + controls.UI.Submit.name,
+                        "UI_" + controls.UI.LeftClick.name,
+                    }
+                },
+            };
+
+            return m_inputActions;
         }
 
         #region private methods

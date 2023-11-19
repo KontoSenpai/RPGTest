@@ -74,20 +74,7 @@ namespace RPGTest.UI.Common
             base.Select();
             m_playerInput.UI.SecondaryAction.performed += SecondaryAction_performed;
 
-            GameObject matchingControl = null;
-            if (control != null && control.TryGetComponent(out UI_View_EntityInfos component))
-            {
-                var id = component.GetPlayableCharacter()?.Id ?? string.Empty;
-                matchingControl = GetComponentsInChildren<UI_View_EntityInfos>()
-                    .FirstOrDefault(c => c.GetPlayableCharacter() != null && c.GetPlayableCharacter().Id == id)?.gameObject;
-            }
-            
-
-            if (matchingControl == null) {
-                matchingControl = m_activeCharactersControls.First(c => c.gameObject.activeSelf).gameObject;
-            }
-
-            matchingControl.GetComponent<Button>().Select();
+            SelectButton(control);
         }
 
         public void DisableSecondaryAction()
@@ -145,7 +132,7 @@ namespace RPGTest.UI.Common
 
             UpdateControl(GuestSlot.GetComponent<UI_View_EntityInfos>(), guestCharacter);
 
-            ExplicitNavigationForSelection();
+            ExplicitNavigationForSelection(false);
         }
 
         /// <summary>
@@ -170,6 +157,11 @@ namespace RPGTest.UI.Common
                 }
             }
             return -1;
+        }
+
+        public void RefreshNavigation(bool allowSelectionOfNonExistingInactive = false)
+        {
+            ExplicitNavigationForSelection(allowSelectionOfNonExistingInactive);
         }
 
         #region Input Events
@@ -201,7 +193,8 @@ namespace RPGTest.UI.Common
                 if (currentSelection.GetComponent<UI_View_EntityInfos>().GetPlayableCharacter() == null)
                 {
                     DisableSecondaryAction();
-                } else
+                }
+                else
                 {
                     m_playerInput.UI.SecondaryAction.performed += SecondaryAction_performed;
                 }
@@ -228,6 +221,36 @@ namespace RPGTest.UI.Common
         }
 
         /// <summary>
+        /// Find and select the appropriate button when needed
+        /// Value won't be null after a swap, and might need and adjustment if it's an inactive member
+        /// </summary>
+        private void SelectButton(GameObject control = null)
+        {
+            Button button = null;
+            if (control == null)
+            {
+                button = m_activeCharactersControls.First(c => c.gameObject.activeSelf).GetComponent<Button>();
+            } 
+            else if (m_inactiveCharactersControls.Any(c => c.name == control.name)
+                && control.GetComponent<UI_View_EntityInfos>().GetPlayableCharacter() == null)
+            {
+                if (m_inactiveCharactersControls.Any(c => c.GetPlayableCharacter() != null))
+                {
+                    button = m_inactiveCharactersControls.Last(c => c.GetPlayableCharacter() != null).GetComponent<Button>();
+                }
+                else
+                {
+                    button = m_activeCharactersControls.Last(c => c.GetPlayableCharacter() != null).GetComponent<Button>();
+                }
+            }
+            else
+            {
+                button = control.GetComponent<Button>();
+            }
+            button.Select();
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         private void UpdateControls(List<UI_View_EntityInfos> controls, List<PlayableCharacter> characters)
@@ -246,13 +269,13 @@ namespace RPGTest.UI.Common
         /// <summary>
         /// Set the navigation for the selection stage of the menu.
         /// </summary>
-        private void ExplicitNavigationForSelection()
+        private void ExplicitNavigationForSelection(bool allowSelectionOfNonInexistantInactiveMember = false)
         {
             UI_List_Utils.SetVerticalNavigation(m_activeCharactersControls.Select(c => c.gameObject).ToList());
 
             var layoutGroup = InactivePartyList.GetComponent<GridLayoutGroup>();
             var existingInactiveCount = m_inactiveCharactersControls.Count(c => c.GetPlayableCharacter() != null);
-            existingInactiveCount = existingInactiveCount < m_inactiveCharactersControls.Count() ? existingInactiveCount + 1 : existingInactiveCount;
+            existingInactiveCount = (existingInactiveCount < m_inactiveCharactersControls.Count() && allowSelectionOfNonInexistantInactiveMember) ? existingInactiveCount + 1 : existingInactiveCount;
 
             var itemsPerRow = UI_List_Utils.GetAmountOfObjectsPerGridRow(m_inactiveCharactersControls.Count(), layoutGroup.constraint, layoutGroup.constraintCount);
 

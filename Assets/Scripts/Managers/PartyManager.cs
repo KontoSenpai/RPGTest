@@ -93,9 +93,20 @@ namespace RPGTest.Managers
             return GetAllPartyMembers().Where(m => m != null).ToList();
         }
 
+        public int GetIndexOfFirstEmptyActiveSlot()
+        {
+            return m_partyMembers.ToList().Take(m_activePartyThreshold).ToList().FindIndex(c => c == null);
+        }
+
+        public int GetIndexOfFirstEmptyInactiveSlot()
+        {
+            var index = m_partyMembers.ToList().Skip(m_activePartyThreshold).ToList().FindIndex(c => c == null);
+            return index != -1 ? index + m_activePartyThreshold : index;
+        }
+
         public int GetIndexOfFirstExistingPartyMember()
         {
-            return GetAllPartyMembers().FindIndex(0, c => c != null);
+            return GetAllPartyMembers().FindIndex(c => c != null);
         }
 
         public int GetIndexofLastExistingPartyMember()
