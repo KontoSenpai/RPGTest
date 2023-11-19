@@ -24,7 +24,7 @@ namespace RPGTest.UI.Common
         [SerializeField] protected TextMeshProUGUI NoItemsDisplay;
 
         [HideInInspector]
-        public ItemSelectionHandler ItemSelectionChanged { get; set; }
+        public GameObjectSelectionHandler ItemSelectionChanged { get; set; }
 
         private List<UI_InventoryItem> m_guiItems = new List<UI_InventoryItem>(); // List of available guiItems.
 

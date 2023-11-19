@@ -93,9 +93,20 @@ namespace RPGTest.Managers
             return GetAllPartyMembers().Where(m => m != null).ToList();
         }
 
+        public int GetIndexOfFirstEmptyActiveSlot()
+        {
+            return m_partyMembers.ToList().Take(m_activePartyThreshold).ToList().FindIndex(c => c == null);
+        }
+
+        public int GetIndexOfFirstEmptyInactiveSlot()
+        {
+            var index = m_partyMembers.ToList().Skip(m_activePartyThreshold).ToList().FindIndex(c => c == null);
+            return index != -1 ? index + m_activePartyThreshold : index;
+        }
+
         public int GetIndexOfFirstExistingPartyMember()
         {
-            return GetAllPartyMembers().FindIndex(0, c => c != null);
+            return GetAllPartyMembers().FindIndex(c => c != null);
         }
 
         public int GetIndexofLastExistingPartyMember()
@@ -157,6 +168,12 @@ namespace RPGTest.Managers
             return false;
         }
 
+        public void SwapCharactersPosition(int index1, int index2)
+        {
+            PerformSwap(index1, index2);
+            FindAndFixHoles(m_activePartyThreshold);
+        }
+
         public void PerformSwap(int id1, int id2)
         {
             var member1 = m_partyMembers[id1];
@@ -164,6 +181,27 @@ namespace RPGTest.Managers
 
             m_partyMembers[id1] = member2;
             m_partyMembers[id2] = member1;
+        }
+
+        // Fix any potential holes between 2 members after a swap
+        // TODO : prevent inactive to fill holes in primary, and vice-versa
+        private void FindAndFixHoles(int startIndex)
+        {
+            var firstEmptyIndex = -1;
+            for (int i = startIndex; i < m_partyMembers.ToList().Count; i++)
+            {
+                TryGetPartyMemberAtIndex(i, out var member);
+                if (member == null && firstEmptyIndex == -1)
+                {
+                    firstEmptyIndex = i;
+                }
+                else if (member != null && firstEmptyIndex != -1)
+                {
+                    PerformSwap(firstEmptyIndex, i);
+                    i = firstEmptyIndex++;
+                    firstEmptyIndex = -1;
+                }
+            }
         }
 
         public bool TryChangeRow(int id)

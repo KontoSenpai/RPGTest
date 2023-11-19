@@ -15,4 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Gyms/Gym_Combat.unity
     guid: 457f029f635de5a44b5126e3bba2ebf7
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: be6ddb68419dc2946a8ffbb038255832, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 39839a98a2a488b4c85fb862a7c45a38, type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: 5ae583bfb3048c74ca8c6a9f93dfd639, type: 2}

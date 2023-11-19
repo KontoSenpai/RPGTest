@@ -13,9 +13,6 @@ namespace RPGTest.UI.Common
     public class UI_View_EffectTooltip : UI_View
     {
         [SerializeField]
-        private Canvas ReferenceCanvas;
-
-        [SerializeField]
         private UI_Control_Tooltip ToolTipGameObject;
 
         [SerializeField]
@@ -23,25 +20,6 @@ namespace RPGTest.UI.Common
 
         [SerializeField]
         private GameObject LayoutElement;
-
-        [SerializeField]
-        private float OffsetX = 0;
-        [SerializeField]
-        private float OffsetY = 0;
-
-        [SerializeField]
-        private Vector2 UpperAnchorMax = new Vector2(.0f, 1.0f);
-        [SerializeField]
-        private Vector2 UpperAnchorMin = new Vector2(.0f, 1.0f);
-        [SerializeField] 
-        private Vector2 UpperPivot = new Vector2(.0f, 1.0f);
-
-        [SerializeField]
-        private Vector2 LowerAnchorMax = new Vector2();
-        [SerializeField]
-        private Vector2 LowerAnchorMin = new Vector2();
-        [SerializeField]
-        private Vector2 LowerPivot = new Vector2(.0f, 0.0f);
 
         public override void Open()
         {
@@ -61,31 +39,6 @@ namespace RPGTest.UI.Common
             ResizeToContent();
 
             UI_List_Utils.RefreshHierarchy(LayoutElement, GetComponentsInChildren<UI_Control_Tooltip>().Where(t => t.gameObject.activeSelf).Select(t => t.gameObject).ToList());
-        }
-
-        public void MoveToGameObject(GameObject root, GameObject gameObject)
-        {
-            var itemTransform = gameObject.GetComponent<RectTransform>();
-            var tooltipTransform = GetComponent<RectTransform>();
-
-            var canvasPosition = ReferenceCanvas.GetComponent<RectTransform>().InverseTransformPoint(itemTransform.position);
-
-            if (canvasPosition.y < 0)
-            {
-                tooltipTransform.anchorMax = LowerAnchorMax;
-                tooltipTransform.anchorMin = LowerAnchorMin;
-                tooltipTransform.pivot = LowerPivot;
-            } else
-            {
-                tooltipTransform.anchorMax = UpperAnchorMax;
-                tooltipTransform.anchorMin = UpperAnchorMin;
-                tooltipTransform.pivot = UpperPivot;
-            }
-
-            canvasPosition.x += OffsetX;
-            canvasPosition.y += OffsetY;
-
-            tooltipTransform.anchoredPosition = canvasPosition;
         }
 
         public void Clear()

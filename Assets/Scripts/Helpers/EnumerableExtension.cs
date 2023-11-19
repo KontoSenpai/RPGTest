@@ -23,5 +23,11 @@ namespace RPGTest.Helpers
                 action(elem);
             }
         }
+
+        public static bool TryGet<T>(this IEnumerable<T> enumerable, Func<T,object> func, out T element)
+        {
+            element = enumerable.SingleOrDefault(e => func(e) != null);
+            return element != null;
+        }
     }
 }

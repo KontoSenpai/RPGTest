@@ -60,6 +60,11 @@ namespace RPGTest.UI.Common
             }
         }
 
+        public override void Clear()
+        {
+            m_resistances.ForEach(r => r.Clean());
+        }
+
         public override void Refresh()
         {
             throw new System.NotImplementedException();

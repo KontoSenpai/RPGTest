@@ -69,7 +69,11 @@ namespace RPGTest.UI.Common
 
         public PlayableCharacter GetPlayableCharacter()
         {
-            return (PlayableCharacter)m_entity;
+            if (m_entity != null)
+            {
+                return (PlayableCharacter)m_entity;
+            }
+            return null;
         }
 
         public PresetSlot GetPresetSlot()

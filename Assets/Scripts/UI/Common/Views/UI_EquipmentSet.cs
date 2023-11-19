@@ -28,7 +28,7 @@ namespace RPGTest.UI.Common
         public CancelActionHandler EquipActionCancelled { get; set; }
 
         [HideInInspector]
-        public ItemSelectionHandler SlotSelected { get; set; }
+        public GameObjectSelectionHandler SlotSelected { get; set; }
 
         [HideInInspector]
         public SlotSelectionHandler SlotConfirmed { get; set; }

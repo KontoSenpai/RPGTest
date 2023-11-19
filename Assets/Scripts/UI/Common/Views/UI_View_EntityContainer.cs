@@ -3,6 +3,7 @@ using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace RPGTest.UI.Common
 {
@@ -63,6 +64,15 @@ namespace RPGTest.UI.Common
             foreach (var component in components)
             {
                 component.Unpreview();
+            }
+        }
+
+        public void Clear()
+        {
+            var components = GetComponentsInChildren<UI_View_BaseEntityComponent>();
+            foreach (var component in components)
+            {
+                component.Clear();
             }
         }
     }
