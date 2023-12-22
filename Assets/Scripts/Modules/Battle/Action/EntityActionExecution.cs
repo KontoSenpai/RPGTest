@@ -99,20 +99,19 @@ namespace RPGTest.Modules.Battle.Action
         }
 
         private void ExecuteAttributeChange(EffectEvaluation effect, float coefficent)
-        {
-            Buff buffInstance = new Buff
+        {            
+            effect.Target.EffectsComponent.AddEffect(new Effect()
             {
                 Id = effect.Id,
                 Duration = effect.Duration,
-                RemovalType = effect.RemovalType
-            };
-            effect.Target.AddBuff(buffInstance);
+            });
+
             EffectApplied(effect, 0);
         }
 
         private void ExecuteCleanse(EffectEvaluation effect)
         {
-            effect.Target.RemoveBuffs(effect.Attribute, effect.RemovalType);
+            effect.Target.EffectsComponent.RemoveEffects(effect.RemovalType, effect.Attribute);
             effect.Target.RemoveStatusEffect(effect.StatusEffect, effect.RemovalType);
             EffectApplied(effect, 0);
         }

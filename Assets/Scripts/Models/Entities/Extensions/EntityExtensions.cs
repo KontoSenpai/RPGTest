@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RPGTest.Models.Entity
+namespace RPGTest.Models.Entity.Extensions
 {
-    public static class Extensions
+    public static class EntityExtensions
     { 
+        /// <summary>
+        /// Calculates the amount of damage the Entity will take from the caster for given effect
+        /// </summary>
+        /// <param name="entity">Recipient of the damage</param>
+        /// <param name="caster">Source of the damage</param>
+        /// <param name="effect">Effect that applies the damage</param>
+        /// <returns>Damage to be applied to the recipient</returns>
         public static int CalculateDamage(this Entity entity, Entity caster, Effect effect)
         {
             List<float> attackValues = new List<float>();
@@ -26,6 +33,13 @@ namespace RPGTest.Models.Entity
             return attackValue;
         }
 
+        /// <summary>
+        /// Calculates the amount of healing the Entity will receive from the caster for given effect
+        /// </summary>
+        /// <param name="entity">Recipient of the healing</param>
+        /// <param name="caster">Source of the healing</param>
+        /// <param name="effect">Effect that applies the healing</param>
+        /// <returns>Healing to be applied to the recipient</returns>
         public static int CalculateHealing(this Entity entity, Entity caster, Effect effect)
         {
             List<float> healValues = new List<float>();
@@ -72,42 +86,6 @@ namespace RPGTest.Models.Entity
                     Debug.LogError("Unsupported attribute");
                     return 0.0f;
             }
-        }
-
-        public static int GetFirstAliveIndex(this List<Enemy> entities)
-        {
-            for(int i = 0; i < entities.Count; i++)
-            {
-                if(entities[i].IsAlive)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        public static int GetLastAliveIndex(this List<Enemy> entities)
-        {
-            for (int i = entities.Count - 1; i > 0 ; i--)
-            {
-                if (entities[i].IsAlive)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        public static int GetIndexOfAlly(this List<PlayableCharacter> entities, PlayableCharacter ally)
-        {
-            for (int i = 0; i < entities.Count; i++)
-            {
-                if (entities[i].Id == ally.Id)
-                {
-                    return i;
-                }
-            }
-            return -1;
         }
     }
 }

@@ -1,60 +1,75 @@
 # PlayableCharacters.yaml
 PlayableCharacters:
-    - Id                      : PC0001
-      Name                    : Jon
-      Surname                 : Doe
-      Level                   : 1
-      DefaultAttack           : A0001
-      Abilities               :
+    - Id                   : PC0001
+      Name                 : Jon
+      Surname              : Doe
+      Level                : 1
+      DefaultAttack        : A0001
+      Abilities            :
         - AW0001
         - AW0002
         - AP0001
-      BaseAttributes          :
-        MaxHP                 : 30
-        MaxMP                 : 0
-        MaxStamina            : 10
-        Attack                : 8
-        Defense               : 7
-        Magic                 : 3
-        Resistance            : 4
-        Speed                 : 8
-      AttributesGrowth        :
-        MaxHP                 : 12
-        MaxMP                 : 0
-        MaxStamina            : 5
-        Attack                : 3
-        Defense               : 2
-        Magic                 : 1
-        Resistance            : 1
-        Speed                 : 1
-    
-    - Id                : PC0002
-      Name              : Kehra
-      Surname           : Stronil
-      Level             : 1
-      DefaultAttack       : A0001
-      Abilities         :
+      BaseAttributes       :
+        MaxHP           : 30
+        MaxMP           : 0
+        MaxStamina      : 10
+        Attack          : 8
+        Defense         : 7
+        Magic           : 3
+        Resistance      : 4
+        Speed           : 8
+      AttributesGrowth     :
+        MaxHP           : 12
+        MaxMP           : 0
+        MaxStamina      : 5
+        Attack          : 3
+        Defense         : 2
+        Magic           : 1
+        Resistance      : 1
+        Speed           : 1
+      ElementalResistances :
+        Fire               : 0.0
+      EquipmentComponent   :
+        CurrentPreset      : 0
+        Presets            :
+          - Preset         : 0
+            LeftHand       : E0001
+            RightHand      : E0001
+          - Preset         : 1
+            LeftHand       : E0003
+
+    - Id                   : PC0002
+      Name                 : Kehra
+      Surname              : Stronil
+      Level                : 1
+      DefaultAttack        : A0001
+      Abilities            :
         - AM0001
         - AM0002
-      BaseAttributes    :
-        MaxHP           : 24
-        MaxMP           : 12
-        MaxStamina      : 8
-        Attack          : 6
-        Defense         : 4
-        Magic           : 12
-        Resistance      : 9
-        Speed           : 10
-      AttributesGrowth  :
-        MaxHP           : 8
-        MaxMP           : 11
-        MaxStamina      : 4
-        Attack          : 1
-        Defense         : 1
-        Magic           : 4
-        Resistance      : 3
-        Speed           : 1
-
+      BaseAttributes       :
+        MaxHP              : 24
+        MaxMP              : 12
+        MaxStamina         : 8
+        Attack             : 6
+        Defense            : 4
+        Magic              : 12
+        Resistance         : 9
+        Speed              : 10
+      AttributesGrowth     :
+        MaxHP              : 8
+        MaxMP              : 11
+        MaxStamina         : 4
+        Attack             : 1
+        Defense            : 1
+        Magic              : 4
+        Resistance         : 3
+        Speed              : 1
+      EquipmentComponent   :
+        CurrentPreset      : 0
+        Presets            :
+          - Preset         : 0
+          - Preset         : 1
+          
     - Id                : PC0003
       Name              : Aba
       Surname           : Stronil
@@ -81,7 +96,12 @@ PlayableCharacters:
         Magic           : 4
         Resistance      : 3
         Speed           : 1
-
+      EquipmentComponent   :
+        CurrentPreset      : 0
+        Presets            :
+          - Preset         : 0
+          - Preset         : 1
+          
     - Id                : PC0004
       Name              : Tonral
       Surname           : Stronil
@@ -108,7 +128,12 @@ PlayableCharacters:
         Magic           : 4
         Resistance      : 3        
         Speed           : 1
-
+      EquipmentComponent   :
+        CurrentPreset      : 0
+        Presets            :
+          - Preset         : 0
+          - Preset         : 1
+          
     - Id                : PC0005
       Name              : Petoncle
       Surname           : Stronil
@@ -134,4 +159,9 @@ PlayableCharacters:
         Defense         : 1
         Magic           : 4
         Resistance      : 3
-        Speed           : 1 
+        Speed           : 1
+      EquipmentComponent   :
+        CurrentPreset      : 0
+        Presets            :
+          - Preset         : 0
+          - Preset         : 1

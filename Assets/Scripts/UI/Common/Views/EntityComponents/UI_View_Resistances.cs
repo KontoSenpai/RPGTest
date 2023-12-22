@@ -1,5 +1,5 @@
 ﻿using RPGTest.Enums;
-using RPGTest.Helpers;
+using RPGTest.Extensions;
 using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
@@ -85,9 +85,9 @@ namespace RPGTest.UI.Common
             }
         }
 
-        public override void Preview(PresetSlot preset, Slot slot, Equipment equipment)
+        public override void Preview(PresetSlot preset, EquipmentSlot slot, Equipment equipment)
         {
-            if (!m_character.EquipmentSlots.GetEquipmentPreset(preset).TryCopy(out var tempEquipments))
+            if (!m_character.EquipmentComponent.GetEquipmentSlots(preset).TryCopy(out var tempEquipments))
             {
                 return;
             }

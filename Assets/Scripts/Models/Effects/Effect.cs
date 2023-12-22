@@ -43,10 +43,6 @@ namespace RPGTest.Models.Effects
         public float Potency { get; set; } = 1.0f;
 
         public float IgnoreDefense { get; set; } = 0.0f;
-
-        public RemovalType RemovalType { get; set; } = RemovalType.None;
-
-        public int Duration { get; set; } = 0;
     }
 
     public class EffectCondition
@@ -81,6 +77,10 @@ namespace RPGTest.Models.Effects
         public Range PowerRange { get; set; } = new Range();
 
         public EffectCondition Conditions { get; set; } = new EffectCondition();
+
+        public int Duration { get; set; } = 0;
+
+        public RemovalType RemovalType { get; set; } = RemovalType.None;
 
         /// <summary>
         /// Determine if the given attributes are valid for any potential modifications

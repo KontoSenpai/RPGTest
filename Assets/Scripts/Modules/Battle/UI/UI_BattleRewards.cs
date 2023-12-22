@@ -1,14 +1,15 @@
-﻿using RPGTest.Inputs;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using RPGTest.Inputs;
 using RPGTest.Collectors;
+using RPGTest.UI;
+using RPGTest.Modules.Party;
 using RPGTest.Managers;
 using RPGTest.Models.Entity;
 using RPGTest.UI.Common;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
-using RPGTest.UI;
 
 namespace RPGTest.Modules.Battle.UI
 {
@@ -29,8 +30,6 @@ namespace RPGTest.Modules.Battle.UI
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
         private List<GameObject> m_allItems = new List<GameObject>();
-
-        protected Controls m_playerInput;
 
         private int m_expTick = 3;
 
@@ -64,7 +63,7 @@ namespace RPGTest.Modules.Battle.UI
                 if(ActiveMembers[i].activeInHierarchy)
                 {
                     var widgetScript = ActiveMembers[i].GetComponent<UI_View_EntityInfos>();
-                    widgetScript.Initialize(activeMembers[i], activeMembers[i].EquipmentSlots.CurrentPreset);
+                    widgetScript.Initialize(activeMembers[i], activeMembers[i].EquipmentComponent.CurrentPreset);
                     activeMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
                 }
             }
@@ -76,7 +75,7 @@ namespace RPGTest.Modules.Battle.UI
                 if (InactiveMembers[i].activeInHierarchy)
                 {
                     var widgetScript = InactiveMembers[i].GetComponent<UI_View_EntityInfos>();
-                    widgetScript.Initialize(inactiveMembers[i], inactiveMembers[i].EquipmentSlots.CurrentPreset);
+                    widgetScript.Initialize(inactiveMembers[i], inactiveMembers[i].EquipmentComponent.CurrentPreset);
                     inactiveMembers[i].PlayerExperienceChanged += widgetScript.RefreshExperience;
                 }
             }

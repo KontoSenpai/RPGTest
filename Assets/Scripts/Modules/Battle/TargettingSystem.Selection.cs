@@ -1,5 +1,6 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Models.Entity;
+using RPGTest.Modules.Battle.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -61,8 +62,8 @@ namespace RPGTest.Modules.Battle
 
         private void SelectSingleTarget(bool positive)
         {
-            var minIndex = m_targetEnemy ? m_enemies.GetFirstAliveIndex() : 0;
-            var maxIndex = m_targetEnemy ? m_enemies.GetLastAliveIndex() : m_party.Count - 1;
+            var minIndex = m_targetEnemy ? m_enemies.GetIndexOfFirstAliveEnemy() : 0;
+            var maxIndex = m_targetEnemy ? m_enemies.GetIndexOfLastAliveEnemy() : m_party.Count - 1;
             var newIndex = m_targetEnemy ? GetNextValidIndex(m_enemies, positive) : 
                 positive ? m_targetIndex + 1 : 
                 m_targetIndex - 1;
@@ -84,7 +85,7 @@ namespace RPGTest.Modules.Battle
             if (m_targetEnemy && m_targetSide && CanSelectSingleEnemy())
             {
                 m_targetSide = false;
-                m_targetIndex = m_enemies.GetFirstAliveIndex();
+                m_targetIndex = m_enemies.GetIndexOfFirstAliveEnemy();
 
             }
             // From all enemies to single ally
@@ -112,7 +113,7 @@ namespace RPGTest.Modules.Battle
             {
                 m_targetEnemy = true;
                 m_targetSide = false;
-                m_targetIndex = m_enemies.GetFirstAliveIndex();
+                m_targetIndex = m_enemies.GetIndexOfFirstAliveEnemy();
             }
             // From all allies to all enemies
             else if (!m_targetEnemy && CanSelectAllEnemies())

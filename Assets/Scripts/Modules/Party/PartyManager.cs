@@ -1,11 +1,10 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Models.Entity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RPGTest.Managers
+namespace RPGTest.Modules.Party
 {
     public class PartyManager : MonoBehaviour
     {

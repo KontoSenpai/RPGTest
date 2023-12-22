@@ -1,4 +1,5 @@
 ﻿using RPGTest.Enums;
+using RPGTest.Extensions;
 using RPGTest.Helpers;
 using RPGTest.Models;
 using RPGTest.Models.Entity;
@@ -45,9 +46,9 @@ namespace RPGTest.UI.Common
             InitializeInternal(m_character.GetAttributes(preset));
         }
 
-        public override void Preview(PresetSlot preset, Slot slot, Equipment equipment)
+        public override void Preview(PresetSlot preset, EquipmentSlot slot, Equipment equipment)
         {
-            if (!m_character.EquipmentSlots.GetEquipmentPreset(preset).TryCopy(out var tempEquipments))
+            if (!m_character.EquipmentComponent.GetEquipmentSlots(preset).TryCopy(out var tempEquipments))
             {
                 return;
             }

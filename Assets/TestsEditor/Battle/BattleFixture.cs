@@ -183,7 +183,7 @@ namespace TestsEditor.Battle
                     MaxHP = 50,
                     Attack = 10,
                     Magic = 40,
-                }
+                },
             };
             Character.CurrentHP = Character.BaseAttributes.MaxHP;
 

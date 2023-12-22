@@ -1,8 +1,9 @@
-﻿using RPGTest.Collectors;
+﻿using System.Collections.Generic;
+using RPGTest.Collectors;
 using RPGTest.Enums;
 using RPGTest.Managers;
 using RPGTest.Models.Items;
-using System.Collections.Generic;
+using RPGTest.Modules.Party;
 using UnityEngine;
 
 namespace RPGTest.UI.Common

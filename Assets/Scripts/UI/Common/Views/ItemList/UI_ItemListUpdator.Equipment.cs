@@ -47,7 +47,7 @@ namespace RPGTest.UI.Common
         {
             var guiCDs = new List<GameObject>();
             // Retrieve potential owners of equipment
-            Dictionary<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<Slot>>> equippedItems = GetEquipmentOwners(item.Id);
+            Dictionary<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<EquipmentSlot>>> equippedItems = GetEquipmentOwners(item.Id);
 
             var equipmentGuiItems = guiItems
                 .Where((i) => i.GetComponent<UI_InventoryItem>().Item.Id == item.Id)
@@ -88,7 +88,7 @@ namespace RPGTest.UI.Common
             return guiCDs;
         }
 
-        private List<GameObject> InstantiateEquipmentForOwner(Item item, KeyValuePair<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<Slot>>> owner)
+        private List<GameObject> InstantiateEquipmentForOwner(Item item, KeyValuePair<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<EquipmentSlot>>> owner)
         {
             var guiItems = new List<GameObject>();
             foreach (var equipmentSet in owner.Value)
@@ -118,9 +118,10 @@ namespace RPGTest.UI.Common
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private Dictionary<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<Slot>>> GetEquipmentOwners(string id)
+        private Dictionary<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<EquipmentSlot>>> GetEquipmentOwners(string id)
         {
-            return m_partyManager.GetAllExistingPartyMembers().Where(p => p.EquipmentSlots.IsEquiped(id)).ToDictionary(p => p, p => p.EquipmentSlots.GetEquipedSlots(id));
+            return m_partyManager.GetAllExistingPartyMembers()
+                .Where(p => p.EquipmentComponent.IsEquiped(id)).ToDictionary(p => p, p => p.EquipmentComponent.GetEquipedSlots(id));
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace RPGTest.UI.Common
         /// <param name="quantity"></param>
         /// <param name="equippedItems"></param>
         /// <returns></returns>
-        private int GetTotalUnequippedQuantity(int quantity, Dictionary<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<Slot>>> equippedItems)
+        private int GetTotalUnequippedQuantity(int quantity, Dictionary<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<EquipmentSlot>>> equippedItems)
         {
             var unequippedQuantity = quantity;
             foreach (var equippedItem in equippedItems)
@@ -150,7 +151,7 @@ namespace RPGTest.UI.Common
         /// <param name="equipmentGuiItems">Existing GuiItems with given item</param>
         /// <param name="createdGuiItems">GuiItems created within the method</param>
         /// <returns></returns>
-        private bool TryCreateGuiItemsForCharacter(Item item, KeyValuePair<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<Slot>>> owner, IEnumerable<UI_InventoryItem> equipmentGuiItems, out List<GameObject> createdGuiItems)
+        private bool TryCreateGuiItemsForCharacter(Item item, KeyValuePair<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<EquipmentSlot>>> owner, IEnumerable<UI_InventoryItem> equipmentGuiItems, out List<GameObject> createdGuiItems)
         {
             createdGuiItems = new List<GameObject>();
             if (StackOwnersOnSingleGuiItem)
@@ -204,7 +205,7 @@ namespace RPGTest.UI.Common
         /// <param name="guiItem"></param>
         /// <param name="equippedItems"></param>
         /// <returns></returns>
-        private bool TryDeleteGuiItems(Dictionary<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<Slot>>> owners, IEnumerable<UI_InventoryItem> equipmentGuiItems, out List<GameObject> deletedGuiItems)
+        private bool TryDeleteGuiItems(Dictionary<PlayableCharacter, Dictionary<PresetSlot, IEnumerable<EquipmentSlot>>> owners, IEnumerable<UI_InventoryItem> equipmentGuiItems, out List<GameObject> deletedGuiItems)
         {
             deletedGuiItems = new List<GameObject>();
             if (StackOwnersOnSingleGuiItem)

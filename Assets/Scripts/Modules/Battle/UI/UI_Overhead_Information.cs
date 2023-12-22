@@ -1,4 +1,4 @@
-﻿using RPGTest.Models;
+﻿using RPGTest.Models.Effects;
 using RPGTest.Models.Entity;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,12 +33,12 @@ namespace RPGTest.Modules.Battle.UI
             RefreshBuffPresentation(e.Debuffs, m_debuffWidgets, DebuffsList);
         }
 
-        private void RefreshBuffPresentation(List<Buff> buffs, List<GameObject> widgets, GameObject parent)
+        private void RefreshBuffPresentation(IEnumerable<Effect> effects, List<GameObject> widgets, GameObject parent)
         {
             // Remove widgets that don't have buff anymore
             for (int i = 0; i < widgets.Count; i++)
             {
-                var buff = buffs.FirstOrDefault(b => b.Id == widgets[i].GetComponent<UI_Combat_Buff_Widget>().GetId());
+                var buff = effects.FirstOrDefault(b => b.Id == widgets[i].GetComponent<UI_Combat_Buff_Widget>().GetId());
                 if (buff == null)
                 {
                     Destroy(widgets[i]);
@@ -46,21 +46,21 @@ namespace RPGTest.Modules.Battle.UI
                 }
                 else
                 {
-                    widgets[i].GetComponent<UI_Combat_Buff_Widget>().Initialize(buff);
+                    widgets[i].GetComponent<UI_Combat_Buff_Widget>().Initialize(null);
                 }
             }
 
             // Create new widgets
-            foreach (var buff in buffs)
+            foreach (var buff in effects)
             {
                 if (!widgets.Any(w => w.GetComponent<UI_Combat_Buff_Widget>().GetId() == buff.Id))
                 {
-                    InstantiateWidget(buff, parent);
+                    InstantiateWidget(null, parent);
                 }
             }
         }
 
-        private GameObject InstantiateWidget(Buff buff, GameObject parent)
+        private GameObject InstantiateWidget(Effect buff, GameObject parent)
         {
             var widget = Instantiate(BuffInstantiate);
             widget.transform.SetParent(parent.transform);

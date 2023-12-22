@@ -1,9 +1,10 @@
-﻿using RPGTest.Inputs;
-using RPGTest.Managers;
-using RPGTest.Models.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RPGTest.Inputs;
+using RPGTest.Managers;
+using RPGTest.Models.Entity;
+using RPGTest.Modules.Party;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;

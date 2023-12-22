@@ -1,0 +1,30 @@
+# SkillTrees.yaml
+# Contains all Skill trees used by PlayableCharacters
+
+SkillTrees:
+    - Id                    : ST0001 # Jon Skill Tree
+      Nodes                 :
+        - SN0001
+        - SN0002
+    - Id                    : ST0002 # Kehra Skill Tree
+      Nodes                 :
+        - SN0001
+        - SN0002
+        
+SkillNodes:
+    - Id                    : SN0001
+      Name                  : LSN00001 # Sword Mastery
+      Description           : LSD00001 # toto toto toto
+      MaxRank               : 5
+      Abilities             :
+        - Id                : AW0005
+      Effects               :
+        - Id                : EP0002
+          RequiredRank      : 4
+          
+    - Id                    : SN0002
+      Name                  : LSN00002 # Talend Leader
+      Description           : LSD00002 # Talented leader blah blah blah
+      MaxRank               : 3
+      Abilities             :
+        - AT0001

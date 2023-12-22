@@ -2,12 +2,13 @@
 using RPGTest.Controllers;
 using RPGTest.Enums;
 using RPGTest.Interactibles;
-using RPGTest.Models;
-using RPGTest.Models.Items;
-using RPGTest.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RPGTest.Models;
+using RPGTest.Models.Items;
+using RPGTest.Modules.Party;
+using RPGTest.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -235,9 +236,9 @@ namespace RPGTest.Managers
             // Equip equipments
             List<Item> removedEquipments;
             var partyMember = PartyManager.TryGetPartyMemberById("PC0001");
-            partyMember.TryEquip(PresetSlot.First, Enums.Slot.LeftHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
-            partyMember.TryEquip(PresetSlot.First, Enums.Slot.RightHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
-            partyMember.TryEquip(PresetSlot.Second, Enums.Slot.LeftHand, ItemCollector.TryGetEquipment("E0003"), out removedEquipments);            
+            // partyMember.EquipmentComponent.TryEquip(PresetSlot.First, Enums.EquipmentSlot.LeftHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
+            // partyMember.EquipmentComponent.TryEquip(PresetSlot.First, Enums.EquipmentSlot.RightHand, ItemCollector.TryGetEquipment("E0001"), out removedEquipments);
+            // partyMember.EquipmentComponent.TryEquip(PresetSlot.Second, Enums.EquipmentSlot.LeftHand, ItemCollector.TryGetEquipment("E0003"), out removedEquipments);            
         }
 
         private void InitManagerProperties()

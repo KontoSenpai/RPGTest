@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace RPGTest.Helpers
+namespace RPGTest.Extensions
 {
     public static class DictionaryExtension
     {
-
         public static bool TryCopy<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, out Dictionary<TKey, TValue> outDictionary)
         {
             outDictionary = new Dictionary<TKey, TValue>();

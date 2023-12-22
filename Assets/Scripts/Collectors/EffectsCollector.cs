@@ -7,22 +7,19 @@ namespace RPGTest.Collectors
 {
     public class EffectsCollector : ICollector
     {
-        static public string EffectsAsset = ((TextAsset)Resources.Load("Configs/Effects")).text;
+        public static string EffectsAsset = ((TextAsset)Resources.Load("Configs/Effects")).text;
 
         private static EffectsBank _bank;
         public static EffectsBank Bank => _bank ??= Collect<EffectsBank>(EffectsAsset);
 
         public static Effect TryGetEffect(string ID)
         {
-            if (Bank != null && Bank.Effects != null)
-            {
-                var item = Bank.Effects.SingleOrDefault(x => x.Id == ID);
-                return item;
-            }
-            return null;
+            if (Bank == null || Bank.Effects == null) return null;
+
+            return Bank.Effects.SingleOrDefault(x => x.Id == ID);
         }
 
-        public static List<Effect> TryGetEffects(List<string> IDs)
+        public static List<Effect> TryGetEffects(IEnumerable<string> IDs)
         {
             if (Bank != null && Bank.Effects != null)
             {

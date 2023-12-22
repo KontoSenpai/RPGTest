@@ -47,7 +47,7 @@ namespace RPGTest.UI.Common
             }
         }
 
-        public void SetOwnershipDisplay(List <PlayableCharacter> owners, PresetSlot preset, Slot slot)
+        public void SetOwnershipDisplay(List <PlayableCharacter> owners, PresetSlot preset, EquipmentSlot slot)
         {
             EquippedPanel.SetActive(owners.Any());
             if (!owners.Any())
@@ -100,7 +100,7 @@ namespace RPGTest.UI.Common
             }
         }
 
-        private void SetDetailledOwners(List<PlayableCharacter> owners, PresetSlot preset, Slot slot)
+        private void SetDetailledOwners(List<PlayableCharacter> owners, PresetSlot preset, EquipmentSlot slot)
         {
             if (owners.Count > 1)
             {

@@ -9,10 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace RPGTest.UI.Common
 {
@@ -35,10 +34,9 @@ namespace RPGTest.UI.Common
             RefreshInternal(character, preset);
         }
 
-        public void Refresh(EquipmentSlots equipmentSlots, PresetSlot slot)
+        public override void Refresh()
         {
-            var attributes = m_character.GetAttributes(m_preset);
-            RefreshInternal(m_character, attributes);
+            RefreshInternal(m_character);
         }
 
         public override void Clear()
@@ -54,17 +52,12 @@ namespace RPGTest.UI.Common
             }
         }
 
-        public override void Refresh()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void Refresh(PresetSlot preset)
         {
             throw new NotImplementedException();
         }
 
-        public override void Preview(PresetSlot preset, Slot slot, Equipment equipment)
+        public override void Preview(PresetSlot preset, EquipmentSlot slot, Equipment equipment)
         {
             throw new NotImplementedException();
         }
@@ -84,7 +77,8 @@ namespace RPGTest.UI.Common
         private void RefreshInternal(PlayableCharacter character, PresetSlot slot)
         {
             LevelValue.text = character.Level.ToString();
-            RefreshInternal(character, character.GetAttributes(slot));
+
+            RefreshInternal(character);
 
             var components = GetComponentsInChildren<UI_View_BaseEntityComponent>().Where(c => c.gameObject != this.gameObject);
             foreach (var component in components)
@@ -98,7 +92,7 @@ namespace RPGTest.UI.Common
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="attributes"></param>
-        private void RefreshInternal(Entity entity, Dictionary<Enums.Attribute, float> attributes)
+        private void RefreshInternal(Entity entity)
         {
             Name.text = entity.Name;
 

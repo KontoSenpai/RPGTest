@@ -1,4 +1,5 @@
 ﻿using RPGTest.Models;
+using RPGTest.Models.Effects;
 using RPGTest.Models.Entity;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace RPGTest.Modules.Battle.UI
             }
         }
 
-        private GameObject InstantiateBuff(Buff buff)
+        private GameObject InstantiateBuff(Effect buff)
         {
             var widget = Instantiate(BuffInstantiate);
             widget.transform.SetParent(BuffsList.transform);

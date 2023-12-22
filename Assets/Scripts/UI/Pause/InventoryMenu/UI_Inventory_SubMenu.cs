@@ -375,7 +375,7 @@ namespace RPGTest.UI.InventoryMenu
                     ItemUsageWindow.Open(m_pendingItemSelection.Item, m_pendingItemSelection.Owner, m_pendingItemSelection.Preset, m_pendingItemSelection.Slot);
                     break;
                 case MenuActionType.Unequip:
-                    m_pendingItemSelection.Owner.TryUnequip(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, out var removedEquipment);
+                    m_pendingItemSelection.Owner.EquipmentComponent.TryUnequip(m_pendingItemSelection.Preset, m_pendingItemSelection.Slot, out var removedEquipment);
                     break;
                 case MenuActionType.Discard:
                     ItemQuantityDialog.Open();

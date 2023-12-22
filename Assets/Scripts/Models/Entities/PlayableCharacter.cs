@@ -1,6 +1,5 @@
 ﻿using RPGTest.Collectors;
 using RPGTest.Enums;
-using RPGTest.Helpers;
 using RPGTest.Models.Items;
 using RPGTest.Models.Abilities;
 using RPGTest.Modules.Battle;
@@ -12,11 +11,11 @@ using System.Linq;
 using UnityEngine;
 using Attribute = RPGTest.Enums.Attribute;
 using RPGTest.Models.Effects;
+using RPGTest.Models.Entity.Components;
 
 namespace RPGTest.Models.Entity
 {
-    [Serializable]
-    public class PlayableCharacter : Entity
+    public partial class PlayableCharacter : Entity
     {
         #region variables
         private const int m_maxLevel = 99;
@@ -34,13 +33,15 @@ namespace RPGTest.Models.Entity
 
         public Attributes AttributesGrowth { get; set; }
 
-        public EquipmentSlots EquipmentSlots { get; set; } = new EquipmentSlots();
-
         public List<string> Abilities { get; set; } = new List<string>();
 
         public override Range PowerRange { get; set; }
 
         public bool LimitReady { get; set; }
+
+        public EquipmentComponent EquipmentComponent { get; set; } = new EquipmentComponent();
+
+        public SkillTreeComponent SkillTreeComponent { get; set; } = new SkillTreeComponent();
         #endregion
 
         public event WaitingForInputHandler PlayerInputRequested;
@@ -85,11 +86,6 @@ namespace RPGTest.Models.Entity
 
             selectedActions(m_selectedActions);
         }
-
-        public void ChangeEquipmentPreset()
-        {
-            this.EquipmentSlots.ChangePreset();
-        }
         #endregion
 
         public IEnumerable<(Ability ability, bool usable)> GetAbilitiesOfType(AbilityType type)
@@ -101,7 +97,7 @@ namespace RPGTest.Models.Entity
 
             if (type == AbilityType.Weapon)
             {
-                var preset = EquipmentSlots.GetCurrentWeaponPreset();
+                var preset = EquipmentComponent.GetWeaponSlots();
                 validAbilities = validAbilities.Where(a => a.ability.EquipmentRestrictrion.Any(e => preset.Where(x => x.Value != null).Select(x => x.Value.EquipmentType).Contains(e))).ToList();
             }
 
@@ -137,29 +133,12 @@ namespace RPGTest.Models.Entity
 
         public override float GetPowerRangeValue()
         {
-            var preset = EquipmentSlots.GetCurrentWeaponPreset();
-
-            preset.TryGetValue(Slot.LeftHand, out Equipment leftWeapon);
-            preset.TryGetValue(Slot.RightHand, out Equipment rightWeapon);
-
-            if (leftWeapon != null && rightWeapon != null)
+            var variance = EquipmentComponent.GetEquipmentPowerVariance();
+            if (variance == -1.0f)
             {
-                float leftValue = leftWeapon.PowerRange.GetValue();
-                float rightValue = rightWeapon.PowerRange.GetValue();
-                return (leftValue + rightValue) / 2;
+                return variance = base.GetPowerRangeValue();
             }
-            else if (leftWeapon != null && rightWeapon == null)
-            {
-                return leftWeapon.PowerRange.GetValue();
-            }
-            else if (rightWeapon != null && leftWeapon == null)
-            {
-                return rightWeapon.PowerRange.GetValue();
-            }
-            else
-            {
-                return base.GetPowerRangeValue();
-            }
+            return variance;
         }
 
         /// <summary>
@@ -211,36 +190,16 @@ namespace RPGTest.Models.Entity
             BaseAttributes.Resistance += AttributesGrowth.Defense;
         }
 
-        public bool TryEquip(PresetSlot preset, Slot slot, Equipment equipPiece, out List<Item> removedEquipments)
-        {
-            return EquipmentSlots.TryEquip(preset, slot, equipPiece, out removedEquipments);
-        }
-        
-        public bool TryUnequip(PresetSlot preset, Slot slot, out List<Item> removedEquipments)
-        {
-            EquipmentSlots.TryUnequip(preset, slot, out removedEquipments);
-            removedEquipments.WhereNotNull();
-            return removedEquipments.Any();
-        }
-
         #region Attributes
-        /// <summary>
-        /// Returns attribute values for current preset slot
-        /// </summary>
-        /// <returns>Values for each attributes</returns>
-        public override Dictionary<Attribute, float> GetAttributes()
-        {
-            return GetAttributes(EquipmentSlots.CurrentPreset);
-        }
 
         /// <summary>
         /// Returns attribute values for given preset
         /// </summary>
         /// <param name="preset">Preset Slot to use for equipment values</param>
         /// <returns>Values for each attributes</returns>
-        public Dictionary<Attribute, float> GetAttributes(PresetSlot preset)
+        public Dictionary<Attribute, float> GetAttributes(PresetSlot preset = PresetSlot.None)
         {
-            var equipmentPreset = EquipmentSlots.GetEquipmentPreset(preset);
+            var equipmentPreset = EquipmentComponent.GetEquipmentSlots(preset);
 
             return GetAttributes(equipmentPreset);
         }
@@ -251,7 +210,7 @@ namespace RPGTest.Models.Entity
         /// <param name="equipmentPreset">Map of equipment</param>
         /// <param name="attribute">Attribute to retrieve the value of</param>
         /// <returns>Value of desired attribute</returns>
-        public Dictionary<Attribute, float> GetAttributes(Dictionary<Slot, Equipment> equipmentPreset)
+        public Dictionary<Attribute, float> GetAttributes(Dictionary<EquipmentSlot, Equipment> equipmentPreset)
         {
             return GetAttributesInternal(equipmentPreset);
         }
@@ -261,7 +220,7 @@ namespace RPGTest.Models.Entity
         /// </summary>
         /// <param name="equipmentPreset">Map of equipment</param>
         /// <returns>Dicionary of attributes and values</returns>
-        private Dictionary<Attribute, float> GetAttributesInternal(Dictionary<Slot, Equipment> equipmentSlots)
+        private Dictionary<Attribute, float> GetAttributesInternal(Dictionary<EquipmentSlot, Equipment> equipmentSlots)
         {
             var attributes = base.GetAttributes();
 
@@ -344,7 +303,7 @@ namespace RPGTest.Models.Entity
         /// <returns>Value of desired attribute</returns>
         public override float GetAttribute(Attribute attribute)
         {
-            return GetAttribute(EquipmentSlots.CurrentPreset, attribute);
+            return GetAttribute(EquipmentComponent.CurrentPreset, attribute);
         }
 
         /// <summary>
@@ -355,7 +314,7 @@ namespace RPGTest.Models.Entity
         /// <returns>Value of desired attribute</returns>
         public float GetAttribute(PresetSlot preset, Attribute attribute)
         {
-            var equipmentPreset = EquipmentSlots.GetEquipmentPreset(preset);
+            var equipmentPreset = EquipmentComponent.GetEquipmentSlots(preset);
 
             return GetAttribute(equipmentPreset, attribute);
         }
@@ -366,7 +325,7 @@ namespace RPGTest.Models.Entity
         /// <param name="equipmentPreset">Map of equipment</param>
         /// <param name="attribute">Attribute to retrieve the value of</param>
         /// <returns>Value of desired attribute</returns>
-        public float GetAttribute(Dictionary<Slot, Equipment> equipmentPreset, Attribute attribute)
+        public float GetAttribute(Dictionary<EquipmentSlot, Equipment> equipmentPreset, Attribute attribute)
         {
             return GetAttributeInternal(equipmentPreset, attribute);
         }
@@ -377,7 +336,7 @@ namespace RPGTest.Models.Entity
         /// <param name="equipmentPreset">Map of equipment</param>
         /// <param name="attribute">Attribute to retrieve the value of</param>
         /// <returns>The value of the attribute, -1 if it doesn't exists</returns>
-        private float GetAttributeInternal(Dictionary<Slot, Equipment> equipmentSlots, Attribute attribute)
+        private float GetAttributeInternal(Dictionary<EquipmentSlot, Equipment> equipmentSlots, Attribute attribute)
         {
             if (GetAttributesInternal(equipmentSlots).TryGetValue(attribute, out float value))
             {
@@ -390,22 +349,14 @@ namespace RPGTest.Models.Entity
 
         #region Elemental Resistances
         /// <summary>
-        /// Retrieve the elemental resistance values for current preset slot
-        /// </summary>
-        /// <returns></returns>
-        public override Dictionary<Element, float> GetElementalResistances()
-        {
-            return GetElementalResistances(EquipmentSlots.CurrentPreset);
-        }
-
-        /// <summary>
         /// Retrieve Elemental Resistances for given preset
+        /// if 
         /// </summary>
         /// <param name="preset">Preset Slot to use for equipment value</param>
         /// <returns></returns>
-        public Dictionary<Element, float> GetElementalResistances(PresetSlot preset)
+        public Dictionary<Element, float> GetElementalResistances(PresetSlot preset = PresetSlot.None)
         {
-            var equipmentPreset = EquipmentSlots.GetEquipmentPreset(preset);
+            var equipmentPreset = EquipmentComponent.GetEquipmentSlots(preset);
 
             return GetElementalResistancesInternal(equipmentPreset);
         }
@@ -415,7 +366,7 @@ namespace RPGTest.Models.Entity
         /// </summary>
         /// <param name="equipmentPreset">Map of equipment</param>
         /// <returns></returns>
-        public Dictionary<Element, float> GetElementalResistances(Dictionary<Slot, Equipment> equipmentPreset)
+        public Dictionary<Element, float> GetElementalResistances(Dictionary<EquipmentSlot, Equipment> equipmentPreset)
         {
             return GetElementalResistancesInternal(equipmentPreset);
         }
@@ -425,7 +376,7 @@ namespace RPGTest.Models.Entity
         /// </summary>
         /// <param name="equipmentPreset">Map of equipment</param>
         /// <returns></returns>
-        private Dictionary<Element, float> GetElementalResistancesInternal(Dictionary<Slot, Equipment> equipmentSlots)
+        private Dictionary<Element, float> GetElementalResistancesInternal(Dictionary<EquipmentSlot, Equipment> equipmentSlots)
         {
             var elementalResitances = base.GetElementalResistances();
 
@@ -439,19 +390,14 @@ namespace RPGTest.Models.Entity
         #endregion
 
         #region Status Effect Resistances
-        public override Dictionary<StatusEffect, float> GetStatusEffectResistances()
-        {
-            return GetStatusEffectResistances(EquipmentSlots.CurrentPreset);
-        }
-
         /// <summary>
         /// Retrieve Status Resistances for given preset
         /// </summary>
         /// <param name="preset"></param>
         /// <returns></returns>
-        public Dictionary<StatusEffect, float> GetStatusEffectResistances(PresetSlot preset)
+        public Dictionary<StatusEffect, float> GetStatusEffectResistances(PresetSlot preset = PresetSlot.None)
         {
-            var equipmentPreset = EquipmentSlots.GetEquipmentPreset(preset);
+            var equipmentPreset = EquipmentComponent.GetEquipmentSlots(preset);
 
             return GetStatusEffectResistances(equipmentPreset);
         }
@@ -461,12 +407,14 @@ namespace RPGTest.Models.Entity
         /// </summary>
         /// <param name="preset"></param>
         /// <returns></returns>
-        public Dictionary<StatusEffect, float> GetStatusEffectResistances(Dictionary<Slot, Equipment> equipmentPreset)
+        public Dictionary<StatusEffect, float> GetStatusEffectResistances(Dictionary<EquipmentSlot, Equipment> equipmentPreset)
         {
             return GetStatusEffectResistancesInternal(equipmentPreset);
         }
+        #endregion
 
-        private Dictionary<StatusEffect, float> GetStatusEffectResistancesInternal(Dictionary<Slot, Equipment> equipmentSlots)
+        #region private methodes
+        private Dictionary<StatusEffect, float> GetStatusEffectResistancesInternal(Dictionary<EquipmentSlot, Equipment> equipmentSlots)
         {
             var statusEffectResistances = base.GetStatusEffectResistances();
 
@@ -477,9 +425,7 @@ namespace RPGTest.Models.Entity
 
             return statusEffectResistances;
         }
-        #endregion
 
-        #region private methodes
         private IEnumerator ActionChoice()
         {
             PlayerInputRequested(this, true);

@@ -49,7 +49,7 @@ namespace RPGTest.UI.Common
             }
         }
 
-        public void Preview(PresetSlot preset, Slot slot, Equipment equipment)
+        public void Preview(PresetSlot preset, EquipmentSlot slot, Equipment equipment)
         {
             var components = GetComponentsInChildren<UI_View_BaseEntityComponent>();
             foreach (var component in components)

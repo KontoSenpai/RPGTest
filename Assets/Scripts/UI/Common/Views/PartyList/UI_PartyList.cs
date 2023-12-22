@@ -263,7 +263,7 @@ namespace RPGTest.UI.Common
 
         private void UpdateControl(UI_View_EntityInfos control, PlayableCharacter character)
         {
-            control.Initialize(character, character?.EquipmentSlots?.CurrentPreset ?? Models.PresetSlot.First);
+            control.Initialize(character, character?.EquipmentComponent?.CurrentPreset ?? Models.PresetSlot.First);
         }
 
         /// <summary>

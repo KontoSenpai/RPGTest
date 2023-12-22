@@ -5,6 +5,7 @@ using RPGTest.Models;
 using RPGTest.Models.Entity;
 using RPGTest.Models.Items;
 using RPGTest.Modules.Battle.Action;
+using RPGTest.Modules.Party;
 using RPGTest.UI.Common;
 using RPGTest.UI.Utils;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace RPGTest.UI.InventoryMenu
         private PlayableCharacter m_owner; // character currently using selected piece of gear
 
         private PresetSlot m_preset; // preset where the piece of gear is currently equipped on current owner
-        private Slot m_slot; // slot where the piece of gear is equipped on current owner
+        private EquipmentSlot m_slot; // slot where the piece of gear is equipped on current owner
 
         private PartyManager m_partyManager => FindObjectOfType<GameManager>().PartyManager;
         private InventoryManager m_inventoryManager => FindObjectOfType<GameManager>().InventoryManager;
@@ -88,7 +89,7 @@ namespace RPGTest.UI.InventoryMenu
         /// <param name="item">Equipement to equip</param>
         /// <param name="owner">Character who is currently using the piece of equipment. Can be null</param>
         /// <param name="slot">Slot where the equipment is equipped on the current owner</param>
-        public void Open(Item item, PlayableCharacter owner, PresetSlot preset, Slot slot)
+        public void Open(Item item, PlayableCharacter owner, PresetSlot preset, EquipmentSlot slot)
         {
             base.Open();
             Initialize(item);
@@ -201,16 +202,16 @@ namespace RPGTest.UI.InventoryMenu
             UseItem(member);
         }
 
-        private void OnEquipAction_Performed(PresetSlot preset, Slot slot)
+        private void OnEquipAction_Performed(PresetSlot preset, EquipmentSlot slot)
         {
             var character = m_currentSelectedPartyMember.GetComponent<UI_View_EntityInfos>().GetPlayableCharacter();
 
             if (m_owner != null)
             {
-                m_owner.TryUnequip(m_preset, m_slot, out var _);
+                m_owner.EquipmentComponent.TryUnequip(m_preset, m_slot, out var _);
             }
 
-            character.TryEquip(preset, slot, (Equipment)m_item, out List<Item> changedItems);
+            character.EquipmentComponent.TryEquip(preset, slot, (Equipment)m_item, out List<Item> changedItems);
             changedItems.Add(m_item);
             if (ItemInteractionPerformed != null)
             {
@@ -345,7 +346,7 @@ namespace RPGTest.UI.InventoryMenu
 
             m_owner = null;
             m_preset = PresetSlot.None;
-            m_slot = Slot.None;
+            m_slot = EquipmentSlot.None;
         }
 
         private void RefreshEquipmentPanel(PlayableCharacter character)

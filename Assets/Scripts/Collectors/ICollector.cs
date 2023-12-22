@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using UnityEngine;
 using YamlDotNet.Serialization;
 
 namespace RPGTest.Collectors
@@ -12,6 +12,11 @@ namespace RPGTest.Collectors
             var deserializer = new Deserializer();
 
             return deserializer.Deserialize<T>(content);
+        }
+
+        public static T CollectJson<T>(string content)
+        {
+            return JsonUtility.FromJson<T>(content);
         }
     }
 }

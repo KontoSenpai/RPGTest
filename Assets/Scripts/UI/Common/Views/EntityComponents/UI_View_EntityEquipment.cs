@@ -22,7 +22,7 @@ namespace RPGTest.UI.Common
         {
             base.Initialize(character, preset);
 
-            Refresh(character.EquipmentSlots, preset);
+            Refresh(character, preset);
         }
 
         public void InitializeSelection()
@@ -30,13 +30,13 @@ namespace RPGTest.UI.Common
             Weapon.InitializeSelection();
         }
 
-        public void Refresh(EquipmentSlots equipmentSlots, PresetSlot slot)
+        public void Refresh(PlayableCharacter character, PresetSlot slot)
         {
-            var presetSlots = equipmentSlots.GetEquipmentPreset(slot);
+            var presetSlots = character.EquipmentComponent.GetEquipmentSlots(slot);
 
-            Weapon.Refresh(presetSlots[Slot.LeftHand], presetSlots[Slot.RightHand]);
-            Armor.Refresh(presetSlots[Slot.Head], presetSlots[Slot.Body]);
-            Accessories.Refresh(presetSlots[Slot.Accessory1], presetSlots[Slot.Accessory2]);
+            Weapon.Refresh(presetSlots[EquipmentSlot.LeftHand], presetSlots[EquipmentSlot.RightHand]);
+            Armor.Refresh(presetSlots[EquipmentSlot.Head], presetSlots[EquipmentSlot.Body]);
+            Accessories.Refresh(presetSlots[EquipmentSlot.Accessory1], presetSlots[EquipmentSlot.Accessory2]);
 
             Weapon.SetInteractable(Interactable);
             Armor.SetInteractable(Interactable);
@@ -60,7 +60,7 @@ namespace RPGTest.UI.Common
             throw new System.NotImplementedException();
         }
 
-        public override void Preview(PresetSlot preset, Slot slot, Equipment equipment)
+        public override void Preview(PresetSlot preset, EquipmentSlot slot, Equipment equipment)
         {
             throw new System.NotImplementedException();
         }

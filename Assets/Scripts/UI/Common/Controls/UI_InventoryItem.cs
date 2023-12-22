@@ -16,7 +16,7 @@ namespace RPGTest.UI.Common
 {
     public class ItemSelectionConfirmedEventArgs : EventArgs
     {
-        public ItemSelectionConfirmedEventArgs(Item item, PresetSlot preset = PresetSlot.None, Slot slot = Slot.None, PlayableCharacter owner = null)
+        public ItemSelectionConfirmedEventArgs(Item item, PresetSlot preset = PresetSlot.None, EquipmentSlot slot = EquipmentSlot.None, PlayableCharacter owner = null)
         {
             Item = item;
 
@@ -28,7 +28,7 @@ namespace RPGTest.UI.Common
         public Item Item { get; }
 
         public PresetSlot Preset { get; }
-        public Slot Slot { get; }
+        public EquipmentSlot Slot { get; }
         public PlayableCharacter Owner { get; }
     }
 
@@ -37,7 +37,7 @@ namespace RPGTest.UI.Common
         public Item Item { get; set; }
 
         public PresetSlot Preset { get; set; }
-        public Slot Slot { get; set; }
+        public EquipmentSlot Slot { get; set; }
         public PlayableCharacter Owner { get; set; }
     }
 
@@ -47,7 +47,7 @@ namespace RPGTest.UI.Common
         public event EventHandler<ItemSelectionConfirmedEventArgs> ItemSelectionConfirmed;
 
         public PresetSlot Preset = PresetSlot.None;
-        public Slot Slot = Slot.None;
+        public EquipmentSlot Slot = EquipmentSlot.None;
 
         [HideInInspector]
         public Item Item { get; private set; }
@@ -93,7 +93,7 @@ namespace RPGTest.UI.Common
         /// <param name="owner"></param>
         /// <param name="preset"></param>
         /// <param name="slot"></param>
-        public void InitializeForOwner(Item item, PlayableCharacter owner, PresetSlot preset, Slot slot)
+        public void InitializeForOwner(Item item, PlayableCharacter owner, PresetSlot preset, EquipmentSlot slot)
         {
             Owners = new List<PlayableCharacter>() { owner };
             Preset = preset;
@@ -132,7 +132,7 @@ namespace RPGTest.UI.Common
 
         public bool GetIsEquipped()
         {
-            return Slot != Slot.None;
+            return Slot != EquipmentSlot.None;
         }
 
         public void PreviewItem(Item item)

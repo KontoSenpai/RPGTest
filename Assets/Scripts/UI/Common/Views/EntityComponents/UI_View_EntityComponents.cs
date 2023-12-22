@@ -43,7 +43,7 @@ namespace RPGTest.UI.Common
 
         public abstract void Refresh(PresetSlot preset);
 
-        public abstract void Preview(PresetSlot preset, Slot slot, Equipment equipment);
+        public abstract void Preview(PresetSlot preset, EquipmentSlot slot, Equipment equipment);
 
         public abstract void Unpreview();
     }

@@ -1,4 +1,6 @@
-﻿using RPGTest.Collectors;
+﻿using System.Linq;
+using System.Text;
+using RPGTest.Collectors;
 using RPGTest.Controllers;
 using RPGTest.Interactibles;
 using RPGTest.Managers;
@@ -7,10 +9,9 @@ using RPGTest.Models.Effects;
 using RPGTest.Models.Entity;
 using RPGTest.Modules.Battle.Action;
 using RPGTest.Modules.Battle.UI;
+using RPGTest.Modules.Party;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace RPGTest.Modules.Battle
@@ -192,7 +193,7 @@ namespace RPGTest.Modules.Battle
                             if (!m_waitingForUserInput && !m_actionQueue.Any(x => x.Caster.Name == entity.Name) && entity.FillATB())
                             {
                                 entity.RefillResources();
-                                entity.ReduceStatusDurations();
+                                entity.EffectsComponent.TickDownEffects();
                                 StartCoroutine(entity.SelectAction(this, m_party, m_enemies, selectedActions => QueueActionSequence(selectedActions)));
                             }
                         }

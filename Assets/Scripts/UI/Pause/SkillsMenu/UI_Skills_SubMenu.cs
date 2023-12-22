@@ -1,5 +1,6 @@
-﻿using RPGTest.Managers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using RPGTest.Managers;
+using RPGTest.Modules.Party;
 using UnityEngine;
 
 namespace RPGTest.UI

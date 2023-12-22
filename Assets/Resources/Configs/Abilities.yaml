@@ -80,19 +80,100 @@ Abilities:
         - SingleEnemy
       CastCost              :
         Stamina             : 8
+    # Sword thurst
+    - Id                    : AW0005.1
+      Name                  : Sword thurst
+      Description           : Attack an enemy with the tip of a blade
+      AbilityType           : Weapon
+      EquipmentRestrictrion : 
+        - Short_Sword
+      Effects               :
+        - EW0001.1
+      TargetTypes           :
+        - SingleEnemy
+      CastCost              :
+        Stamina             : 5
+    - Id                    : AW0005.2
+      Name                  : Sword thurst
+      Description           : Attack an enemy with the tip of a blade
+      AbilityType           : Weapon
+      EquipmentRestrictrion : 
+        - Short_Sword
+      Effects               :
+        - EW0001.1
+      TargetTypes           :
+        - SingleEnemy
+      CastCost              :
+        Stamina             : 5
+    - Id                    : AW0005.3
+      Name                  : Sword thurst
+      Description           : Attack an enemy with the tip of a blade
+      AbilityType           : Weapon
+      EquipmentRestrictrion : 
+        - Short_Sword
+      Effects               :
+        - EW0001.1
+      TargetTypes           :
+        - SingleEnemy
+      CastCost              :
+        Stamina             : 5
+    - Id                    : AW0005.4
+      Name                  : Sword thurst
+      Description           : Attack an enemy with the tip of a blade
+      AbilityType           : Weapon
+      EquipmentRestrictrion : 
+        - Short_Sword
+      Effects               :
+        - EW0001.1
+      TargetTypes           :
+        - SingleEnemy
+      CastCost              :
+        Stamina             : 5
+    - Id                    : AW0005.5
+      Name                  : Sword thurst
+      Description           : Attack an enemy with the tip of a blade
+      AbilityType           : Weapon
+      EquipmentRestrictrion : 
+        - Short_Sword
+      Effects               :
+        - EW0001.1
+      TargetTypes           :
+        - SingleEnemy
+      CastCost              :
+        Stamina             : 5
 
 #Talent Abilities 
-    - Id                    : AP0001
+    - Id                    : AT0001
       Name                  : Ralying Cry
       Description           : Shout loudly to raly allies and increase their defense
       AbilityType           : Talent
+      Ranks                 :
+        - Effects           :
+            - ET0001.1
+          TargetTypes       :
+            - Allies
+          CastCost          :
+          Stamina           : 4
+        - Effects           :
+            - ET0001.2
+          TargetTypes       :
+            - Allies
+          CastCost          :
+          Stamina           : 4
+        - Effects           :
+            - ET0001.3
+          TargetTypes       :
+            - Allies
+          CastCost          :
+          Stamina           : 4
       Effects               :
         - ET0001.1
       TargetTypes           :
         - Allies
       CastCost              :
         Stamina             : 4
-    - Id                    : AP0002
+
+    - Id                    : AT0002
       Name                  : Fleet of foot
       Description           : Take up a stance to react more quickly
       AbilityType           : Talent
@@ -102,7 +183,8 @@ Abilities:
         - Allies
       CastCost              :
         Stamina             : 4
-    - Id                    : AP0003
+
+    - Id                    : AT0003
       Name                  : Sharpen Blade 
       Description           : 
       AbilityType           : Talent

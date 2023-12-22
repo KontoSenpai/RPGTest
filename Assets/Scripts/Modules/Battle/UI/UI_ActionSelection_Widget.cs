@@ -112,7 +112,7 @@ namespace RPGTest.Modules.Battle.UI
         {
             if(!m_waitingForTarget && m_isActive)
             {
-                m_playableCharacter.EquipmentSlots.ChangePreset();
+                m_playableCharacter.EquipmentComponent.ChangePreset();
             }
         }
 

@@ -9,6 +9,7 @@ using RPGTest.UI.Common;
 using RPGTest.Enums;
 using RPGTest.Models.Items;
 using System.Linq;
+using RPGTest.Modules.Party;
 
 namespace RPGTest.UI.EquipmentMenu
 {
@@ -163,18 +164,18 @@ namespace RPGTest.UI.EquipmentMenu
 
             switch(component.Slot)
             {
-                case Slot.LeftHand:
-                case Slot.RightHand:
+                case EquipmentSlot.LeftHand:
+                case EquipmentSlot.RightHand:
                     ItemListFilters.Filter(ItemFilterCategory.Weapons);
                     break;
-                case Slot.Head:
+                case EquipmentSlot.Head:
                     ItemListFilters.Filter(ItemFilterCategory.Head);
                     break;
-                case Slot.Body:
+                case EquipmentSlot.Body:
                     ItemListFilters.Filter(ItemFilterCategory.Body);
                     break;
-                case Slot.Accessory1:
-                case Slot.Accessory2:
+                case EquipmentSlot.Accessory1:
+                case EquipmentSlot.Accessory2:
                     ItemListFilters.Filter(ItemFilterCategory.Accessories);
                     break;
                 default:
@@ -189,7 +190,7 @@ namespace RPGTest.UI.EquipmentMenu
             }
         }
 
-        private void OnEquipmentSlot_Confirmed(PresetSlot preset, Slot slot)
+        private void OnEquipmentSlot_Confirmed(PresetSlot preset, EquipmentSlot slot)
         {
             ChangeStage(ActionStage.SelectItem);
         }
@@ -246,11 +247,11 @@ namespace RPGTest.UI.EquipmentMenu
         {
             if (e.Owner != null)
             {
-                e.Owner.TryUnequip(EquipmentSet.Preset, e.Slot, out var _);
+                e.Owner.EquipmentComponent.TryUnequip(EquipmentSet.Preset, e.Slot, out var _);
             }
 
             var character = CharacterFilters.GetCurrentCharacter();
-            character.TryEquip(EquipmentSet.Preset, EquipmentSet.Slot, (Equipment)e.Item, out var removedEquipments);
+            character.EquipmentComponent.TryEquip(EquipmentSet.Preset, EquipmentSet.Slot, (Equipment)e.Item, out var removedEquipments);
 
             EquipmentSet.Refresh();
 
@@ -339,7 +340,7 @@ namespace RPGTest.UI.EquipmentMenu
                 FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
                 ItemList.ChangeItemsSelectability(false);
                 CharacterFilters.Select();
-                EquipmentSet.Select(EquipmentSet?.Slot ?? Slot.None);
+                EquipmentSet.Select(EquipmentSet?.Slot ?? EquipmentSlot.None);
                 EntityComponentsContainer.Unpreview();
             }
             else if (stage == ActionStage.SelectItem)

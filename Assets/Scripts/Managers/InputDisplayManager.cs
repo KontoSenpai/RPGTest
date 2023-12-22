@@ -17,7 +17,7 @@ namespace RPGTest.Managers
 
     public class InputDisplay
     {
-        public List<Texture2D[]> Icons = new List<Texture2D[]>();
+        public List<Texture2D[]> Icons = new();
 
         public string Description;
     }

@@ -1,6 +1,7 @@
-﻿using RPGTest.Enums;
+﻿using System.Collections.Generic;
+using RPGTest.Enums;
 using RPGTest.Models.Entity;
-using System.Collections.Generic;
+using RPGTest.Models.Entity.Extensions;
 using UnityEngine;
 
 namespace RPGTest.Models.Effects
@@ -136,8 +137,8 @@ namespace RPGTest.Models.Effects
                     Target = target,
                     Attribute = Potency.Attribute,
                     Value = debuff ? value * -1 : value,
-                    Duration = Potency.Duration,
-                    RemovalType = Potency.RemovalType,
+                    Duration = Duration,
+                    RemovalType = RemovalType,
                 });
             }
             return effectEvaluations;
@@ -158,7 +159,7 @@ namespace RPGTest.Models.Effects
                     ActionType = m_actionType,
                     EffectType = Type,
                     Target = target,
-                    RemovalType = Potency.RemovalType,
+                    RemovalType = RemovalType,
                     Attribute = Potency.Attribute,
                     StatusEffect = Potency.StatusEffect,
                 });

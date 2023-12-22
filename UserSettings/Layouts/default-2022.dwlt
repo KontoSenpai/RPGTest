@@ -8,6 +8,54 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12004, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PixelRect:
+    serializedVersion: 2
+    x: 1030
+    y: 309
+    width: 1319
+    height: 777
+  m_ShowMode: 0
+  m_Title: Test Runner
+  m_RootView: {fileID: 5}
+  m_MinSize: {x: 100, y: 121}
+  m_MaxSize: {x: 4000, y: 4021}
+  m_Maximized: 0
+--- !u!114 &2
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12004, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PixelRect:
+    serializedVersion: 2
+    x: 2154
+    y: 1042
+    width: 400
+    height: 321
+  m_ShowMode: 0
+  m_Title: Background Tasks
+  m_RootView: {fileID: 7}
+  m_MinSize: {x: 100, y: 91}
+  m_MaxSize: {x: 4000, y: 4021}
+  m_Maximized: 0
+--- !u!114 &3
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12004, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
@@ -20,11 +68,111 @@ MonoBehaviour:
     height: 1349
   m_ShowMode: 4
   m_Title: Game
-  m_RootView: {fileID: 4}
+  m_RootView: {fileID: 10}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 1
---- !u!114 &2
+--- !u!114 &4
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: TestRunnerWindow
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1319
+    height: 777
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 20}
+  m_Panes:
+  - {fileID: 20}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &5
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children:
+  - {fileID: 4}
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1319
+    height: 777
+  m_MinSize: {x: 100, y: 121}
+  m_MaxSize: {x: 4000, y: 4021}
+  vertical: 0
+  controlID: 304
+--- !u!114 &6
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: ProgressWindow
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 400
+    height: 321
+  m_MinSize: {x: 100, y: 70}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 21}
+  m_Panes:
+  - {fileID: 21}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &7
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children:
+  - {fileID: 6}
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 400
+    height: 321
+  m_MinSize: {x: 100, y: 91}
+  m_MaxSize: {x: 4000, y: 4021}
+  vertical: 0
+  controlID: 170
+--- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,16 +189,16 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 561
-    height: 120
+    width: 461
+    height: 130
   m_MinSize: {x: 101, y: 121}
   m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 15}
+  m_ActualView: {fileID: 23}
   m_Panes:
-  - {fileID: 15}
+  - {fileID: 23}
   m_Selected: 0
   m_LastSelected: 0
---- !u!114 &3
+--- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,19 +211,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 2}
-  - {fileID: 12}
+  - {fileID: 8}
+  - {fileID: 18}
   m_Position:
     serializedVersion: 2
-    x: 1999
+    x: 2099
     y: 0
-    width: 561
-    height: 892
+    width: 461
+    height: 932
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 77
---- !u!114 &4
+  controlID: 53
+--- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,9 +236,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 5}
-  - {fileID: 7}
-  - {fileID: 6}
+  - {fileID: 11}
+  - {fileID: 13}
+  - {fileID: 12}
   m_Position:
     serializedVersion: 2
     x: 0
@@ -103,7 +251,7 @@ MonoBehaviour:
   m_TopViewHeight: 30
   m_UseBottomView: 1
   m_BottomViewHeight: 20
---- !u!114 &5
+--- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,7 +273,7 @@ MonoBehaviour:
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
   m_LastLoadedLayoutName: 
---- !u!114 &6
+--- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,7 +294,7 @@ MonoBehaviour:
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
---- !u!114 &7
+--- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,7 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 8}
+  - {fileID: 14}
   m_Position:
     serializedVersion: 2
     x: 0
@@ -169,8 +317,8 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 150}
   m_MaxSize: {x: 24288, y: 24288}
   vertical: 0
-  controlID: 81
---- !u!114 &8
+  controlID: 50
+--- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,8 +331,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 9}
-  - {fileID: 13}
+  - {fileID: 15}
+  - {fileID: 19}
   m_Position:
     serializedVersion: 2
     x: 0
@@ -194,8 +342,8 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 150}
   m_MaxSize: {x: 24288, y: 24288}
   vertical: 1
-  controlID: 82
---- !u!114 &9
+  controlID: 51
+--- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,20 +356,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 10}
-  - {fileID: 11}
-  - {fileID: 3}
+  - {fileID: 16}
+  - {fileID: 17}
+  - {fileID: 9}
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
     width: 2560
-    height: 892
+    height: 932
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 40
---- !u!114 &10
+  controlID: 52
+--- !u!114 &16
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -238,16 +386,16 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 427
-    height: 892
+    width: 316
+    height: 932
   m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 18}
+  m_ActualView: {fileID: 26}
   m_Panes:
-  - {fileID: 18}
+  - {fileID: 26}
   m_Selected: 0
   m_LastSelected: 1
---- !u!114 &11
+--- !u!114 &17
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,26 +405,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GameView
+  m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 427
+    x: 316
     y: 0
-    width: 1572
-    height: 892
+    width: 1783
+    height: 932
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 20}
+  m_ActualView: {fileID: 27}
   m_Panes:
-  - {fileID: 19}
-  - {fileID: 20}
-  - {fileID: 16}
-  - {fileID: 14}
-  m_Selected: 1
-  m_LastSelected: 0
---- !u!114 &12
+  - {fileID: 27}
+  - {fileID: 28}
+  - {fileID: 24}
+  - {fileID: 22}
+  m_Selected: 0
+  m_LastSelected: 1
+--- !u!114 &18
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -292,17 +440,17 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 120
-    width: 561
-    height: 772
+    y: 130
+    width: 461
+    height: 802
   m_MinSize: {x: 276, y: 121}
   m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 17}
+  m_ActualView: {fileID: 25}
   m_Panes:
-  - {fileID: 17}
+  - {fileID: 25}
   m_Selected: 0
   m_LastSelected: 0
---- !u!114 &13
+--- !u!114 &19
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -318,18 +466,704 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 892
+    y: 932
     width: 2560
-    height: 407
+    height: 367
   m_MinSize: {x: 100, y: 121}
   m_MaxSize: {x: 4000, y: 4021}
-  m_ActualView: {fileID: 22}
+  m_ActualView: {fileID: 30}
   m_Panes:
-  - {fileID: 21}
-  - {fileID: 22}
+  - {fileID: 29}
+  - {fileID: 30}
   m_Selected: 1
   m_LastSelected: 0
---- !u!114 &14
+--- !u!114 &20
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 13401, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Test Runner
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 1030
+    y: 309
+    width: 1319
+    height: 756
+  m_SerializedDataModeController:
+    m_DataMode: 0
+    m_PreferredDataMode: 0
+    m_SupportedDataModes: 
+    isAutomatic: 1
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
+    m_OverlaysVisible: 1
+  m_Spl:
+    ID: 334
+    splitterInitialOffset: 0
+    currentActiveSplitter: -1
+    realSizes:
+    - 514
+    - 172
+    relativeSizes:
+    - 0.75
+    - 0.25
+    minSizes:
+    - 32
+    - 32
+    maxSizes:
+    - 0
+    - 0
+    lastTotalSize: 686
+    splitSize: 6
+    xOffset: 0
+    m_Version: 1
+    oldRealSizes: 
+    oldMinSizes: 
+    oldMaxSizes: 
+    oldSplitSize: 0
+  m_TestTypeToolbarIndex: 1
+  m_PlayModeTestListGUI:
+    m_Window: {fileID: 0}
+    m_NewResultList: []
+    m_ResultText: 
+    m_ResultStacktrace: 
+    m_TestListState:
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 
+      m_RenameOverlay:
+        m_UserAcceptedRename: 0
+        m_Name: 
+        m_OriginalName: 
+        m_EditFieldRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        m_UserData: 0
+        m_IsWaitingForDelay: 0
+        m_IsRenaming: 0
+        m_OriginalEventType: 11
+        m_IsRenamingFilename: 0
+        m_ClientGUIView: {fileID: 0}
+      m_SearchString: 
+    m_TestRunnerUIFilter:
+      PassedHidden: 0
+      FailedHidden: 0
+      NotRunHidden: 0
+      m_SearchString: 
+      selectedCategoryMask: 0
+      availableCategories: []
+    m_SelectedOption: 0
+  m_EditModeTestListGUI:
+    m_Window: {fileID: 20}
+    m_NewResultList:
+    - id: 1000
+      uniqueId: '[Test Build][suite]'
+      name: Test Build
+      fullName: Test Build
+      resultStatus: 2
+      duration: 0.0451197
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 
+      parentUniqueId: 
+    - id: 1014
+      uniqueId: '[TestsEditor.dll][suite]'
+      name: TestsEditor.dll
+      fullName: X:/Unity Projects/RPGTest/Library/ScriptAssemblies/TestsEditor.dll
+      resultStatus: 2
+      duration: 0.022184
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1000
+      parentUniqueId: '[Test Build][suite]'
+    - id: 1015
+      uniqueId: TestsEditor.dll/[TestsEditor][suite]
+      name: TestsEditor
+      fullName: TestsEditor
+      resultStatus: 2
+      duration: 0.0213432
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1014
+      parentUniqueId: '[TestsEditor.dll][suite]'
+    - id: 1016
+      uniqueId: TestsEditor.dll/TestsEditor/[TestsEditor][TestsEditor.Battle][suite]
+      name: Battle
+      fullName: TestsEditor.Battle
+      resultStatus: 2
+      duration: 0.0209692
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1015
+      parentUniqueId: TestsEditor.dll/[TestsEditor][suite]
+    - id: 1001
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/[TestsEditor][TestsEditor.Battle.Buffs][suite]
+      name: Buffs
+      fullName: TestsEditor.Battle.Buffs
+      resultStatus: 2
+      duration: 0.0573108
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1016
+      parentUniqueId: TestsEditor.dll/TestsEditor/[TestsEditor][TestsEditor.Battle][suite]
+    - id: 1004
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/Buffs/[TestsEditor][TestsEditor.Battle.Buffs.Add_Buff_Should_Become_New_Highest]
+      name: Add_Buff_Should_Become_New_Highest
+      fullName: TestsEditor.Battle.Buffs.Add_Buff_Should_Become_New_Highest
+      resultStatus: 2
+      duration: 0.0332682
+      messages: "YamlDotNet.Core.YamlException : (Line: 94, Col: 9, Idx: 2729) -
+        (Line: 94, Col: 9, Idx: 2729): Exception during deserialization\r\n  ---->
+        System.Runtime.Serialization.SerializationException : Property 'Duration'
+        not found on type 'RPGTest.Models.Effects.EffectPotency'."
+      output: 
+      stacktrace: "  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x000a4] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.AliasValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x0006e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer+<>c__DisplayClass3_0.<DeserializeValue>b__0
+        (YamlDotNet.Core.IParser r, System.Type t) [0x00000] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.NodeDeserializers.ObjectNodeDeserializer.YamlDotNet.Serialization.INodeDeserializer.Deserialize
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, System.Func`3[T1,T2,TResult]
+        nestedObjectDeserializer, System.Object& value) [0x0006b] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x00088] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.AliasValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x0006e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer+<>c__DisplayClass3_0.<DeserializeValue>b__0
+        (YamlDotNet.Core.IParser r, System.Type t) [0x00000] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.NodeDeserializers.CollectionNodeDeserializer.DeserializeHelper
+        (System.Type tItem, YamlDotNet.Core.IParser parser, System.Func`3[T1,T2,TResult]
+        nestedObjectDeserializer, System.Collections.IList result, System.Boolean
+        canUpdate) [0x00027] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.NodeDeserializers.CollectionNodeDeserializer.YamlDotNet.Serialization.INodeDeserializer.Deserialize
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, System.Func`3[T1,T2,TResult]
+        nestedObjectDeserializer, System.Object& value) [0x000a6] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x00088] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.AliasValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x0006e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer+<>c__DisplayClass3_0.<DeserializeValue>b__0
+        (YamlDotNet.Core.IParser r, System.Type t) [0x00000] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.NodeDeserializers.ObjectNodeDeserializer.YamlDotNet.Serialization.INodeDeserializer.Deserialize
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, System.Func`3[T1,T2,TResult]
+        nestedObjectDeserializer, System.Object& value) [0x0006b] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x00088] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.AliasValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x0006e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.Deserializer.Deserialize
+        (YamlDotNet.Core.IParser parser, System.Type type) [0x0004e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.Deserializer.Deserialize (System.IO.TextReader
+        input, System.Type type) [0x00007] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.Deserializer.Deserialize[T] (System.String
+        input) [0x00007] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at RPGTest.Collectors.ICollector.Collect[T]
+        (System.String content) [0x00007] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Collectors\\ICollector.cs:14
+        \r\n  at RPGTest.Collectors.EffectsCollector.get_Bank () [0x00000] in X:\\Unity
+        Projects\\RPGTest\\Assets\\Scripts\\Collectors\\EffectsCollector.cs:13 \r\n 
+        at RPGTest.Collectors.EffectsCollector.TryGetEffects (System.Collections.Generic.IEnumerable`1[T]
+        IDs) [0x0000e] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Collectors\\EffectsCollector.cs:27
+        \r\n  at RPGTest.Models.Entity.Components.EffectsComponent.GetEffects ()
+        [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Components\\EffectsComponent.cs:34
+        \r\n  at RPGTest.Models.Entity.Extensions.EffectsComponentExtensions.GetHighestStatChange
+        (RPGTest.Models.Entity.Components.EffectsComponent component, RPGTest.Enums.EffectType
+        type, RPGTest.Enums.Attribute attribute) [0x00015] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Extensions\\EffectsComponentExtensions.cs:23
+        \r\n  at RPGTest.Models.Entity.Extensions.EffectsComponentExtensions.GetHighestAttributeBuff
+        (RPGTest.Models.Entity.Components.EffectsComponent component, RPGTest.Enums.Attribute
+        attribute) [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Extensions\\EffectsComponentExtensions.cs:13
+        \r\n  at TestsEditor.Battle.Buffs.Add_Buff_Should_Become_New_Highest () [0x00001]
+        in X:\\Unity Projects\\RPGTest\\Assets\\TestsEditor\\Battle\\Buffs.cs:29
+        \r\n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
+        at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
+        invokeAttr, System.Reflection.Binder binder, System.Object[] parameters,
+        System.Globalization.CultureInfo culture) [0x0006a] in <605bf8b31fcb444b85176da963870aa7>:0
+        \r\n--SerializationException\r\n  at YamlDotNet.Serialization.TypeInspectors.TypeInspectorSkeleton.GetProperty
+        (System.Type type, System.Object container, System.String name, System.Boolean
+        ignoreUnmatched) [0x00069] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n 
+        at YamlDotNet.Serialization.NodeDeserializers.ObjectNodeDeserializer.YamlDotNet.Serialization.INodeDeserializer.Deserialize
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, System.Func`3[T1,T2,TResult]
+        nestedObjectDeserializer, System.Object& value) [0x0003e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x00039] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 "
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/[TestsEditor][TestsEditor.Battle.Buffs][suite]
+    - id: 1003
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/Buffs/[TestsEditor][TestsEditor.Battle.Buffs.Add_Buff_Should_Succeed][suite]
+      name: Add_Buff_Should_Succeed
+      fullName: TestsEditor.Battle.Buffs.Add_Buff_Should_Succeed
+      resultStatus: 2
+      duration: 0.0118296
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1001
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/[TestsEditor][TestsEditor.Battle.Buffs][suite]
+    - id: 1002
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/Buffs/Add_Buff_Should_Succeed/[TestsEditor][TestsEditor.Battle.Buffs.Add_Buff_Should_Succeed("B0001")]
+      name: Add_Buff_Should_Succeed("B0001")
+      fullName: TestsEditor.Battle.Buffs.Add_Buff_Should_Succeed("B0001")
+      resultStatus: 2
+      duration: 0.0063784
+      messages: "YamlDotNet.Core.YamlException : (Line: 146, Col: 7, Idx: 4697) -
+        (Line: 146, Col: 7, Idx: 4697): Exception during deserialization\r\n  ---->
+        System.Runtime.Serialization.SerializationException : Property 'Ranks' not
+        found on type 'RPGTest.Models.Abilities.Ability'."
+      output: 
+      stacktrace: "  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x000a4] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.AliasValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x0006e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer+<>c__DisplayClass3_0.<DeserializeValue>b__0
+        (YamlDotNet.Core.IParser r, System.Type t) [0x00000] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.NodeDeserializers.CollectionNodeDeserializer.DeserializeHelper
+        (System.Type tItem, YamlDotNet.Core.IParser parser, System.Func`3[T1,T2,TResult]
+        nestedObjectDeserializer, System.Collections.IList result, System.Boolean
+        canUpdate) [0x00027] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.NodeDeserializers.CollectionNodeDeserializer.YamlDotNet.Serialization.INodeDeserializer.Deserialize
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, System.Func`3[T1,T2,TResult]
+        nestedObjectDeserializer, System.Object& value) [0x000a6] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x00088] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.AliasValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x0006e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer+<>c__DisplayClass3_0.<DeserializeValue>b__0
+        (YamlDotNet.Core.IParser r, System.Type t) [0x00000] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.NodeDeserializers.ObjectNodeDeserializer.YamlDotNet.Serialization.INodeDeserializer.Deserialize
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, System.Func`3[T1,T2,TResult]
+        nestedObjectDeserializer, System.Object& value) [0x0006b] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x00088] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.ValueDeserializers.AliasValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x0006e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at YamlDotNet.Serialization.Deserializer.Deserialize
+        (YamlDotNet.Core.IParser parser, System.Type type) [0x0004e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.Deserializer.Deserialize (System.IO.TextReader
+        input, System.Type type) [0x00007] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.Deserializer.Deserialize[T] (System.String
+        input) [0x00007] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n  at RPGTest.Collectors.ICollector.Collect[T]
+        (System.String content) [0x00007] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Collectors\\ICollector.cs:14
+        \r\n  at RPGTest.Collectors.AbilitiesCollector.get_Bank () [0x00000] in X:\\Unity
+        Projects\\RPGTest\\Assets\\Scripts\\Collectors\\AbilitiesCollector.cs:14
+        \r\n  at RPGTest.Collectors.AbilitiesCollector.TryGetAbility (System.String
+        ID) [0x0000e] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Collectors\\AbilitiesCollector.cs:18
+        \r\n  at RPGTest.Modules.Battle.Action.EntityAction..ctor (RPGTest.Models.Entity.Entity
+        caster, RPGTest.Enums.ActionType actionType, System.String actionId, System.Collections.Generic.List`1[T]
+        targets, RPGTest.Managers.InventoryManager manager) [0x000b7] in X:\\Unity
+        Projects\\RPGTest\\Assets\\Scripts\\Modules\\Battle\\Action\\EntityAction.cs:61
+        \r\n  at TestsEditor.Battle.MockEntityAction..ctor (RPGTest.Models.Entity.Entity
+        caster, RPGTest.Enums.ActionType actionType, RPGTest.Models.Abilities.Ability
+        ability, System.Collections.Generic.List`1[T] targets) [0x00000] in X:\\Unity
+        Projects\\RPGTest\\Assets\\TestsEditor\\Battle\\BattleFixture.cs:21 \r\n 
+        at TestsEditor.Battle.Buffs.Add_Buff_Should_Succeed (System.String abilityID)
+        [0x00026] in X:\\Unity Projects\\RPGTest\\Assets\\TestsEditor\\Battle\\Buffs.cs:17
+        \r\n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
+        at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
+        invokeAttr, System.Reflection.Binder binder, System.Object[] parameters,
+        System.Globalization.CultureInfo culture) [0x0006a] in <605bf8b31fcb444b85176da963870aa7>:0
+        \r\n--SerializationException\r\n  at YamlDotNet.Serialization.TypeInspectors.TypeInspectorSkeleton.GetProperty
+        (System.Type type, System.Object container, System.String name, System.Boolean
+        ignoreUnmatched) [0x00069] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 \r\n 
+        at YamlDotNet.Serialization.NodeDeserializers.ObjectNodeDeserializer.YamlDotNet.Serialization.INodeDeserializer.Deserialize
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, System.Func`3[T1,T2,TResult]
+        nestedObjectDeserializer, System.Object& value) [0x0003e] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0
+        \r\n  at YamlDotNet.Serialization.ValueDeserializers.NodeValueDeserializer.DeserializeValue
+        (YamlDotNet.Core.IParser parser, System.Type expectedType, YamlDotNet.Serialization.Utilities.SerializerState
+        state, YamlDotNet.Serialization.IValueDeserializer nestedObjectDeserializer)
+        [0x00039] in <bfbb3b9be9994b5ab56cc48bd8fb6b39>:0 "
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1003
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/Buffs/[TestsEditor][TestsEditor.Battle.Buffs.Add_Buff_Should_Succeed][suite]
+    - id: 1006
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/Buffs/[TestsEditor][TestsEditor.Battle.Buffs.Buff_Refresh_Should_Succeed]
+      name: Buff_Refresh_Should_Succeed
+      fullName: TestsEditor.Battle.Buffs.Buff_Refresh_Should_Succeed
+      resultStatus: 2
+      duration: 0.0018434
+      messages: 'System.ArgumentOutOfRangeException : Index was out of range. Must
+        be non-negative and less than the size of the collection.
+
+        Parameter
+        name: index'
+      output: 
+      stacktrace: "  at System.Collections.Generic.List`1[T].get_Item (System.Int32
+        index) [0x00009] in <605bf8b31fcb444b85176da963870aa7>:0 \r\n  at TestsEditor.Battle.Buffs.Buff_Refresh_Should_Succeed
+        () [0x00012] in X:\\Unity Projects\\RPGTest\\Assets\\TestsEditor\\Battle\\Buffs.cs:47
+        \r\n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
+        at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
+        invokeAttr, System.Reflection.Binder binder, System.Object[] parameters,
+        System.Globalization.CultureInfo culture) [0x0006a] in <605bf8b31fcb444b85176da963870aa7>:0 "
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/[TestsEditor][TestsEditor.Battle.Buffs][suite]
+    - id: 1005
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/Buffs/[TestsEditor][TestsEditor.Battle.Buffs.Buff_Value_Should_Apply]
+      name: Buff_Value_Should_Apply
+      fullName: TestsEditor.Battle.Buffs.Buff_Value_Should_Apply
+      resultStatus: 2
+      duration: 0.0003426
+      messages: 'System.NullReferenceException : Object reference not set to an instance
+        of an object'
+      output: 
+      stacktrace: "  at RPGTest.Models.Entity.PlayableCharacter.GetAttribute (RPGTest.Enums.Attribute
+        attribute) [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\PlayableCharacter.cs:307
+        \r\n  at RPGTest.Models.Entity.Extensions.EntityExtensions.GetOffensiveAttribute
+        (RPGTest.Models.Entity.Entity entity, RPGTest.Enums.Attribute attribute)
+        [0x0001f] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Extensions\\EntityExtensions.cs:78
+        \r\n  at TestsEditor.Battle.Buffs.Buff_Value_Should_Apply () [0x00001] in
+        X:\\Unity Projects\\RPGTest\\Assets\\TestsEditor\\Battle\\Buffs.cs:38 \r\n 
+        at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
+        at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
+        invokeAttr, System.Reflection.Binder binder, System.Object[] parameters,
+        System.Globalization.CultureInfo culture) [0x0006a] in <605bf8b31fcb444b85176da963870aa7>:0 "
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/[TestsEditor][TestsEditor.Battle.Buffs][suite]
+    - id: 1007
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/[TestsEditor][TestsEditor.Battle.TestDamageCalculation][suite]
+      name: TestDamageCalculation
+      fullName: TestsEditor.Battle.TestDamageCalculation
+      resultStatus: 2
+      duration: 0.0201826
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1016
+      parentUniqueId: TestsEditor.dll/TestsEditor/[TestsEditor][TestsEditor.Battle][suite]
+    - id: 1010
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed][suite]
+      name: Apply_Damage_Should_Succeed
+      fullName: TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed
+      resultStatus: 2
+      duration: 0.0020748
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1007
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/[TestsEditor][TestsEditor.Battle.TestDamageCalculation][suite]
+    - id: 1008
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/Apply_Damage_Should_Succeed/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed("A0001",7,43)]
+      name: Apply_Damage_Should_Succeed("A0001",7,43)
+      fullName: TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed("A0001",7,43)
+      resultStatus: 2
+      duration: 0.0013922
+      messages: 'System.NullReferenceException : Object reference not set to an instance
+        of an object'
+      output: 
+      stacktrace: "  at RPGTest.Models.Entity.PlayableCharacter.GetAttribute (RPGTest.Enums.Attribute
+        attribute) [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\PlayableCharacter.cs:307
+        \r\n  at RPGTest.Models.Entity.Extensions.EntityExtensions.GetOffensiveAttribute
+        (RPGTest.Models.Entity.Entity entity, RPGTest.Enums.Attribute attribute)
+        [0x0001f] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Extensions\\EntityExtensions.cs:78
+        \r\n  at RPGTest.Modules.Battle.DamageCalculation.GetOffensivePotencyValue
+        (RPGTest.Models.Entity.Entity entity, RPGTest.Models.Effects.Effect effect)
+        [0x0002b] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Modules\\Battle\\DamageCalculation.cs:36
+        \r\n  at TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed
+        (System.String abilityID, System.Int32 expectedDamage, System.Int32 exepectedHealth)
+        [0x00043] in X:\\Unity Projects\\RPGTest\\Assets\\TestsEditor\\Battle\\DamageCalculation.cs:25
+        \r\n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
+        at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
+        invokeAttr, System.Reflection.Binder binder, System.Object[] parameters,
+        System.Globalization.CultureInfo culture) [0x0006a] in <605bf8b31fcb444b85176da963870aa7>:0 "
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1010
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed][suite]
+    - id: 1009
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/Apply_Damage_Should_Succeed/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed("M0001",47,3)]
+      name: Apply_Damage_Should_Succeed("M0001",47,3)
+      fullName: TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed("M0001",47,3)
+      resultStatus: 2
+      duration: 0.0001576
+      messages: 'System.NullReferenceException : Object reference not set to an instance
+        of an object'
+      output: 
+      stacktrace: "  at RPGTest.Models.Entity.PlayableCharacter.GetAttribute (RPGTest.Enums.Attribute
+        attribute) [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\PlayableCharacter.cs:307
+        \r\n  at RPGTest.Models.Entity.Extensions.EntityExtensions.GetOffensiveAttribute
+        (RPGTest.Models.Entity.Entity entity, RPGTest.Enums.Attribute attribute)
+        [0x00033] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Extensions\\EntityExtensions.cs:82
+        \r\n  at RPGTest.Modules.Battle.DamageCalculation.GetOffensivePotencyValue
+        (RPGTest.Models.Entity.Entity entity, RPGTest.Models.Effects.Effect effect)
+        [0x0002b] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Modules\\Battle\\DamageCalculation.cs:36
+        \r\n  at TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed
+        (System.String abilityID, System.Int32 expectedDamage, System.Int32 exepectedHealth)
+        [0x00043] in X:\\Unity Projects\\RPGTest\\Assets\\TestsEditor\\Battle\\DamageCalculation.cs:25
+        \r\n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
+        at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
+        invokeAttr, System.Reflection.Binder binder, System.Object[] parameters,
+        System.Globalization.CultureInfo culture) [0x0006a] in <605bf8b31fcb444b85176da963870aa7>:0 "
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1010
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_Should_Succeed][suite]
+    - id: 1013
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed][suite]
+      name: Apply_Damage_With_Piercing_Damage_Should_Succeed
+      fullName: TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed
+      resultStatus: 2
+      duration: 0.0155369
+      messages: One or more child tests had errors
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1007
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/[TestsEditor][TestsEditor.Battle.TestDamageCalculation][suite]
+    - id: 1011
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/Apply_Damage_With_Piercing_Damage_Should_Succeed/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed("A0002",19,31)]
+      name: Apply_Damage_With_Piercing_Damage_Should_Succeed("A0002",19,31)
+      fullName: TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed("A0002",19,31)
+      resultStatus: 2
+      duration: 0.0071533
+      messages: 'System.InvalidOperationException : Sequence contains more than one
+        matching element'
+      output: 
+      stacktrace: "  at System.Linq.Enumerable.Single[TSource] (System.Collections.Generic.IEnumerable`1[T]
+        source, System.Func`2[T,TResult] predicate) [0x0004a] in <7b5547b4335144ceb60840e62be9f312>:0
+        \r\n  at RPGTest.Models.Entity.Components.EquipmentComponent.GetPresetInternal
+        (RPGTest.Models.PresetSlot preset) [0x0002b] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Components\\EquipmentComponent.cs:147
+        \r\n  at RPGTest.Models.Entity.Components.EquipmentComponent.GetEquipmentSlotsInternal
+        (RPGTest.Models.PresetSlot preset) [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Components\\EquipmentComponent.cs:158
+        \r\n  at RPGTest.Models.Entity.Components.EquipmentComponent.GetEquipmentSlots
+        (RPGTest.Models.PresetSlot slot) [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Components\\EquipmentComponent.cs:38
+        \r\n  at RPGTest.Models.Entity.PlayableCharacter.GetAttribute (RPGTest.Models.PresetSlot
+        preset, RPGTest.Enums.Attribute attribute) [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\PlayableCharacter.cs:317
+        \r\n  at RPGTest.Models.Entity.PlayableCharacter.GetAttribute (RPGTest.Enums.Attribute
+        attribute) [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\PlayableCharacter.cs:306
+        \r\n  at RPGTest.Models.Entity.Extensions.EntityExtensions.GetOffensiveAttribute
+        (RPGTest.Models.Entity.Entity entity, RPGTest.Enums.Attribute attribute)
+        [0x0001f] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Extensions\\EntityExtensions.cs:78
+        \r\n  at RPGTest.Modules.Battle.DamageCalculation.GetOffensivePotencyValue
+        (RPGTest.Models.Entity.Entity entity, RPGTest.Models.Effects.Effect effect)
+        [0x0002b] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Modules\\Battle\\DamageCalculation.cs:36
+        \r\n  at TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed
+        (System.String abilityID, System.Int32 expectedDamage, System.Int32 expectedHealth)
+        [0x00043] in X:\\Unity Projects\\RPGTest\\Assets\\TestsEditor\\Battle\\DamageCalculation.cs:45
+        \r\n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
+        at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
+        invokeAttr, System.Reflection.Binder binder, System.Object[] parameters,
+        System.Globalization.CultureInfo culture) [0x0006a] in <605bf8b31fcb444b85176da963870aa7>:0 "
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1013
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed][suite]
+    - id: 1012
+      uniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/Apply_Damage_With_Piercing_Damage_Should_Succeed/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed("A0003",37,13)]
+      name: Apply_Damage_With_Piercing_Damage_Should_Succeed("A0003",37,13)
+      fullName: TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed("A0003",37,13)
+      resultStatus: 2
+      duration: 0.0001557
+      messages: 'System.NullReferenceException : Object reference not set to an instance
+        of an object'
+      output: 
+      stacktrace: "  at RPGTest.Models.Entity.PlayableCharacter.GetAttribute (RPGTest.Enums.Attribute
+        attribute) [0x00001] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\PlayableCharacter.cs:307
+        \r\n  at RPGTest.Models.Entity.Extensions.EntityExtensions.GetOffensiveAttribute
+        (RPGTest.Models.Entity.Entity entity, RPGTest.Enums.Attribute attribute)
+        [0x0001f] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Models\\Entities\\Extensions\\EntityExtensions.cs:78
+        \r\n  at RPGTest.Modules.Battle.DamageCalculation.GetOffensivePotencyValue
+        (RPGTest.Models.Entity.Entity entity, RPGTest.Models.Effects.Effect effect)
+        [0x0002b] in X:\\Unity Projects\\RPGTest\\Assets\\Scripts\\Modules\\Battle\\DamageCalculation.cs:36
+        \r\n  at TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed
+        (System.String abilityID, System.Int32 expectedDamage, System.Int32 expectedHealth)
+        [0x00043] in X:\\Unity Projects\\RPGTest\\Assets\\TestsEditor\\Battle\\DamageCalculation.cs:45
+        \r\n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\r\n 
+        at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags
+        invokeAttr, System.Reflection.Binder binder, System.Object[] parameters,
+        System.Globalization.CultureInfo culture) [0x0006a] in <605bf8b31fcb444b85176da963870aa7>:0 "
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1013
+      parentUniqueId: TestsEditor.dll/TestsEditor/Battle/TestDamageCalculation/[TestsEditor][TestsEditor.Battle.TestDamageCalculation.Apply_Damage_With_Piercing_Damage_Should_Succeed][suite]
+    m_ResultText: 'Apply_Damage_With_Piercing_Damage_Should_Succeed (0.016s)
+
+      ---
+
+      One
+      or more child tests had errors'
+    m_ResultStacktrace: 
+    m_TestListState:
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: f8ba365c
+      m_LastClickedID: 1547090680
+      m_ExpandedIDs: 593c2a8e98541abf156d7ae484dc3a298386093367f40d4814270f49f8ba365cdc86bd6dffffff7f
+      m_RenameOverlay:
+        m_UserAcceptedRename: 0
+        m_Name: 
+        m_OriginalName: 
+        m_EditFieldRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        m_UserData: 0
+        m_IsWaitingForDelay: 0
+        m_IsRenaming: 0
+        m_OriginalEventType: 11
+        m_IsRenamingFilename: 0
+        m_ClientGUIView: {fileID: 0}
+      m_SearchString: 
+    m_TestRunnerUIFilter:
+      PassedHidden: 0
+      FailedHidden: 0
+      NotRunHidden: 0
+      m_SearchString: 
+      selectedCategoryMask: 0
+      availableCategories:
+      - Uncategorized
+--- !u!114 &21
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 13960, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 100, y: 70}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Background Tasks
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 2154
+    y: 1042
+    width: 400
+    height: 300
+  m_SerializedDataModeController:
+    m_DataMode: 0
+    m_PreferredDataMode: 0
+    m_SupportedDataModes: 
+    isAutomatic: 1
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
+    m_OverlaysVisible: 1
+--- !u!114 &22
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -369,7 +1203,7 @@ MonoBehaviour:
   m_DetailsPanelSummaryNavigableBundleTreeAsset: {fileID: 9197481963319205126, guid: 82c7396e127bdc14e8983693357610a3, type: 3}
   m_ActiveContentViewType: 0
   m_ActivePotentialIssuesViewType: 0
---- !u!114 &15
+--- !u!114 &23
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -389,10 +1223,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1999
+    x: 2099
     y: 73
-    width: 560
-    height: 99
+    width: 460
+    height: 109
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -403,7 +1237,7 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
     m_OverlaysVisible: 1
---- !u!114 &16
+--- !u!114 &24
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -437,7 +1271,7 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
     m_OverlaysVisible: 1
---- !u!114 &17
+--- !u!114 &25
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -457,10 +1291,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1999
-    y: 193
-    width: 560
-    height: 751
+    x: 2099
+    y: 203
+    width: 460
+    height: 781
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -484,7 +1318,7 @@ MonoBehaviour:
   m_LockTracker:
     m_IsLocked: 0
   m_PreviewWindow: {fileID: 0}
---- !u!114 &18
+--- !u!114 &26
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -505,9 +1339,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 19
-    width: 426
-    height: 871
+    y: 73
+    width: 315
+    height: 911
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -521,9 +1355,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: e895c7ff
       m_LastClickedID: 0
-      m_ExpandedIDs: 28fbffff
+      m_ExpandedIDs: 8c8cc6ff78d2c6ff6c11c7ff8450c7ff7c95c7ff28fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -539,7 +1373,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 10}
+        m_ClientGUIView: {fileID: 16}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -547,7 +1381,7 @@ MonoBehaviour:
       m_IsLocked: 0
     m_CurrentSortingName: TransformSorting
   m_WindowGUID: 4c969a2b90040154d917609493e03593
---- !u!114 &19
+--- !u!114 &27
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -567,10 +1401,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 2987
+    x: 316
     y: 73
-    width: 1570
-    height: 877
+    width: 1781
+    height: 911
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -625,7 +1459,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 0
       snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 1
       id: unity-search-toolbar
       index: 1
@@ -677,7 +1511,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 0
       snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: Scene View/Light Settings
       index: 0
@@ -703,7 +1537,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 0
       snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: Scene View/Cloth Constraints
       index: 1
@@ -716,7 +1550,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 0
       snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: Scene View/Cloth Collisions
       index: 2
@@ -768,7 +1602,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 0
       snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: Scene View/Occlusion Culling
       index: 3
@@ -781,7 +1615,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 0
       snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: Scene View/Physics Debugger
       index: 4
@@ -794,7 +1628,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 0
       snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: Scene View/Scene Visibility
       index: 5
@@ -807,7 +1641,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 0
       snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: Scene View/Particles
       index: 6
@@ -898,14 +1732,14 @@ MonoBehaviour:
   m_OverrideSceneCullingMask: 6917529027641081856
   m_SceneIsLit: 1
   m_SceneLighting: 1
-  m_2DMode: 1
+  m_2DMode: 0
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 453.87366, y: 498.84985, z: -8.730406}
+    m_Target: {x: 175.94632, y: 198.49702, z: 124.89406}
     speed: 2
-    m_Value: {x: 453.87366, y: 498.84985, z: -8.730406}
+    m_Value: {x: 175.94632, y: 198.49702, z: 124.89406}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -933,17 +1767,17 @@ MonoBehaviour:
       m_Size: {x: 0, y: 0}
     yGrid:
       m_Fade:
-        m_Target: 0
+        m_Target: 1
         speed: 2
-        m_Value: 0
+        m_Value: 1
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
     zGrid:
       m_Fade:
-        m_Target: 1
+        m_Target: 0
         speed: 2
-        m_Value: 1
+        m_Value: 0
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
@@ -951,17 +1785,17 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0, y: 0, z: 0, w: 1}
+    m_Target: {x: -0.14988324, y: 0.7924068, z: -0.21573427, w: -0.55053073}
     speed: 2
-    m_Value: {x: 0, y: 0, z: 0, w: 1}
+    m_Value: {x: -0.14988333, y: 0.7924073, z: -0.2157344, w: -0.5505311}
   m_Size:
     m_Target: 339.52823
     speed: 2
     m_Value: 339.52823
   m_Ortho:
-    m_Target: 1
+    m_Target: 0
     speed: 2
-    m_Value: 1
+    m_Value: 0
   m_CameraSettings:
     m_Speed: 2
     m_SpeedNormalized: 1
@@ -982,7 +1816,7 @@ MonoBehaviour:
   m_SceneVisActive: 1
   m_LastLockedObject: {fileID: 0}
   m_ViewIsLockedToObject: 0
---- !u!114 &20
+--- !u!114 &28
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1002,10 +1836,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 427
+    x: 316
     y: 73
-    width: 1570
-    height: 871
+    width: 1781
+    height: 911
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1022,7 +1856,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1511, y: 850}
+  m_TargetSize: {x: 1582, y: 890}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -1037,10 +1871,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -755.5
-    m_HBaseRangeMax: 755.5
-    m_VBaseRangeMin: -425
-    m_VBaseRangeMax: 425
+    m_HBaseRangeMin: -791
+    m_HBaseRangeMax: 791
+    m_VBaseRangeMin: -445
+    m_VBaseRangeMax: 445
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -1049,7 +1883,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -1058,29 +1892,29 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 1570
-      height: 850
+      width: 1781
+      height: 890
     m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 785, y: 425}
+    m_Translation: {x: 890.5, y: 445}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -785
-      y: -425
-      width: 1570
-      height: 850
+      x: -890.5
+      y: -445
+      width: 1781
+      height: 890
     m_MinimalGUI: 1
   m_defaultScale: 1
-  m_LastWindowPixelSize: {x: 1570, y: 871}
+  m_LastWindowPixelSize: {x: 1781, y: 911}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
   m_XRRenderMode: 0
   m_RenderTexture: {fileID: 0}
---- !u!114 &21
+--- !u!114 &29
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1100,10 +1934,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 2560
-    y: 971
+    x: 0
+    y: 965
     width: 2560
-    height: 388
+    height: 386
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1140,9 +1974,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 365}
-    m_SelectedIDs: 8ae40000
-    m_LastClickedID: 58506
-    m_ExpandedIDs: 000000007ce400007ee4000080e4000082e4000084e4000086e4000088e400008ae400008ce400008ee4000090e4000092e4000094e4000096e40000
+    m_SelectedIDs: 8ce40000
+    m_LastClickedID: 58508
+    m_ExpandedIDs: 0000000088e400008ae400008ce400008ee4000090e4000092e4000094e4000096e4000098e400009ae400009ce400009ee40000a0e40000a2e40000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1158,7 +1992,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 13}
+      m_ClientGUIView: {fileID: 19}
     m_SearchString: 
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
@@ -1170,7 +2004,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000007ce400007ee4000080e4000082e4000084e4000086e4000088e400008ae400008ce400008ee4000090e4000092e4000094e4000096e40000
+    m_ExpandedIDs: 0000000088e400008ae400008ce400008ee4000090e4000092e4000094e4000096e4000098e400009ae400009ce400009ee40000a0e40000a2e40000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1197,7 +2031,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c623000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1214,7 +2048,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 13}
+      m_ClientGUIView: {fileID: 19}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -1226,7 +2060,7 @@ MonoBehaviour:
     m_GridSize: 16
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 315
---- !u!114 &22
+--- !u!114 &30
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1247,9 +2081,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 965
+    y: 1005
     width: 2560
-    height: 386
+    height: 346
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0

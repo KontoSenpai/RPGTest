@@ -11,7 +11,7 @@ namespace RPGTest.Models.Effects
             {
                 var character = (PlayableCharacter)caster;
 
-                return character.EquipmentSlots.GetCurrentWeaponPreset().Values.Any(w => w.TwoHanded);
+                return character.EquipmentComponent.GetWeaponSlots().Values.Any(w => w.TwoHanded);
             }
 
             return true;

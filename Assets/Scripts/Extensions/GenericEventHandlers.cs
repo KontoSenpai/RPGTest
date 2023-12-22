@@ -12,7 +12,7 @@ namespace RPGTest.Helpers
 
     public delegate void ItemsSelectionHandler(List<Item> items);
 
-    public delegate void SlotSelectionHandler(PresetSlot preset, Slot slot);
+    public delegate void SlotSelectionHandler(PresetSlot preset, EquipmentSlot slot);
 
     public delegate void GameObjectSelectionHandler(GameObject guiItem);
 

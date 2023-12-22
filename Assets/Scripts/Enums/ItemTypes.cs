@@ -17,7 +17,7 @@ namespace RPGTest.Enums
         Buff_Item
     }
 
-    public enum Slot
+    public enum EquipmentSlot
     {
         None,
         LeftHand,

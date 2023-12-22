@@ -2,6 +2,7 @@
 using System.Linq;
 using RPGTest.Models.Effects;
 using RPGTest.Models.Entity;
+using RPGTest.Models.Entity.Extensions;
 using UnityEngine;
 
 namespace RPGTest.Modules.Battle

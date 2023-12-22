@@ -1,8 +1,9 @@
-﻿using RPGTest.Inputs;
-using RPGTest.Enums;
-using RPGTest.Models.Entity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using RPGTest.Enums;
+using RPGTest.Inputs;
+using RPGTest.Models.Entity;
+using RPGTest.Modules.Battle.Extensions;
 using UnityEngine;
 
 namespace RPGTest.Modules.Battle
@@ -89,7 +90,7 @@ namespace RPGTest.Modules.Battle
                 case TargetType.SingleEnemy:
                     m_targetEnemy = true;
                     m_targetSide = false;
-                    m_targetIndex = m_enemies.GetFirstAliveIndex();
+                    m_targetIndex = m_enemies.GetIndexOfFirstAliveEnemy();
                     break;
                 case TargetType.Allies:
                     m_targetEnemy = false;

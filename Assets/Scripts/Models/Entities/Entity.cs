@@ -1,5 +1,8 @@
 ﻿using RPGTest.Enums;
 using RPGTest.Models.Abilities;
+using RPGTest.Models.Effects;
+using RPGTest.Models.Entity.Components;
+using RPGTest.Models.Entity.Extensions;
 using RPGTest.Modules.Battle;
 using RPGTest.Modules.Battle.Action;
 using System;
@@ -14,15 +17,15 @@ namespace RPGTest.Models.Entity
     // Special EventArgs class to hold info about Shapes.
     public class BuffsRefreshedArgs : EventArgs
     {
-        public BuffsRefreshedArgs(List<Buff> buffs, List<Buff> debuffs)
+        public BuffsRefreshedArgs(IEnumerable<Effect> buffs, IEnumerable<Effect> debuffs)
         {
             Buffs = buffs;
             Debuffs = debuffs;
         }
 
-        public List<Buff> Buffs { get; }
+        public IEnumerable<Effect> Buffs { get; }
 
-        public List<Buff> Debuffs { get; }
+        public IEnumerable<Effect> Debuffs { get; }
     }
 
     public abstract partial class Entity : IdObject
@@ -46,6 +49,9 @@ namespace RPGTest.Models.Entity
 
         [YamlIgnore]
         public bool IsAlive { get { return CurrentHP > 0; } }
+
+        [YamlIgnore]
+        public EffectsComponent EffectsComponent { get; set; } = new EffectsComponent();
 
         public string DefaultAttack { get; set; }
 
@@ -101,16 +107,6 @@ namespace RPGTest.Models.Entity
         }
 
         public virtual void RefillResources() {}
-
-        public virtual void ReduceStatusDurations()
-        {
-            foreach(var b in Buffs)
-            {
-                b.Duration--;
-            }
-            Buffs.RemoveAll(b => b.Duration <= 0);
-            OnBuffsRefreshed(new BuffsRefreshedArgs(GetBuffs(EffectType.Buff), GetBuffs(EffectType.Debuff)));
-        }
 
         public void PerformAction()
         {
@@ -201,21 +197,21 @@ namespace RPGTest.Models.Entity
 
         private float GetAttributeValue(Attribute attribute, float baseValue)
         {
-            return Mathf.Ceil(baseValue * GetHighestAttributeBuff(attribute) / GetHighestAttributeDebuff(attribute));
+            return Mathf.Ceil(baseValue * EffectsComponent.GetHighestAttributeBuff(attribute) / EffectsComponent.GetHighestAttributeDebuff(attribute));
         }
 
         public virtual Dictionary<Element, float> GetElementalResistances()
         {
             Dictionary<Element, float> elementalResistances = new Dictionary<Element, float>();
 
-            elementalResistances.Add(Element.Fire, ElementalResistances.Fire + GetHighestElementalResistanceBuff(Element.Fire) - GetHighestElementalResistanceDebuff(Element.Fire));
-            elementalResistances.Add(Element.Ice, ElementalResistances.Ice + GetHighestElementalResistanceBuff(Element.Ice) - GetHighestElementalResistanceDebuff(Element.Ice));
-            elementalResistances.Add(Element.Water, ElementalResistances.Water + GetHighestElementalResistanceBuff(Element.Water) - GetHighestElementalResistanceDebuff(Element.Water));
-            elementalResistances.Add(Element.Lightning, ElementalResistances.Lightning + GetHighestElementalResistanceBuff(Element.Lightning) - GetHighestElementalResistanceDebuff(Element.Lightning));
-            elementalResistances.Add(Element.Wind, ElementalResistances.Wind + GetHighestElementalResistanceBuff(Element.Wind) - GetHighestElementalResistanceDebuff(Element.Wind));
-            elementalResistances.Add(Element.Earth, ElementalResistances.Earth + GetHighestElementalResistanceBuff(Element.Earth) - GetHighestElementalResistanceDebuff(Element.Earth));
-            elementalResistances.Add(Element.Light, ElementalResistances.Light + GetHighestElementalResistanceBuff(Element.Light) - GetHighestElementalResistanceDebuff(Element.Light));
-            elementalResistances.Add(Element.Dark, ElementalResistances.Dark + GetHighestElementalResistanceBuff(Element.Dark) - GetHighestElementalResistanceDebuff(Element.Dark));
+            elementalResistances.Add(Element.Fire, ElementalResistances.Fire + EffectsComponent.GetElementResistanceVariation(Element.Fire));
+            elementalResistances.Add(Element.Ice, ElementalResistances.Ice + EffectsComponent.GetElementResistanceVariation(Element.Ice));
+            elementalResistances.Add(Element.Water, ElementalResistances.Water + EffectsComponent.GetElementResistanceVariation(Element.Water));
+            elementalResistances.Add(Element.Lightning, ElementalResistances.Lightning + EffectsComponent.GetElementResistanceVariation(Element.Lightning));
+            elementalResistances.Add(Element.Wind, ElementalResistances.Wind + EffectsComponent.GetElementResistanceVariation(Element.Wind));
+            elementalResistances.Add(Element.Earth, ElementalResistances.Earth + EffectsComponent.GetElementResistanceVariation(Element.Earth));
+            elementalResistances.Add(Element.Light, ElementalResistances.Light + EffectsComponent.GetElementResistanceVariation(Element.Light));
+            elementalResistances.Add(Element.Dark, ElementalResistances.Dark + EffectsComponent.GetElementResistanceVariation(Element.Dark));
 
             return elementalResistances;
         }
@@ -224,14 +220,14 @@ namespace RPGTest.Models.Entity
         {
             Dictionary<StatusEffect, float> statuEffectResistances = new Dictionary<StatusEffect, float>();
 
-            statuEffectResistances.Add(StatusEffect.Blind, StatusEffectResistances.Blind + GetHighestStatusEffectResistanceBuff(StatusEffect.Blind) - GetHighestStatusEffectResistanceBuff(StatusEffect.Blind));
-            statuEffectResistances.Add(StatusEffect.Bleed, StatusEffectResistances.Bleed + GetHighestStatusEffectResistanceBuff(StatusEffect.Bleed) - GetHighestStatusEffectResistanceBuff(StatusEffect.Bleed));
-            statuEffectResistances.Add(StatusEffect.Poison, StatusEffectResistances.Poison + GetHighestStatusEffectResistanceBuff(StatusEffect.Poison) - GetHighestStatusEffectResistanceBuff(StatusEffect.Poison));
-            statuEffectResistances.Add(StatusEffect.Paralysis, StatusEffectResistances.Paralysis + GetHighestStatusEffectResistanceBuff(StatusEffect.Paralysis) - GetHighestStatusEffectResistanceBuff(StatusEffect.Paralysis));
-            statuEffectResistances.Add(StatusEffect.Silence, StatusEffectResistances.Silence + GetHighestStatusEffectResistanceBuff(StatusEffect.Silence) - GetHighestStatusEffectResistanceBuff(StatusEffect.Silence));
-            statuEffectResistances.Add(StatusEffect.Confusion, StatusEffectResistances.Confusion + GetHighestStatusEffectResistanceBuff(StatusEffect.Confusion) - GetHighestStatusEffectResistanceBuff(StatusEffect.Confusion));
-            statuEffectResistances.Add(StatusEffect.Freeze, StatusEffectResistances.Freeze + GetHighestStatusEffectResistanceBuff(StatusEffect.Freeze) - GetHighestStatusEffectResistanceBuff(StatusEffect.Freeze));
-            statuEffectResistances.Add(StatusEffect.Slow, StatusEffectResistances.Slow + GetHighestStatusEffectResistanceBuff(StatusEffect.Slow) - GetHighestStatusEffectResistanceBuff(StatusEffect.Slow));
+            statuEffectResistances.Add(StatusEffect.Blind, StatusEffectResistances.Blind + EffectsComponent.GetStatusEffectResistanceVariation(StatusEffect.Blind));
+            statuEffectResistances.Add(StatusEffect.Bleed, StatusEffectResistances.Bleed + EffectsComponent.GetStatusEffectResistanceVariation(StatusEffect.Bleed));
+            statuEffectResistances.Add(StatusEffect.Poison, StatusEffectResistances.Poison + EffectsComponent.GetStatusEffectResistanceVariation(StatusEffect.Poison));
+            statuEffectResistances.Add(StatusEffect.Paralysis, StatusEffectResistances.Paralysis + EffectsComponent.GetStatusEffectResistanceVariation(StatusEffect.Paralysis));
+            statuEffectResistances.Add(StatusEffect.Silence, StatusEffectResistances.Silence + EffectsComponent.GetStatusEffectResistanceVariation(StatusEffect.Silence));
+            statuEffectResistances.Add(StatusEffect.Confusion, StatusEffectResistances.Confusion + EffectsComponent.GetStatusEffectResistanceVariation(StatusEffect.Confusion));
+            statuEffectResistances.Add(StatusEffect.Freeze, StatusEffectResistances.Freeze + EffectsComponent.GetStatusEffectResistanceVariation(StatusEffect.Freeze));
+            statuEffectResistances.Add(StatusEffect.Slow, StatusEffectResistances.Slow + EffectsComponent.GetStatusEffectResistanceVariation(StatusEffect.Slow));
 
             return statuEffectResistances;
         }

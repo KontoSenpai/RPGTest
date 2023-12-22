@@ -19,7 +19,7 @@ namespace RPGTest.UI.Common
         public UI_PresetSlotSelector PresetSelector;
 
         [HideInInspector]
-        public Slot Slot { private set; get; }
+        public EquipmentSlot Slot { private set; get; }
 
         [HideInInspector]
         public PresetSlot Preset => PresetSelector.GetCurrentPreset();
@@ -143,7 +143,7 @@ namespace RPGTest.UI.Common
             RefreshEquipmentComponents();
         }
 
-        public void Select(Slot pendingSlot = Slot.None)
+        public void Select(EquipmentSlot pendingSlot = EquipmentSlot.None)
         {
             base.Select();
 
@@ -151,7 +151,7 @@ namespace RPGTest.UI.Common
 
             EventSystemEvents.OnSelectionUpdated += OnSelection_Updated;
 
-            if (pendingSlot != Slot.None)
+            if (pendingSlot != EquipmentSlot.None)
             {
                 m_equipmentComponents.Single((c) => c.Slot == pendingSlot).GetComponent<Button>().Select();
             }
@@ -181,7 +181,7 @@ namespace RPGTest.UI.Common
 
         public Equipment GetEquipment()
         {
-            var equipmentSlots = m_character.EquipmentSlots.GetEquipmentPreset(PresetSelector.GetCurrentPreset());
+            var equipmentSlots = m_character.EquipmentComponent.GetEquipmentSlots(PresetSelector.GetCurrentPreset());
 
             return equipmentSlots[Slot];
         }
@@ -230,7 +230,7 @@ namespace RPGTest.UI.Common
                 return;
             }
 
-            m_character.TryUnequip(PresetSelector.GetCurrentPreset(), Slot, out var removedEquipments);
+            m_character.EquipmentComponent.TryUnequip(PresetSelector.GetCurrentPreset(), Slot, out var removedEquipments);
 
             if (!removedEquipments.Any())
             {
@@ -276,7 +276,7 @@ namespace RPGTest.UI.Common
 
         private void RefreshEquipmentComponents()
         {
-            var equipmentSlots = m_character.EquipmentSlots.GetEquipmentPreset(PresetSelector.GetCurrentPreset());
+            var equipmentSlots = m_character.EquipmentComponent.GetEquipmentSlots();
             foreach (var component in m_equipmentComponents)
             {
                 component.Initialize(equipmentSlots[component.Slot], -1);
@@ -294,19 +294,19 @@ namespace RPGTest.UI.Common
 
             if (m_selectedItem.EquipmentType < EquipmentType.Helmet) // Weapons
             {
-                m_equipmentComponents.ForEach(s => s.GetComponent<UI_EquipmentPreview>().Enable(s.Slot < Slot.Head));
+                m_equipmentComponents.ForEach(s => s.GetComponent<UI_EquipmentPreview>().Enable(s.Slot < EquipmentSlot.Head));
             }
             else if (m_selectedItem.EquipmentType < EquipmentType.HeavyArmor) // Heads
             {
-                m_equipmentComponents.ForEach(s => s.GetComponent<UI_EquipmentPreview>().Enable(s.Slot < Slot.Body));
+                m_equipmentComponents.ForEach(s => s.GetComponent<UI_EquipmentPreview>().Enable(s.Slot < EquipmentSlot.Body));
             }
             else if (m_selectedItem.EquipmentType < EquipmentType.Accessory) // Armor
             {
-                m_equipmentComponents.ForEach(s => s.GetComponent<UI_EquipmentPreview>().Enable(s.Slot < Slot.Accessory1));
+                m_equipmentComponents.ForEach(s => s.GetComponent<UI_EquipmentPreview>().Enable(s.Slot < EquipmentSlot.Accessory1));
             }
             else // Accessories
             {
-                m_equipmentComponents.ForEach(s => s.GetComponent<UI_EquipmentPreview>().Enable(s.Slot > Slot.Body));
+                m_equipmentComponents.ForEach(s => s.GetComponent<UI_EquipmentPreview>().Enable(s.Slot > EquipmentSlot.Body));
             }
         }
 

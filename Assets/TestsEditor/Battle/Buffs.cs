@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using RPGTest.Enums;
-using RPGTest.Models;
 using RPGTest.Models.Entity;
+using RPGTest.Models.Entity.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +17,7 @@ namespace TestsEditor.Battle
             var toto = new MockEntityAction(Character, ActionType.Ability, ability, new List<Entity> { Character });
                        
             //Character.AddBuff(buffAttack);
-            Assert.IsNotNull(Character.GetHighestAttributeBuff(RPGTest.Enums.Attribute.Attack));
+            Assert.IsNotNull(Character.EffectsComponent.GetHighestAttributeBuff(Attribute.Attack));
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace TestsEditor.Battle
             //Character.AddBuff(buffAttack);
             //Character.AddBuff(buffAttack2);
 
-            var value = Character.GetHighestAttributeBuff(RPGTest.Enums.Attribute.Attack);
+            var value = Character.EffectsComponent.GetHighestAttributeBuff(Attribute.Attack);
 
             Assert.AreEqual(2f, value);
         }
@@ -35,20 +35,20 @@ namespace TestsEditor.Battle
         public void Buff_Value_Should_Apply()
         {
             //Character.AddBuff(buffAttack);
-            Assert.AreEqual(15, Character.GetOffensiveAttribute(RPGTest.Enums.Attribute.Attack));
+            Assert.AreEqual(15, Character.GetOffensiveAttribute(Attribute.Attack));
         }
 
         [Test]
         public void Buff_Refresh_Should_Succeed()
         {
             //Character.AddBuff(buffAttack);
-            Character.ReduceStatusDurations();
+            Character.EffectsComponent.TickDownEffects();
 
             Assert.AreEqual(1, Character.Buffs[0].Duration);
 
-            Character.ReduceStatusDurations();
+            Character.EffectsComponent.TickDownEffects();
 
-            Assert.AreEqual(0, Character.Buffs.Count);
+            Assert.AreEqual(0, Character.EffectsComponent.GetEffects());
         }
     }
 }

@@ -113,7 +113,7 @@ namespace RPGTest.UI.Common
             Cover.SetActive(!Cover.activeSelf);
         }
 
-        public void SelectSlot(Slot selectedSlot)
+        public void SelectSlot(EquipmentSlot selectedSlot)
         {
             //EquipmentSlotSelected(this.gameObject, selectedSlot);
         }
