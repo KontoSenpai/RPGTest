@@ -1,4 +1,6 @@
-﻿using RPGTest.Models.Items;
+﻿using RPGTest.Enums;
+using RPGTest.Models.Items;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -31,14 +33,17 @@ namespace RPGTest.Collectors
             return null;
         }
 
-        public static Equipment TryGetEquipment(string ID)
+        public static bool TryGetEquipment(string ID, out Equipment equipment)
         {
+            equipment = null;
             if (Bank != null && Bank.Equipments != null)
             {
-                var equipment = Bank.Equipments.SingleOrDefault(x => x.Id == ID);
-                return equipment;
+                equipment = Bank.Equipments.SingleOrDefault(x => x.Id == ID);
+                return true;
             }
-            return null;
+            throw new Exception($"Equipment {ID} could not be found");
+
+            return false;
         }
     }
 }

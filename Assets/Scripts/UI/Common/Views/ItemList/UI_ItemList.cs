@@ -31,9 +31,6 @@ namespace RPGTest.UI.Common
         private int m_selectedItemIndex = 0; // Keep track of selected item index to reset selection on refocus after usage
 
         #region Public Methods
-        public void Awake() { }
-        public virtual void OnEnable() { }
-        public virtual void OnDisable() { }
 
         public void SelectDefault()
         {

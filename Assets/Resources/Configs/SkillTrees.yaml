@@ -3,11 +3,12 @@
 
 SkillTrees:
     - Id                    : ST0001 # Jon Skill Tree
-      Nodes                 :
+      NodeIds               :
         - SN0001
         - SN0002
+        - SN0003
     - Id                    : ST0002 # Kehra Skill Tree
-      Nodes                 :
+      NodeIds               :
         - SN0001
         - SN0002
         
@@ -15,6 +16,8 @@ SkillNodes:
     - Id                    : SN0001
       Name                  : LSN00001 # Sword Mastery
       Description           : LSD00001 # toto toto toto
+      XIndex                : 0
+      YIndex                : 0
       MaxRank               : 5
       Abilities             :
         - Id                : AW0005
@@ -25,6 +28,20 @@ SkillNodes:
     - Id                    : SN0002
       Name                  : LSN00002 # Talend Leader
       Description           : LSD00002 # Talented leader blah blah blah
+      XIndex                : 0
+      YIndex                : 2
       MaxRank               : 3
       Abilities             :
-        - AT0001
+        - Id                : AT0001
+
+    - Id                    : SN0003
+      Name                  : LSN00002 # Talend Leader
+      Description           : LSD00002 # Talented leader blah blah blah
+      XIndex                : 1
+      YIndex                : 2
+      Requirements          :
+        NodeIds             :
+          - SN0002
+      MaxRank               : 3
+      Abilities             :
+        - Id                : AT0001

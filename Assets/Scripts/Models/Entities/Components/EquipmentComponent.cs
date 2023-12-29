@@ -219,13 +219,14 @@ namespace RPGTest.Models.Entity.Components
             var equipmentSlotModels = new Dictionary<EquipmentSlot, Equipment>();
             foreach (var equipmentSlotId in equipmentSlotIds)
             {
-                var equipment = ItemCollector.TryGetEquipment(equipmentSlotId.Value);
-                if (equipment == null)
+                if (string.IsNullOrEmpty(equipmentSlotId.Value))
                 {
-                    throw new Exception($"Equipment {equipmentSlotId.Value} could not be found");
+                    equipmentSlotModels.Add(equipmentSlotId.Key, null);
                 }
-
-                equipmentSlotModels.Add(equipmentSlotId.Key, equipment);
+                else if (ItemCollector.TryGetEquipment(equipmentSlotId.Value, out Equipment equipment))
+                {
+                    equipmentSlotModels.Add(equipmentSlotId.Key, equipment);
+                }
             }
             return equipmentSlotModels;
         }

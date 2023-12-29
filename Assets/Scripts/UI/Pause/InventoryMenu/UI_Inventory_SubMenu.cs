@@ -253,6 +253,7 @@ namespace RPGTest.UI.InventoryMenu
         /// <param name="itemComponent"></param>
         public void OnItemSelection_Changed(GameObject itemGui)
         {
+            if (itemGui != null) return;
             if (ItemInformationsPanel != null && itemGui.TryGetComponent<UI_InventoryItem>(out var component))
             {
                 ItemInformationsPanel.Refresh(component.Item);

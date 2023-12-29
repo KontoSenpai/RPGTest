@@ -37,6 +37,10 @@ PlayableCharacters:
             RightHand      : E0001
           - Preset         : 1
             LeftHand       : E0003
+      SkillTreeComponent   :
+        SkillTreeId        : ST0001
+        SpentSkillPoints   :
+            SN0001         : 5
 
     - Id                   : PC0002
       Name                 : Kehra
@@ -69,6 +73,8 @@ PlayableCharacters:
         Presets            :
           - Preset         : 0
           - Preset         : 1
+      SkillTreeComponent   :
+        SkillTreeId        : ST0002
           
     - Id                : PC0003
       Name              : Aba

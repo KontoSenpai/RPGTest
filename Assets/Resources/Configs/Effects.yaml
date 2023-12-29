@@ -186,7 +186,8 @@ Effects:
         Attribute       : Attack
         Potency         : 5
       Conditions        :
-        Equipment       : Short_Sword
+        EquipmentTypes  : 
+          - Short_Sword
     - Id                : EP0002.2
       Name              : LEP00001
       Type              : Passive
@@ -194,7 +195,8 @@ Effects:
         Attribute       : Attack
         Potency         : 8
       Conditions        :
-        Equipment       : Short_Sword
+        EquipmentTypes  : 
+          - Short_Sword
     - Id                : EP0002.3
       Name              : LEP00001
       Type              : Passive
@@ -202,7 +204,8 @@ Effects:
         Attribute       : Attack
         Potency         : 11
       Conditions        :
-        Equipment       : Short_Sword
+        EquipmentTypes  : 
+          - Short_Sword
     - Id                : EP0002.4
       Name              : LEP00001
       Type              : Passive
@@ -210,7 +213,8 @@ Effects:
         Attribute       : Attack
         Potency         : 14
       Conditions        :
-        Equipment       : Short_Sword
+        EquipmentTypes  : 
+          - Short_Sword
     - Id                : EP0002.5
       Name              : LEP00001
       Type              : Passive
@@ -218,7 +222,8 @@ Effects:
         Attribute       : Attack
         Potency         : 20
       Conditions        :
-        Equipment       : Short_Sword
+        EquipmentTypes  : 
+          - Short_Sword
       
 # Monster Effects
     # Bite
